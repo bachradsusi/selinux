@@ -24,11 +24,11 @@ classes and algorithms for the generation of SELinux policy.
 import itertools
 import textwrap
 
-import refpolicy
-import objectmodel
-import access
-import interfaces
-import matching
+from . import refpolicy
+from . import objectmodel
+from . import access
+from . import interfaces
+from . import matching
 import selinux.audit2why as audit2why
 try:
     from setools import *
@@ -208,7 +208,7 @@ class PolicyGenerator:
 
             if av.type == audit2why.BOOLEAN:
                 if len(av.data) > 1:
-                    rule.comment += "\n#!!!! This avc can be allowed using one of the these booleans:\n#     %s" % ", ".join(map(lambda x: x[0], av.data))
+                    rule.comment += "\n#!!!! This avc can be allowed using one of the these booleans:\n#     %s" % ", ".join([x[0] for x in av.data])
                 else:
                     rule.comment += "\n#!!!! This avc can be allowed using the boolean '%s'" % av.data[0][0]
 
@@ -227,7 +227,7 @@ class PolicyGenerator:
                         self.domains = seinfo(ATTRIBUTE, name="domain")[0]["types"]
                     types=[]
 
-                    for i in map(lambda x: x[TCONTEXT], sesearch([ALLOW], {SCONTEXT: av.src_type, CLASS: av.obj_class, PERMS: av.perms})):
+                    for i in [x[TCONTEXT] for x in sesearch([ALLOW], {SCONTEXT: av.src_type, CLASS: av.obj_class, PERMS: av.perms})]:
                         if i not in self.domains:
                             types.append(i)
                     if len(types) == 1:
@@ -323,7 +323,7 @@ def call_interface(interface, av):
     params = []
     args = []
 
-    params.extend(interface.params.values())
+    params.extend(list(interface.params.values()))
     params.sort(param_comp)
 
     ifcall = refpolicy.InterfaceCall()
@@ -337,7 +337,7 @@ def call_interface(interface, av):
         elif params[i].type == refpolicy.OBJ_CLASS:
             ifcall.args.append(av.obj_class)
         else:
-            print params[i].type
+            print(params[i].type)
             assert(0)
 
     assert(len(ifcall.args) > 0)
@@ -356,9 +356,9 @@ class InterfaceGenerator:
         # Because we don't handle roles, multiple paramaters, etc.,
         # etc., we must make certain we can actually use a returned
         # interface.
-        for x in ifs.interfaces.values():
+        for x in list(ifs.interfaces.values()):
             params = []
-            params.extend(x.params.values())
+            params.extend(list(x.params.values()))
             params.sort(param_comp)
             for i in range(len(params)):
                 # Check that the paramater position matches

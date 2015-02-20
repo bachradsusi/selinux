@@ -21,8 +21,8 @@
 Classes and algorithms for matching requested access to access vectors.
 """
 
-import access
-import objectmodel
+from . import access
+from . import objectmodel
 import itertools
 
 class Match:

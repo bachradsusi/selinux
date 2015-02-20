@@ -22,17 +22,21 @@ Utilities for dealing with the compilation of modules and creation
 of module tress.
 """
 
-import defaults
+from . import defaults
 
 import selinux
 
 import re
 import tempfile
-import commands
 import os
 import os.path
-import subprocess
 import shutil
+import sys
+
+if sys.version_info[0] == 3:
+    import subprocess
+else:
+    import commands as subprocess
 
 def is_valid_name(modname):
     """Check that a module name is valid.
@@ -130,7 +134,7 @@ class ModuleCompiler:
 
     def run(self, command):
         self.o(command)
-        rc, output = commands.getstatusoutput(command)
+        rc, output = subprocess.getstatusoutput(command)
         self.o(output)
         
         return rc

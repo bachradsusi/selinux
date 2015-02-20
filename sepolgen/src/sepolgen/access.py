@@ -31,7 +31,7 @@ and sets of that access (AccessVectorSet). These objects are used in Madison
 in a variety of ways, but they are the fundamental representation of access.
 """
 
-import refpolicy
+from . import refpolicy
 from selinux import audit2why
 
 def is_idparam(id):
@@ -209,9 +209,9 @@ class AccessVectorSet:
 
     def __iter__(self):
         """Iterate over all of the unique access vectors in the set."""
-        for tgts in self.src.values():
-            for objs in tgts.values():
-                for av in objs.values():
+        for tgts in list(self.src.values()):
+            for objs in list(tgts.values()):
+                for av in list(objs.values()):
                     yield av
 
     def __len__(self):
@@ -223,8 +223,8 @@ class AccessVectorSet:
         case is probably better.
         """
         l = 0
-        for tgts in self.src.values():
-            for objs in tgts.values():
+        for tgts in list(self.src.values()):
+            for objs in list(tgts.values()):
                l += len(objs)
         return l
 
@@ -270,7 +270,7 @@ class AccessVectorSet:
         tgt = self.src.setdefault(src_type, { })
         cls = tgt.setdefault(tgt_type, { })
         
-        if cls.has_key((obj_class, avc_type)):
+        if (obj_class, avc_type) in cls:
             access = cls[obj_class, avc_type]
         else:
             access = AccessVector()
@@ -303,7 +303,7 @@ def avs_extract_types(avs):
 def avs_extract_obj_perms(avs):
     perms = { }
     for av in avs:
-        if perms.has_key(av.obj_class):
+        if av.obj_class in perms:
             s = perms[av.obj_class]
         else:
             s = refpolicy.IdSet()
@@ -323,15 +323,15 @@ class RoleTypeSet:
 
     def __iter__(self):
         """Iterate over all of the unique role allows statements in the set."""
-        for role_type in self.role_types.values():
+        for role_type in list(self.role_types.values()):
             yield role_type
 
     def __len__(self):
         """Return the unique number of role allow statements."""
-        return len(self.role_types.keys())
+        return len(list(self.role_types.keys()))
 
     def add(self, role, type):
-        if self.role_types.has_key(role):
+        if role in self.role_types:
             role_type = self.role_types[role]
         else:
             role_type = refpolicy.RoleType()
