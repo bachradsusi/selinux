@@ -259,11 +259,11 @@ def _print_net(src, protocol, perm):
     import sepolicy.network
     portdict = sepolicy.network.get_network_connect(src, protocol, perm)
     if len(portdict) > 0:
-        bold_start="\033[1m"
-        bold_end="\033[0;0m"
-        print("\n"+bold_start+"%s: %s %s" % (src, protocol, perm) + bold_end)
-        port_strings=[]
-        boolean_text=""
+        bold_start = "\033[1m"
+        bold_end = "\033[0;0m"
+        print("\n" + bold_start + "%s: %s %s" % (src, protocol, perm) + bold_end)
+        port_strings = []
+        boolean_text = ""
         for p in portdict:
             for t, recs in portdict[p]:
                 cond = get_conditionals(src, t, "%s_socket" % protocol, [perm])
@@ -304,10 +304,10 @@ def network(args):
                 print("Undefined port type")
 
     for t in args.type:
-        if (t,'tcp') in list(portrecs.keys()):
-            print("%s: tcp: %s" % (t, ",".join(portrecs[t,'tcp'])))
-        if (t,'udp') in list(portrecs.keys()):
-            print("%s: udp: %s" % (t, ",".join(portrecs[t,'udp'])))
+        if (t, 'tcp') in portrecs.keys():
+            print("%s: tcp: %s" % (t, ",".join(portrecs[t, 'tcp'])))
+        if (t, 'udp') in portrecs.keys():
+            print( "%s: udp: %s" % (t, ",".join(portrecs[t, 'udp'])))
 
     for a in args.applications:
         d = sepolicy.get_init_transtype(a)
@@ -355,7 +355,7 @@ def manpage(args):
         test_domains = args.domain
 
     for domain in test_domains:
-        m = ManPage(domain, path, args.root,args.source_files, args.web)
+        m = ManPage(domain, path, args.root, args.source_files, args.web)
         print(m.get_man_page_path())
 
     if args.web:

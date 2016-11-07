@@ -793,6 +793,10 @@ def get_all_entrypoint_domains():
 
 
 def gen_interfaces():
+    try:
+        from commands import getstatusoutput
+    except ImportError:
+        from subprocess import getstatusoutput
     ifile = defaults.interface_info()
     headers = defaults.headers()
     try:
@@ -803,7 +807,7 @@ def gen_interfaces():
 
     if os.getuid() != 0:
         raise ValueError(_("You must regenerate interface info by running /usr/bin/sepolgen-ifgen"))
-    print(commands.getstatusoutput("/usr/bin/sepolgen-ifgen")[1])
+    print(getstatusoutput("/usr/bin/sepolgen-ifgen")[1])
 
 
 def gen_port_dict():
