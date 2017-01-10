@@ -187,7 +187,7 @@ object_dict = {'login': login_ini, 'user': user_ini, 'port': port_ini, 'module':
 def generate_custom_usage(usage_text, usage_dict):
     # generate custom usage from given text and dictonary
     sorted_keys = []
-    for i in list(usage_dict.keys()):
+    for i in usage_dict.keys():
         sorted_keys.append(i)
     sorted_keys.sort()
     for k in sorted_keys:
@@ -203,7 +203,7 @@ def handle_opts(args, dict, target_key):
     # {action:[conflict_opts,require_opts]}
 
     # first we need to catch conflicts
-    for k in list(args.__dict__.keys()):
+    for k in args.__dict__.keys():
         try:
             if k in dict[target_key][0] and args.__dict__[k]:
                 print("%s option can not be used with --%s" % (target_key, k))
@@ -211,7 +211,7 @@ def handle_opts(args, dict, target_key):
         except KeyError:
             continue
 
-    for k in list(args.__dict__.keys()):
+    for k in args.__dict__.keys():
         try:
             if k in dict[target_key][1] and not args.__dict__[k]:
                 print("%s option is needed for %s" % (k, target_key))
@@ -896,8 +896,6 @@ def make_io_args(args):
 
 
 def make_args(sys_args):
-    if len(sys_args) == 1:
-           return [ "-h" ] 
     args = []
     if "-o" in sys_args[1:] or "-i" in sys_args[1:]:
         args = make_io_args(sys_args[1:])
