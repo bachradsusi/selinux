@@ -21,12 +21,10 @@
 #
 #
 import sepolicy
-search = sepolicy.search
-info = sepolicy.info
 
 
-def get_types(src, tclass, perm, check_bools=False):
-    allows = search([sepolicy.ALLOW], {sepolicy.SOURCE: src, sepolicy.CLASS: tclass, sepolicy.PERMS: perm})
+def get_types(src, tclass, perm):
+    allows = sepolicy.search([sepolicy.ALLOW], {sepolicy.SOURCE: src, sepolicy.CLASS: tclass, sepolicy.PERMS: perm})
     nlist = []
     if allows:
         for i in [y[sepolicy.TARGET] for y in

@@ -33,11 +33,11 @@ __all__ = ['get_all_interfaces', 'get_interfaces_from_xml', 'get_admin', 'get_us
 ## I18N
 ##
 PROGNAME = "policycoreutils"
-
-import gettext
-gettext.bindtextdomain(PROGNAME, "/usr/share/locale")
-gettext.textdomain(PROGNAME)
 try:
+    import gettext
+    kwargs = {}
+    if sys.version_info < (3,):
+        kwargs['unicode'] = True
     gettext.install(PROGNAME,
                     unicode=True,
                     codeset='utf-8')
@@ -45,10 +45,15 @@ except TypeError:
     # Failover to python3 install
     gettext.install(PROGNAME,
                     localedir="/usr/share/locale",
-                    codeset='utf-8')
-except IOError:
-    import builtins
-    builtins.__dict__['_'] = unicode
+                    codeset='utf-8',
+                    **kwargs)
+except:
+    try:
+        import builtins
+        builtins.__dict__['_'] = str
+    except ImportError:
+        import __builtin__
+        __builtin__.__dict__['_'] = unicode
 
 
 def get_interfaces_from_xml(path):
@@ -155,18 +160,17 @@ def get_interface_dict(path="/usr/share/selinux/devel/policy.xml"):
             tree = xml.etree.ElementTree.fromstring(xml_path)
         for l in tree.findall("layer"):
             for m in l.findall("module"):
-                if m.get("name") in active_modules:
-                    for i in m.getiterator('interface'):
-                        for e in i.findall("param"):
-                            param_list.append(e.get('name'))
-                        interface_dict[(i.get("name"))] = [param_list, (i.find('summary').text), "interface"]
-                        param_list = []
-                    for i in m.getiterator('template'):
-                        for e in i.findall("param"):
-                            param_list.append(e.get('name'))
-                        interface_dict[(i.get("name"))] = [param_list, (i.find('summary').text), "template"]
-                        param_list = []
-    except IOError as e:
+                for i in m.getiterator('interface'):
+                    for e in i.findall("param"):
+                        param_list.append(e.get('name'))
+                    interface_dict[(i.get("name"))] = [param_list, (i.find('summary').text), "interface"]
+                    param_list = []
+                for i in m.getiterator('template'):
+                    for e in i.findall("param"):
+                        param_list.append(e.get('name'))
+                    interface_dict[(i.get("name"))] = [param_list, (i.find('summary').text), "template"]
+                    param_list = []
+    except IOError:
         pass
     return interface_dict
 

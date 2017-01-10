@@ -1,6 +1,12 @@
+2.6 2016-10-14
+	* setfiles: reverse the sense of -D option, from Stephen Smalley.
+	* setfiles ignore restorecon_xattr in git, from Nicolas Iooss.
 	* sandbox: Use dbus-run-session instead of dbus-launch when available, from Laurent Bigonville.
+	* setfiles: Utility to find security.restorecon_last entries, from Richard Haines.
+	* setfiles: Add option to stop setting the digest, from Richard Haines.
 	* hll/pp: Change warning for module name not matching filename to match new behavior, from Petr Lautrbach.
 	* Remove LDFLAGS from CFLAGS, from Nicolas Iooss.
+	* sepolicy: convert to setools4, from Jason Zaman.
 	* sandbox: create a new session for sandboxed processes, from Petr Lautrbach.
 	* sandbox: do not try to setup directories without -X or -M, from Petr Lautrbach.
 	* sandbox: do not run xmodmap in a new X session, from Petr Lautrbach.
@@ -17,11 +23,14 @@
 	* semanage: Correct fcontext auditing, from Miroslav Vadkerti.
 	* semanage: Default serange to "s0" for port modify, from Miroslav Vadkerti.
 	* semanage: Use socket.getprotobyname for protocol, from Miroslav Vadkerti.
+	* restorecond: Modify to use selinux_restorecon, from Richard Haines.
+	* setfiles: Modify to use selinux_restorecon, from Richard Haines.
 	* semanage: fix modify action in node and interface, from Miroslav Vadkerti.
 	* fixfiles: Pass -n to restorecon for fixfiles check, from Petr Lautrbach.
 	* sepolicy: Check get_rpm_nvr_list() return value, from Vit Mojzis.
 	* Don't use subprocess.getstatusoutput() in Python 2 code, from Petr Lautrbach.
 	* semanage: Add auditing of changes in records, from Miroslav Vadkerti.
+	* Improve compatibility with Python 3, from Jason Zaman.
 	* Remove unused 'q' from semodule getopt string, from Petr Lautrbach.
 	* Remove unused autoconf files from po/, from Petr Lautrbach.
 	* Remove duplicate, empty translation files, from Piotr Drąg.

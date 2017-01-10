@@ -20,7 +20,11 @@ import string
 import gtk
 import gtk.glade
 import os
-import subprocess
+try:
+    from subprocess import getstatusoutput
+except ImportError:
+    from commands import getstatusoutput
+
 import gobject
 import sys
 import seobject
@@ -32,17 +36,22 @@ from subprocess import Popen, PIPE
 ## I18N
 ##
 PROGNAME = "policycoreutils"
-import gettext
-gettext.bindtextdomain(PROGNAME, "/usr/share/locale")
-gettext.textdomain(PROGNAME)
 try:
+    import gettext
+    kwargs = {}
+    if sys.version_info < (3,):
+        kwargs['unicode'] = True
     gettext.install(PROGNAME,
                     localedir="/usr/share/locale",
-                    unicode=False,
-                    codeset='utf-8')
-except IOError:
-    import builtins
-    builtins.__dict__['_'] = str
+                    codeset='utf-8',
+                    **kwargs)
+except:
+    try:
+        import builtins
+        builtins.__dict__['_'] = str
+    except ImportError:
+        import __builtin__
+        __builtin__.__dict__['_'] = unicode
 
 
 class modulesPage(semanagePage):
@@ -116,14 +125,17 @@ class modulesPage(semanagePage):
         module = store.get_value(it, 0)
         self.wait()
         try:
-            subprocess.check_output("semodule -r %s" % module,
-                                    stderr=subprocess.STDOUT,
-                                    shell=True)
-            store.remove(it)
-            self.view.get_selection().select_path ((0,))
-        except subprocess.CalledProcessError as e:
-            self.error(e.output)
-        self.ready()
+            self.wait()
+            status, output = getstatusoutput("semodule -r %s" % module)
+            self.ready()
+            if status != 0:
+                self.error(output)
+            else:
+                store.remove(iter)
+                self.view.get_selection().select_path((0,))
+
+        except ValueError as e:
+            self.error(e.args[0])
 
     def enable_audit(self, button):
         self.audit_enabled = not self.audit_enabled
@@ -135,24 +147,33 @@ class modulesPage(semanagePage):
             label = _("Enable Audit")
         self.wait()
         try:
-            subprocess.check_output(cmd,
-                                    stderr=subprocess.STDOUT,
-                                    shell=True)
-            button.set_label(label)
-        except subprocess.CalledProcessError as e:
-            self.error(e.output)
-        self.ready()
+            self.wait()
+            if self.audit_enabled:
+                status, output = getstatusoutput("semodule -DB")
+                button.set_label(_("Disable Audit"))
+            else:
+                status, output = getstatusoutput("semodule -B")
+                button.set_label(_("Enable Audit"))
+            self.ready()
+
+            if status != 0:
+                self.error(output)
+
+        except ValueError as e:
+            self.error(e.args[0])
 
     def disable_audit(self, button):
         self.wait()
         cmd = "semodule -B"
         try:
-            subprocess.check_output(cmd,
-                                    stderr=subprocess.STDOUT,
-                                    shell=True)
-        except subprocess.CalledProcessError as e:
-            self.error(e.output)
-        self.ready()
+            self.wait()
+            status, output = getstatusoutput("semodule -B")
+            self.ready()
+            if status != 0:
+                self.error(output)
+
+        except ValueError as e:
+            self.error(e.args[0])
 
     def propertiesDialog(self):
         # Do nothing
@@ -180,11 +201,13 @@ class modulesPage(semanagePage):
         self.wait()
         cmd = "semodule -i %s" % file
         try:
-            subprocess.check_output(cmd,
-                                    stderr=subprocess.STDOUT,
-                                    shell=True)
-            self.load()
-        except subprocess.CalledProcessError as e:
-            self.error(e.output)
-        self.ready()
+            self.wait()
+            status, output = getstatusoutput("semodule -i %s" % file)
+            self.ready()
+            if status != 0:
+                self.error(output)
+            else:
+                self.load()
 
+        except ValueError as e:
+            self.error(e.args[0])

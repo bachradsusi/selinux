@@ -19,7 +19,12 @@
 import gtk
 import gtk.glade
 import gobject
-import subprocess
+import sys
+try:
+    from subprocess import getstatusoutput
+except ImportError:
+    from commands import getstatusoutput
+
 import seobject
 from semanagePage import *
 
@@ -27,14 +32,22 @@ from semanagePage import *
 ## I18N
 ##
 PROGNAME = "policycoreutils"
-import gettext
-gettext.bindtextdomain(PROGNAME, "/usr/share/locale")
-gettext.textdomain(PROGNAME)
 try:
-    gettext.install(PROGNAME, localedir="/usr/share/locale", unicode=1)
-except IOError:
-    import builtins
-    builtins.__dict__['_'] = unicode
+    import gettext
+    kwargs = {}
+    if sys.version_info < (3,):
+        kwargs['unicode'] = True
+    gettext.install(PROGNAME,
+                    localedir="/usr/share/locale",
+                    codeset='utf-8',
+                    **kwargs)
+except:
+    try:
+        import builtins
+        builtins.__dict__['_'] = str
+    except ImportError:
+        import __builtin__
+        __builtin__.__dict__['_'] = unicode
 
 
 class usersPage(semanagePage):
@@ -67,13 +80,11 @@ class usersPage(semanagePage):
     def load(self, filt = ""):
         self.filter=filt
         self.user = seobject.seluserRecords()
-        udict = self.user.get_all()
-        keys = list(udict.keys())
-        keys.sort()
+        dict = self.user.get_all()
         self.store.clear()
-        for k in keys:
-            serange = seobject.translate(udict[k][2])
-            if not (self.match(k, filt) or self.match(udict[k][0], filter) or self.match(serange, filt) or self.match(udict[k][3], filt)):
+        for k in sorted(dict.keys()):
+            range = seobject.translate(dict[k][2])
+            if not (self.match(k, filter) or self.match(dict[k][0], filter) or self.match(range, filter) or self.match(dict[k][3], filter)):
                 continue
 
             it = self.store.append()
@@ -101,18 +112,10 @@ class usersPage(semanagePage):
         roles = self.selinuxRolesEntry.get_text()
 
         self.wait()
-        try:
-            subprocess.check_output("semanage user -a -R '%s' -r %s %s" %  (roles, serange, user),
-                                    stderr=subprocess.STDOUT,
-                                    shell=True)
-            self.ready()
-            it = self.store.append()
-            self.store.set_value(it, 0, user)
-            self.store.set_value(it, 1, serange)
-            self.store.set_value(it, 2, roles)
-        except subprocess.CalledProcessError as e:
-            self.error(e.output)
-            self.ready()
+        (rc, out) = getstatusoutput("semanage user -a -R '%s' -r %s %s" % (roles, range, user))
+        self.ready()
+        if rc != 0:
+            self.error(out)
             return False
 
     def modify(self):
@@ -121,16 +124,11 @@ class usersPage(semanagePage):
         roles = self.selinuxRolesEntry.get_text()
 
         self.wait()
-        cmd = "semanage user -m -R '%s' -r %s %s" %  (roles, serange, user)
-        try:
-            subprocess.check_output(cmd,
-                                    stderr=subprocess.STDOUT,
-                                    shell=True)
-            self.ready()
-            self.load(self.filter)
-        except subprocess.CalledProcessError as e:
-            self.error(e.output)
-            self.ready()
+        (rc, out) = getstatusoutput("semanage user -m -R '%s' -r %s %s" % (roles, range, user))
+        self.ready()
+
+        if rc != 0:
+            self.error(out)
             return False
         return True
 
@@ -142,17 +140,12 @@ class usersPage(semanagePage):
                 raise ValueError(_("SELinux user '%s' is required") % user)
 
             self.wait()
-            cmd = "semanage user -d %s" %  user
-            try:
-                subprocess.check_output(cmd,
-                                        stderr=subprocess.STDOUT,
-                                        shell=True)
-                self.ready()
-                store.remove(it)
-                self.view.get_selection().select_path ((0,))
-            except subprocess.CalledProcessError as e:
-                self.error(e.output)
-                self.ready()
+            (rc, out) = getstatusoutput("semanage user -d %s" % user)
+            self.ready()
+            if rc != 0:
+                self.error(out)
                 return False
+            store.remove(iter)
+            self.view.get_selection().select_path((0,))
         except ValueError as e:
             self.error(e.args[0])

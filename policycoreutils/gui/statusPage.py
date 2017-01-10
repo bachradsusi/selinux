@@ -20,9 +20,16 @@ import gtk
 import gtk.glade
 import os
 import sys
+import tempfile
+import selinux
 
 INSTALLPATH = '/usr/share/system-config-selinux'
 sys.path.append(INSTALLPATH)
+
+try:
+    from subprocess import getstatusoutput
+except ImportError:
+    from commands import getstatusoutput
 
 ENFORCING = 1
 PERMISSIVE = 0
@@ -36,15 +43,22 @@ RELABELFILE = "/.autorelabel"
 ## I18N
 ##
 PROGNAME = "policycoreutils"
-import gettext
-gettext.bindtextdomain(PROGNAME, "/usr/share/locale")
-gettext.textdomain(PROGNAME)
-import selinux
 try:
-    gettext.install(PROGNAME, localedir="/usr/share/locale", unicode=1)
-except IOError:
-    import builtins
-    builtins.__dict__['_'] = unicode
+    import gettext
+    kwargs = {}
+    if sys.version_info < (3,):
+        kwargs['unicode'] = True
+    gettext.install(PROGNAME,
+                    localedir="/usr/share/locale",
+                    codeset='utf-8',
+                    **kwargs)
+except:
+    try:
+        import builtins
+        builtins.__dict__['_'] = str
+    except ImportError:
+        import __builtin__
+        __builtin__.__dict__['_'] = unicode
 
 
 class statusPage:

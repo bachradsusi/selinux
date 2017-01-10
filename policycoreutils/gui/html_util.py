@@ -30,8 +30,10 @@ import htmllib
 import formatter as Formatter
 import string
 from types import *
-import io
-import collections
+try:
+    from io import StringIO
+except ImportError:
+    from StringIO import StringIO
 
 #------------------------------------------------------------------------------
 
@@ -128,7 +130,7 @@ def unescape_html(s):
 
 def html_to_text(html, maxcol=80):
     try:
-        buffer = io.StringIO()
+        buffer = StringIO()
         formatter = Formatter.AbstractFormatter(TextWriter(buffer, maxcol))
         parser = HTMLParserAnchor(formatter)
         parser.feed(html)

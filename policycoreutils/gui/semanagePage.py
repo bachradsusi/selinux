@@ -28,17 +28,22 @@ import seobject
 ## I18N
 ##
 PROGNAME = "policycoreutils"
-import gettext
-gettext.bindtextdomain(PROGNAME, "/usr/share/locale")
-gettext.textdomain(PROGNAME)
 try:
+    import gettext
+    kwargs = {}
+    if sys.version_info < (3,):
+        kwargs['unicode'] = True
     gettext.install(PROGNAME,
                     localedir="/usr/share/locale",
-                    unicode=False,
-                    codeset='utf-8')
-except IOError:
-    import builtins
-    builtins.__dict__['_'] = str
+                    codeset='utf-8',
+                    **kwargs)
+except:
+    try:
+        import builtins
+        builtins.__dict__['_'] = str
+    except ImportError:
+        import __builtin__
+        __builtin__.__dict__['_'] = unicode
 
 
 def idle_func():
@@ -165,7 +170,7 @@ class semanagePage:
             try:
                 if self.add() is False:
                     continue
-                break;
+                break
             except ValueError as e:
                 self.error(e.args[0])
         self.dialog.hide()
@@ -178,7 +183,7 @@ class semanagePage:
             try:
                 if self.modify() is False:
                     continue
-                break;
+                break
             except ValueError as e:
                 self.error(e.args[0])
         self.dialog.hide()

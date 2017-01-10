@@ -28,22 +28,24 @@ import re
 import sepolicy
 from sepolicy import get_all_types, get_all_attributes, get_all_roles
 import time
+import types
+import platform
 
-from .templates import executable
-from .templates import boolean
-from .templates import etc_rw
-from .templates import unit_file
-from .templates import var_cache
-from .templates import var_spool
-from .templates import var_lib
-from .templates import var_log
-from .templates import var_run
-from .templates import tmp
-from .templates import rw
-from .templates import network
-from .templates import script
-from .templates import spec
-from .templates import user
+from templates import executable
+from templates import boolean
+from templates import etc_rw
+from templates import unit_file
+from templates import var_cache
+from templates import var_spool
+from templates import var_lib
+from templates import var_log
+from templates import var_run
+from templates import tmp
+from templates import rw
+from templates import network
+from templates import script
+from templates import spec
+from templates import user
 import sepolgen.interfaces as interfaces
 import sepolgen.defaults as defaults
 from sepolgen import util
@@ -52,21 +54,22 @@ from sepolgen import util
 ## I18N
 ##
 PROGNAME = "policycoreutils"
-
-import gettext
-gettext.bindtextdomain(PROGNAME, "/usr/share/locale")
-gettext.textdomain(PROGNAME)
 try:
+    import gettext
+    kwargs = {}
+    if sys.version_info < (3,):
+        kwargs['unicode'] = True
     gettext.install(PROGNAME,
-                    unicode=True,
-                    codeset='utf-8')
-except TypeError:
-    # Failover to python3 install
-    gettext.install(PROGNAME,
-                    codeset='utf-8')
-except IOError:
-    import builtins
-    builtins.__dict__['_'] = str
+                    localedir="/usr/share/locale",
+                    codeset='utf-8',
+                    **kwargs)
+except:
+    try:
+        import builtins
+        builtins.__dict__['_'] = str
+    except ImportError:
+        import __builtin__
+        __builtin__.__dict__['_'] = unicode
 
 
 def get_rpm_nvr_from_header(hdr):
@@ -462,52 +465,52 @@ class policy:
         self.out_udp = [all, False, False, verify_ports(ports)]
 
     def set_use_resolve(self, val):
-        if val != True and val != False:
+        if not isinstance(val, types.BooleanType):
             raise ValueError(_("use_resolve must be a boolean value "))
 
         self.use_resolve = val
 
     def set_use_syslog(self, val):
-        if val != True and val != False:
+        if not isinstance(val, types.BooleanType):
             raise ValueError(_("use_syslog must be a boolean value "))
 
         self.use_syslog = val
 
     def set_use_kerberos(self, val):
-        if val != True and val != False:
+        if not isinstance(val, types.BooleanType):
             raise ValueError(_("use_kerberos must be a boolean value "))
 
         self.use_kerberos = val
 
     def set_manage_krb5_rcache(self, val):
-        if val != True and val != False:
+        if not isinstance(val, types.BooleanType):
             raise ValueError(_("manage_krb5_rcache must be a boolean value "))
 
         self.manage_krb5_rcache = val
 
     def set_use_pam(self, val):
-        self.use_pam = val == True
+        self.use_pam = (val is True)
 
     def set_use_dbus(self, val):
-        self.use_dbus = val == True
+        self.use_dbus = (val is True)
 
     def set_use_audit(self, val):
-        self.use_audit = val == True
+        self.use_audit = (val is True)
 
     def set_use_etc(self, val):
-        self.use_etc = val == True
+        self.use_etc = (val is True)
 
     def set_use_localization(self, val):
-        self.use_localization = val == True
+        self.use_localization = (val is True)
 
     def set_use_fd(self, val):
-        self.use_fd = val == True
+        self.use_fd = (val is True)
 
     def set_use_terminal(self, val):
-        self.use_terminal = val == True
+        self.use_terminal = (val is True)
 
     def set_use_mail(self, val):
-        self.use_mail = val == True
+        self.use_mail = (val is True)
 
     def set_use_tmp(self, val):
         if self.type in USERS:
@@ -519,7 +522,7 @@ class policy:
             self.DEFAULT_DIRS["/tmp"][1] = []
 
     def set_use_uid(self, val):
-        self.use_uid = val == True
+        self.use_uid = (val is True)
 
     def generate_uid_rules(self):
         if self.use_uid:
@@ -610,7 +613,7 @@ allow %s_t %s_t:%s_socket name_%s;
     def generate_network_types(self):
         for i in self.in_tcp[PORTS]:
             rec = self.find_port(int(i), "tcp")
-            if rec == None:
+            if rec is None:
                 self.need_tcp_type = True
             else:
                 port_name = rec[0][:-2]
@@ -621,7 +624,7 @@ allow %s_t %s_t:%s_socket name_%s;
 
         for i in self.out_tcp[PORTS]:
             rec = self.find_port(int(i), "tcp")
-            if rec == None:
+            if rec is None:
                 self.need_tcp_type = True
             else:
                 port_name = rec[0][:-2]
@@ -632,7 +635,7 @@ allow %s_t %s_t:%s_socket name_%s;
 
         for i in self.in_udp[PORTS]:
             rec = self.find_port(int(i), "udp")
-            if rec == None:
+            if rec is None:
                 self.need_udp_type = True
             else:
                 port_name = rec[0][:-2]
@@ -641,13 +644,13 @@ allow %s_t %s_t:%s_socket name_%s;
                 if line not in self.found_udp_ports:
                     self.found_udp_ports.append(line)
 
-        if self.need_udp_type == True or self.need_tcp_type == True:
+        if self.need_udp_type is True or self.need_tcp_type is True:
             return re.sub("TEMPLATETYPE", self.name, network.te_types)
         return ""
 
     def __find_path(self, file):
         for d in self.DEFAULT_DIRS:
-            if file.find(d) == 0:
+            if file.find(d) is 0:
                 self.DEFAULT_DIRS[d][1].append(file)
                 return self.DEFAULT_DIRS[d]
         self.DEFAULT_DIRS["rw"][1].append(file)
@@ -1174,12 +1177,12 @@ allow %s_t %s_t:%s_socket name_%s;
             newsh += re.sub("FILENAME", i, script.restorecon)
 
         for i in self.in_tcp[PORTS] + self.out_tcp[PORTS]:
-            if self.find_port(i, "tcp") == None:
+            if self.find_port(i, "tcp") is None:
                 t1 = re.sub("PORTNUM", "%d" % i, script.tcp_ports)
                 newsh += re.sub("TEMPLATETYPE", self.name, t1)
 
         for i in self.in_udp[PORTS]:
-            if self.find_port(i, "udp") == None:
+            if self.find_port(i, "udp") is None:
                 t1 = re.sub("PORTNUM", "%d" % i, script.udp_ports)
                 newsh += re.sub("TEMPLATETYPE", self.name, t1)
 

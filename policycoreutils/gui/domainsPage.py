@@ -20,29 +20,38 @@ import string
 import gtk
 import gtk.glade
 import os
-import subprocess
+try:
+    from subprocess import getstatusoutput
+except ImportError:
+    from commands import getstatusoutput
+
 import gobject
 import sys
 import seobject
 import selinux
+import sepolicy
 from semanagePage import *
-from sepolicy import get_all_entrypoint_domains
 
 ##
 ## I18N
 ##
 PROGNAME = "policycoreutils"
-import gettext
-gettext.bindtextdomain(PROGNAME, "/usr/share/locale")
-gettext.textdomain(PROGNAME)
 try:
+    import gettext
+    kwargs = {}
+    if sys.version_info < (3,):
+        kwargs['unicode'] = True
     gettext.install(PROGNAME,
                     localedir="/usr/share/locale",
-                    unicode=False,
-                    codeset='utf-8')
-except IOError:
-    import builtins
-    builtins.__dict__['_'] = str
+                    codeset='utf-8',
+                    **kwargs)
+except:
+    try:
+        import builtins
+        builtins.__dict__['_'] = str
+    except ImportError:
+        import __builtin__
+        __builtin__.__dict__['_'] = unicode
 
 
 class domainsPage(semanagePage):
@@ -70,7 +79,7 @@ class domainsPage(semanagePage):
         self.permissive_button = xml.get_widget("permissiveButton")
         self.enforcing_button = xml.get_widget("enforcingButton")
 
-        self.domains = get_all_entrypoint_domains()
+        self.domains = sepolicy.get_all_entrypoint_domains()
         self.load()
 
     def get_modules(self):
@@ -120,14 +129,17 @@ class domainsPage(semanagePage):
         self.wait()
         cmd = "semanage permissive -d %s_t" % domain
         try:
-            subprocess.check_output(cmd, 
-                                    stderr=subprocess.STDOUT,
-                                    shell=True)
-            domain = store.set_value(iter, 1, "")
-            self.itemSelected(selection)
-        except subprocess.CalledProcessError as e:
-            self.error(e.output)
-        self.ready()
+            self.wait()
+            status, output = getstatusoutput("semanage permissive -d %s_t" % domain)
+            self.ready()
+            if status != 0:
+                self.error(output)
+            else:
+                domain = store.set_value(iter, 1, "")
+                self.itemSelected(selection)
+
+        except ValueError as e:
+            self.error(e.args[0])
 
     def propertiesDialog(self):
         # Do nothing
@@ -144,11 +156,14 @@ class domainsPage(semanagePage):
         self.wait()
         cmd = "semanage permissive -a %s_t" % domain
         try:
-            subprocess.check_output(cmd, 
-                                    stderr=subprocess.STDOUT,
-                                    shell=True)
-            domain = store.set_value(iter, 1, _("Permissive"))
-            self.itemSelected(selection)
-        except subprocess.CalledProcessError as e:
-            self.error(e.output)
-        self.ready()
+            self.wait()
+            status, output = getstatusoutput("semanage permissive -a %s_t" % domain)
+            self.ready()
+            if status != 0:
+                self.error(output)
+            else:
+                domain = store.set_value(iter, 1, _("Permissive"))
+                self.itemSelected(selection)
+
+        except ValueError as e:
+            self.error(e.args[0])

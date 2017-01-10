@@ -37,26 +37,27 @@ from selinux import DISABLED, PERMISSIVE, ENFORCING
 import sepolicy.network
 import sepolicy.manpage
 import dbus
-import time
 import os
 import re
-import gettext
 import unicodedata
 
 PROGNAME = "policycoreutils"
-gettext.bindtextdomain(PROGNAME, "/usr/share/locale")
-gettext.textdomain(PROGNAME)
 try:
+    import gettext
+    kwargs = {}
+    if sys.version_info < (3,):
+        kwargs['unicode'] = True
     gettext.install(PROGNAME,
-                    unicode=True,
-                    codeset='utf-8')
-except TypeError:
-    # Failover to python3 install
-    gettext.install(PROGNAME,
-                    codeset='utf-8')
-except IOError:
-    import builtins
-    builtins.__dict__['_'] = str
+                    localedir="/usr/share/locale",
+                    codeset='utf-8',
+                    **kwargs)
+except:
+    try:
+        import builtins
+        builtins.__dict__['_'] = str
+    except ImportError:
+        import __builtin__
+        __builtin__.__dict__['_'] = unicode
 
 reverse_file_type_str = {}
 for f in sepolicy.file_type_str:
@@ -112,6 +113,12 @@ class SELinuxGui():
             customized = self.dbus.customized()
         except dbus.exceptions.DBusException as e:
             print(e)
+            self.quit()
+
+        sepolicy_domains = sepolicy.get_all_domains()
+        sepolicy_domains.sort(compare)
+        if app and app not in sepolicy_domains:
+            self.error(_("%s is not a valid domain" % app))
             self.quit()
 
         self.init_cur()
@@ -845,12 +852,12 @@ class SELinuxGui():
             for x in range(0, list.get_n_columns()):
                 try:
                     val = list.get_value(iter, x)
-                    if val == True or val == False or val == None:
+                    if val is True or val is False or val is None:
                         continue
                     # Returns true if filter_txt exists within the val
                     if(val.find(self.filter_txt) != -1 or val.lower().find(self.filter_txt) != -1):
                         return True
-                except AttributeError as TypeError:
+                except (AttributeError, TypeError):
                     pass
         except:  # ValueError:
             pass
@@ -952,8 +959,8 @@ class SELinuxGui():
         iter = liststore.get_iter(index)
         return liststore.get_value(iter, 0)
 
-    def combo_box_add(self, val, val1):
-        if val == None:
+    def combo_box_initialize(self, val, desc):
+        if val is None:
             return
         iter = self.application_liststore.append()
         self.application_liststore.set_value(iter, 0, val)
@@ -962,7 +969,7 @@ class SELinuxGui():
     def select_type_more(self, *args):
         app = self.moreTypes_treeview.get_selection()
         iter = app.get_selected()[1]
-        if iter == None:
+        if iter is None:
             return
         app = self.more_types_files_liststore.get_value(iter, 0)
         self.combo_set_active_text(self.files_type_combobox, app)
@@ -973,8 +980,8 @@ class SELinuxGui():
         model, iter = row.get_selected()
         iter = model.convert_iter_to_child_iter(iter)
         iter = self.advanced_search_filter.convert_iter_to_child_iter(iter)
-        app = self.application_liststore.get_value(iter, 1)
-        if app == None:
+        app = self.advanced_search_liststore.get_value(iter, 1)
+        if app is None:
             return
         self.advanced_filter_entry.set_text('')
         self.advanced_search_window.hide()
@@ -1165,7 +1172,7 @@ class SELinuxGui():
 
     def files_initial_data_insert(self, liststore, path, seLinux_label, file_class):
         iter = liststore.append(None)
-        if path == None:
+        if path is None:
             path = _("MISSING FILE PATH")
             modify = False
         else:
@@ -2140,7 +2147,7 @@ class SELinuxGui():
 
     def on_save_delete_file_equiv_clicked(self, *args):
         for delete in self.files_delete_liststore:
-            print(delete[0], delete[1], delete[2])
+            print(delete[0], delete[1], delete[2],)
 
     def on_toggle_update(self, cell, path, model):
         model[path][0] = not model[path][0]
@@ -2451,7 +2458,7 @@ class SELinuxGui():
         try:
             self.dbus.semanage(update_buffer)
         except dbus.exceptions.DBusException as e:
-            self.error(e)
+            print(e)
         self.ready_mouse()
         self.init_cur()
 

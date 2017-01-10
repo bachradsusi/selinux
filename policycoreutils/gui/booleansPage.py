@@ -28,27 +28,37 @@ import semanagePage
 INSTALLPATH = '/usr/share/system-config-selinux'
 sys.path.append(INSTALLPATH)
 
-import subprocess
-ENFORCING=0
-PERMISSIVE=1
-DISABLED=2
+try:
+    from subprocess import getstatusoutput
+except ImportError:
+    from commands import getstatusoutput
+
+ENFORCING = 0
+PERMISSIVE = 1
+DISABLED = 2
 
 ##
 ## I18N
 ##
 PROGNAME = "policycoreutils"
-
-import gettext
-gettext.bindtextdomain(PROGNAME, "/usr/share/locale")
-gettext.textdomain(PROGNAME)
 try:
+    import gettext
+    kwargs = {}
+    if sys.version_info < (3,):
+        kwargs['unicode'] = True
     gettext.install(PROGNAME,
                     localedir="/usr/share/locale",
-                    unicode=False,
-                    codeset='utf-8')
-except IOError:
-    import builtins
-    builtins.__dict__['_'] = str
+                    codeset='utf-8',
+                    **kwargs)
+except:
+    try:
+        import builtins
+        builtins.__dict__['_'] = str
+    except ImportError:
+        import __builtin__
+        __builtin__.__dict__['_'] = unicode
+
+from glob import fnmatch
 
 
 class Modifier:
@@ -171,13 +181,15 @@ class booleansPage:
             return
         self.wait()
         try:
-            subprocess.check_output("semanage boolean -d %s" % boolean,
-                                    stderr=subprocess.STDOUT,
-                                    shell=True)
+            self.wait()
+            (rc, out) = getstatusoutput("semanage boolean -d %s" % boolean)
+
+            self.ready()
+            if rc != 0:
+                return self.error(out)
             self.load(self.filter)
-        except subprocess.CalledProcessError as e:
-            self.error(e.output)
-        self.ready()
+        except ValueError as e:
+            self.error(e.args[0])
 
     def filter_changed(self, *arg):
         filter = arg[0].get_text()
@@ -220,26 +232,18 @@ class booleansPage:
         key = self.store.get_value(iter, BOOLEAN)
         self.store.set_value(iter, ACTIVE, not val)
         self.wait()
-        setsebool="/usr/sbin/setsebool -P %s %d" % (key, not val)
-        try:
-            subprocess.check_output(setsebool,
-                                    stderr=subprocess.STDOUT,
-                                    shell=True)
-            self.load(self.filter)
-        except subprocess.CalledProcessError as e:
-            self.error(e.output)
+        setsebool = "/usr/sbin/setsebool -P %s %d" % (key, not val)
+        rc, out = getstatusoutput(setsebool)
+        if rc != 0:
+            self.error(out)
+        self.load(self.filter)
         self.ready()
 
     def on_revert_clicked(self, button):
         self.wait()
-        setsebool="semanage boolean --deleteall"
-        try:
-            subprocess.check_output(setsebool,
-                                    stderr=subprocess.STDOUT,
-                                    shell=True)
-            self.load(self.filter)
-        except subprocess.CalledProcessError as e:
-            self.error(e.output)
+        setsebool = "semanage boolean --deleteall"
+        getstatusoutput(setsebool)
+        self.load(self.filter)
         self.ready()
 
     def on_local_clicked(self, button):

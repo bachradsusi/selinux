@@ -20,28 +20,33 @@ import gtk
 import gtk.glade
 import gobject
 import seobject
-import subprocess
+try:
+    from subprocess import getstatusoutput
+except ImportError:
+    from commands import getstatusoutput
+
 from semanagePage import *
 
 ##
 ## I18N
 ##
 PROGNAME = "policycoreutils"
-import gettext
-gettext.bindtextdomain(PROGNAME, "/usr/share/locale")
-gettext.textdomain(PROGNAME)
-TYPE_COL = 0
-PROTOCOL_COL = 1
-MLS_COL = 2
-PORT_COL = 3
 try:
+    import gettext
+    kwargs = {}
+    if sys.version_info < (3,):
+        kwargs['unicode'] = True
     gettext.install(PROGNAME,
                     localedir="/usr/share/locale",
-                    unicode=False,
-                    codeset='utf-8')
-except IOError:
-    import builtins
-    builtins.__dict__['_'] = str
+                    codeset='utf-8',
+                    **kwargs)
+except:
+    try:
+        import builtins
+        builtins.__dict__['_'] = str
+    except ImportError:
+        import __builtin__
+        __builtin__.__dict__['_'] = unicode
 
 
 class portsPage(semanagePage):
@@ -118,12 +123,10 @@ class portsPage(semanagePage):
     def load(self,filt = ""):
         self.filter=filt
         self.port = seobject.portRecords()
-        pdict = self.port.get_all(self.local)
-        keys = list(pdict.keys())
-        keys.sort()
+        dict = self.port.get_all(self.local)
         self.store.clear()
-        for k in keys:
-            if not (self.match(str(k[0]), filt) or self.match(pdict[k][0], filt) or self.match(k[2], filt) or self.match(pdict[k][1], filt) or self.match(pdict[k][1], filt)):
+        for k in sorted(dict.keys()):
+            if not (self.match(str(k[0]), filter) or self.match(dict[k][0], filter) or self.match(k[2], filter) or self.match(dict[k][1], filter) or self.match(dict[k][1], filter)):
                 continue
             it = self.store.append()
             if k[0] == k[1]:
@@ -139,13 +142,11 @@ class portsPage(semanagePage):
     def group_load(self, filt = ""):
         self.filter=filt
         self.port = seobject.portRecords()
-        pdict = self.port.get_all_by_type(self.local)
-        keys = list(pdict.keys())
-        keys.sort()
+        dict = self.port.get_all_by_type(self.local)
         self.store.clear()
-        for k in keys:
-            ports_string = ", ".join(pdict[k])
-            if not (self.match(ports_string, filt) or self.match(k[0], filt) or self.match(k[1], filt) ):
+        for k in sorted(dict.keys()):
+            ports_string = ", ".join(dict[k])
+            if not (self.match(ports_string, filter) or self.match(k[0], filter) or self.match(k[1], filter)):
                 continue
             it = self.store.append()
             self.store.set_value(it, TYPE_COL, k[0])
@@ -187,14 +188,15 @@ class portsPage(semanagePage):
         self.wait()
         cmd = "semanage port -d -p %s %s" % (protocol, port)
         try:
-            subprocess.check_output(cmd,
-                                    stderr=subprocess.STDOUT,
-                                    shell=True)
-            store.remove(it)
-            self.view.get_selection().select_path ((0,))
-        except subprocess.CalledProcessError as e:
-            self.error(e.output)
-        self.ready()
+            self.wait()
+            (rc, out) = getstatusoutput("semanage port -d -p %s %s" % (protocol, port))
+            self.ready()
+            if rc != 0:
+                return self.error(out)
+            store.remove(iter)
+            self.view.get_selection().select_path((0,))
+        except ValueError as e:
+            self.error(e.args[0])
 
     def add(self):
         target = self.ports_name_entry.get_text().strip()
@@ -210,18 +212,7 @@ class portsPage(semanagePage):
         it = self.ports_protocol_combo.get_active_iter()
         protocol = list_model.get_value(it,0)
         self.wait()
-        cmd = "semanage port -a -p %s -r %s -t %s %s" % (protocol, mls, target, port_number)
-        try:
-            subprocess.check_output(cmd,
-                                    stderr=subprocess.STDOUT,
-                                    shell=True)
-            it = self.store.append()
-            self.store.set_value(it, TYPE_COL, target)
-            self.store.set_value(it, PORT_COL, port_number)
-            self.store.set_value(it, PROTOCOL_COL, protocol)
-            self.store.set_value(it, MLS_COL, mls)
-        except subprocess.CalledProcessError as e:
-            self.error(e.output)
+        (rc, out) = getstatusoutput("semanage port -a -p %s -r %s -t %s %s" % (protocol, mls, target, port_number))
         self.ready()
 
     def modify(self):
@@ -232,21 +223,10 @@ class portsPage(semanagePage):
         it = self.ports_protocol_combo.get_active_iter()
         protocol = list_model.get_value(it,0)
         self.wait()
-        cmd = "semanage port -m -p %s -r %s -t %s %s" % (protocol, mls, target, port_number)
-        try:
-            subprocess.check_output(cmd,
-                                    stderr=subprocess.STDOUT,
-                                    shell=True)
-            store, it = self.view.get_selection().get_selected()
-            self.store.set_value(it, TYPE_COL, target)
-            self.store.set_value(it, PORT_COL, port_number)
-            self.store.set_value(it, PROTOCOL_COL, protocol)
-            self.store.set_value(it, MLS_COL, mls)
-            self.ready()
-            return True
-        except subprocess.CalledProcessError as e:
-            self.error(e.output)
-            self.ready()
+        (rc, out) = getstatusoutput("semanage port -m -p %s -r %s -t %s %s" % (protocol, mls, target, port_number))
+        self.ready()
+        if rc != 0:
+            self.error(out)
             return False
 
     def on_group_clicked(self, button):
