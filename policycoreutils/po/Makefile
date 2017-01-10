@@ -28,7 +28,7 @@ POTFILES = \
 	../run_init/run_init.c \
 	../semodule_link/semodule_link.c \
 	../audit2allow/audit2allow \
-	../semanage/seobject/__init__.py \
+	../semanage/seobject.py \
 	../setsebool/setsebool.c \
 	../newrole/newrole.c \
 	../load_policy/load_policy.c \
@@ -49,6 +49,7 @@ POTFILES = \
 	../gui/booleansPage.py \
 	../gui/fcontextPage.py \
 	../gui/loginsPage.py \
+	../gui/mappingsPage.py \
 	../gui/modulesPage.py \
 	../gui/polgen.glade \
 	../gui/polgengui.py \
