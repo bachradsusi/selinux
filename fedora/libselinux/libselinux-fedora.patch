@@ -1,0 +1,2002 @@
+diff --git libselinux-2.5/ChangeLog libselinux-2.5/ChangeLog
+index 24673dd..bc68bed 100644
+--- libselinux-2.5/ChangeLog
++++ libselinux-2.5/ChangeLog
+@@ -1,3 +1,29 @@
++	* Fix -Wsign-compare warnings, from Nicolas Iooss.
++	* Drop unused stdio_ext.h header file, from William Roberts.
++	* Kill logging check for selinux_enabled(), from William Roberts.
++	* Drop usage of _D_ALLOC_NAMLEN, from William Roberts.
++	* Add openrc_contexts functions, from Jason Zaman.
++	* Fix redefinition of XATTR_NAME_SELINUX, from William Roberts.
++	* Correct error path to always try text, from William Roberts.
++	* Clean up process_file(), from William Roberts.
++	* Handle NULL pcre study data, from Stephen Smalley.
++	* Fix in tree compilation of utils that depend on libsepol, from Laurent Bigonville.
++	* Change the location of _selinux.so, from Petr Lautrbach.
++	* Clarify is_selinux_mls_enabled() description, from David King.
++	* Explain how to free policy type from selinux_getpolicytype(), from David King.
++	* Compare absolute pathname in matchpathcon -V, from Petr Lautrbach.
++	* Add selinux_snapperd_contexts_path(), from Petr Lautrbach.
++	* Modify audit2why analyze function to use loaded policy, from Joshua Brindle.
++	* Sort object files for deterministic linking order, from Laurent Bigonville.
++	* Respect CC and PKG_CONFIG environment variable, from Julien Pivotto.
++	* Avoid mounting /proc outside of selinux_init_load_policy(), from Stephen Smalley.
++	* Fix multiple spelling errors, from Laurent Bigonville.
++	* Fix typo in sefcontext_compile.8, from Petr Lautrbach and Milos Malik
++	* Fix location of selinuxfs mount point, from Dan Walsh.
++	* Only mount /proc if necessary, from Stephen Smalley.
++	* procattr: return einval for <= 0 pid args, from Daniel Cashman.
++	* procattr: return error on invalid pid_t input, from Daniel Cashman.
++
+ 2.5 2016-02-23
+ 	* selinux_restorecon.3 man page corrections, from Richard Haines.
+ 	* Add selinux_restorecon function, from Richard Haines.
+diff --git libselinux-2.5/Makefile libselinux-2.5/Makefile
+index 6142b60..bdf9de8 100644
+--- libselinux-2.5/Makefile
++++ libselinux-2.5/Makefile
+@@ -1,4 +1,4 @@
+-SUBDIRS = src include utils man
++SUBDIRS = src include utils man golang
+ 
+ DISABLE_AVC ?= n
+ DISABLE_SETRANS ?= n
+diff --git libselinux-2.5/golang/Makefile libselinux-2.5/golang/Makefile
+new file mode 100644
+index 0000000..b75677b
+--- /dev/null
++++ libselinux-2.5/golang/Makefile
+@@ -0,0 +1,22 @@
++# Installation directories.
++PREFIX ?= $(DESTDIR)/usr
++LIBDIR ?= $(DESTDIR)/usr/lib
++GODIR ?= $(LIBDIR)/golang/src/pkg/github.com/selinux
++all:
++
++install: 
++	[ -d $(GODIR) ] || mkdir -p $(GODIR)
++	install -m 644 selinux.go $(GODIR)
++
++test:
++	@mkdir selinux
++	@cp selinux.go selinux
++	GOPATH=$(pwd) go run test.go 
++	@rm -rf selinux
++
++clean:
++	@rm -f *~
++	@rm -rf selinux
++indent:
++
++relabel:
+diff --git libselinux-2.5/golang/selinux.go libselinux-2.5/golang/selinux.go
+new file mode 100644
+index 0000000..34bf6bb
+--- /dev/null
++++ libselinux-2.5/golang/selinux.go
+@@ -0,0 +1,412 @@
++package selinux
++
++/*
++ The selinux package is a go bindings to libselinux required to add selinux
++ support to docker.
++
++ Author Dan Walsh <dwalsh@redhat.com>
++
++ Used some ideas/code from the go-ini packages https://github.com/vaughan0
++ By Vaughan Newton
++*/
++
++// #cgo pkg-config: libselinux
++// #include <selinux/selinux.h>
++// #include <stdlib.h>
++import "C"
++import (
++	"bufio"
++	"crypto/rand"
++	"encoding/binary"
++	"fmt"
++	"io"
++	"os"
++	"path"
++	"path/filepath"
++	"regexp"
++	"strings"
++	"unsafe"
++)
++
++var (
++	assignRegex = regexp.MustCompile(`^([^=]+)=(.*)$`)
++	mcsList     = make(map[string]bool)
++)
++
++func Matchpathcon(path string, mode os.FileMode) (string, error) {
++	var con C.security_context_t
++	var scon string
++	rc, err := C.matchpathcon(C.CString(path), C.mode_t(mode), &con)
++	if rc == 0 {
++		scon = C.GoString(con)
++		C.free(unsafe.Pointer(con))
++	}
++	return scon, err
++}
++
++func Setfilecon(path, scon string) (int, error) {
++	rc, err := C.lsetfilecon(C.CString(path), C.CString(scon))
++	return int(rc), err
++}
++
++func Getfilecon(path string) (string, error) {
++	var scon C.security_context_t
++	var fcon string
++	rc, err := C.lgetfilecon(C.CString(path), &scon)
++	if rc >= 0 {
++		fcon = C.GoString(scon)
++		err = nil
++	}
++	return fcon, err
++}
++
++func Setfscreatecon(scon string) (int, error) {
++	var (
++		rc  C.int
++		err error
++	)
++	if scon != "" {
++		rc, err = C.setfscreatecon(C.CString(scon))
++	} else {
++		rc, err = C.setfscreatecon(nil)
++	}
++	return int(rc), err
++}
++
++func Getfscreatecon() (string, error) {
++	var scon C.security_context_t
++	var fcon string
++	rc, err := C.getfscreatecon(&scon)
++	if rc >= 0 {
++		fcon = C.GoString(scon)
++		err = nil
++		C.freecon(scon)
++	}
++	return fcon, err
++}
++
++func Getcon() string {
++	var pcon C.security_context_t
++	C.getcon(&pcon)
++	scon := C.GoString(pcon)
++	C.freecon(pcon)
++	return scon
++}
++
++func Getpidcon(pid int) (string, error) {
++	var pcon C.security_context_t
++	var scon string
++	rc, err := C.getpidcon(C.pid_t(pid), &pcon)
++	if rc >= 0 {
++		scon = C.GoString(pcon)
++		C.freecon(pcon)
++		err = nil
++	}
++	return scon, err
++}
++
++func Getpeercon(socket int) (string, error) {
++	var pcon C.security_context_t
++	var scon string
++	rc, err := C.getpeercon(C.int(socket), &pcon)
++	if rc >= 0 {
++		scon = C.GoString(pcon)
++		C.freecon(pcon)
++		err = nil
++	}
++	return scon, err
++}
++
++func Setexeccon(scon string) error {
++	var val *C.char
++	if !SelinuxEnabled() {
++		return nil
++	}
++	if scon != "" {
++		val = C.CString(scon)
++	} else {
++		val = nil
++	}
++	_, err := C.setexeccon(val)
++	return err
++}
++
++type Context struct {
++	con []string
++}
++
++func (c *Context) SetUser(user string) {
++	c.con[0] = user
++}
++func (c *Context) GetUser() string {
++	return c.con[0]
++}
++func (c *Context) SetRole(role string) {
++	c.con[1] = role
++}
++func (c *Context) GetRole() string {
++	return c.con[1]
++}
++func (c *Context) SetType(setype string) {
++	c.con[2] = setype
++}
++func (c *Context) GetType() string {
++	return c.con[2]
++}
++func (c *Context) SetLevel(mls string) {
++	c.con[3] = mls
++}
++func (c *Context) GetLevel() string {
++	return c.con[3]
++}
++func (c *Context) Get() string {
++	return strings.Join(c.con, ":")
++}
++func (c *Context) Set(scon string) {
++	c.con = strings.SplitN(scon, ":", 4)
++}
++func NewContext(scon string) Context {
++	var con Context
++	con.Set(scon)
++	return con
++}
++
++func SelinuxEnabled() bool {
++	b := C.is_selinux_enabled()
++	if b > 0 {
++		return true
++	}
++	return false
++}
++
++const (
++	Enforcing  = 1
++	Permissive = 0
++	Disabled   = -1
++)
++
++func SelinuxGetEnforce() int {
++	return int(C.security_getenforce())
++}
++
++func SelinuxGetEnforceMode() int {
++	var enforce C.int
++	C.selinux_getenforcemode(&enforce)
++	return int(enforce)
++}
++
++func mcsAdd(mcs string) {
++	mcsList[mcs] = true
++}
++
++func mcsDelete(mcs string) {
++	mcsList[mcs] = false
++}
++
++func mcsExists(mcs string) bool {
++	return mcsList[mcs]
++}
++
++func IntToMcs(id int, catRange uint32) string {
++	if (id < 1) || (id > 523776) {
++		return ""
++	}
++
++	SETSIZE := int(catRange)
++	TIER := SETSIZE
++
++	ORD := id
++	for ORD > TIER {
++		ORD = ORD - TIER
++		TIER -= 1
++	}
++	TIER = SETSIZE - TIER
++	ORD = ORD + TIER
++	return fmt.Sprintf("s0:c%d,c%d", TIER, ORD)
++}
++
++func uniqMcs(catRange uint32) string {
++	var n uint32
++	var c1, c2 uint32
++	var mcs string
++	for {
++		binary.Read(rand.Reader, binary.LittleEndian, &n)
++		c1 = n % catRange
++		binary.Read(rand.Reader, binary.LittleEndian, &n)
++		c2 = n % catRange
++		if c1 == c2 {
++			continue
++		} else {
++			if c1 > c2 {
++				t := c1
++				c1 = c2
++				c2 = t
++			}
++		}
++		mcs = fmt.Sprintf("s0:c%d,c%d", c1, c2)
++		if mcsExists(mcs) {
++			continue
++		}
++		mcsAdd(mcs)
++		break
++	}
++	return mcs
++}
++func freeContext(processLabel string) {
++	var scon Context
++	scon = NewContext(processLabel)
++	mcsDelete(scon.GetLevel())
++}
++
++func GetLxcContexts() (processLabel string, fileLabel string) {
++	var val, key string
++	var bufin *bufio.Reader
++	if !SelinuxEnabled() {
++		return
++	}
++	lxcPath := C.GoString(C.selinux_lxc_contexts_path())
++	fileLabel = "system_u:object_r:svirt_sandbox_file_t:s0"
++	processLabel = "system_u:system_r:svirt_lxc_net_t:s0"
++
++	in, err := os.Open(lxcPath)
++	if err != nil {
++		goto exit
++	}
++
++	defer in.Close()
++	bufin = bufio.NewReader(in)
++
++	for done := false; !done; {
++		var line string
++		if line, err = bufin.ReadString('\n'); err != nil {
++			if err == io.EOF {
++				done = true
++			} else {
++				goto exit
++			}
++		}
++		line = strings.TrimSpace(line)
++		if len(line) == 0 {
++			// Skip blank lines
++			continue
++		}
++		if line[0] == ';' || line[0] == '#' {
++			// Skip comments
++			continue
++		}
++		if groups := assignRegex.FindStringSubmatch(line); groups != nil {
++			key, val = strings.TrimSpace(groups[1]), strings.TrimSpace(groups[2])
++			if key == "process" {
++				processLabel = strings.Trim(val, "\"")
++			}
++			if key == "file" {
++				fileLabel = strings.Trim(val, "\"")
++			}
++		}
++	}
++exit:
++	var scon Context
++	mcs := IntToMcs(os.Getpid(), 1024)
++	scon = NewContext(processLabel)
++	scon.SetLevel(mcs)
++	processLabel = scon.Get()
++	scon = NewContext(fileLabel)
++	scon.SetLevel(mcs)
++	fileLabel = scon.Get()
++	return processLabel, fileLabel
++}
++
++func CopyLevel(src, dest string) (string, error) {
++	if !SelinuxEnabled() {
++		return "", nil
++	}
++	if src == "" {
++		return "", nil
++	}
++	rc, err := C.security_check_context(C.CString(src))
++	if rc != 0 {
++		return "", err
++	}
++	rc, err = C.security_check_context(C.CString(dest))
++	if rc != 0 {
++		return "", err
++	}
++	scon := NewContext(src)
++	tcon := NewContext(dest)
++	tcon.SetLevel(scon.GetLevel())
++	return tcon.Get(), nil
++}
++
++func RestoreCon(fpath string, recurse bool) error {
++	var flabel string
++	var err error
++	var fs os.FileInfo
++
++	if !SelinuxEnabled() {
++		return nil
++	}
++
++	if recurse {
++		var paths []string
++		var err error
++
++		if paths, err = filepath.Glob(path.Join(fpath, "**", "*")); err != nil {
++			return fmt.Errorf("Unable to find directory %v: %v", fpath, err)
++		}
++
++		for _, fpath := range paths {
++			if err = RestoreCon(fpath, false); err != nil {
++				return fmt.Errorf("Unable to restore selinux context for %v: %v", fpath, err)
++			}
++		}
++		return nil
++	}
++	if fs, err = os.Stat(fpath); err != nil {
++		return fmt.Errorf("Unable stat %v: %v", fpath, err)
++	}
++
++	if flabel, err = Matchpathcon(fpath, fs.Mode()); flabel == "" {
++		return fmt.Errorf("Unable to get context for %v: %v", fpath, err)
++	}
++
++	if rc, err := Setfilecon(fpath, flabel); rc != 0 {
++		return fmt.Errorf("Unable to set selinux context for %v: %v", fpath, err)
++	}
++
++	return nil
++}
++
++func Test() {
++	var plabel, flabel string
++	if !SelinuxEnabled() {
++		return
++	}
++
++	plabel, flabel = GetLxcContexts()
++	fmt.Println(plabel)
++	fmt.Println(flabel)
++	freeContext(plabel)
++	plabel, flabel = GetLxcContexts()
++	fmt.Println(plabel)
++	fmt.Println(flabel)
++	freeContext(plabel)
++	if SelinuxEnabled() {
++		fmt.Println("Enabled")
++	} else {
++		fmt.Println("Disabled")
++	}
++	fmt.Println("getenforce ", SelinuxGetEnforce())
++	fmt.Println("getenforcemode ", SelinuxGetEnforceMode())
++	flabel, _ = Matchpathcon("/home/dwalsh/.emacs", 0)
++	fmt.Println(flabel)
++	pid := os.Getpid()
++	fmt.Printf("PID:%d MCS:%s\n", pid, IntToMcs(pid, 1023))
++	fmt.Println(Getcon())
++	fmt.Println(Getfilecon("/etc/passwd"))
++	fmt.Println(Getpidcon(1))
++	Setfscreatecon("unconfined_u:unconfined_r:unconfined_t:s0")
++	fmt.Println(Getfscreatecon())
++	Setfscreatecon("")
++	fmt.Println(Getfscreatecon())
++	fmt.Println(Getpidcon(1))
++}
+diff --git libselinux-2.5/golang/test.go libselinux-2.5/golang/test.go
+new file mode 100644
+index 0000000..fed6de8
+--- /dev/null
++++ libselinux-2.5/golang/test.go
+@@ -0,0 +1,9 @@
++package main
++
++import (
++	"./selinux"
++)
++
++func main() {
++	selinux.Test()
++}
+diff --git libselinux-2.5/include/selinux/selinux.h libselinux-2.5/include/selinux/selinux.h
+index 2262086..45dd6ca 100644
+--- libselinux-2.5/include/selinux/selinux.h
++++ libselinux-2.5/include/selinux/selinux.h
+@@ -543,7 +543,9 @@ extern const char *selinux_virtual_image_context_path(void);
+ extern const char *selinux_lxc_contexts_path(void);
+ extern const char *selinux_x_context_path(void);
+ extern const char *selinux_sepgsql_context_path(void);
++extern const char *selinux_openrc_contexts_path(void);
+ extern const char *selinux_openssh_contexts_path(void);
++extern const char *selinux_snapperd_contexts_path(void);
+ extern const char *selinux_systemd_contexts_path(void);
+ extern const char *selinux_contexts_path(void);
+ extern const char *selinux_securetty_types_path(void);
+diff --git libselinux-2.5/man/man3/avc_add_callback.3 libselinux-2.5/man/man3/avc_add_callback.3
+index dbfe72d..bdbbadf 100644
+--- libselinux-2.5/man/man3/avc_add_callback.3
++++ libselinux-2.5/man/man3/avc_add_callback.3
+@@ -57,7 +57,7 @@ and will cause any SID to match.
+ .I callback
+ is the callback function provided by the userspace object manager.  The
+ .I event
+-argument indicates the security event which occured; the remaining arguments
++argument indicates the security event which occurred; the remaining arguments
+ are interpreted according to the event as described below.  The return value
+ of the callback should be zero on success, \-1 on error with
+ .I errno
+@@ -175,7 +175,7 @@ If the userspace AVC is running in threaded mode, callbacks registered via
+ may be executed in the context of the netlink handler thread.  This will likely introduce synchronization issues requiring the use of locks.  See
+ .BR avc_init (3).
+ 
+-Support for dynamic revocation and retained permissions is mostly unimplemented in the SELinux kernel module.  The only security event that currently gets excercised is
++Support for dynamic revocation and retained permissions is mostly unimplemented in the SELinux kernel module.  The only security event that currently gets exercised is
+ .BR AVC_CALLBACK_RESET .
+ .
+ .SH "AUTHOR"
+diff --git libselinux-2.5/man/man3/avc_has_perm.3 libselinux-2.5/man/man3/avc_has_perm.3
+index 7353952..3e9fca8 100644
+--- libselinux-2.5/man/man3/avc_has_perm.3
++++ libselinux-2.5/man/man3/avc_has_perm.3
+@@ -108,7 +108,7 @@ for the first time.
+ Using an uninitialized structure will produce undefined behavior.
+ .
+ .SH "RETURN VALUE"
+-If requested permissions are granted, zero is returned.  If requested permissions are denied or an error occured, \-1 is returned and
++If requested permissions are granted, zero is returned.  If requested permissions are denied or an error occurred, \-1 is returned and
+ .I errno
+ is set appropriately.
+ 
+diff --git libselinux-2.5/man/man3/is_selinux_enabled.3 libselinux-2.5/man/man3/is_selinux_enabled.3
+index f02052c..df62c22 100644
+--- libselinux-2.5/man/man3/is_selinux_enabled.3
++++ libselinux-2.5/man/man3/is_selinux_enabled.3
+@@ -3,7 +3,7 @@
+ is_selinux_enabled \- check whether SELinux is enabled
+ .
+ .SH "NAME"
+-is_selinux_mls_enabled \- check whether SELinux is enabled for (Multi Level Securty) MLS 
++is_selinux_mls_enabled \- check whether SELinux is enabled for (Multi Level Security) MLS
+ .
+ .SH "SYNOPSIS"
+ .B #include <selinux/selinux.h>
+@@ -18,7 +18,9 @@ returns 1 if SELinux is running or 0 if it is not.
+ On error, \-1 is returned.
+ 
+ .BR is_selinux_mls_enabled ()
+-returns 1 if SELinux is running in MLS mode or 0 if it is not. 
++returns 1 if SELinux is capable of running in MLS mode or 0 if it is not. To
++determine the policy in use on the system, use
++.BR selinux_getpolicytype (3).
+ .
+ .SH "SEE ALSO"
+ .BR selinux "(8)"
+diff --git libselinux-2.5/man/man3/security_disable.3 libselinux-2.5/man/man3/security_disable.3
+index c75ce0d..072923c 100644
+--- libselinux-2.5/man/man3/security_disable.3
++++ libselinux-2.5/man/man3/security_disable.3
+@@ -12,7 +12,7 @@ security_disable \- disable the SELinux kernel code at runtime
+ disables the SELinux kernel code, unregisters selinuxfs from
+ .IR /proc/filesystems ,
+ and then unmounts
+-.IR /selinux .
++.IR /sys/fs/selinux .
+ .sp
+ This function can only be called at runtime and prior to the initial policy
+ load. After the initial policy load, the SELinux kernel code cannot be disabled,
+diff --git libselinux-2.5/man/man3/selinux_getpolicytype.3 libselinux-2.5/man/man3/selinux_getpolicytype.3
+index c947e2c..b219d42 100644
+--- libselinux-2.5/man/man3/selinux_getpolicytype.3
++++ libselinux-2.5/man/man3/selinux_getpolicytype.3
+@@ -13,7 +13,10 @@ Reads the contents of the
+ .I /etc/selinux/config
+ file to determine the SELinux policy used on the system, and sets
+ .I \%policytype
+-accordinly.
++accordingly. Free
++.I \%policytype
++with
++.BR free (3).
+ .
+ .SH "RETURN VALUE"
+ On success, zero is returned.
+diff --git libselinux-2.5/man/man3/selinux_status_open.3 libselinux-2.5/man/man3/selinux_status_open.3
+index f779dd9..2d44be5 100644
+--- libselinux-2.5/man/man3/selinux_status_open.3
++++ libselinux-2.5/man/man3/selinux_status_open.3
+@@ -23,7 +23,7 @@ without invocation of system calls
+ .SH "DESCRIPTION"
+ Linux 2.6.37 or later provides a SELinux kernel status page; being mostly
+ placed on
+-.I /selinux/status
++.I /sys/fs/selinux/status
+ entry. It enables userspace applications to mmap this page with read-only
+ mode, then it informs some status without system call invocations.
+ .sp
+@@ -38,7 +38,7 @@ without system-call invocation or worker thread for monitoring.
+ .BR selinux_status_open ()
+ tries to
+ .BR open (2)
+-.I /selinux/status
++.I /sys/fs/selinux/status
+ and
+ .BR mmap (2)
+ it in read-only mode. The file-descriptor and pointer to the page shall
+diff --git libselinux-2.5/man/man8/avcstat.8 libselinux-2.5/man/man8/avcstat.8
+index 204687d..2c4bce1 100644
+--- libselinux-2.5/man/man8/avcstat.8
++++ libselinux-2.5/man/man8/avcstat.8
+@@ -25,7 +25,7 @@ Display the cumulative values.
+ .TP
+ .B \-f
+ Specifies the location of the AVC statistics file, defaulting to
+-.IR /selinux/avc/cache_stats .
++.IR /sys/fs/selinux/avc/cache_stats .
+ .
+ .SH AUTHOR
+ This manual page was written by Dan Walsh <dwalsh@redhat.com>.
+diff --git libselinux-2.5/man/man8/sefcontext_compile.8 libselinux-2.5/man/man8/sefcontext_compile.8
+index b77ff3a..4eae173 100644
+--- libselinux-2.5/man/man8/sefcontext_compile.8
++++ libselinux-2.5/man/man8/sefcontext_compile.8
+@@ -13,14 +13,14 @@ sefcontext_compile \- compile file context regular expression files
+ .SH "DESCRIPTION"
+ .B sefcontext_compile
+ is used to compile file context regular expressions into
+-.BR prce (3)
++.BR pcre (3)
+ format.
+ .sp
+ The compiled file is used by libselinux file labeling functions.
+ .sp
+ By default
+ .B sefcontext_compile
+-writes the compiled prce file with the
++writes the compiled pcre file with the
+ .B .bin
+ suffix appended (e.g. \fIinputfile\fB.bin\fR).
+ .SH OPTIONS
+diff --git libselinux-2.5/man/man8/selinux.8 libselinux-2.5/man/man8/selinux.8
+index 6f1034b..c9f188c 100644
+--- libselinux-2.5/man/man8/selinux.8
++++ libselinux-2.5/man/man8/selinux.8
+@@ -91,11 +91,13 @@ This manual page was written by Dan Walsh <dwalsh@redhat.com>.
+ .BR sepolicy (8),
+ .BR system-config-selinux (8),
+ .BR togglesebool (8),
+-.BR restorecon (8),
+ .BR fixfiles (8),
++.BR restorecon (8),
+ .BR setfiles (8),
+ .BR semanage (8),
+-.BR sepolicy(8)
++.BR sepolicy(8),
++.BR seinfo(8),
++.BR sesearch(8)
+ 
+ Every confined service on the system has a man page in the following format:
+ .br
+diff --git libselinux-2.5/src/Makefile libselinux-2.5/src/Makefile
+index d0021ae..37d01af 100644
+--- libselinux-2.5/src/Makefile
++++ libselinux-2.5/src/Makefile
+@@ -5,6 +5,7 @@ PYTHON ?= python
+ PYPREFIX ?= $(notdir $(PYTHON))
+ RUBY ?= ruby
+ RUBYPREFIX ?= $(notdir $(RUBY))
++PKG_CONFIG ?= pkg-config
+ 
+ # Installation directories.
+ PREFIX ?= $(DESTDIR)/usr
+@@ -12,11 +13,11 @@ LIBDIR ?= $(PREFIX)/lib
+ SHLIBDIR ?= $(DESTDIR)/lib
+ INCLUDEDIR ?= $(PREFIX)/include
+ PYLIBVER ?= $(shell $(PYTHON) -c 'import sys;print("python%d.%d" % sys.version_info[0:2])')
+-PYINC ?= $(shell pkg-config --cflags $(PYPREFIX))
++PYINC ?= $(shell $(PKG_CONFIG) --cflags $(PYPREFIX))
+ PYLIBDIR ?= $(LIBDIR)/$(PYLIBVER)
+ RUBYLIBVER ?= $(shell $(RUBY) -e 'print RUBY_VERSION.split(".")[0..1].join(".")')
+ RUBYPLATFORM ?= $(shell $(RUBY) -e 'print RUBY_PLATFORM')
+-RUBYINC ?= $(shell pkg-config --cflags ruby)
++RUBYINC ?= $(shell $(PKG_CONFIG) --cflags ruby)
+ RUBYINSTALL ?= $(LIBDIR)/ruby/site_ruby/$(RUBYLIBVER)/$(RUBYPLATFORM)
+ LIBBASE ?= $(shell basename $(LIBDIR))
+ 
+@@ -48,7 +49,7 @@ ifeq ($(DISABLE_BOOL),y)
+ endif
+ 
+ GENERATED=$(SWIGCOUT) $(SWIGRUBYCOUT) selinuxswig_python_exception.i
+-SRCS= $(filter-out $(UNUSED_SRCS) $(GENERATED) audit2why.c, $(wildcard *.c))
++SRCS= $(filter-out $(UNUSED_SRCS) $(GENERATED) audit2why.c, $(sort $(wildcard *.c)))
+ 
+ MAX_STACK_SIZE=32768
+ 
+@@ -155,7 +156,7 @@ install: all
+ 
+ install-pywrap: pywrap
+ 	test -d $(PYLIBDIR)/site-packages/selinux || install -m 755 -d $(PYLIBDIR)/site-packages/selinux
+-	install -m 755 $(SWIGSO) $(PYLIBDIR)/site-packages/selinux/_selinux.so
++	install -m 755 $(SWIGSO) $(PYLIBDIR)/site-packages/_selinux.so
+ 	install -m 755 $(AUDIT2WHYSO) $(PYLIBDIR)/site-packages/selinux/audit2why.so
+ 	install -m 644 $(SWIGPYOUT) $(PYLIBDIR)/site-packages/selinux/__init__.py
+ 
+diff --git libselinux-2.5/src/audit2why.c libselinux-2.5/src/audit2why.c
+index 12745b3..abe1701 100644
+--- libselinux-2.5/src/audit2why.c
++++ libselinux-2.5/src/audit2why.c
+@@ -343,8 +343,8 @@ static PyObject *analyze(PyObject *self __attribute__((unused)) , PyObject *args
+ 	if (rc < 0)
+ 		RETURN(BADTCON)
+ 
+-	tclass = string_to_security_class(tclassstr);
+-	if (!tclass)
++	rc = sepol_string_to_security_class(tclassstr, &tclass);
++	if (rc < 0)
+ 		RETURN(BADTCLASS)
+ 
+ 	/* Convert the permission list to an AV. */
+@@ -365,8 +365,8 @@ static PyObject *analyze(PyObject *self __attribute__((unused)) , PyObject *args
+ 		permstr = PyString_AsString( strObj );
+ #endif
+ 		
+-		perm = string_to_av_perm(tclass, permstr);
+-		if (!perm)
++		rc = sepol_string_to_av_perm(tclass, permstr, &perm);
++		if (rc < 0)
+ 			RETURN(BADPERM)
+ 
+ 		av |= perm;
+diff --git libselinux-2.5/src/avc_sidtab.c libselinux-2.5/src/avc_sidtab.c
+index 9669264..c775430 100644
+--- libselinux-2.5/src/avc_sidtab.c
++++ libselinux-2.5/src/avc_sidtab.c
+@@ -81,6 +81,11 @@ sidtab_context_to_sid(struct sidtab *s,
+ 	int hvalue, rc = 0;
+ 	struct sidtab_node *cur;
+ 
++	if (! ctx) {
++		errno=EINVAL;
++		return -1;
++	}
++
+ 	*sid = NULL;
+ 	hvalue = sidtab_hash(ctx);
+ 
+diff --git libselinux-2.5/src/booleans.c libselinux-2.5/src/booleans.c
+index 4b39a28..c438af1 100644
+--- libselinux-2.5/src/booleans.c
++++ libselinux-2.5/src/booleans.c
+@@ -63,12 +63,11 @@ int security_get_boolean_names(char ***names, int *len)
+ 	}
+ 
+ 	for (i = 0; i < *len; i++) {
+-		n[i] = (char *)malloc(_D_ALLOC_NAMLEN(namelist[i]));
++		n[i] = strdup(namelist[i]->d_name);
+ 		if (!n[i]) {
+ 			rc = -1;
+ 			goto bad_freen;
+ 		}
+-		strcpy(n[i], namelist[i]->d_name);
+ 	}
+ 	rc = 0;
+ 	*names = n;
+diff --git libselinux-2.5/src/callbacks.c libselinux-2.5/src/callbacks.c
+index cdf7b63..c3cf98b 100644
+--- libselinux-2.5/src/callbacks.c
++++ libselinux-2.5/src/callbacks.c
+@@ -16,7 +16,6 @@ default_selinux_log(int type __attribute__((unused)), const char *fmt, ...)
+ {
+ 	int rc;
+ 	va_list ap;
+-	if (is_selinux_enabled() == 0) return 0;
+ 	va_start(ap, fmt);
+ 	rc = vfprintf(stderr, fmt, ap);
+ 	va_end(ap);
+diff --git libselinux-2.5/src/canonicalize_context.c libselinux-2.5/src/canonicalize_context.c
+index 7cf3139..364a746 100644
+--- libselinux-2.5/src/canonicalize_context.c
++++ libselinux-2.5/src/canonicalize_context.c
+@@ -17,6 +17,11 @@ int security_canonicalize_context_raw(const char * con,
+ 	size_t size;
+ 	int fd, ret;
+ 
++	if (! con) {
++		errno=EINVAL;
++		return -1;
++	}
++
+ 	if (!selinux_mnt) {
+ 		errno = ENOENT;
+ 		return -1;
+diff --git libselinux-2.5/src/check_context.c libselinux-2.5/src/check_context.c
+index 52063fa..234749c 100644
+--- libselinux-2.5/src/check_context.c
++++ libselinux-2.5/src/check_context.c
+@@ -14,6 +14,11 @@ int security_check_context_raw(const char * con)
+ 	char path[PATH_MAX];
+ 	int fd, ret;
+ 
++	if (! con) {
++		errno=EINVAL;
++		return -1;
++	}
++
+ 	if (!selinux_mnt) {
+ 		errno = ENOENT;
+ 		return -1;
+diff --git libselinux-2.5/src/compute_av.c libselinux-2.5/src/compute_av.c
+index 937e5c3..35ace7f 100644
+--- libselinux-2.5/src/compute_av.c
++++ libselinux-2.5/src/compute_av.c
+@@ -26,6 +26,11 @@ int security_compute_av_flags_raw(const char * scon,
+ 		return -1;
+ 	}
+ 
++	if ((! scon) || (! tcon)) {
++		errno=EINVAL;
++		return -1;
++	}
++
+ 	snprintf(path, sizeof path, "%s/access", selinux_mnt);
+ 	fd = open(path, O_RDWR);
+ 	if (fd < 0)
+diff --git libselinux-2.5/src/compute_create.c libselinux-2.5/src/compute_create.c
+index 9559d42..14a65d1 100644
+--- libselinux-2.5/src/compute_create.c
++++ libselinux-2.5/src/compute_create.c
+@@ -64,6 +64,11 @@ int security_compute_create_name_raw(const char * scon,
+ 		return -1;
+ 	}
+ 
++	if ((! scon) || (! tcon)) {
++		errno=EINVAL;
++		return -1;
++	}
++
+ 	snprintf(path, sizeof path, "%s/create", selinux_mnt);
+ 	fd = open(path, O_RDWR);
+ 	if (fd < 0)
+diff --git libselinux-2.5/src/compute_member.c libselinux-2.5/src/compute_member.c
+index 1fc7e41..065d996 100644
+--- libselinux-2.5/src/compute_member.c
++++ libselinux-2.5/src/compute_member.c
+@@ -25,6 +25,11 @@ int security_compute_member_raw(const char * scon,
+ 		return -1;
+ 	}
+ 
++	if ((! scon) || (! tcon)) {
++		errno=EINVAL;
++		return -1;
++	}
++
+ 	snprintf(path, sizeof path, "%s/member", selinux_mnt);
+ 	fd = open(path, O_RDWR);
+ 	if (fd < 0)
+diff --git libselinux-2.5/src/compute_relabel.c libselinux-2.5/src/compute_relabel.c
+index 4615aee..cc77f36 100644
+--- libselinux-2.5/src/compute_relabel.c
++++ libselinux-2.5/src/compute_relabel.c
+@@ -25,6 +25,11 @@ int security_compute_relabel_raw(const char * scon,
+ 		return -1;
+ 	}
+ 
++	if ((! scon) || (! tcon)) {
++		errno=EINVAL;
++		return -1;
++	}
++
+ 	snprintf(path, sizeof path, "%s/relabel", selinux_mnt);
+ 	fd = open(path, O_RDWR);
+ 	if (fd < 0)
+diff --git libselinux-2.5/src/compute_user.c libselinux-2.5/src/compute_user.c
+index b37c5d3..7703c26 100644
+--- libselinux-2.5/src/compute_user.c
++++ libselinux-2.5/src/compute_user.c
+@@ -24,6 +24,11 @@ int security_compute_user_raw(const char * scon,
+ 		return -1;
+ 	}
+ 
++	if (! scon) {
++		errno=EINVAL;
++		return -1;
++	}
++
+ 	snprintf(path, sizeof path, "%s/user", selinux_mnt);
+ 	fd = open(path, O_RDWR);
+ 	if (fd < 0)
+diff --git libselinux-2.5/src/exception.sh libselinux-2.5/src/exception.sh
+index b7cff7e..a58bf3f 100755
+--- libselinux-2.5/src/exception.sh
++++ libselinux-2.5/src/exception.sh
+@@ -15,6 +15,6 @@ echo "
+ ;;
+ esac
+ }
+-gcc -x c -c -I../include - -aux-info temp.aux < ../include/selinux/selinux.h
++${CC:-gcc} -x c -c -I../include - -aux-info temp.aux < ../include/selinux/selinux.h
+ for i in `awk '/<stdin>.*extern int/ { print $6 }' temp.aux`; do except $i ; done 
+ rm -f -- temp.aux -.o
+diff --git libselinux-2.5/src/file_path_suffixes.h libselinux-2.5/src/file_path_suffixes.h
+index d1f9b48..2d3ca49 100644
+--- libselinux-2.5/src/file_path_suffixes.h
++++ libselinux-2.5/src/file_path_suffixes.h
+@@ -23,7 +23,9 @@ S_(BINPOLICY, "/policy/policy")
+     S_(VIRTUAL_DOMAIN, "/contexts/virtual_domain_context")
+     S_(VIRTUAL_IMAGE, "/contexts/virtual_image_context")
+     S_(LXC_CONTEXTS, "/contexts/lxc_contexts")
++    S_(OPENRC_CONTEXTS, "/contexts/openrc_contexts")
+     S_(OPENSSH_CONTEXTS, "/contexts/openssh_contexts")
++    S_(SNAPPERD_CONTEXTS, "/contexts/snapperd_contexts")
+     S_(SYSTEMD_CONTEXTS, "/contexts/systemd_contexts")
+     S_(FILE_CONTEXT_SUBS, "/contexts/files/file_contexts.subs")
+     S_(FILE_CONTEXT_SUBS_DIST, "/contexts/files/file_contexts.subs_dist")
+diff --git libselinux-2.5/src/fsetfilecon.c libselinux-2.5/src/fsetfilecon.c
+index 52707d0..0cbe12d 100644
+--- libselinux-2.5/src/fsetfilecon.c
++++ libselinux-2.5/src/fsetfilecon.c
+@@ -9,8 +9,12 @@
+ 
+ int fsetfilecon_raw(int fd, const char * context)
+ {
+-	int rc = fsetxattr(fd, XATTR_NAME_SELINUX, context, strlen(context) + 1,
+-			 0);
++	int rc;
++	if (! context) {
++		errno=EINVAL;
++		return -1;
++	}
++	rc = fsetxattr(fd, XATTR_NAME_SELINUX, context, strlen(context) + 1, 0);
+ 	if (rc < 0 && errno == ENOTSUP) {
+ 		char * ccontext = NULL;
+ 		int err = errno;
+diff --git libselinux-2.5/src/init.c libselinux-2.5/src/init.c
+index 3db4de0..ddf91f8 100644
+--- libselinux-2.5/src/init.c
++++ libselinux-2.5/src/init.c
+@@ -11,7 +11,6 @@
+ #include <sys/vfs.h>
+ #include <stdint.h>
+ #include <limits.h>
+-#include <sys/mount.h>
+ 
+ #include "dso.h"
+ #include "policy.h"
+@@ -20,7 +19,6 @@
+ 
+ char *selinux_mnt = NULL;
+ int selinux_page_size = 0;
+-int obj_class_compat = 1;
+ 
+ int has_selinux_config = 0;
+ 
+@@ -57,20 +55,15 @@ static int verify_selinuxmnt(const char *mnt)
+ 
+ int selinuxfs_exists(void)
+ {
+-	int exists = 0, mnt_rc = 0;
++	int exists = 0;
+ 	FILE *fp = NULL;
+ 	char *buf = NULL;
+ 	size_t len;
+ 	ssize_t num;
+ 
+-	mnt_rc = mount("proc", "/proc", "proc", 0, 0);
+-
+ 	fp = fopen("/proc/filesystems", "r");
+-	if (!fp) {
+-		exists = 1; /* Fail as if it exists */
+-		goto out;
+-	}
+-
++	if (!fp)
++		return 1; /* Fail as if it exists */
+ 	__fsetlocking(fp, FSETLOCKING_BYCALLER);
+ 
+ 	num = getline(&buf, &len, fp);
+@@ -84,14 +77,6 @@ int selinuxfs_exists(void)
+ 
+ 	free(buf);
+ 	fclose(fp);
+-
+-out:
+-#ifndef MNT_DETACH
+-#define MNT_DETACH 2
+-#endif
+-	if (mnt_rc == 0)
+-		umount2("/proc", MNT_DETACH);
+-
+ 	return exists;
+ }
+ hidden_def(selinuxfs_exists)
+diff --git libselinux-2.5/src/label_file.c libselinux-2.5/src/label_file.c
+index 071d902..c243c67 100644
+--- libselinux-2.5/src/label_file.c
++++ libselinux-2.5/src/label_file.c
+@@ -10,7 +10,6 @@
+ #include <stdarg.h>
+ #include <string.h>
+ #include <stdio.h>
+-#include <stdio_ext.h>
+ #include <ctype.h>
+ #include <errno.h>
+ #include <limits.h>
+@@ -97,62 +96,42 @@ static int nodups_specs(struct saved_data *data, const char *path)
+ 	return rc;
+ }
+ 
+-static int load_mmap(struct selabel_handle *rec, const char *path,
+-				    struct stat *sb, bool isbinary,
+-				    struct selabel_digest *digest)
++static int process_text_file(FILE *fp, const char *prefix,
++			     struct selabel_handle *rec, const char *path)
++{
++	int rc;
++	size_t line_len;
++	unsigned int lineno = 0;
++	char *line_buf = NULL;
++
++	while (getline(&line_buf, &line_len, fp) > 0) {
++		rc = process_line(rec, path, prefix, line_buf, ++lineno);
++		if (rc)
++			goto out;
++	}
++	rc = 0;
++out:
++	free(line_buf);
++	return rc;
++}
++
++static int load_mmap(FILE *fp, size_t len, struct selabel_handle *rec,
++		     const char *path)
+ {
+ 	struct saved_data *data = (struct saved_data *)rec->data;
+-	char mmap_path[PATH_MAX + 1];
+-	int mmapfd;
+ 	int rc;
+-	struct stat mmap_stat;
+ 	char *addr, *str_buf;
+-	size_t len;
+ 	int *stem_map;
+ 	struct mmap_area *mmap_area;
+ 	uint32_t i, magic, version;
+ 	uint32_t entry_len, stem_map_len, regex_array_len;
+ 
+-	if (isbinary) {
+-		len = strlen(path);
+-		if (len >= sizeof(mmap_path))
+-			return -1;
+-		strcpy(mmap_path, path);
+-	} else {
+-		rc = snprintf(mmap_path, sizeof(mmap_path), "%s.bin", path);
+-		if (rc >= (int)sizeof(mmap_path))
+-			return -1;
+-	}
+-
+-	mmapfd = open(mmap_path, O_RDONLY | O_CLOEXEC);
+-	if (mmapfd < 0)
+-		return -1;
+-
+-	rc = fstat(mmapfd, &mmap_stat);
+-	if (rc < 0) {
+-		close(mmapfd);
+-		return -1;
+-	}
+-
+-	/* if mmap is old, ignore it */
+-	if (mmap_stat.st_mtime < sb->st_mtime) {
+-		close(mmapfd);
+-		return -1;
+-	}
+-
+-	/* ok, read it in... */
+-	len = mmap_stat.st_size;
+-	len += (sysconf(_SC_PAGE_SIZE) - 1);
+-	len &= ~(sysconf(_SC_PAGE_SIZE) - 1);
+-
+ 	mmap_area = malloc(sizeof(*mmap_area));
+ 	if (!mmap_area) {
+-		close(mmapfd);
+ 		return -1;
+ 	}
+ 
+-	addr = mmap(NULL, len, PROT_READ, MAP_PRIVATE, mmapfd, 0);
+-	close(mmapfd);
++	addr = mmap(NULL, len, PROT_READ, MAP_PRIVATE, fileno(fp), 0);
+ 	if (addr == MAP_FAILED) {
+ 		free(mmap_area);
+ 		perror("mmap");
+@@ -227,7 +206,7 @@ static int load_mmap(struct selabel_handle *rec, const char *path,
+ 		rc = next_entry(&stem_len, mmap_area, sizeof(uint32_t));
+ 		if (rc < 0 || !stem_len) {
+ 			rc = -1;
+-			goto err;
++			goto out;
+ 		}
+ 
+ 		/* Check for stem_len wrap around. */
+@@ -236,15 +215,15 @@ static int load_mmap(struct selabel_handle *rec, const char *path,
+ 			/* Check if over-run before null check. */
+ 			rc = next_entry(NULL, mmap_area, (stem_len + 1));
+ 			if (rc < 0)
+-				goto err;
++				goto out;
+ 
+ 			if (buf[stem_len] != '\0') {
+ 				rc = -1;
+-				goto err;
++				goto out;
+ 			}
+ 		} else {
+ 			rc = -1;
+-			goto err;
++			goto out;
+ 		}
+ 
+ 		/* store the mapping between old and new */
+@@ -253,7 +232,7 @@ static int load_mmap(struct selabel_handle *rec, const char *path,
+ 			newid = store_stem(data, buf, stem_len);
+ 			if (newid < 0) {
+ 				rc = newid;
+-				goto err;
++				goto out;
+ 			}
+ 			data->stem_arr[newid].from_mmap = 1;
+ 		}
+@@ -264,7 +243,7 @@ static int load_mmap(struct selabel_handle *rec, const char *path,
+ 	rc = next_entry(&regex_array_len, mmap_area, sizeof(uint32_t));
+ 	if (rc < 0 || !regex_array_len) {
+ 		rc = -1;
+-		goto err;
++		goto out;
+ 	}
+ 
+ 	for (i = 0; i < regex_array_len; i++) {
+@@ -274,7 +253,7 @@ static int load_mmap(struct selabel_handle *rec, const char *path,
+ 
+ 		rc = grow_specs(data);
+ 		if (rc < 0)
+-			goto err;
++			goto out;
+ 
+ 		spec = &data->spec_arr[data->nspec];
+ 		spec->from_mmap = 1;
+@@ -284,30 +263,31 @@ static int load_mmap(struct selabel_handle *rec, const char *path,
+ 		rc = next_entry(&entry_len, mmap_area, sizeof(uint32_t));
+ 		if (rc < 0 || !entry_len) {
+ 			rc = -1;
+-			goto err;
++			goto out;
+ 		}
+ 
+ 		str_buf = malloc(entry_len);
+ 		if (!str_buf) {
+ 			rc = -1;
+-			goto err;
++			goto out;
+ 		}
+ 		rc = next_entry(str_buf, mmap_area, entry_len);
+ 		if (rc < 0)
+-			goto err;
++			goto out;
+ 
+ 		if (str_buf[entry_len - 1] != '\0') {
+ 			free(str_buf);
+ 			rc = -1;
+-			goto err;
++			goto out;
+ 		}
+ 		spec->lr.ctx_raw = str_buf;
+ 
+ 		if (strcmp(spec->lr.ctx_raw, "<<none>>") && rec->validating) {
+ 			if (selabel_validate(rec, &spec->lr) < 0) {
+ 				selinux_log(SELINUX_ERROR,
+-					    "%s: context %s is invalid\n", mmap_path, spec->lr.ctx_raw);
+-				goto err;
++					    "%s: context %s is invalid\n",
++					    path, spec->lr.ctx_raw);
++				goto out;
+ 			}
+ 		}
+ 
+@@ -315,17 +295,17 @@ static int load_mmap(struct selabel_handle *rec, const char *path,
+ 		rc = next_entry(&entry_len, mmap_area, sizeof(uint32_t));
+ 		if (rc < 0 || !entry_len) {
+ 			rc = -1;
+-			goto err;
++			goto out;
+ 		}
+ 
+ 		spec->regex_str = (char *)mmap_area->next_addr;
+ 		rc = next_entry(NULL, mmap_area, entry_len);
+ 		if (rc < 0)
+-			goto err;
++			goto out;
+ 
+ 		if (spec->regex_str[entry_len - 1] != '\0') {
+ 			rc = -1;
+-			goto err;
++			goto out;
+ 		}
+ 
+ 		/* Process mode */
+@@ -334,14 +314,14 @@ static int load_mmap(struct selabel_handle *rec, const char *path,
+ 		else
+ 			rc = next_entry(&mode, mmap_area, sizeof(mode_t));
+ 		if (rc < 0)
+-			goto err;
++			goto out;
+ 
+ 		spec->mode = mode;
+ 
+ 		/* map the stem id from the mmap file to the data->stem_arr */
+ 		rc = next_entry(&stem_id, mmap_area, sizeof(int32_t));
+ 		if (rc < 0)
+-			goto err;
++			goto out;
+ 
+ 		if (stem_id < 0 || stem_id >= (int32_t)stem_map_len)
+ 			spec->stem_id = -1;
+@@ -351,7 +331,7 @@ static int load_mmap(struct selabel_handle *rec, const char *path,
+ 		/* retrieve the hasMetaChars bit */
+ 		rc = next_entry(&meta_chars, mmap_area, sizeof(uint32_t));
+ 		if (rc < 0)
+-			goto err;
++			goto out;
+ 
+ 		spec->hasMetaChars = meta_chars;
+ 		/* and prefix length for use by selabel_lookup_best_match */
+@@ -359,7 +339,7 @@ static int load_mmap(struct selabel_handle *rec, const char *path,
+ 			rc = next_entry(&prefix_len, mmap_area,
+ 					    sizeof(uint32_t));
+ 			if (rc < 0)
+-				goto err;
++				goto out;
+ 
+ 			spec->prefix_len = prefix_len;
+ 		}
+@@ -368,143 +348,207 @@ static int load_mmap(struct selabel_handle *rec, const char *path,
+ 		rc = next_entry(&entry_len, mmap_area, sizeof(uint32_t));
+ 		if (rc < 0 || !entry_len) {
+ 			rc = -1;
+-			goto err;
++			goto out;
+ 		}
+ 		spec->regex = (pcre *)mmap_area->next_addr;
+ 		rc = next_entry(NULL, mmap_area, entry_len);
+ 		if (rc < 0)
+-			goto err;
++			goto out;
+ 
+ 		/* Check that regex lengths match. pcre_fullinfo()
+ 		 * also validates its magic number. */
+ 		rc = pcre_fullinfo(spec->regex, NULL, PCRE_INFO_SIZE, &len);
+ 		if (rc < 0 || len != entry_len) {
+ 			rc = -1;
+-			goto err;
++			goto out;
+ 		}
+ 
+ 		rc = next_entry(&entry_len, mmap_area, sizeof(uint32_t));
+ 		if (rc < 0 || !entry_len) {
+ 			rc = -1;
+-			goto err;
++			goto out;
+ 		}
+-		spec->lsd.study_data = (void *)mmap_area->next_addr;
+-		spec->lsd.flags |= PCRE_EXTRA_STUDY_DATA;
+-		rc = next_entry(NULL, mmap_area, entry_len);
+-		if (rc < 0)
+-			goto err;
+ 
+-		/* Check that study data lengths match. */
+-		rc = pcre_fullinfo(spec->regex, &spec->lsd,
+-				    PCRE_INFO_STUDYSIZE, &len);
+-		if (rc < 0 || len != entry_len) {
+-			rc = -1;
+-			goto err;
++		if (entry_len) {
++			spec->lsd.study_data = (void *)mmap_area->next_addr;
++			spec->lsd.flags |= PCRE_EXTRA_STUDY_DATA;
++			rc = next_entry(NULL, mmap_area, entry_len);
++			if (rc < 0)
++				goto out;
++
++			/* Check that study data lengths match. */
++			rc = pcre_fullinfo(spec->regex, &spec->lsd,
++					   PCRE_INFO_STUDYSIZE, &len);
++			if (rc < 0 || len != entry_len) {
++				rc = -1;
++				goto out;
++			}
+ 		}
+ 
+ 		data->nspec++;
+ 	}
+ 
+-	rc = digest_add_specfile(digest, NULL, addr, mmap_stat.st_size,
+-								    mmap_path);
+-	if (rc)
+-		goto err;
+-
+-err:
++	rc = 0;
++out:
+ 	free(stem_map);
+ 
+ 	return rc;
+ }
+ 
+-static int process_file(const char *path, const char *suffix,
+-			  struct selabel_handle *rec,
+-			  const char *prefix, struct selabel_digest *digest)
+-{
+-	FILE *fp;
++struct file_details {
++	const char *suffix;
+ 	struct stat sb;
+-	unsigned int lineno;
+-	size_t line_len = 0;
+-	char *line_buf = NULL;
+-	int rc;
+-	char stack_path[PATH_MAX + 1];
+-	bool isbinary = false;
++};
++
++static char *rolling_append(char *current, const char *suffix, size_t max)
++{
++	size_t size;
++	size_t suffix_size;
++	size_t current_size;
++
++	if (!suffix)
++		return current;
++
++	current_size = strlen(current);
++	suffix_size = strlen(suffix);
++
++	size = current_size + suffix_size;
++	if (size < current_size || size < suffix_size)
++		return NULL;
++
++	/* ensure space for the '.' and the '\0' characters. */
++	if (size >= (SIZE_MAX - 2))
++		return NULL;
++
++	size += 2;
++
++	if (size > max)
++		return NULL;
++
++	/* Append any given suffix */
++	char *to = current + current_size;
++	*to++ = '.';
++	strcpy(to, suffix);
++
++	return current;
++}
++
++static bool fcontext_is_binary(FILE *fp)
++{
+ 	uint32_t magic;
+ 
+-	/* append the path suffix if we have one */
+-	if (suffix) {
+-		rc = snprintf(stack_path, sizeof(stack_path),
+-					    "%s.%s", path, suffix);
+-		if (rc >= (int)sizeof(stack_path)) {
+-			errno = ENAMETOOLONG;
+-			return -1;
+-		}
+-		path = stack_path;
++	size_t len = fread(&magic, sizeof(magic), 1, fp);
++	rewind(fp);
++
++	return (len && (magic == SELINUX_MAGIC_COMPILED_FCONTEXT));
++}
++
++#define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
++
++static FILE *open_file(const char *path, const char *suffix,
++	       char *save_path, size_t len, struct stat *sb, bool open_oldest)
++{
++	unsigned int i;
++	int rc;
++	char stack_path[len];
++	struct file_details *found = NULL;
++
++	/*
++	 * Rolling append of suffix. Try to open with path.suffix then the
++	 * next as path.suffix.suffix and so forth.
++	 */
++	struct file_details fdetails[2] = {
++			{ .suffix = suffix },
++			{ .suffix = "bin" }
++	};
++
++	rc = snprintf(stack_path, sizeof(stack_path), "%s", path);
++	if (rc >= (int) sizeof(stack_path)) {
++		errno = ENAMETOOLONG;
++		return NULL;
+ 	}
+ 
+-	/* Open the specification file. */
+-	fp = fopen(path, "r");
+-	if (fp) {
+-		__fsetlocking(fp, FSETLOCKING_BYCALLER);
++	for (i = 0; i < ARRAY_SIZE(fdetails); i++) {
+ 
+-		if (fstat(fileno(fp), &sb) < 0)
+-			return -1;
+-		if (!S_ISREG(sb.st_mode)) {
+-			errno = EINVAL;
+-			return -1;
+-		}
++		/* This handles the case if suffix is null */
++		path = rolling_append(stack_path, fdetails[i].suffix,
++				      sizeof(stack_path));
++		if (!path)
++			return NULL;
+ 
+-		magic = 0;
+-		if (fread(&magic, sizeof magic, 1, fp) != 1) {
+-			if (ferror(fp)) {
+-				errno = EINVAL;
+-				fclose(fp);
+-				return -1;
+-			}
+-			clearerr(fp);
+-		}
++		rc = stat(path, &fdetails[i].sb);
++		if (rc)
++			continue;
+ 
+-		if (magic == SELINUX_MAGIC_COMPILED_FCONTEXT) {
+-			/* file_contexts.bin format */
+-			fclose(fp);
+-			fp = NULL;
+-			isbinary = true;
+-		} else {
+-			rewind(fp);
++		/* first file thing found, just take it */
++		if (!found) {
++			strcpy(save_path, path);
++			found = &fdetails[i];
++			continue;
+ 		}
+-	} else {
++
+ 		/*
+-		 * Text file does not exist, so clear the timestamp
+-		 * so that we will always pass the timestamp comparison
+-		 * with the bin file in load_mmap().
++		 * Keep picking the newest file found. Where "newest"
++		 * includes equality. This provides a precedence on
++		 * secondary suffixes even when the timestamp is the
++		 * same. Ie choose file_contexts.bin over file_contexts
++		 * even if the time stamp is the same. Invert this logic
++		 * on open_oldest set to true. The idea is that if the
++		 * newest file failed to process, we can attempt to
++		 * process the oldest. The logic here is subtle and depends
++		 * on the array ordering in fdetails for the case when time
++		 * stamps are the same.
+ 		 */
+-		sb.st_mtime = 0;
++		if (open_oldest ^
++			(fdetails[i].sb.st_mtime >= found->sb.st_mtime)) {
++			found = &fdetails[i];
++			strcpy(save_path, path);
++		}
+ 	}
+ 
+-	rc = load_mmap(rec, path, &sb, isbinary, digest);
+-	if (rc == 0)
+-		goto out;
++	if (!found) {
++		errno = ENOENT;
++		return NULL;
++	}
++
++	memcpy(sb, &found->sb, sizeof(*sb));
++	return fopen(save_path, "r");
++}
+ 
+-	if (!fp)
+-		return -1; /* no text or bin file */
++static int process_file(const char *path, const char *suffix,
++			  struct selabel_handle *rec,
++			  const char *prefix, struct selabel_digest *digest)
++{
++	int rc;
++	unsigned int i;
++	struct stat sb;
++	FILE *fp = NULL;
++	char found_path[PATH_MAX];
+ 
+ 	/*
+-	 * Then do detailed validation of the input and fill the spec array
++	 * On the first pass open the newest modified file. If it fails to
++	 * process, then the second pass shall open the oldest file. If both
++	 * passes fail, then it's a fatal error.
+ 	 */
+-	lineno = 0;
+-	rc = 0;
+-	while (getline(&line_buf, &line_len, fp) > 0) {
+-		rc = process_line(rec, path, prefix, line_buf, ++lineno);
+-		if (rc)
+-			goto out;
+-	}
++	for (i = 0; i < 2; i++) {
++		fp = open_file(path, suffix, found_path, sizeof(found_path),
++			&sb, i > 0);
++		if (fp == NULL)
++			return -1;
+ 
+-	rc = digest_add_specfile(digest, fp, NULL, sb.st_size, path);
++		rc = fcontext_is_binary(fp) ?
++				load_mmap(fp, sb.st_size, rec, found_path) :
++				process_text_file(fp, prefix, rec, found_path);
++		if (!rc)
++			rc = digest_add_specfile(digest, fp, NULL, sb.st_size,
++				found_path);
+ 
+-out:
+-	free(line_buf);
+-	if (fp)
+ 		fclose(fp);
+-	return rc;
++
++		if (!rc)
++			return 0;
++	}
++	return -1;
+ }
+ 
+ static void closef(struct selabel_handle *rec);
+diff --git libselinux-2.5/src/label_file.h libselinux-2.5/src/label_file.h
+index 72fed1f..6d1e890 100644
+--- libselinux-2.5/src/label_file.h
++++ libselinux-2.5/src/label_file.h
+@@ -80,9 +80,12 @@ struct saved_data {
+ 
+ static inline pcre_extra *get_pcre_extra(struct spec *spec)
+ {
+-	if (spec->from_mmap)
+-		return &spec->lsd;
+-	else
++	if (spec->from_mmap) {
++		if (spec->lsd.study_data)
++			return &spec->lsd;
++		else
++			return NULL;
++	} else
+ 		return spec->sd;
+ }
+ 
+diff --git libselinux-2.5/src/label_internal.h libselinux-2.5/src/label_internal.h
+index aa48fff..0827ef6 100644
+--- libselinux-2.5/src/label_internal.h
++++ libselinux-2.5/src/label_internal.h
+@@ -124,7 +124,7 @@ selabel_validate(struct selabel_handle *rec,
+  */
+ extern int myprintf_compat;
+ extern void __attribute__ ((format(printf, 1, 2)))
+-(*myprintf) (const char *fmt, ...);
++(*myprintf) (const char *fmt, ...) hidden;
+ 
+ #define COMPAT_LOG(type, fmt...) if (myprintf_compat)	  \
+ 		myprintf(fmt);				  \
+diff --git libselinux-2.5/src/load_policy.c libselinux-2.5/src/load_policy.c
+index 21ee58b..4f39fc7 100644
+--- libselinux-2.5/src/load_policy.c
++++ libselinux-2.5/src/load_policy.c
+@@ -17,6 +17,10 @@
+ #include "policy.h"
+ #include <limits.h>
+ 
++#ifndef MNT_DETACH
++#define MNT_DETACH 2
++#endif
++
+ int security_load_policy(void *data, size_t len)
+ {
+ 	char path[PATH_MAX];
+@@ -348,11 +352,6 @@ int selinux_init_load_policy(int *enforce)
+ 		fclose(cfg);
+ 		free(buf);
+ 	}
+-#ifndef MNT_DETACH
+-#define MNT_DETACH 2
+-#endif
+-	if (rc == 0)
+-		umount2("/proc", MNT_DETACH);
+ 
+ 	/* 
+ 	 * Determine the final desired mode.
+@@ -400,11 +399,17 @@ int selinux_init_load_policy(int *enforce)
+ 			/* Only emit this error if selinux was not disabled */
+ 			fprintf(stderr, "Mount failed for selinuxfs on %s:  %s\n", SELINUXMNT, strerror(errno));
+ 		}
++
++		if (rc == 0)
++			umount2("/proc", MNT_DETACH);
+                 
+ 		goto noload;
+ 	}
+ 	set_selinuxmnt(mntpoint);
+ 
++	if (rc == 0)
++		umount2("/proc", MNT_DETACH);
++
+ 	/*
+ 	 * Note:  The following code depends on having selinuxfs 
+ 	 * already mounted and selinuxmnt set above.
+diff --git libselinux-2.5/src/lsetfilecon.c libselinux-2.5/src/lsetfilecon.c
+index 1d3b28a..ea6d70b 100644
+--- libselinux-2.5/src/lsetfilecon.c
++++ libselinux-2.5/src/lsetfilecon.c
+@@ -9,8 +9,13 @@
+ 
+ int lsetfilecon_raw(const char *path, const char * context)
+ {
+-	int rc = lsetxattr(path, XATTR_NAME_SELINUX, context, strlen(context) + 1,
+-			 0);
++	int rc;
++	if (! context) {
++		errno=EINVAL;
++		return -1;
++	}
++
++	rc = lsetxattr(path, XATTR_NAME_SELINUX, context, strlen(context) + 1, 0);
+ 	if (rc < 0 && errno == ENOTSUP) {
+ 		char * ccontext = NULL;
+ 		int err = errno;
+diff --git libselinux-2.5/src/matchpathcon.c libselinux-2.5/src/matchpathcon.c
+index 5b495a0..d92ed79 100644
+--- libselinux-2.5/src/matchpathcon.c
++++ libselinux-2.5/src/matchpathcon.c
+@@ -2,6 +2,7 @@
+ #include <string.h>
+ #include <errno.h>
+ #include <stdio.h>
++#include <syslog.h>
+ #include "selinux_internal.h"
+ #include "label_internal.h"
+ #include "callbacks.h"
+@@ -62,7 +63,7 @@ static void
+ {
+ 	va_list ap;
+ 	va_start(ap, fmt);
+-	vfprintf(stderr, fmt, ap);
++	vsyslog(LOG_ERR, fmt, ap);
+ 	va_end(ap);
+ }
+ 
+@@ -361,12 +362,6 @@ int realpath_not_final(const char *name, char *resolved_path)
+ 		goto out;
+ 	}
+ 
+-	/* strip leading // */
+-	while (tmp_path[len] && tmp_path[len] == '/' &&
+-	       tmp_path[len+1] && tmp_path[len+1] == '/') {
+-		tmp_path++;
+-		len++;
+-	}
+ 	last_component = strrchr(tmp_path, '/');
+ 
+ 	if (last_component == tmp_path) {
+@@ -470,6 +465,17 @@ int selinux_file_context_verify(const char *path, mode_t mode)
+ 	char * con = NULL;
+ 	char * fcontext = NULL;
+ 	int rc = 0;
++	char stackpath[PATH_MAX + 1];
++	char *p = NULL;
++
++	if (S_ISLNK(mode)) {
++		if (!realpath_not_final(path, stackpath))
++			path = stackpath;
++	} else {
++		p = realpath(path, stackpath);
++		if (p)
++			path = p;
++	}
+ 
+ 	rc = lgetfilecon_raw(path, &con);
+ 	if (rc == -1) {
+diff --git libselinux-2.5/src/policy.h libselinux-2.5/src/policy.h
+index bf270b5..f6d7242 100644
+--- libselinux-2.5/src/policy.h
++++ libselinux-2.5/src/policy.h
+@@ -3,8 +3,13 @@
+ 
+ /* Private definitions used internally by libselinux. */
+ 
+-/* xattr name for SELinux attributes. */
++/*
++ * xattr name for SELinux attributes.
++ * This may have been exported via Kernel uapi header.
++ */
++#ifndef XATTR_NAME_SELINUX
+ #define XATTR_NAME_SELINUX "security.selinux"
++#endif
+ 
+ /* Initial length guess for getting contexts. */
+ #define INITCONTEXTLEN 255
+diff --git libselinux-2.5/src/procattr.c libselinux-2.5/src/procattr.c
+index 527a0a5..eee4612 100644
+--- libselinux-2.5/src/procattr.c
++++ libselinux-2.5/src/procattr.c
+@@ -70,9 +70,9 @@ static int openattr(pid_t pid, const char *attr, int flags)
+ 	char *path;
+ 	pid_t tid;
+ 
+-	if (pid > 0)
++	if (pid > 0) {
+ 		rc = asprintf(&path, "/proc/%d/attr/%s", pid, attr);
+-	else {
++	} else if (pid == 0) {
+ 		rc = asprintf(&path, "/proc/thread-self/attr/%s", attr);
+ 		if (rc < 0)
+ 			return -1;
+@@ -82,6 +82,9 @@ static int openattr(pid_t pid, const char *attr, int flags)
+ 		free(path);
+ 		tid = gettid();
+ 		rc = asprintf(&path, "/proc/self/task/%d/attr/%s", tid, attr);
++	} else {
++		errno = EINVAL;
++		return -1;
+ 	}
+ 	if (rc < 0)
+ 		return -1;
+@@ -303,11 +306,21 @@ static int setprocattrcon(const char * context,
+ #define getpidattr_def(fn, attr) \
+ 	int get##fn##_raw(pid_t pid, char **c)	\
+ 	{ \
+-		return getprocattrcon_raw(c, pid, #attr); \
++		if (pid <= 0) { \
++			errno = EINVAL; \
++			return -1; \
++		} else { \
++			return getprocattrcon_raw(c, pid, #attr); \
++		} \
+ 	} \
+ 	int get##fn(pid_t pid, char **c)	\
+ 	{ \
+-		return getprocattrcon(c, pid, #attr); \
++		if (pid <= 0) { \
++			errno = EINVAL; \
++			return -1; \
++		} else { \
++			return getprocattrcon(c, pid, #attr); \
++		} \
+ 	}
+ 
+ all_selfattr_def(con, current)
+diff --git libselinux-2.5/src/selinux_config.c libselinux-2.5/src/selinux_config.c
+index bec5f3b..88bcc85 100644
+--- libselinux-2.5/src/selinux_config.c
++++ libselinux-2.5/src/selinux_config.c
+@@ -50,7 +50,9 @@
+ #define BOOLEAN_SUBS      27
+ #define OPENSSH_CONTEXTS  28
+ #define SYSTEMD_CONTEXTS  29
+-#define NEL               30
++#define SNAPPERD_CONTEXTS 30
++#define OPENRC_CONTEXTS   31
++#define NEL               32
+ 
+ /* Part of one-time lazy init */
+ static pthread_once_t once = PTHREAD_ONCE_INIT;
+@@ -492,6 +494,13 @@ const char *selinux_lxc_contexts_path(void)
+ 
+ hidden_def(selinux_lxc_contexts_path)
+ 
++const char *selinux_openrc_contexts_path(void)
++{
++    return get_path(OPENRC_CONTEXTS);
++}
++
++hidden_def(selinux_openrc_contexts_path)
++
+ const char *selinux_openssh_contexts_path(void)
+ {
+     return get_path(OPENSSH_CONTEXTS);
+@@ -499,6 +508,13 @@ const char *selinux_openssh_contexts_path(void)
+ 
+ hidden_def(selinux_openssh_contexts_path)
+ 
++const char *selinux_snapperd_contexts_path(void)
++{
++    return get_path(SNAPPERD_CONTEXTS);
++}
++
++hidden_def(selinux_snapperd_contexts_path)
++
+ const char *selinux_systemd_contexts_path(void)
+ {
+ 	return get_path(SYSTEMD_CONTEXTS);
+diff --git libselinux-2.5/src/selinux_internal.h libselinux-2.5/src/selinux_internal.h
+index 46566f6..3d5c9fb 100644
+--- libselinux-2.5/src/selinux_internal.h
++++ libselinux-2.5/src/selinux_internal.h
+@@ -83,7 +83,9 @@ hidden_proto(selinux_mkload_policy)
+     hidden_proto(selinux_media_context_path)
+     hidden_proto(selinux_x_context_path)
+     hidden_proto(selinux_sepgsql_context_path)
++    hidden_proto(selinux_openrc_contexts_path)
+     hidden_proto(selinux_openssh_contexts_path)
++    hidden_proto(selinux_snapperd_contexts_path)
+     hidden_proto(selinux_systemd_contexts_path)
+     hidden_proto(selinux_path)
+     hidden_proto(selinux_check_passwd_access)
+diff --git libselinux-2.5/src/selinuxswig.i libselinux-2.5/src/selinuxswig.i
+index c1e4ef7..687c43b 100644
+--- libselinux-2.5/src/selinuxswig.i
++++ libselinux-2.5/src/selinuxswig.i
+@@ -9,6 +9,7 @@
+ 	#include "../include/selinux/get_context_list.h"
+ 	#include "../include/selinux/get_default_type.h"
+ 	#include "../include/selinux/label.h"
++	#include "../include/selinux/restorecon.h"
+ 	#include "../include/selinux/selinux.h"
+ %}
+ %apply int *OUTPUT { int *enforce };
+@@ -61,4 +62,5 @@
+ %include "../include/selinux/get_context_list.h"
+ %include "../include/selinux/get_default_type.h"
+ %include "../include/selinux/label.h"
++%include "../include/selinux/restorecon.h"
+ %include "../include/selinux/selinux.h"
+diff --git libselinux-2.5/src/selinuxswig_python.i libselinux-2.5/src/selinuxswig_python.i
+index 8cea18d..eac8475 100644
+--- libselinux-2.5/src/selinuxswig_python.i
++++ libselinux-2.5/src/selinuxswig_python.i
+@@ -14,31 +14,23 @@ DISABLED = -1
+ PERMISSIVE = 0
+ ENFORCING = 1
+ 
+-def restorecon(path, recursive=False):
+-    """ Restore SELinux context on a given path """
+-
+-    try:
+-        mode = os.lstat(path)[stat.ST_MODE]
+-        status, context = matchpathcon(path, mode)
+-    except OSError:
+-        path = os.path.realpath(os.path.expanduser(path))
+-        mode = os.lstat(path)[stat.ST_MODE]
+-        status, context = matchpathcon(path, mode)
+-
+-    if status == 0:
+-        try:
+-            status, oldcontext = lgetfilecon(path)
+-        except OSError as e:
+-            if e.errno != errno.ENODATA:
+-                raise
+-            oldcontext = None
+-        if context != oldcontext:
+-            lsetfilecon(path, context)
+-
+-        if recursive:
+-            for root, dirs, files in os.walk(path):
+-                for name in files + dirs:
+-                   restorecon(os.path.join(root, name))
++def restorecon(path, recursive=False, verbose=False):
++    """ Restore SELinux context on a given path
++
++    Arguments:
++    path -- The pathname for the file or directory to be relabeled.
++
++    Keyword arguments:
++    recursive -- Change files and directories file labels recursively (default False)
++    verbose -- Show changes in file labels (default False)
++    """
++
++    restorecon_flags = SELINUX_RESTORECON_IGNORE_DIGEST | SELINUX_RESTORECON_REALPATH
++    if recursive:
++        restorecon_flags |= SELINUX_RESTORECON_RECURSE
++    if verbose:
++        restorecon_flags |= SELINUX_RESTORECON_VERBOSE
++    selinux_restorecon(os.path.expanduser(path), restorecon_flags)
+ 
+ def chcon(path, context, recursive=False):
+     """ Set the SELinux context on a given path """
+diff --git libselinux-2.5/src/setfilecon.c libselinux-2.5/src/setfilecon.c
+index d05969c..3f0200e 100644
+--- libselinux-2.5/src/setfilecon.c
++++ libselinux-2.5/src/setfilecon.c
+@@ -9,8 +9,12 @@
+ 
+ int setfilecon_raw(const char *path, const char * context)
+ {
+-	int rc = setxattr(path, XATTR_NAME_SELINUX, context, strlen(context) + 1,
+-			0);
++	int rc;
++	if (! context) {
++		errno=EINVAL;
++		return -1;
++	}
++	rc = setxattr(path, XATTR_NAME_SELINUX, context, strlen(context) + 1, 0);
+ 	if (rc < 0 && errno == ENOTSUP) {
+ 		char * ccontext = NULL;
+ 		int err = errno;
+diff --git libselinux-2.5/utils/.gitignore libselinux-2.5/utils/.gitignore
+index 060eaab..ed3bf0b 100644
+--- libselinux-2.5/utils/.gitignore
++++ libselinux-2.5/utils/.gitignore
+@@ -14,7 +14,12 @@ getseuser
+ matchpathcon
+ policyvers
+ sefcontext_compile
++selabel_digest
++selabel_lookup
++selabel_lookup_best_match
++selabel_partial_match
+ selinux_check_securetty_context
++selinux_restorecon
+ selinuxenabled
+ selinuxexeccon
+ setenforce
+diff --git libselinux-2.5/utils/Makefile libselinux-2.5/utils/Makefile
+index cf7af52..8497cb4 100644
+--- libselinux-2.5/utils/Makefile
++++ libselinux-2.5/utils/Makefile
+@@ -3,6 +3,7 @@ PREFIX ?= $(DESTDIR)/usr
+ LIBDIR ?= $(PREFIX)/lib
+ USRBINDIR ?= $(PREFIX)/sbin
+ SBINDIR ?= $(DESTDIR)/sbin
++INCLUDEDIR ?= $(PREFIX)/include
+ 
+ MAX_STACK_SIZE=8192
+ CFLAGS ?= -O -Wall -W -Wundef -Wformat-y2k -Wformat-security -Winit-self -Wmissing-include-dirs \
+@@ -23,7 +24,7 @@ CFLAGS ?= -O -Wall -W -Wundef -Wformat-y2k -Wformat-security -Winit-self -Wmissi
+           -fasynchronous-unwind-tables -fdiagnostics-show-option -funit-at-a-time \
+           -fipa-pure-const -Wno-suggest-attribute=pure -Wno-suggest-attribute=const \
+           -Werror -Wno-aggregate-return -Wno-redundant-decls
+-override CFLAGS += -I../include -D_GNU_SOURCE $(EMFLAGS)
++override CFLAGS += -I../include -I$(INCLUDEDIR) -D_GNU_SOURCE $(EMFLAGS)
+ LDLIBS += -L../src -lselinux -L$(LIBDIR)
+ 
+ TARGETS=$(patsubst %.c,%,$(wildcard *.c))
+diff --git libselinux-2.5/utils/sefcontext_compile.c libselinux-2.5/utils/sefcontext_compile.c
+index d2578b6..fd6fb78 100644
+--- libselinux-2.5/utils/sefcontext_compile.c
++++ libselinux-2.5/utils/sefcontext_compile.c
+@@ -228,10 +228,13 @@ static int write_binary_file(struct saved_data *data, int fd)
+ 		if (len != to_write)
+ 			goto err;
+ 
+-		/* determine the size of the pcre study info */
+-		rc = pcre_fullinfo(re, sd, PCRE_INFO_STUDYSIZE, &size);
+-		if (rc < 0)
+-			goto err;
++		if (sd) {
++			/* determine the size of the pcre study info */
++			rc = pcre_fullinfo(re, sd, PCRE_INFO_STUDYSIZE, &size);
++			if (rc < 0)
++				goto err;
++		} else
++			size = 0;
+ 
+ 		/* write the number of bytes in the pcre study data */
+ 		to_write = size;
+@@ -239,10 +242,12 @@ static int write_binary_file(struct saved_data *data, int fd)
+ 		if (len != 1)
+ 			goto err;
+ 
+-		/* write the actual pcre study data as a char array */
+-		len = fwrite(sd->study_data, 1, to_write, bin_file);
+-		if (len != to_write)
+-			goto err;
++		if (sd) {
++			/* write the actual pcre study data as a char array */
++			len = fwrite(sd->study_data, 1, to_write, bin_file);
++			if (len != to_write)
++				goto err;
++		}
+ 	}
+ 
+ 	rc = 0;

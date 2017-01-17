@@ -1,0 +1,32 @@
+Index: libsemanage/src/semanage_store.c
+===================================================================
+RCS file: /cvsroot/selinux/nsa/selinux-usr/libsemanage/src/semanage_store.c,v
+retrieving revision 1.21
+diff -u -r1.21 semanage_store.c
+--- libsemanage/src/semanage_store.c	9 Nov 2005 14:52:55 -0000	1.21
++++ libsemanage/src/semanage_store.c	14 Nov 2005 21:43:09 -0000
+@@ -950,11 +950,6 @@
+ 		goto cleanup;
+ 	}
+ 
+-	if ((r = semanage_exec_prog(sh, sh->conf->genhomedircon, sh->conf->store_path, "")) != 0) {
+-		ERR(sh, "genhomedircon returned error code %d.", r);
+-		goto cleanup;
+-	}
+-
+ 	retval = 0;
+ cleanup:
+ 	free(storepath);
+@@ -1070,6 +1065,12 @@
+ 		goto cleanup;
+ 	}
+ 
++	if ((retval = semanage_exec_prog(sh, sh->conf->genhomedircon, sh->conf->store_path, "")) != 0) {
++		ERR(sh, "genhomedircon returned error code %d.", retval);
++		goto cleanup;
++	}
++
++
+ cleanup:
+ 	return retval;
+ 

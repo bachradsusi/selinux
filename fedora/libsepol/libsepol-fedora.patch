@@ -1,0 +1,4488 @@
+diff --git libsepol-2.5/Android.mk libsepol-2.5/Android.mk
+index a43b343..6d89f17 100644
+--- libsepol-2.5/Android.mk
++++ libsepol-2.5/Android.mk
+@@ -64,14 +64,11 @@ cil_src_files := \
+ 	cil/src/cil_verify.c
+ 
+ common_cflags := \
++	-D_GNU_SOURCE \
+ 	-Wall -W -Wundef \
+ 	-Wshadow -Wmissing-noreturn \
+ 	-Wmissing-format-attribute
+ 
+-ifeq ($(HOST_OS), darwin)
+-common_cflags += -DDARWIN
+-endif
+-
+ common_includes := \
+ 	$(LOCAL_PATH)/include/ \
+ 	$(LOCAL_PATH)/src/ \
+diff --git libsepol-2.5/ChangeLog libsepol-2.5/ChangeLog
+index ace3d54..1e35c49 100644
+--- libsepol-2.5/ChangeLog
++++ libsepol-2.5/ChangeLog
+@@ -1,3 +1,37 @@
++	* Check for too many permissions in classes and commons in CIL, from James Carter. 
++	* Fix xperm mapping between avrule and avtab, from Jeff Vander Stoep.
++	* tests: Fix mispelling of optimization option, from Nicolas Iooss.
++	* Fix unused/uninitialized variables on mac build, from William Roberts.
++	* Produce more meaningful error messages for conflicting type rules in CIL, from Guido Trentalancia.
++	* make "make test" fail when a CUnit test fails, from Nicolas Iooss.
++	* tests: fix g_b_role_2 test, from Nicolas Iooss.
++	* Change which attributes CIL keeps in the binary policy, from James Carter.
++	* Port str_read() from kernel and remove multiple occurances of similar code, from William Roberts.
++	* Use calloc instead of malloc for all the *_to_val_structs, from William Roberts.
++	* Fix bugs found by AFL, from William Roberts.
++	* Fix memory leak in expand.c, from William Roberts.
++	* Fix invalid read when policy file is corrupt, from William Roberts.
++	* Fix possible use of uninitialized variables, from William Roberts.
++	* Warn instead of fail if permission is not resolved, from James Carter.
++	* Ignore object_r when adding userrole mappings to policydb, from Steve Lawrence.
++	* Add missing return to sepol_node_query(), from Petr Lautrbach.
++	* Add missing <stdarg.h> include, from Thomas Petazzoni.
++	* Correctly detect unknown classes in sepol_string_to_security_class, from Joshua Brindle.
++	* Sort object files for deterministic linking order, from Laurent Bigonville.
++	* Fix neverallowxperm checking on attributes, from Jeff Vander Stoep.
++	* Remove libsepol.map when cleaning, from Nicolas Iooss.
++	* Add high-level language line marking support to CIL, from James Carter.
++	* Change logic of bounds checking to match change in kernel, from James Carter.
++	* Fix multiple spelling errors, from Laurent Bigonville.
++	* Only apply bounds checking to source types in rules, from Stephen Smalley.
++	* Fix CIL and not add an attribute as a type in the attr_type_map, from James Carter
++	* Build policy on systems not supporting DCCP protocol, from Richard Haines.
++	* Fix extended permissions neverallow checking, from Jeff Vander Stoep.
++	* Fix CIL neverallow and bounds checking, from James Carter
++	* Android.mk: Add -D_GNU_SOURCE to common_cflags, from Nick Kralevich.
++	* Add support for portcon dccp protocol, from Richard Haines
++	* Fix bug in CIL when resetting classes, from Steve Lawrence
++
+ 2.5 2016-02-23
+ 	* Fix unused variable annotations, from Nicolas Iooss.
+ 	* Fix uninitialized variable in CIL, from Nicolas Iooss.
+diff --git libsepol-2.5/cil/src/cil.c libsepol-2.5/cil/src/cil.c
+index afdc240..929ab19 100644
+--- libsepol-2.5/cil/src/cil.c
++++ libsepol-2.5/cil/src/cil.c
+@@ -108,6 +108,7 @@ static void cil_init_keys(void)
+ 	CIL_KEY_STAR = cil_strpool_add("*");
+ 	CIL_KEY_UDP = cil_strpool_add("udp");
+ 	CIL_KEY_TCP = cil_strpool_add("tcp");
++	CIL_KEY_DCCP = cil_strpool_add("dccp");
+ 	CIL_KEY_AUDITALLOW = cil_strpool_add("auditallow");
+ 	CIL_KEY_TUNABLEIF = cil_strpool_add("tunableif");
+ 	CIL_KEY_ALLOW = cil_strpool_add("allow");
+@@ -232,6 +233,9 @@ static void cil_init_keys(void)
+ 	CIL_KEY_PERMISSIONX = cil_strpool_add("permissionx");
+ 	CIL_KEY_IOCTL = cil_strpool_add("ioctl");
+ 	CIL_KEY_UNORDERED = cil_strpool_add("unordered");
++	CIL_KEY_SRC_INFO = cil_strpool_add("<src_info>");
++	CIL_KEY_SRC_CIL = cil_strpool_add("<src_cil>");
++	CIL_KEY_SRC_HLL = cil_strpool_add("<src_hll>");
+ }
+ 
+ void cil_db_init(struct cil_db **db)
+@@ -756,6 +760,9 @@ void cil_destroy_data(void **data, enum cil_flavor flavor)
+ 	case CIL_MLS:
+ 		cil_destroy_mls(*data);
+ 		break;
++	case CIL_SRC_INFO:
++		cil_destroy_src_info(*data);
++		break;
+ 	case CIL_OP:
+ 	case CIL_CONS_OPERAND:
+ 		break;
+@@ -763,8 +770,8 @@ void cil_destroy_data(void **data, enum cil_flavor flavor)
+ 		cil_log(CIL_INFO, "Unknown data flavor: %d\n", flavor);
+ 		break;
+ 	}
+-	
+-	*data = NULL;		
++
++	*data = NULL;
+ }
+ 
+ int cil_flavor_to_symtab_index(enum cil_flavor flavor, enum cil_sym_index *sym_index)
+@@ -1108,6 +1115,8 @@ const char * cil_node_to_string(struct cil_tree_node *node)
+ 		return CIL_KEY_HANDLEUNKNOWN;
+ 	case CIL_MLS:
+ 		return CIL_KEY_MLS;
++	case CIL_SRC_INFO:
++		return CIL_KEY_SRC_INFO;
+ 	case CIL_ALL:
+ 		return CIL_KEY_ALL;
+ 	case CIL_RANGE:
+@@ -1755,8 +1764,7 @@ int cil_get_symtab(struct cil_tree_node *ast_node, symtab_t **symtab, enum cil_s
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Failed to get symtab from node at line %d of %s\n",
+-			ast_node->line, ast_node->path);
++	cil_tree_log(ast_node, CIL_ERR, "Failed to get symtab from node");
+ 	return SEPOL_ERR;	
+ }
+ 
+@@ -2553,3 +2561,10 @@ void cil_mls_init(struct cil_mls **mls)
+ 	*mls = cil_malloc(sizeof(**mls));
+ 	(*mls)->value = 0;
+ }
++
++void cil_src_info_init(struct cil_src_info **info)
++{
++	*info = cil_malloc(sizeof(**info));
++	(*info)->is_cil = 0;
++	(*info)->path = NULL;
++}
+diff --git libsepol-2.5/cil/src/cil_binary.c libsepol-2.5/cil/src/cil_binary.c
+index f749e53..cc73648 100644
+--- libsepol-2.5/cil/src/cil_binary.c
++++ libsepol-2.5/cil/src/cil_binary.c
+@@ -31,6 +31,9 @@
+ #include <stdio.h>
+ #include <assert.h>
+ #include <netinet/in.h>
++#ifndef IPPROTO_DCCP
++#define IPPROTO_DCCP 33
++#endif
+ 
+ #include <sepol/policydb/policydb.h>
+ #include <sepol/policydb/polcaps.h>
+@@ -606,9 +609,11 @@ int __cil_typeattr_bitmap_init(policydb_t *pdb)
+ 			rc = SEPOL_ERR;
+ 			goto exit;
+ 		}
+-		if (ebitmap_set_bit(&pdb->attr_type_map[i], i, 1)) {
+-			rc = SEPOL_ERR;
+-			goto exit;
++		if (pdb->type_val_to_struct[i] && pdb->type_val_to_struct[i]->flavor != TYPE_ATTRIB) {
++			if (ebitmap_set_bit(&pdb->attr_type_map[i], i, 1)) {
++				rc = SEPOL_ERR;
++				goto exit;
++			}
+ 		}
+ 
+ 	}
+@@ -749,6 +754,12 @@ int cil_userrole_to_policydb(policydb_t *pdb, const struct cil_db *db, struct ci
+ 				goto exit;
+ 			}
+ 
++			if (sepol_role->s.value == 1) {
++				// role is object_r, ignore it since it is implicitly associated
++				// with all users
++				continue;
++			}
++
+ 			if (ebitmap_set_bit(&sepol_user->roles.roles, sepol_role->s.value - 1, 1)) {
+ 				cil_log(CIL_INFO, "Failed to set role bit for user\n");
+ 				rc = SEPOL_ERR;
+@@ -973,7 +984,7 @@ avtab_datum_t *cil_cond_av_list_search(avtab_key_t *key, cond_av_list_t *cond_li
+ 	return NULL;
+ }
+ 
+-int __cil_insert_type_rule(policydb_t *pdb, uint32_t kind, uint32_t src, uint32_t tgt, uint32_t obj, uint32_t res, cond_node_t *cond_node, enum cil_flavor cond_flavor)
++int __cil_insert_type_rule(policydb_t *pdb, uint32_t kind, uint32_t src, uint32_t tgt, uint32_t obj, uint32_t res, struct cil_type_rule *cil_rule, cond_node_t *cond_node, enum cil_flavor cond_flavor)
+ {
+ 	int rc = SEPOL_OK;
+ 	avtab_key_t avtab_key;
+@@ -1008,7 +1019,7 @@ int __cil_insert_type_rule(policydb_t *pdb, uint32_t kind, uint32_t src, uint32_
+ 		 * non-duplicate rule using the same key.
+ 		 */
+ 		if (existing->datum.data != res) {
+-			cil_log(CIL_ERR, "Conflicting type rules\n");
++			cil_log(CIL_ERR, "Conflicting type rules (scontext=%s tcontext=%s tclass=%s result=%s)\n", cil_rule->src_str, cil_rule->tgt_str, cil_rule->obj_str, cil_rule->result_str);
+ 			rc = SEPOL_ERR;
+ 		}
+ 		goto exit;
+@@ -1034,7 +1045,7 @@ int __cil_insert_type_rule(policydb_t *pdb, uint32_t kind, uint32_t src, uint32_
+ 			search_datum = cil_cond_av_list_search(&avtab_key, other_list);
+ 			if (search_datum == NULL) {
+ 				if (existing->datum.data != res) {
+-					cil_log(CIL_ERR, "Conflicting type rules\n");
++					cil_log(CIL_ERR, "Conflicting type rules (scontext=%s tcontext=%s tclass=%s result=%s)\n", cil_rule->src_str, cil_rule->tgt_str, cil_rule->obj_str, cil_rule->result_str);
+ 					rc = SEPOL_ERR;
+ 					goto exit;
+ 				}
+@@ -1093,7 +1104,7 @@ int __cil_type_rule_to_avtab(policydb_t *pdb, const struct cil_db *db, struct ci
+ 				rc = __cil_get_sepol_class_datum(pdb, DATUM(c->data), &sepol_obj);
+ 				if (rc != SEPOL_OK) goto exit;
+ 
+-				rc = __cil_insert_type_rule(pdb, kind, sepol_src->s.value, sepol_tgt->s.value, sepol_obj->s.value, sepol_result->s.value, cond_node, cond_flavor);
++				rc = __cil_insert_type_rule(pdb, kind, sepol_src->s.value, sepol_tgt->s.value, sepol_obj->s.value, sepol_result->s.value, cil_rule, cond_node, cond_flavor);
+ 				if (rc != SEPOL_OK) goto exit;
+ 			}
+ 		}
+@@ -1770,13 +1781,12 @@ int __cil_cond_to_policydb_helper(struct cil_tree_node *node, __attribute__((unu
+ 		cil_typetrans = (struct cil_nametypetransition*)node->data;
+ 		if (DATUM(cil_typetrans->name)->fqn != CIL_KEY_STAR) {
+ 			cil_log(CIL_ERR, "typetransition with file name not allowed within a booleanif block.\n");
+-			cil_log(CIL_ERR,"Invalid typetransition statement at line %d of %s\n", 
+-			node->line, node->path);
++			cil_tree_log(node, CIL_ERR,"Invalid typetransition statement");
+ 			goto exit;
+ 		}
+ 		rc = __cil_typetransition_to_avtab(pdb, db, cil_typetrans, cond_node, cond_flavor, filename_trans_table);
+ 		if (rc != SEPOL_OK) {
+-			cil_log(CIL_ERR, "Failed to insert type transition into avtab at line %d of %s\n", node->line, node->path);
++			cil_tree_log(node, CIL_ERR, "Failed to insert type transition into avtab");
+ 			goto exit;
+ 		}
+ 		break;
+@@ -1784,7 +1794,7 @@ int __cil_cond_to_policydb_helper(struct cil_tree_node *node, __attribute__((unu
+ 		cil_type_rule = node->data;
+ 		rc = __cil_type_rule_to_avtab(pdb, db, cil_type_rule, cond_node, cond_flavor);
+ 		if (rc != SEPOL_OK) {
+-			cil_log(CIL_ERR, "Failed to insert typerule into avtab at line %d of %s\n", node->line, node->path);
++			cil_tree_log(node, CIL_ERR, "Failed to insert typerule into avtab");
+ 			goto exit;
+ 		}
+ 		break;
+@@ -1792,7 +1802,7 @@ int __cil_cond_to_policydb_helper(struct cil_tree_node *node, __attribute__((unu
+ 		cil_avrule = node->data;
+ 		rc = __cil_avrule_to_avtab(pdb, db, cil_avrule, cond_node, cond_flavor);
+ 		if (rc != SEPOL_OK) {
+-			cil_log(CIL_ERR, "Failed to insert avrule into avtab at line %d of %s\n", node->line, node->path);
++			cil_tree_log(node, CIL_ERR, "Failed to insert avrule into avtab");
+ 			goto exit;
+ 		}
+ 		break;
+@@ -1800,8 +1810,7 @@ int __cil_cond_to_policydb_helper(struct cil_tree_node *node, __attribute__((unu
+ 	case CIL_TUNABLEIF:
+ 		break;
+ 	default:
+-		cil_log(CIL_ERR, "Invalid statement within booleanif at line %d of %s\n", 
+-			node->line, node->path);
++		cil_tree_log(node, CIL_ERR, "Invalid statement within booleanif");
+ 		goto exit;
+ 	}
+ 
+@@ -2060,14 +2069,13 @@ int cil_booleanif_to_policydb(policydb_t *pdb, const struct cil_db *db, struct c
+ 	tmp_cond = cond_node_create(pdb, NULL);
+ 	if (tmp_cond == NULL) {
+ 		rc = SEPOL_ERR;
+-		cil_log(CIL_INFO, "Failed to create sepol conditional node at line %d of %s\n", 
+-			node->line, node->path);
++		cil_tree_log(node, CIL_INFO, "Failed to create sepol conditional node");
+ 		goto exit;
+ 	}
+ 	
+ 	rc = __cil_cond_expr_to_sepol_expr(pdb, cil_boolif->datum_expr, &tmp_cond->expr);
+ 	if (rc != SEPOL_OK) {
+-		cil_log(CIL_INFO, "Failed to convert CIL conditional expression to sepol expression at line %d of %s\n", node->line, node->path);
++		cil_tree_log(node, CIL_INFO, "Failed to convert CIL conditional expression to sepol expression");
+ 		goto exit;
+ 	}
+ 
+@@ -2123,7 +2131,7 @@ int cil_booleanif_to_policydb(policydb_t *pdb, const struct cil_db *db, struct c
+ 		bool_args.cond_flavor = CIL_CONDTRUE;
+ 		rc = cil_tree_walk(true_node, __cil_cond_to_policydb_helper, NULL, NULL, &bool_args);
+ 		if (rc != SEPOL_OK) {
+-			cil_log(CIL_ERR, "Failure while walking true conditional block at line %d of %s\n", true_node->line, true_node->path);
++			cil_tree_log(true_node, CIL_ERR, "Failure while walking true conditional block");
+ 			goto exit;
+ 		}
+ 	}
+@@ -2132,7 +2140,7 @@ int cil_booleanif_to_policydb(policydb_t *pdb, const struct cil_db *db, struct c
+ 		bool_args.cond_flavor = CIL_CONDFALSE;
+ 		rc = cil_tree_walk(false_node, __cil_cond_to_policydb_helper, NULL, NULL, &bool_args);
+ 		if (rc != SEPOL_OK) {
+-			cil_log(CIL_ERR, "Failure while walking false conditional block at line %d of %s\n", false_node->line, false_node->path);
++			cil_tree_log(false_node, CIL_ERR, "Failure while walking false conditional block");
+ 			goto exit;
+ 		}
+ 	}
+@@ -3035,6 +3043,9 @@ int cil_portcon_to_policydb(policydb_t *pdb, struct cil_sort *portcons)
+ 		case CIL_PROTOCOL_TCP:
+ 			new_ocon->u.port.protocol = IPPROTO_TCP;
+ 			break;
++		case CIL_PROTOCOL_DCCP:
++			new_ocon->u.port.protocol = IPPROTO_DCCP;
++			break;
+ 		default:
+ 			/* should not get here */
+ 			rc = SEPOL_ERR;
+@@ -3583,7 +3594,7 @@ int __cil_node_to_policydb(struct cil_tree_node *node, void *extra_args)
+ 
+ exit:
+ 	if (rc != SEPOL_OK) {
+-		cil_log(CIL_ERR, "Binary policy creation failed at line %d of %s\n", node->line, node->path);
++		cil_tree_log(node, CIL_ERR, "Binary policy creation failed");
+ 	}
+ 	return rc;
+ }
+@@ -4227,6 +4238,9 @@ exit:
+ static avrule_t *__cil_init_sepol_avrule(uint32_t kind, struct cil_tree_node *node)
+ {
+ 	avrule_t *avrule;
++	struct cil_tree_node *source_node;
++	char *source_path;
++	int is_cil;
+ 
+ 	avrule = cil_malloc(sizeof(avrule_t));
+ 	avrule->specified = kind;
+@@ -4235,8 +4249,17 @@ static avrule_t *__cil_init_sepol_avrule(uint32_t kind, struct cil_tree_node *no
+ 	__cil_init_sepol_type_set(&avrule->ttypes);
+ 	avrule->perms = NULL;
+ 	avrule->line = node->line;
+-	avrule->source_filename = node->path;
++
++	avrule->source_filename = NULL;
+ 	avrule->source_line = node->line;
++	source_node = cil_tree_get_next_path(node, &source_path, &is_cil);
++	if (source_node) {
++		avrule->source_filename = source_path;
++		if (!is_cil) {
++			avrule->source_line = node->hll_line;
++		}
++	}
++
+ 	avrule->next = NULL;
+ 	return avrule;
+ }
+@@ -4263,10 +4286,8 @@ static void __cil_print_parents(const char *pad, struct cil_tree_node *n)
+ 
+ 	__cil_print_parents(pad, n->parent);
+ 
+-	if (!n->path) {
+-		cil_log(CIL_ERR,"%s%s\n", pad, cil_node_to_string(n));
+-	} else {
+-		cil_log(CIL_ERR,"%s%s at line %d of %s\n", pad, cil_node_to_string(n), n->line, n->path);
++	if (n->flavor != CIL_SRC_INFO) {
++		cil_tree_log(n, CIL_ERR,"%s%s", pad, cil_node_to_string(n));
+ 	}
+ }
+ 
+@@ -4357,7 +4378,7 @@ static int __cil_print_neverallow_failure(const struct cil_db *db, struct cil_tr
+ 		allow_str = CIL_KEY_ALLOWX;
+ 		avrule_flavor = CIL_AVRULEX;
+ 	}
+-	cil_log(CIL_ERR, "%s check failed at line %d of %s\n", neverallow_str, node->line, node->path);
++	cil_tree_log(node, CIL_ERR, "%s check failed", neverallow_str);
+ 	__cil_print_rule("  ", neverallow_str, cil_rule);
+ 	cil_list_init(&matching, CIL_NODE);
+ 	rc = cil_find_matching_avrule_in_ast(db->ast->root, avrule_flavor, &target, matching, CIL_FALSE);
+@@ -4380,10 +4401,9 @@ exit:
+ 	return rc;
+ }
+ 
+-static int cil_check_neverallow(const struct cil_db *db, policydb_t *pdb, struct cil_tree_node *node)
++static int cil_check_neverallow(const struct cil_db *db, policydb_t *pdb, struct cil_tree_node *node, int *violation)
+ {
+-	int rc = SEPOL_ERR;
+-	int ret = CIL_FALSE;
++	int rc = SEPOL_OK;
+ 	struct cil_avrule *cil_rule = node->data;
+ 	struct cil_symtab_datum *tgt = cil_rule->tgt;
+ 	uint32_t kind;
+@@ -4422,11 +4442,11 @@ static int cil_check_neverallow(const struct cil_db *db, policydb_t *pdb, struct
+ 
+ 		rc = check_assertion(pdb, rule);
+ 		if (rc == CIL_TRUE) {
++			*violation = CIL_TRUE;
+ 			rc = __cil_print_neverallow_failure(db, node);
+ 			if (rc != SEPOL_OK) {
+ 				goto exit;
+ 			}
+-			ret = CIL_TRUE;
+ 		}
+ 
+ 	} else {
+@@ -4444,12 +4464,11 @@ static int cil_check_neverallow(const struct cil_db *db, policydb_t *pdb, struct
+ 			rule->xperms = item->data;
+ 			rc = check_assertion(pdb, rule);
+ 			if (rc == CIL_TRUE) {
++				*violation = CIL_TRUE;
+ 				rc = __cil_print_neverallow_failure(db, node);
+ 				if (rc != SEPOL_OK) {
+ 					goto exit;
+ 				}
+-				ret = CIL_TRUE;
+-				goto exit;
+ 			}
+ 		}
+ 	}
+@@ -4466,34 +4485,23 @@ exit:
+ 	rule->xperms = NULL;
+ 	__cil_destroy_sepol_avrules(rule);
+ 
+-	if (rc) {
+-		return rc;
+-	} else {
+-		return ret;
+-	}
++	return rc;
+ }
+ 
+-static int cil_check_neverallows(const struct cil_db *db, policydb_t *pdb, struct cil_list *neverallows)
++static int cil_check_neverallows(const struct cil_db *db, policydb_t *pdb, struct cil_list *neverallows, int *violation)
+ {
+ 	int rc = SEPOL_OK;
+-	int ret = CIL_FALSE;
+ 	struct cil_list_item *item;
+ 
+ 	cil_list_for_each(item, neverallows) {
+-		rc = cil_check_neverallow(db, pdb, item->data);
+-		if (rc < 0) {
++		rc = cil_check_neverallow(db, pdb, item->data, violation);
++		if (rc != SEPOL_OK) {
+ 			goto exit;
+-		} else if (rc > 0) {
+-			ret = CIL_TRUE;
+ 		}
+ 	}
+ 
+ exit:
+-	if (rc || ret) {
+-		return SEPOL_ERR;
+-	} else {
+-		return SEPOL_OK;
+-	}
++	return rc;
+ }
+ 
+ static struct cil_list *cil_classperms_from_sepol(policydb_t *pdb, uint16_t class, uint32_t data, struct cil_class *class_value_to_cil[], struct cil_perm **perm_value_to_cil[])
+@@ -4548,7 +4556,7 @@ exit:
+ 	return rc;
+ }
+ 
+-static int cil_check_type_bounds(const struct cil_db *db, policydb_t *pdb, void *type_value_to_cil, struct cil_class *class_value_to_cil[], struct cil_perm **perm_value_to_cil[])
++static int cil_check_type_bounds(const struct cil_db *db, policydb_t *pdb, void *type_value_to_cil, struct cil_class *class_value_to_cil[], struct cil_perm **perm_value_to_cil[], int *violation)
+ {
+ 	int rc = SEPOL_OK;
+ 	int i;
+@@ -4574,6 +4582,9 @@ static int cil_check_type_bounds(const struct cil_db *db, policydb_t *pdb, void
+ 		if (bad) {
+ 			avtab_ptr_t cur;
+ 			struct cil_avrule target;
++			struct cil_tree_node *n1 = NULL;
++
++			*violation = CIL_TRUE;
+ 
+                         target.is_extended = 0;
+ 			target.rule_kind = CIL_AVRULE_ALLOWED;
+@@ -4585,7 +4596,6 @@ static int cil_check_type_bounds(const struct cil_db *db, policydb_t *pdb, void
+ 			for (cur = bad; cur; cur = cur->next) {
+ 				struct cil_list_item *i2;
+ 				struct cil_list *matching;
+-				struct cil_tree_node *n;
+ 
+ 				rc = cil_avrule_from_sepol(pdb, cur, &target, type_value_to_cil, class_value_to_cil, perm_value_to_cil);
+ 				if (rc != SEPOL_OK) {
+@@ -4594,7 +4604,7 @@ static int cil_check_type_bounds(const struct cil_db *db, policydb_t *pdb, void
+ 				}
+ 				__cil_print_rule("  ", "allow", &target);
+ 				cil_list_init(&matching, CIL_NODE);
+-				rc = cil_find_matching_avrule_in_ast(db->ast->root, CIL_AVRULE, &target, matching, CIL_FALSE);
++				rc = cil_find_matching_avrule_in_ast(db->ast->root, CIL_AVRULE, &target, matching, CIL_TRUE);
+ 				if (rc) {
+ 					cil_log(CIL_ERR, "Error occurred while checking type bounds\n");
+ 					cil_list_destroy(&matching, CIL_FALSE);
+@@ -4602,14 +4612,17 @@ static int cil_check_type_bounds(const struct cil_db *db, policydb_t *pdb, void
+ 					bounds_destroy_bad(bad);
+ 					goto exit;
+ 				}
+-
+ 				cil_list_for_each(i2, matching) {
+-					__cil_print_parents("    ", (struct cil_tree_node *)i2->data);
++					struct cil_tree_node *n2 = i2->data;
++					struct cil_avrule *r2 = n2->data;
++					if (n1 == n2) {
++						cil_log(CIL_ERR, "    <See previous>\n");
++					} else {
++						n1 = n2;
++						__cil_print_parents("    ", n2);
++						__cil_print_rule("      ", "allow", r2);
++					}
+ 				}
+-				i2 = matching->tail;
+-				n = i2->data;
+-				__cil_print_rule("      ", "allow", n->data);
+-				cil_log(CIL_ERR,"\n");
+ 				cil_list_destroy(&matching, CIL_FALSE);
+ 				cil_list_destroy(&target.perms.classperms, CIL_TRUE);
+ 			}
+@@ -4753,20 +4766,32 @@ int cil_binary_create_allocated_pdb(const struct cil_db *db, sepol_policydb_t *p
+ 	__cil_set_conditional_state_and_flags(pdb);
+ 
+ 	if (db->disable_neverallow != CIL_TRUE) {
++		int violation = CIL_FALSE;
+ 		cil_log(CIL_INFO, "Checking Neverallows\n");
+-		rc = cil_check_neverallows(db, pdb, neverallows);
++		rc = cil_check_neverallows(db, pdb, neverallows, &violation);
+ 		if (rc != SEPOL_OK) goto exit;
+ 
+ 		cil_log(CIL_INFO, "Checking User Bounds\n");
+-		bounds_check_users(NULL, pdb);
++		rc = bounds_check_users(NULL, pdb);
++		if (rc) {
++			violation = CIL_TRUE;
++		}
+ 
+ 		cil_log(CIL_INFO, "Checking Role Bounds\n");
+-		bounds_check_roles(NULL, pdb);
++		rc = bounds_check_roles(NULL, pdb);
++		if (rc) {
++			violation = CIL_TRUE;
++		}
+ 
+ 		cil_log(CIL_INFO, "Checking Type Bounds\n");
+-		rc = cil_check_type_bounds(db, pdb, type_value_to_cil, class_value_to_cil, perm_value_to_cil);
++		rc = cil_check_type_bounds(db, pdb, type_value_to_cil, class_value_to_cil, perm_value_to_cil, &violation);
+ 		if (rc != SEPOL_OK) goto exit;
+ 
++		if (violation == CIL_TRUE) {
++			rc = SEPOL_ERR;
++			goto exit;
++		}
++
+ 	}
+ 
+ 	rc = SEPOL_OK;
+diff --git libsepol-2.5/cil/src/cil_build_ast.c libsepol-2.5/cil/src/cil_build_ast.c
+index 1135e06..a96c2a9 100644
+--- libsepol-2.5/cil/src/cil_build_ast.c
++++ libsepol-2.5/cil/src/cil_build_ast.c
+@@ -108,8 +108,7 @@ int cil_gen_node(__attribute__((unused)) struct cil_db *db, struct cil_tree_node
+ 			if (cil_symtab_get_datum(symtab, key, &datum) == SEPOL_OK) {
+ 				if (sflavor == CIL_SYM_BLOCKS) {
+ 					struct cil_tree_node *node = datum->nodes->head->data;
+-					cil_log(CIL_ERR, "Previous declaration at line %d of %s\n",
+-						node->line, node->path);
++					cil_tree_log(node, CIL_ERR, "Previous declaration");
+ 				}
+ 			}
+ 			goto exit;
+@@ -186,8 +185,7 @@ int cil_gen_block(struct cil_db *db, struct cil_tree_node *parse_current, struct
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad block declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad block declaration");
+ 	cil_destroy_block(block);
+ 	cil_clear_node(ast_node);
+ 	return rc;
+@@ -236,8 +234,7 @@ int cil_gen_blockinherit(struct cil_db *db, struct cil_tree_node *parse_current,
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad blockinherit declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad blockinherit declaration");
+ 	cil_destroy_blockinherit(inherit);
+ 	return rc;
+ }
+@@ -281,8 +278,7 @@ int cil_gen_blockabstract(struct cil_db *db, struct cil_tree_node *parse_current
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad blockabstract declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad blockabstract declaration");
+ 	cil_destroy_blockabstract(abstract);
+ 	return rc;
+ }
+@@ -326,8 +322,7 @@ int cil_gen_in(struct cil_db *db, struct cil_tree_node *parse_current, struct ci
+ 
+ 	return SEPOL_OK;
+ exit:
+-	cil_log(CIL_ERR, "Bad in statement at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad in statement");
+ 	cil_destroy_in(in);
+ 	return rc;
+ }
+@@ -382,13 +377,17 @@ int cil_gen_class(struct cil_db *db, struct cil_tree_node *parse_current, struct
+ 		if (rc != SEPOL_OK) {
+ 			goto exit;
+ 		}
++		if (class->num_perms > CIL_PERMS_PER_CLASS) {
++			cil_tree_log(parse_current, CIL_ERR, "Too many permissions in class '%s'", class->datum.name);
++			goto exit;
++		}
++
+ 	}
+ 
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad class declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad class declaration");
+ 	cil_destroy_class(class);
+ 	cil_clear_node(ast_node);
+ 	return rc;
+@@ -456,8 +455,7 @@ int cil_gen_classorder(struct cil_db *db, struct cil_tree_node *parse_current, s
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad classorder declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad classorder declaration");
+ 	cil_destroy_classorder(classorder);
+ 	return rc;
+ }
+@@ -527,7 +525,7 @@ int cil_gen_perm_nodes(struct cil_db *db, struct cil_tree_node *current_perm, st
+ 		cil_tree_node_init(&new_ast);
+ 		new_ast->parent = ast_node;
+ 		new_ast->line = current_perm->line;
+-		new_ast->path = current_perm->path;
++		new_ast->hll_line = current_perm->hll_line;
+ 
+ 		rc = cil_gen_perm(db, current_perm, new_ast, flavor, num_perms);
+ 		if (rc != SEPOL_OK) {
+@@ -738,8 +736,7 @@ int cil_gen_classpermission(struct cil_db *db, struct cil_tree_node *parse_curre
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad classpermission declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad classpermission declaration");
+ 	cil_destroy_classpermission(cp);
+ 	cil_clear_node(ast_node);
+ 	return rc;
+@@ -800,8 +797,7 @@ int cil_gen_classpermissionset(struct cil_db *db, struct cil_tree_node *parse_cu
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad classpermissionset at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad classpermissionset");
+ 	cil_destroy_classpermissionset(cps);
+ 	return rc;
+ }
+@@ -852,8 +848,7 @@ int cil_gen_map_class(struct cil_db *db, struct cil_tree_node *parse_current, st
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad map class declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad map class declaration");
+ 	cil_destroy_class(map);
+ 	cil_clear_node(ast_node);
+ 	return rc;
+@@ -897,8 +892,7 @@ int cil_gen_classmapping(struct cil_db *db, struct cil_tree_node *parse_current,
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad classmapping declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad classmapping declaration");
+ 	cil_destroy_classmapping(mapping);
+ 	return rc;
+ }
+@@ -950,12 +944,15 @@ int cil_gen_common(struct cil_db *db, struct cil_tree_node *parse_current, struc
+ 	if (rc != SEPOL_OK) {
+ 		goto exit;
+ 	}
++	if (common->num_perms > CIL_PERMS_PER_CLASS) {
++		cil_tree_log(parse_current, CIL_ERR, "Too many permissions in common '%s'", common->datum.name);
++		goto exit;
++	}
+ 
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad common declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad common declaration");
+ 	cil_destroy_class(common);
+ 	cil_clear_node(ast_node);
+ 	return rc;
+@@ -994,8 +991,7 @@ int cil_gen_classcommon(struct cil_db *db, struct cil_tree_node *parse_current,
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad classcommon declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad classcommon declaration");
+ 	cil_destroy_classcommon(clscom);
+ 	return rc;
+ 
+@@ -1043,8 +1039,7 @@ int cil_gen_sid(struct cil_db *db, struct cil_tree_node *parse_current, struct c
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad sid declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad sid declaration");
+ 	cil_destroy_sid(sid);
+ 	cil_clear_node(ast_node);
+ 	return rc;
+@@ -1102,8 +1097,7 @@ int cil_gen_sidcontext(struct cil_db *db, struct cil_tree_node *parse_current, s
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad sidcontext declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad sidcontext declaration");
+ 	cil_destroy_sidcontext(sidcon);
+ 	return rc;
+ }
+@@ -1163,8 +1157,7 @@ int cil_gen_sidorder(struct cil_db *db, struct cil_tree_node *parse_current, str
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad sidorder declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad sidorder declaration");
+ 	cil_destroy_sidorder(sidorder);
+ 	return rc;
+ }
+@@ -1215,8 +1208,7 @@ int cil_gen_user(struct cil_db *db, struct cil_tree_node *parse_current, struct
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad user declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad user declaration");
+ 	cil_destroy_user(user);
+ 	cil_clear_node(ast_node);
+ 	return rc;
+@@ -1265,8 +1257,7 @@ int cil_gen_userattribute(struct cil_db *db, struct cil_tree_node *parse_current
+ 
+ 	return SEPOL_OK;
+ exit:
+-	cil_log(CIL_ERR, "Bad userattribute declaration at line %d of %s\n",
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad userattribute declaration");
+ 	cil_destroy_userattribute(attr);
+ 	cil_clear_node(ast_node);
+ 	return rc;
+@@ -1336,8 +1327,7 @@ int cil_gen_userattributeset(struct cil_db *db, struct cil_tree_node *parse_curr
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad userattributeset declaration at line %d of %s\n",
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad userattributeset declaration");
+ 	cil_destroy_userattributeset(attrset);
+ 
+ 	return rc;
+@@ -1397,8 +1387,7 @@ int cil_gen_userlevel(struct cil_db *db, struct cil_tree_node *parse_current, st
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad userlevel declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad userlevel declaration");
+ 	cil_destroy_userlevel(usrlvl);
+ 	return rc;
+ }
+@@ -1458,8 +1447,7 @@ int cil_gen_userrange(struct cil_db *db, struct cil_tree_node *parse_current, st
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad userrange declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad userrange declaration");
+ 	cil_destroy_userrange(userrange);
+ 	return rc;
+ }
+@@ -1508,8 +1496,7 @@ int cil_gen_userprefix(struct cil_db *db, struct cil_tree_node *parse_current, s
+ 
+ 	return SEPOL_OK;
+ exit:
+-	cil_log(CIL_ERR, "Bad userprefix declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad userprefix declaration");
+ 	cil_destroy_userprefix(userprefix);
+ 	return rc;
+ }
+@@ -1566,8 +1553,7 @@ int cil_gen_selinuxuser(struct cil_db *db, struct cil_tree_node *parse_current,
+ 
+ 	return SEPOL_OK;
+ exit:
+-	cil_log(CIL_ERR, "Bad selinuxuser declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad selinuxuser declaration");
+ 	cil_destroy_selinuxuser(selinuxuser);
+ 	return rc;
+ }
+@@ -1614,8 +1600,7 @@ int cil_gen_selinuxuserdefault(struct cil_db *db, struct cil_tree_node *parse_cu
+ 
+ 	return SEPOL_OK;
+ exit:
+-	cil_log(CIL_ERR, "Bad selinuxuserdefault declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad selinuxuserdefault declaration");
+ 	cil_destroy_selinuxuser(selinuxuser);
+ 	return rc;
+ }
+@@ -1666,8 +1651,7 @@ int cil_gen_role(struct cil_db *db, struct cil_tree_node *parse_current, struct
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad role declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad role declaration");
+ 	cil_destroy_role(role);
+ 	cil_clear_node(ast_node);
+ 	return rc;
+@@ -1717,8 +1701,7 @@ int cil_gen_roletype(struct cil_db *db, struct cil_tree_node *parse_current, str
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad roletype declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad roletype declaration");
+ 	cil_destroy_roletype(roletype);
+ 	return rc;
+ }
+@@ -1764,8 +1747,7 @@ int cil_gen_userrole(struct cil_db *db, struct cil_tree_node *parse_current, str
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad userrole declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad userrole declaration");
+ 	cil_destroy_userrole(userrole);
+ 	return rc;
+ }
+@@ -1815,8 +1797,7 @@ int cil_gen_roletransition(struct cil_tree_node *parse_current, struct cil_tree_
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad roletransition rule at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad roletransition rule");
+ 	cil_destroy_roletransition(roletrans);
+ 	return rc;
+ }
+@@ -1862,8 +1843,7 @@ int cil_gen_roleallow(struct cil_db *db, struct cil_tree_node *parse_current, st
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad roleallow rule at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad roleallow rule");
+ 	cil_destroy_roleallow(roleallow);
+ 	return rc;
+ }
+@@ -1914,8 +1894,7 @@ int cil_gen_roleattribute(struct cil_db *db, struct cil_tree_node *parse_current
+ 
+ 	return SEPOL_OK;
+ exit:
+-	cil_log(CIL_ERR, "Bad roleattribute declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad roleattribute declaration");
+ 	cil_destroy_roleattribute(attr);
+ 	cil_clear_node(ast_node);
+ 	return rc;
+@@ -1982,8 +1961,7 @@ int cil_gen_roleattributeset(struct cil_db *db, struct cil_tree_node *parse_curr
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad roleattributeset declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad roleattributeset declaration");
+ 	cil_destroy_roleattributeset(attrset);
+ 
+ 	return rc;
+@@ -2042,8 +2020,7 @@ int cil_gen_avrule(struct cil_tree_node *parse_current, struct cil_tree_node *as
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad allow rule at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad allow rule");
+ 	cil_destroy_avrule(rule);
+ 	return rc;
+ }
+@@ -2099,8 +2076,7 @@ int cil_fill_permissionx(struct cil_tree_node *parse_current, struct cil_permiss
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad permissionx content at line %d of %s\n",
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad permissionx content");
+ 	return rc;
+ }
+ 
+@@ -2143,8 +2119,7 @@ int cil_gen_permissionx(struct cil_db *db, struct cil_tree_node *parse_current,
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad permissionx statement at line %d of %s\n",
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad permissionx statement");
+ 	cil_destroy_permissionx(permx);
+ 	cil_clear_node(ast_node);
+ 	return rc;
+@@ -2210,8 +2185,7 @@ int cil_gen_avrulex(struct cil_tree_node *parse_current, struct cil_tree_node *a
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad allowx rule at line %d of %s\n",
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad allowx rule");
+ 	cil_destroy_avrule(rule);
+ 	return rc;
+ }
+@@ -2253,8 +2227,7 @@ int cil_gen_type_rule(struct cil_tree_node *parse_current, struct cil_tree_node
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad type rule at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad type rule");
+ 	cil_destroy_type_rule(rule);
+ 	return rc;
+ }
+@@ -2306,8 +2279,7 @@ int cil_gen_type(struct cil_db *db, struct cil_tree_node *parse_current, struct
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad type declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad type declaration");
+ 	cil_destroy_type(type);
+ 	cil_clear_node(ast_node);
+ 	return rc;
+@@ -2361,8 +2333,7 @@ int cil_gen_typeattribute(struct cil_db *db, struct cil_tree_node *parse_current
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad typeattribute declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad typeattribute declaration");
+ 	cil_destroy_typeattribute(attr);
+ 	cil_clear_node(ast_node);
+ 	return rc;
+@@ -2439,11 +2410,9 @@ int cil_gen_bool(struct cil_db *db, struct cil_tree_node *parse_current, struct
+ 
+ exit:
+ 	if (tunableif) {
+-		cil_log(CIL_ERR, "Bad tunable (treated as a boolean due to preserve-tunables) declaration at line %d of %s\n",
+-			parse_current->line, parse_current->path);
++		cil_tree_log(parse_current, CIL_ERR, "Bad tunable (treated as a boolean due to preserve-tunables) declaration");
+ 	} else {
+-		cil_log(CIL_ERR, "Bad boolean declaration at line %d of %s\n",
+-			parse_current->line, parse_current->path);
++		cil_tree_log(parse_current, CIL_ERR, "Bad boolean declaration");
+ 	}
+ 	cil_destroy_bool(boolean);
+ 	cil_clear_node(ast_node);
+@@ -2504,8 +2473,7 @@ int cil_gen_tunable(struct cil_db *db, struct cil_tree_node *parse_current, stru
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad tunable declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad tunable declaration");
+ 	cil_destroy_tunable(tunable);
+ 	cil_clear_node(ast_node);
+ 	return rc;
+@@ -2880,11 +2848,9 @@ int cil_gen_boolif(struct cil_db *db, struct cil_tree_node *parse_current, struc
+ 
+ exit:
+ 	if (tunableif) {
+-		cil_log(CIL_ERR, "Bad tunableif (treated as a booleanif due to preserve-tunables) declaration at line %d of %s\n",
+-				parse_current->line, parse_current->path);
++		cil_tree_log(parse_current, CIL_ERR, "Bad tunableif (treated as a booleanif due to preserve-tunables) declaration");
+ 	} else {
+-		cil_log(CIL_ERR, "Bad booleanif declaration at line %d of %s\n",
+-				parse_current->line, parse_current->path);
++		cil_tree_log(parse_current, CIL_ERR, "Bad booleanif declaration");
+ 	}
+ 	cil_destroy_boolif(bif);
+ 	return rc;
+@@ -2964,8 +2930,7 @@ int cil_gen_tunif(struct cil_db *db, struct cil_tree_node *parse_current, struct
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad tunableif declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad tunableif declaration");
+ 	cil_destroy_tunif(tif);
+ 	return rc;
+ }
+@@ -3018,8 +2983,8 @@ int cil_gen_condblock(struct cil_db *db, struct cil_tree_node *parse_current, st
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad %s condition declaration at line %d of %s\n",
+-		(char*)parse_current->data, parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad %s condition declaration",
++		(char*)parse_current->data);
+ 	cil_destroy_condblock(cb);
+ 	return rc;
+ }
+@@ -3079,8 +3044,7 @@ int cil_gen_alias(struct cil_db *db, struct cil_tree_node *parse_current, struct
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad %s declaration at line %d of %s\n",
+-		(char*)parse_current->data, parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad %s declaration", (char*)parse_current->data);
+ 	cil_destroy_alias(alias);
+ 	cil_clear_node(ast_node);
+ 	return rc;
+@@ -3137,8 +3101,7 @@ int cil_gen_aliasactual(struct cil_db *db, struct cil_tree_node *parse_current,
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad %s association at line %d of %s\n", 
+-			cil_node_to_string(parse_current),parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad %s association", cil_node_to_string(parse_current));
+ 	cil_clear_node(ast_node);
+ 	return rc;
+ }
+@@ -3187,8 +3150,7 @@ int cil_gen_typeattributeset(struct cil_db *db, struct cil_tree_node *parse_curr
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad typeattributeset statement at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad typeattributeset statement");
+ 	cil_destroy_typeattributeset(attrset);
+ 	return rc;
+ }
+@@ -3235,8 +3197,7 @@ int cil_gen_typepermissive(struct cil_db *db, struct cil_tree_node *parse_curren
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad typepermissive declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad typepermissive declaration");
+ 	cil_destroy_typepermissive(typeperm);
+ 	return rc;
+ }
+@@ -3319,8 +3280,7 @@ int cil_gen_typetransition(struct cil_db *db, struct cil_tree_node *parse_curren
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad typetransition declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad typetransition declaration");
+ 	return rc;
+ }
+ 
+@@ -3391,8 +3351,7 @@ int cil_gen_rangetransition(struct cil_db *db, struct cil_tree_node *parse_curre
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad rangetransition declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad rangetransition declaration");
+ 	cil_destroy_rangetransition(rangetrans);
+ 	return rc;
+ }
+@@ -3443,8 +3402,7 @@ int cil_gen_sensitivity(struct cil_db *db, struct cil_tree_node *parse_current,
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad sensitivity declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad sensitivity declaration");
+ 	cil_destroy_sensitivity(sens);
+ 	cil_clear_node(ast_node);
+ 	return rc;
+@@ -3496,8 +3454,7 @@ int cil_gen_category(struct cil_db *db, struct cil_tree_node *parse_current, str
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad category declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad category declaration");
+ 	cil_destroy_category(cat);
+ 	cil_clear_node(ast_node);
+ 	return rc;
+@@ -3552,8 +3509,7 @@ int cil_gen_catset(struct cil_db *db, struct cil_tree_node *parse_current, struc
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad categoryset declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad categoryset declaration");
+ 	cil_destroy_catset(catset);
+ 	cil_clear_node(ast_node);
+ 	return rc;
+@@ -3614,8 +3570,7 @@ int cil_gen_catorder(struct cil_db *db, struct cil_tree_node *parse_current, str
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad categoryorder declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad categoryorder declaration");
+ 	cil_destroy_catorder(catorder);
+ 	return rc;
+ }
+@@ -3675,8 +3630,7 @@ int cil_gen_sensitivityorder(struct cil_db *db, struct cil_tree_node *parse_curr
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad sensitivityorder declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad sensitivityorder declaration");
+ 	cil_destroy_sensitivityorder(sensorder);
+ 	return rc;
+ }
+@@ -3730,8 +3684,7 @@ int cil_gen_senscat(struct cil_db *db, struct cil_tree_node *parse_current, stru
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad sensitivitycategory declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad sensitivitycategory declaration");
+ 	cil_destroy_senscat(senscat);
+ 	return rc;
+ }
+@@ -3786,8 +3739,7 @@ int cil_gen_level(struct cil_db *db, struct cil_tree_node *parse_current, struct
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad level declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad level declaration");
+ 	cil_destroy_level(level);
+ 	cil_clear_node(ast_node);
+ 	return rc;
+@@ -3893,8 +3845,7 @@ int cil_gen_levelrange(struct cil_db *db, struct cil_tree_node *parse_current, s
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad levelrange declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad levelrange declaration");
+ 	cil_destroy_levelrange(lvlrange);
+ 	cil_clear_node(ast_node);
+ 	return rc;
+@@ -3958,8 +3909,7 @@ int cil_gen_constrain(struct cil_db *db, struct cil_tree_node *parse_current, st
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad constrain declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad constrain declaration");
+ 	cil_destroy_constrain(cons);
+ 	return rc;
+ }
+@@ -4013,8 +3963,7 @@ int cil_gen_validatetrans(struct cil_db *db, struct cil_tree_node *parse_current
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad validatetrans declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad validatetrans declaration");
+ 	cil_destroy_validatetrans(validtrans);
+ 	return rc;
+ 
+@@ -4118,8 +4067,7 @@ int cil_gen_context(struct cil_db *db, struct cil_tree_node *parse_current, stru
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad context declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad context declaration");
+ 	cil_destroy_context(context);
+ 	cil_clear_node(ast_node);
+ 	return SEPOL_ERR;
+@@ -4211,8 +4159,7 @@ int cil_gen_filecon(struct cil_db *db, struct cil_tree_node *parse_current, stru
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad filecon declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad filecon declaration");
+ 	cil_destroy_filecon(filecon);
+ 	return rc;
+ }
+@@ -4261,6 +4208,8 @@ int cil_gen_portcon(struct cil_db *db, struct cil_tree_node *parse_current, stru
+ 		portcon->proto = CIL_PROTOCOL_UDP;
+ 	} else if (proto == CIL_KEY_TCP) {
+ 		portcon->proto = CIL_PROTOCOL_TCP;
++	} else if (proto == CIL_KEY_DCCP) {
++		portcon->proto = CIL_PROTOCOL_DCCP;
+ 	} else {
+ 		cil_log(CIL_ERR, "Invalid protocol\n");
+ 		rc = SEPOL_ERR;
+@@ -4311,8 +4260,7 @@ int cil_gen_portcon(struct cil_db *db, struct cil_tree_node *parse_current, stru
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad portcon declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad portcon declaration");
+ 	cil_destroy_portcon(portcon);
+ 	return rc;
+ }
+@@ -4393,8 +4341,7 @@ int cil_gen_nodecon(struct cil_db *db, struct cil_tree_node *parse_current, stru
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad nodecon declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad nodecon declaration");
+ 	cil_destroy_nodecon(nodecon);
+ 	return rc;
+ }
+@@ -4464,8 +4411,7 @@ int cil_gen_genfscon(struct cil_db *db, struct cil_tree_node *parse_current, str
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad genfscon declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad genfscon declaration");
+ 	cil_destroy_genfscon(genfscon);
+ 	return SEPOL_ERR;
+ }
+@@ -4538,8 +4484,7 @@ int cil_gen_netifcon(struct cil_db *db, struct cil_tree_node *parse_current, str
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad netifcon declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad netifcon declaration");
+ 	cil_destroy_netifcon(netifcon);
+ 	return SEPOL_ERR;
+ }
+@@ -4606,8 +4551,7 @@ int cil_gen_pirqcon(struct cil_db *db, struct cil_tree_node *parse_current, stru
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad pirqcon declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad pirqcon declaration");
+ 	cil_destroy_pirqcon(pirqcon);
+ 	return rc;
+ }
+@@ -4692,8 +4636,7 @@ int cil_gen_iomemcon(struct cil_db *db, struct cil_tree_node *parse_current, str
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad iomemcon declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad iomemcon declaration");
+ 	cil_destroy_iomemcon(iomemcon);
+ 	return rc;
+ }
+@@ -4778,8 +4721,7 @@ int cil_gen_ioportcon(struct cil_db *db, struct cil_tree_node *parse_current, st
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad ioportcon declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad ioportcon declaration");
+ 	cil_destroy_ioportcon(ioportcon);
+ 	return rc;
+ }
+@@ -4842,8 +4784,7 @@ int cil_gen_pcidevicecon(struct cil_db *db, struct cil_tree_node *parse_current,
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad pcidevicecon declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad pcidevicecon declaration");
+ 	cil_destroy_pcidevicecon(pcidevicecon);
+ 	return rc;
+ }
+@@ -4903,8 +4844,7 @@ int cil_gen_devicetreecon(struct cil_db *db, struct cil_tree_node *parse_current
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad devicetreecon declaration at line %d of %s\n",
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad devicetreecon declaration");
+ 	cil_destroy_devicetreecon(devicetreecon);
+ 	return rc;
+ }
+@@ -4979,8 +4919,7 @@ int cil_gen_fsuse(struct cil_db *db, struct cil_tree_node *parse_current, struct
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad fsuse declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad fsuse declaration");
+ 	cil_destroy_fsuse(fsuse);
+ 	return SEPOL_ERR;
+ }
+@@ -5137,8 +5076,7 @@ int cil_gen_macro(struct cil_db *db, struct cil_tree_node *parse_current, struct
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad macro declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad macro declaration");
+ 	cil_destroy_macro(macro);
+ 	cil_clear_node(ast_node);
+ 	return SEPOL_ERR;
+@@ -5196,8 +5134,7 @@ int cil_gen_call(struct cil_db *db, struct cil_tree_node *parse_current, struct
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad macro call at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad macro call");
+ 	cil_destroy_call(call);
+ 	return rc;
+ }
+@@ -5299,8 +5236,7 @@ int cil_gen_optional(struct cil_db *db, struct cil_tree_node *parse_current, str
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad optional at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad optional");
+ 	cil_destroy_optional(optional);
+ 	cil_clear_node(ast_node);
+ 	return rc;
+@@ -5348,8 +5284,7 @@ int cil_gen_policycap(struct cil_db *db, struct cil_tree_node *parse_current, st
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad policycap statement at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad policycap statement");
+ 	cil_destroy_policycap(polcap);
+ 	cil_clear_node(ast_node);
+ 	return rc;
+@@ -5404,8 +5339,7 @@ int cil_gen_ipaddr(struct cil_db *db, struct cil_tree_node *parse_current, struc
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad ipaddr statement at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad ipaddr statement");
+ 	cil_destroy_ipaddr(ipaddr);
+ 	cil_clear_node(ast_node);
+ 	return rc;
+@@ -5609,8 +5543,7 @@ int cil_gen_bounds(struct cil_db *db, struct cil_tree_node *parse_current, struc
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad bounds declaration at line %d of %s\n", 
+-		parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad bounds declaration");
+ 	cil_destroy_bounds(bounds);
+ 	return rc;
+ }
+@@ -5671,8 +5604,7 @@ int cil_gen_default(struct cil_tree_node *parse_current, struct cil_tree_node *a
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad %s declaration at line %d of %s\n", 
+-			cil_node_to_string(parse_current), parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad %s declaration", cil_node_to_string(parse_current));
+ 	cil_destroy_default(def);
+ 	return rc;
+ }
+@@ -5758,8 +5690,7 @@ int cil_gen_defaultrange(struct cil_tree_node *parse_current, struct cil_tree_no
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad defaultrange declaration at line %d of %s\n", 
+-			parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad defaultrange declaration");
+ 	cil_destroy_defaultrange(def);
+ 	return rc;
+ }
+@@ -5819,8 +5750,7 @@ int cil_gen_handleunknown(struct cil_tree_node *parse_current, struct cil_tree_n
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad handleunknown at line %d of %s\n",
+-			parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad handleunknown");
+ 	cil_destroy_handleunknown(unknown);
+ 	return rc;
+ }
+@@ -5868,8 +5798,7 @@ int cil_gen_mls(struct cil_tree_node *parse_current, struct cil_tree_node *ast_n
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad mls at line %d of %s\n",
+-			parse_current->line, parse_current->path);
++	cil_tree_log(parse_current, CIL_ERR, "Bad mls");
+ 	cil_destroy_mls(mls);
+ 	return rc;
+ }
+@@ -5879,6 +5808,27 @@ void cil_destroy_mls(struct cil_mls *mls)
+ 	free(mls);
+ }
+ 
++int cil_gen_src_info(struct cil_tree_node *parse_current, struct cil_tree_node *ast_node)
++{
++	/* No need to check syntax, because this is auto generated */
++	struct cil_src_info *info = NULL;
++
++	cil_src_info_init(&info);
++
++	info->is_cil = (parse_current->next->data == CIL_KEY_SRC_CIL) ? CIL_TRUE : CIL_FALSE;
++	info->path = parse_current->next->next->data;
++
++	ast_node->data = info;
++	ast_node->flavor = CIL_SRC_INFO;
++
++	return SEPOL_OK;
++}
++
++void cil_destroy_src_info(struct cil_src_info *info)
++{
++	free(info);
++}
++
+ int __cil_build_ast_node_helper(struct cil_tree_node *parse_current, uint32_t *finished, void *extra_args)
+ {
+ 	struct cil_args_build *args = NULL;
+@@ -5913,7 +5863,7 @@ int __cil_build_ast_node_helper(struct cil_tree_node *parse_current, uint32_t *f
+ 		if (parse_current->parent->parent == NULL) {
+ 			rc = SEPOL_OK;
+ 		} else {
+-			cil_log(CIL_ERR, "Keyword expected after open parenthesis in line %d of %s\n", parse_current->line, parse_current->path);
++			cil_tree_log(parse_current, CIL_ERR, "Keyword expected after open parenthesis");
+ 		}
+ 		goto exit;
+ 	}
+@@ -5926,7 +5876,7 @@ int __cil_build_ast_node_helper(struct cil_tree_node *parse_current, uint32_t *f
+ 			parse_current->data == CIL_KEY_BLOCKINHERIT ||
+ 			parse_current->data == CIL_KEY_BLOCKABSTRACT) {
+ 			rc = SEPOL_ERR;
+-			cil_log(CIL_ERR, "%s is not allowed in macros (%s:%d)\n", (char *)parse_current->data, parse_current->path, parse_current->line);
++			cil_tree_log(parse_current, CIL_ERR, "%s is not allowed in macros", (char *)parse_current->data);
+ 			goto exit;
+ 		}
+ 	}
+@@ -5942,8 +5892,7 @@ int __cil_build_ast_node_helper(struct cil_tree_node *parse_current, uint32_t *f
+ 			parse_current->data != CIL_KEY_TYPECHANGE &&
+ 			parse_current->data != CIL_KEY_CALL) {
+ 			rc = SEPOL_ERR;
+-			cil_log(CIL_ERR, "Found %s at line %d of %s\n",
+-				(char*)parse_current->data, parse_current->line, parse_current->path);
++			cil_tree_log(parse_current, CIL_ERR, "Found %s", (char*)parse_current->data);
+ 			if (((struct cil_booleanif*)boolif->data)->preserved_tunable) {
+ 				cil_log(CIL_ERR, "%s cannot be defined within tunableif statement (treated as a booleanif due to preserve-tunables)\n",
+ 						(char*)parse_current->data);
+@@ -5958,8 +5907,7 @@ int __cil_build_ast_node_helper(struct cil_tree_node *parse_current, uint32_t *f
+ 	if (tunif != NULL) {
+ 		if (parse_current->data == CIL_KEY_TUNABLE) {
+ 			rc = SEPOL_ERR;
+-			cil_log(CIL_ERR, "Found tunable at line %d of %s\n",
+-				parse_current->line, parse_current->path);
++			cil_tree_log(parse_current, CIL_ERR, "Found tunable");
+ 			cil_log(CIL_ERR, "Tunables cannot be defined within tunableif statement\n");
+ 			goto exit;
+ 		}
+@@ -5968,8 +5916,7 @@ int __cil_build_ast_node_helper(struct cil_tree_node *parse_current, uint32_t *f
+ 	if (in != NULL) {
+ 		if (parse_current->data == CIL_KEY_IN) {
+ 			rc = SEPOL_ERR;
+-			cil_log(CIL_ERR, "Found in-statement at line %d of %s\n",
+-				parse_current->line, parse_current->path);
++			cil_tree_log(parse_current, CIL_ERR, "Found in-statement");
+ 			cil_log(CIL_ERR, "in-statements cannot be defined within in-statements\n");
+ 			goto exit;
+ 		}
+@@ -5979,7 +5926,7 @@ int __cil_build_ast_node_helper(struct cil_tree_node *parse_current, uint32_t *f
+ 
+ 	ast_node->parent = ast_current;
+ 	ast_node->line = parse_current->line;
+-	ast_node->path = parse_current->path;
++	ast_node->hll_line = parse_current->hll_line;
+ 
+ 	if (parse_current->data == CIL_KEY_BLOCK) {
+ 		rc = cil_gen_block(db, parse_current, ast_node, 0);
+@@ -6242,8 +6189,10 @@ int __cil_build_ast_node_helper(struct cil_tree_node *parse_current, uint32_t *f
+ 	} else if (parse_current->data == CIL_KEY_MLS) {
+ 		rc = cil_gen_mls(parse_current, ast_node);
+ 		*finished = CIL_TREE_SKIP_NEXT;
++	} else if (parse_current->data == CIL_KEY_SRC_INFO) {
++		rc = cil_gen_src_info(parse_current, ast_node);
+ 	} else {
+-		cil_log(CIL_ERR, "Error: Unknown keyword %s\n", (char*)parse_current->data);
++		cil_log(CIL_ERR, "Error: Unknown keyword %s\n", (char *)parse_current->data);
+ 		rc = SEPOL_ERR;
+ 	}
+ 
+@@ -6264,7 +6213,7 @@ int __cil_build_ast_node_helper(struct cil_tree_node *parse_current, uint32_t *f
+ 			if (ast_current->flavor == CIL_IN) {
+ 				args->in = ast_current;
+ 			}
+-		
++
+ 			ast_current->cl_head = ast_node;
+ 		} else {
+ 			ast_current->cl_tail->next = ast_node;
+diff --git libsepol-2.5/cil/src/cil_build_ast.h libsepol-2.5/cil/src/cil_build_ast.h
+index f428394..825029e 100644
+--- libsepol-2.5/cil/src/cil_build_ast.h
++++ libsepol-2.5/cil/src/cil_build_ast.h
+@@ -215,6 +215,8 @@ int cil_gen_mls(struct cil_tree_node *parse_current, struct cil_tree_node *ast_n
+ void cil_destroy_mls(struct cil_mls *mls);
+ int cil_gen_defaultrange(struct cil_tree_node *parse_current, struct cil_tree_node *ast_node);
+ void cil_destroy_defaultrange(struct cil_defaultrange *def);
++int cil_gen_src_info(struct cil_tree_node *parse_current, struct cil_tree_node *ast_node);
++void cil_destroy_src_info(struct cil_src_info *info);
+ 
+ int cil_fill_cats(struct cil_tree_node *curr, struct cil_cats **cats);
+ void cil_destroy_cats(struct cil_cats *cats);
+diff --git libsepol-2.5/cil/src/cil_copy_ast.c libsepol-2.5/cil/src/cil_copy_ast.c
+index 0be1dda..5debd0d 100644
+--- libsepol-2.5/cil/src/cil_copy_ast.c
++++ libsepol-2.5/cil/src/cil_copy_ast.c
+@@ -1666,6 +1666,21 @@ int cil_copy_bounds(__attribute__((unused)) struct cil_db *db, void *data, void
+ 	return SEPOL_OK;
+ }
+ 
++int cil_copy_src_info(__attribute__((unused)) struct cil_db *db, void *data, void **copy, __attribute__((unused)) symtab_t *symtab)
++{
++	struct cil_src_info *orig = data;
++	struct cil_src_info *new = NULL;
++
++	cil_src_info_init(&new);
++
++	new->is_cil = orig->is_cil;
++	new->path = orig->path;
++
++	*copy = new;
++
++	return SEPOL_OK;
++}
++
+ int __cil_copy_node_helper(struct cil_tree_node *orig, __attribute__((unused)) uint32_t *finished, void *extra_args)
+ {
+ 	int rc = SEPOL_ERR;
+@@ -1942,6 +1957,9 @@ int __cil_copy_node_helper(struct cil_tree_node *orig, __attribute__((unused)) u
+ 	case CIL_MLS:
+ 		copy_func = &cil_copy_mls;
+ 		break;
++	case CIL_SRC_INFO:
++		copy_func = &cil_copy_src_info;
++		break;
+ 	default:
+ 		goto exit;
+ 	}
+@@ -1964,7 +1982,7 @@ int __cil_copy_node_helper(struct cil_tree_node *orig, __attribute__((unused)) u
+ 
+ 		new->parent = parent;
+ 		new->line = orig->line;
+-		new->path = orig->path;
++		new->hll_line = orig->hll_line;
+ 		new->flavor = orig->flavor;
+ 		new->data = data;
+ 
+@@ -1985,8 +2003,8 @@ int __cil_copy_node_helper(struct cil_tree_node *orig, __attribute__((unused)) u
+ 						param = item->data;
+ 						if (param->flavor == new->flavor) {
+ 							if (param->str == ((struct cil_symtab_datum*)new->data)->name) {
+-								cil_log(CIL_ERR, "%s %s shadows a macro parameter (%s line:%d)\n", cil_node_to_string(new), ((struct cil_symtab_datum*)orig->data)->name, orig->path, orig->line);
+-								cil_log(CIL_ERR, "Note: macro declaration (%s line:%d)\n", namespace->path, namespace->line);
++								cil_tree_log(orig, CIL_ERR, "%s %s shadows a macro parameter", cil_node_to_string(new), ((struct cil_symtab_datum*)orig->data)->name);
++								cil_tree_log(namespace, CIL_ERR, "Note: macro declaration");
+ 								rc = SEPOL_ERR;
+ 								goto exit;
+ 							}
+diff --git libsepol-2.5/cil/src/cil_find.c libsepol-2.5/cil/src/cil_find.c
+index 75de886..4134242 100644
+--- libsepol-2.5/cil/src/cil_find.c
++++ libsepol-2.5/cil/src/cil_find.c
+@@ -69,7 +69,11 @@ static int cil_type_match_any(struct cil_symtab_datum *d1, struct cil_symtab_dat
+ 		/* Both are attributes */
+ 		struct cil_typeattribute *a1 = (struct cil_typeattribute *)d1;
+ 		struct cil_typeattribute *a2 = (struct cil_typeattribute *)d2;
+-		return ebitmap_match_any(a1->types, a2->types);
++		if (d1 == d2) {
++			return CIL_TRUE;
++		} else if (ebitmap_match_any(a1->types, a2->types)) {
++			return CIL_TRUE;
++		}
+ 	}
+ 	return CIL_FALSE;
+ }
+@@ -379,7 +383,7 @@ int cil_find_matching_avrule_in_ast(struct cil_tree_node *current, enum cil_flav
+ 
+ 	rc = cil_tree_walk(current, __cil_find_matching_avrule_in_ast, NULL, NULL, &args);
+ 	if (rc) {
+-		cil_log(CIL_ERR, "An error occured while searching for avrule in AST\n");
++		cil_log(CIL_ERR, "An error occurred while searching for avrule in AST\n");
+ 	}
+ 
+ 	return rc;
+diff --git libsepol-2.5/cil/src/cil_flavor.h libsepol-2.5/cil/src/cil_flavor.h
+index 9fb5083..cd08b97 100644
+--- libsepol-2.5/cil/src/cil_flavor.h
++++ libsepol-2.5/cil/src/cil_flavor.h
+@@ -111,6 +111,7 @@ enum cil_flavor {
+ 	CIL_DEFAULTRANGE,
+ 	CIL_HANDLEUNKNOWN,
+ 	CIL_MLS,
++	CIL_SRC_INFO,
+ 
+ /*
+  *          boolean  constraint  set  catset
+diff --git libsepol-2.5/cil/src/cil_fqn.c libsepol-2.5/cil/src/cil_fqn.c
+index 865bd7d..dad1347 100644
+--- libsepol-2.5/cil/src/cil_fqn.c
++++ libsepol-2.5/cil/src/cil_fqn.c
+@@ -121,7 +121,7 @@ static int __cil_fqn_qualify_blocks(__attribute__((unused)) hashtab_key_t k, has
+ 
+ exit:
+ 	if (rc != SEPOL_OK) {
+-		cil_log(CIL_ERR,"Problem qualifying names in block at line %d of %s\n", child_args.node->line, child_args.node->path);
++		cil_tree_log(child_args.node, CIL_ERR,"Problem qualifying names in block");
+ 	}
+ 
+ 	return rc;
+diff --git libsepol-2.5/cil/src/cil_internal.h libsepol-2.5/cil/src/cil_internal.h
+index a0a5480..03672bb 100644
+--- libsepol-2.5/cil/src/cil_internal.h
++++ libsepol-2.5/cil/src/cil_internal.h
+@@ -37,6 +37,7 @@
+ 
+ #include <sepol/policydb/services.h>
+ #include <sepol/policydb/policydb.h>
++#include <sepol/policydb/flask_types.h>
+ 
+ #include <cil/cil.h>
+ 
+@@ -101,6 +102,7 @@ char *CIL_KEY_OBJECT_R;
+ char *CIL_KEY_STAR;
+ char *CIL_KEY_TCP;
+ char *CIL_KEY_UDP;
++char *CIL_KEY_DCCP;
+ char *CIL_KEY_AUDITALLOW;
+ char *CIL_KEY_TUNABLEIF;
+ char *CIL_KEY_ALLOW;
+@@ -225,6 +227,9 @@ char *CIL_KEY_NEVERALLOWX;
+ char *CIL_KEY_PERMISSIONX;
+ char *CIL_KEY_IOCTL;
+ char *CIL_KEY_UNORDERED;
++char *CIL_KEY_SRC_INFO;
++char *CIL_KEY_SRC_CIL;
++char *CIL_KEY_SRC_HLL;
+ 
+ /*
+ 	Symbol Table Array Indices
+@@ -266,6 +271,7 @@ enum cil_sym_array {
+ extern int cil_sym_sizes[CIL_SYM_ARRAY_NUM][CIL_SYM_NUM];
+ 
+ #define CIL_CLASS_SYM_SIZE	256
++#define CIL_PERMS_PER_CLASS (sizeof(sepol_access_vector_t) * 8)
+ 
+ struct cil_db {
+ 	struct cil_tree *parse;
+@@ -713,7 +719,8 @@ struct cil_filecon {
+ 
+ enum cil_protocol {
+ 	CIL_PROTOCOL_UDP = 1,
+-	CIL_PROTOCOL_TCP	
++	CIL_PROTOCOL_TCP,
++	CIL_PROTOCOL_DCCP
+ };
+ 
+ struct cil_portcon {
+@@ -915,6 +922,11 @@ struct cil_mls {
+ 	int value;
+ };
+ 
++struct cil_src_info {
++	int is_cil;
++	char *path;
++};
++
+ void cil_db_init(struct cil_db **db);
+ void cil_db_destroy(struct cil_db **db);
+ 
+@@ -1017,6 +1029,7 @@ void cil_default_init(struct cil_default **def);
+ void cil_defaultrange_init(struct cil_defaultrange **def);
+ void cil_handleunknown_init(struct cil_handleunknown **unk);
+ void cil_mls_init(struct cil_mls **mls);
++void cil_src_info_init(struct cil_src_info **info);
+ void cil_userattribute_init(struct cil_userattribute **attribute);
+ void cil_userattributeset_init(struct cil_userattributeset **attrset);
+ 
+diff --git libsepol-2.5/cil/src/cil_lexer.h libsepol-2.5/cil/src/cil_lexer.h
+index 1537d5e..ab555d8 100644
+--- libsepol-2.5/cil/src/cil_lexer.h
++++ libsepol-2.5/cil/src/cil_lexer.h
+@@ -37,8 +37,10 @@
+ #define SYMBOL 3
+ #define QSTRING 4
+ #define COMMENT 5
+-#define END_OF_FILE 6
+-#define UNKNOWN 7
++#define HLL_LINEMARK 6
++#define NEWLINE 7
++#define END_OF_FILE 8
++#define UNKNOWN 9
+ 
+ struct token {
+ 	uint32_t type;
+diff --git libsepol-2.5/cil/src/cil_lexer.l libsepol-2.5/cil/src/cil_lexer.l
+index 8e4c207..e28c33e 100644
+--- libsepol-2.5/cil/src/cil_lexer.l
++++ libsepol-2.5/cil/src/cil_lexer.l
+@@ -50,15 +50,17 @@ symbol		({digit}|{alpha}|{spec_char})+
+ white		[ \t]
+ newline		[\n\r]
+ qstring		\"[^"\n]*\"
+-comment		;[^\n]*
++hll_lm          ^;;\*
++comment		;
+ 
+ %%
+-{newline}	line++; 
++{newline}	line++; return NEWLINE;
++{hll_lm}	value=yytext; return HLL_LINEMARK;
+ {comment}	value=yytext; return COMMENT;
+ "("		value=yytext; return OPAREN;
+-")"		value=yytext; return CPAREN;	
++")"		value=yytext; return CPAREN;
+ {symbol}	value=yytext; return SYMBOL;
+-{white}		//cil_log(CIL_INFO, "white, ");
++{white}		;
+ {qstring}	value=yytext; return QSTRING;
+ <<EOF>>		return END_OF_FILE;
+ .		value=yytext; return UNKNOWN;
+@@ -73,7 +75,7 @@ int cil_lexer_setup(char *buffer, uint32_t size)
+ 	}
+ 
+ 	line = 1;
+-	
++
+ 	return SEPOL_OK;
+ }
+ 
+@@ -87,7 +89,6 @@ int cil_lexer_next(struct token *tok)
+ 	tok->type = yylex();
+ 	tok->value = value;
+ 	tok->line = line;
+-	
++
+ 	return SEPOL_OK;
+ }
+-
+diff --git libsepol-2.5/cil/src/cil_log.h libsepol-2.5/cil/src/cil_log.h
+index 4112aaf..541569b 100644
+--- libsepol-2.5/cil/src/cil_log.h
++++ libsepol-2.5/cil/src/cil_log.h
+@@ -30,6 +30,7 @@
+ #define CIL_LOG_H_
+ 
+ #include <stdlib.h>
++#include <stdarg.h>
+ #include <cil/cil.h>
+ 
+ #define MAX_LOG_SIZE 512
+diff --git libsepol-2.5/cil/src/cil_parser.c libsepol-2.5/cil/src/cil_parser.c
+index d0e108c..101520c 100644
+--- libsepol-2.5/cil/src/cil_parser.c
++++ libsepol-2.5/cil/src/cil_parser.c
+@@ -36,9 +36,165 @@
+ #include "cil_internal.h"
+ #include "cil_log.h"
+ #include "cil_mem.h"
+-#include "cil_tree.h" 
++#include "cil_tree.h"
+ #include "cil_lexer.h"
+ #include "cil_strpool.h"
++#include "cil_stack.h"
++
++char *CIL_KEY_HLL_LMS;
++char *CIL_KEY_HLL_LMX;
++char *CIL_KEY_HLL_LME;
++
++struct hll_info {
++	int hll_lineno;
++	int hll_expand;
++};
++
++static void push_hll_info(struct cil_stack *stack, int hll_lineno, int hll_expand)
++{
++	struct hll_info *new = cil_malloc(sizeof(*new));
++
++	new->hll_lineno = hll_lineno;
++	new->hll_expand = hll_expand;
++
++	cil_stack_push(stack, CIL_NONE, new);
++}
++
++static void pop_hll_info(struct cil_stack *stack, int *hll_lineno, int *hll_expand)
++{
++	struct cil_stack_item *curr = cil_stack_pop(stack);
++	struct cil_stack_item *prev = cil_stack_peek(stack);
++	struct hll_info *old;
++
++	free(curr->data);
++
++	if (!prev) {
++		*hll_lineno = -1;
++		*hll_expand = -1;
++	} else {
++		old = prev->data;
++		*hll_lineno = old->hll_lineno;
++		*hll_expand = old->hll_expand;
++	}
++}
++
++static void create_node(struct cil_tree_node **node, struct cil_tree_node *current, int line, int hll_line, void *value)
++{
++	cil_tree_node_init(node);
++	(*node)->parent = current;
++	(*node)->flavor = CIL_NODE;
++	(*node)->line = line;
++	(*node)->hll_line = hll_line;
++	(*node)->data = value;
++}
++
++static void insert_node(struct cil_tree_node *node, struct cil_tree_node *current)
++{
++	if (current->cl_head == NULL) {
++		current->cl_head = node;
++	} else {
++		current->cl_tail->next = node;
++	}
++	current->cl_tail = node;
++}
++
++static int add_hll_linemark(struct cil_tree_node **current, int *hll_lineno, int *hll_expand, struct cil_stack *stack, char *path)
++{
++	char *hll_type;
++	struct cil_tree_node *node;
++	struct token tok;
++	char *hll_file;
++	char *end = NULL;
++
++	cil_lexer_next(&tok);
++	hll_type = cil_strpool_add(tok.value);
++	if (hll_type == CIL_KEY_HLL_LME) {
++		if (cil_stack_is_empty(stack)) {
++			cil_log(CIL_ERR, "Line mark end without start\n");
++			goto exit;
++		}
++		pop_hll_info(stack, hll_lineno, hll_expand);
++		*current = (*current)->parent;
++	} else {
++		create_node(&node, *current, tok.line, *hll_lineno, NULL);
++		insert_node(node, *current);
++		*current = node;
++
++		create_node(&node, *current, tok.line, *hll_lineno, CIL_KEY_SRC_INFO);
++		insert_node(node, *current);
++
++		create_node(&node, *current, tok.line, *hll_lineno, CIL_KEY_SRC_HLL);
++		insert_node(node, *current);
++
++		if (hll_type == CIL_KEY_HLL_LMS) {
++			*hll_expand = 0;
++		} else if (hll_type == CIL_KEY_HLL_LMX) {
++			*hll_expand = 1;
++		} else {
++			cil_log(CIL_ERR, "Invalid line mark syntax\n");
++			goto exit;
++		}
++
++		cil_lexer_next(&tok);
++		if (tok.type != SYMBOL) {
++			cil_log(CIL_ERR, "Invalid line mark syntax\n");
++			goto exit;
++		}
++		*hll_lineno = strtol(tok.value, &end, 10);
++		if (errno == ERANGE || *end != '\0') {
++			cil_log(CIL_ERR, "Problem parsing line number for line mark\n");
++			goto exit;
++		}
++
++		push_hll_info(stack, *hll_lineno, *hll_expand);
++
++		cil_lexer_next(&tok);
++		if (tok.type != SYMBOL && tok.type != QSTRING) {
++			cil_log(CIL_ERR, "Invalid line mark syntax\n");
++			goto exit;
++		}
++
++		if (tok.type == QSTRING) {
++			tok.value[strlen(tok.value) - 1] = '\0';
++			tok.value = tok.value+1;
++		}
++
++		hll_file = cil_strpool_add(tok.value);
++
++		create_node(&node, *current, tok.line, *hll_lineno, hll_file);
++		insert_node(node, *current);
++	}
++
++	cil_lexer_next(&tok);
++	if (tok.type != NEWLINE) {
++		cil_log(CIL_ERR, "Invalid line mark syntax\n");
++		goto exit;
++	}
++
++	return SEPOL_OK;
++
++exit:
++	cil_log(CIL_ERR, "Problem with high-level line mark at line %d of %s\n", tok.line, path);
++	return SEPOL_ERR;
++}
++
++static void add_cil_path(struct cil_tree_node **current, char *path)
++{
++	struct cil_tree_node *node;
++
++	create_node(&node, *current, 0, 0, NULL);
++	insert_node(node, *current);
++	*current = node;
++
++	create_node(&node, *current, 0, 0, CIL_KEY_SRC_INFO);
++	insert_node(node, *current);
++
++	create_node(&node, *current, 0, 0, CIL_KEY_SRC_CIL);
++	insert_node(node, *current);
++
++	create_node(&node, *current, 0, 0, path);
++	insert_node(node, *current);
++}
+ 
+ int cil_parser(char *_path, char *buffer, uint32_t size, struct cil_tree **parse_tree)
+ {
+@@ -47,89 +203,112 @@ int cil_parser(char *_path, char *buffer, uint32_t size, struct cil_tree **parse
+ 
+ 	struct cil_tree *tree = NULL;
+ 	struct cil_tree_node *node = NULL;
+-	struct cil_tree_node *item = NULL;
+ 	struct cil_tree_node *current = NULL;
+ 	char *path = cil_strpool_add(_path);
+-
++	struct cil_stack *stack;
++	int hll_lineno = -1;
++	int hll_expand = -1;
+ 	struct token tok;
++	int rc = SEPOL_OK;
++
++	CIL_KEY_HLL_LMS = cil_strpool_add("lms");
++	CIL_KEY_HLL_LMX = cil_strpool_add("lmx");
++	CIL_KEY_HLL_LME = cil_strpool_add("lme");
++
++	cil_stack_init(&stack);
+ 
+ 	cil_lexer_setup(buffer, size);
+ 
+ 	tree = *parse_tree;
+-	current = tree->root;	
++	current = tree->root;
++
++	add_cil_path(&current, path);
+ 
+ 	do {
+ 		cil_lexer_next(&tok);
+ 		switch (tok.type) {
++		case HLL_LINEMARK:
++			rc = add_hll_linemark(&current, &hll_lineno, &hll_expand, stack, path);
++			if (rc != SEPOL_OK) {
++				goto exit;
++			}
++			break;
+ 		case OPAREN:
+ 			paren_count++;
+-			cil_tree_node_init(&node);
+-			node->parent = current;
+-			node->flavor = CIL_NODE;
+-			node->line = tok.line;
+-			node->path = path;
+-			if (current->cl_head == NULL) {
+-				current->cl_head = node;
+-			} else {
+-				current->cl_tail->next = node;
+-			}
+-			current->cl_tail = node;
++
++			create_node(&node, current, tok.line, hll_lineno, NULL);
++			insert_node(node, current);
+ 			current = node;
+ 			break;
+ 		case CPAREN:
+ 			paren_count--;
+ 			if (paren_count < 0) {
+ 				cil_log(CIL_ERR, "Close parenthesis without matching open at line %d of %s\n", tok.line, path);
+-				return SEPOL_ERR;
++				goto exit;
+ 			}
+ 			current = current->parent;
+ 			break;
+-		case SYMBOL:
+ 		case QSTRING:
++			tok.value[strlen(tok.value) - 1] = '\0';
++			tok.value = tok.value+1;
++		case SYMBOL:
+ 			if (paren_count == 0) {
+ 				cil_log(CIL_ERR, "Symbol not inside parenthesis at line %d of %s\n", tok.line, path);
+-				return SEPOL_ERR;
++				goto exit;
+ 			}
+-			cil_tree_node_init(&item);
+-			item->parent = current;
+-			if (tok.type == QSTRING) {
+-				tok.value[strlen(tok.value) - 1] = '\0';
+-				item->data = cil_strpool_add(tok.value + 1);
+-			} else {
+-				item->data = cil_strpool_add(tok.value);
+-			}
+-			item->flavor = CIL_NODE;
+-			item->line = tok.line;
+-			item->path = path;
+-			if (current->cl_head == NULL) {
+-				current->cl_head = item;
+-			} else {
+-				current->cl_tail->next = item;
++
++			create_node(&node, current, tok.line, hll_lineno, cil_strpool_add(tok.value));
++			insert_node(node, current);
++			break;
++		case NEWLINE :
++			if (!hll_expand) {
++				hll_lineno++;
+ 			}
+-			current->cl_tail = item;
+ 			break;
++		case COMMENT:
++			while (tok.type != NEWLINE && tok.type != END_OF_FILE) {
++				cil_lexer_next(&tok);
++			}
++			if (!hll_expand) {
++				hll_lineno++;
++			}
++			if (tok.type != END_OF_FILE) {
++				break;
++			}
++			// Fall through if EOF
+ 		case END_OF_FILE:
+ 			if (paren_count > 0) {
+ 				cil_log(CIL_ERR, "Open parenthesis without matching close at line %d of %s\n", tok.line, path);
+-				return SEPOL_ERR;
++				goto exit;
++			}
++			if (!cil_stack_is_empty(stack)) {
++				cil_log(CIL_ERR, "High-level language line marker start without close at line %d of %s\n", tok.line, path);
++				goto exit;
+ 			}
+-			break;
+-		case COMMENT:
+-			// ignore
+ 			break;
+ 		case UNKNOWN:
+ 			cil_log(CIL_ERR, "Invalid token '%s' at line %d of %s\n", tok.value, tok.line, path);
+-			return SEPOL_ERR;
++			goto exit;
+ 		default:
+ 			cil_log(CIL_ERR, "Unknown token type '%d' at line %d of %s\n", tok.type, tok.line, path);
+-			return SEPOL_ERR;
++			goto exit;
+ 		}
+ 	}
+ 	while (tok.type != END_OF_FILE);
+ 
+ 	cil_lexer_destroy();
+ 
++	cil_stack_destroy(&stack);
++
+ 	*parse_tree = tree;
+ 
+ 	return SEPOL_OK;
++
++exit:
++	while (!cil_stack_is_empty(stack)) {
++		pop_hll_info(stack, &hll_lineno, &hll_expand);
++	}
++	cil_stack_destroy(&stack);
++
++	return SEPOL_ERR;
+ }
+diff --git libsepol-2.5/cil/src/cil_policy.c libsepol-2.5/cil/src/cil_policy.c
+index 2c9b158..382129b 100644
+--- libsepol-2.5/cil/src/cil_policy.c
++++ libsepol-2.5/cil/src/cil_policy.c
+@@ -123,6 +123,8 @@ int cil_portcon_to_policy(FILE **file_arr, struct cil_sort *sort)
+ 			fprintf(file_arr[NETIFCONS], "udp ");
+ 		} else if (portcon->proto == CIL_PROTOCOL_TCP) {
+ 			fprintf(file_arr[NETIFCONS], "tcp ");
++		} else if (portcon->proto == CIL_PROTOCOL_DCCP) {
++			fprintf(file_arr[NETIFCONS], "dccp ");
+ 		}
+ 		fprintf(file_arr[NETIFCONS], "%d ", portcon->port_low);
+ 		fprintf(file_arr[NETIFCONS], "%d ", portcon->port_high);
+diff --git libsepol-2.5/cil/src/cil_post.c libsepol-2.5/cil/src/cil_post.c
+index a694b33..f8447c9 100644
+--- libsepol-2.5/cil/src/cil_post.c
++++ libsepol-2.5/cil/src/cil_post.c
+@@ -47,6 +47,9 @@
+ #include "cil_verify.h"
+ #include "cil_symtab.h"
+ 
++#define GEN_REQUIRE_ATTR "cil_gen_require" /* Also in libsepol/src/module_to_cil.c */
++#define TYPEATTR_INFIX "_typeattr_"        /* Also in libsepol/src/module_to_cil.c */
++
+ static int __cil_expr_to_bitmap(struct cil_list *expr, ebitmap_t *out, int max, struct cil_db *db);
+ static int __cil_expr_list_to_bitmap(struct cil_list *expr_list, ebitmap_t *out, int max, struct cil_db *db);
+ 
+@@ -1186,6 +1189,27 @@ exit:
+ 	return SEPOL_ERR;
+ }
+ 
++static int cil_typeattribute_used(struct cil_typeattribute *cil_attr)
++{
++	if (cil_attr->used) {
++		return CIL_TRUE;
++	}
++
++	if (strcmp(DATUM(cil_attr)->name, GEN_REQUIRE_ATTR) == 0) {
++		return CIL_FALSE;
++	}
++
++	if (strstr(DATUM(cil_attr)->name,TYPEATTR_INFIX) != NULL) {
++		return CIL_FALSE;
++	}
++
++	if (ebitmap_cardinality(cil_attr->types) == 0) {
++		return CIL_FALSE;
++	}
++
++	return CIL_TRUE;
++}
++
+ static int __cil_post_db_attr_helper(struct cil_tree_node *node, uint32_t *finished, void *extra_args)
+ {
+ 	int rc = SEPOL_ERR;
+@@ -1208,6 +1232,9 @@ static int __cil_post_db_attr_helper(struct cil_tree_node *node, uint32_t *finis
+ 		if (attr->types == NULL) {
+ 			rc = __evaluate_type_expression(attr, db);
+ 			if (rc != SEPOL_OK) goto exit;
++			if (cil_typeattribute_used(attr)) {
++				attr->used = CIL_TRUE;
++			}
+ 		}
+ 		break;
+ 	}
+diff --git libsepol-2.5/cil/src/cil_reset_ast.c libsepol-2.5/cil/src/cil_reset_ast.c
+index 06146ca..de00679 100644
+--- libsepol-2.5/cil/src/cil_reset_ast.c
++++ libsepol-2.5/cil/src/cil_reset_ast.c
+@@ -23,7 +23,7 @@ static void cil_reset_class(struct cil_class *class)
+ {
+ 	if (class->common != NULL) {
+ 		struct cil_class *common = class->common;
+-		cil_symtab_map(&common->perms, __class_reset_perm_values, &common->num_perms);
++		cil_symtab_map(&class->perms, __class_reset_perm_values, &common->num_perms);
+ 		/* during a re-resolve, we need to reset the common, so a classcommon
+ 		 * statement isn't seen as a duplicate */
+ 		class->num_perms -= common->num_perms;
+diff --git libsepol-2.5/cil/src/cil_resolve_ast.c libsepol-2.5/cil/src/cil_resolve_ast.c
+index 1489680..917adf8 100644
+--- libsepol-2.5/cil/src/cil_resolve_ast.c
++++ libsepol-2.5/cil/src/cil_resolve_ast.c
+@@ -131,10 +131,10 @@ static int __cil_resolve_perms(symtab_t *class_symtab, symtab_t *common_symtab,
+ 				}
+ 			}
+ 			if (rc != SEPOL_OK) {
+-				cil_log(CIL_ERR, "Failed to resolve permission %s\n", (char*)curr->data);
+-				goto exit;
++				cil_log(CIL_WARN, "Failed to resolve permission %s\n", (char*)curr->data);
++			} else {
++				cil_list_append(*perm_datums, CIL_DATUM, perm_datum);
+ 			}
+-			cil_list_append(*perm_datums, CIL_DATUM, perm_datum);
+ 		} else {
+ 			cil_list_append(*perm_datums, curr->flavor, curr->data);
+ 		}
+@@ -497,7 +497,7 @@ int cil_resolve_alias_to_actual(struct cil_tree_node *current, enum cil_flavor f
+ 	int limit = 2;
+ 
+ 	if (alias->actual == NULL) {
+-		cil_log(CIL_ERR, "Alias declared but not used at line %d of %s\n",current->line, current->path);
++		cil_tree_log(current, CIL_ERR, "Alias declared but not used");
+ 		return SEPOL_ERR;
+ 	}
+ 
+@@ -717,6 +717,10 @@ int cil_resolve_classcommon(struct cil_tree_node *current, void *extra_args)
+ 	cil_symtab_map(&class->perms, __class_update_perm_values, &common->num_perms);
+ 
+ 	class->num_perms += common->num_perms;
++	if (class->num_perms > CIL_PERMS_PER_CLASS) {
++		cil_tree_log(current, CIL_ERR, "Too many permissions in class '%s' when including common permissions", class->datum.name);
++		goto exit;
++	}
+ 
+ 	return SEPOL_OK;
+ 
+@@ -1380,7 +1384,7 @@ struct cil_list *__cil_ordered_lists_merge_all(struct cil_list **ordered_lists,
+ 			cil_list_for_each(curr, *ordered_lists) {
+ 				struct cil_ordered_list *ordered_list = curr->data;
+ 				if (ordered_list->merged == CIL_FALSE) {
+-					cil_log(CIL_ERR, "Unable to merge ordered list at line %d of %s\n",ordered_list->node->line, ordered_list->node->path);
++					cil_tree_log(ordered_list->node, CIL_ERR, "Unable to merge ordered list");
+ 				}
+ 			}
+ 			goto exit;
+@@ -1447,6 +1451,7 @@ int cil_resolve_classorder(struct cil_tree_node *current, void *extra_args)
+ 	return SEPOL_OK;
+ 
+ exit:
++	cil_list_destroy(&new, CIL_FALSE);
+ 	return rc;
+ }
+ 
+@@ -2252,12 +2257,10 @@ void cil_print_recursive_blockinherit(struct cil_tree_node *bi_node, struct cil_
+ 
+ 	cil_list_for_each(item, trace) {
+ 		curr = item->data;
+-		cil_log(CIL_ERR, "  %s:%d: ", curr->path, curr->line);
+-
+ 		if (curr->flavor == CIL_BLOCK) {
+-			cil_log(CIL_ERR, "block %s\n", DATUM(curr->data)->name);
++			cil_tree_log(curr, CIL_ERR, "block %s", DATUM(curr->data)->name);
+ 		} else {
+-			cil_log(CIL_ERR, "blockinherit %s\n", ((struct cil_blockinherit *)curr->data)->block_str);
++			cil_tree_log(curr, CIL_ERR, "blockinherit %s", ((struct cil_blockinherit *)curr->data)->block_str);
+ 		}
+ 	}
+ 
+@@ -2442,7 +2445,7 @@ int cil_resolve_in_list(void *extra_args)
+ 		}
+ 
+ 		if (unresolved > 0 && resolved == 0) {
+-			cil_log(CIL_ERR, "Failed to resolve in-statement on line %d of %s\n", last_failed_node->line, last_failed_node->path);
++			cil_tree_log(last_failed_node, CIL_ERR, "Failed to resolve in-statement");
+ 			rc = SEPOL_ERR;
+ 			goto exit;
+ 		}
+@@ -2485,7 +2488,7 @@ int cil_resolve_bounds(struct cil_tree_node *current, void *extra_args, enum cil
+ 
+ 		if (user->bounds != NULL) {
+ 			struct cil_tree_node *node = user->bounds->datum.nodes->head->data;
+-			cil_log(CIL_ERR, "User %s already bound by parent at line %u of %s\n", bounds->child_str, node->line, node->path);
++			cil_tree_log(node, CIL_ERR, "User %s already bound by parent", bounds->child_str);
+ 			rc = SEPOL_ERR;
+ 			goto exit;
+ 		}
+@@ -2498,7 +2501,7 @@ int cil_resolve_bounds(struct cil_tree_node *current, void *extra_args, enum cil
+ 
+ 		if (role->bounds != NULL) {
+ 			struct cil_tree_node *node = role->bounds->datum.nodes->head->data;
+-			cil_log(CIL_ERR, "Role %s already bound by parent at line %u of %s\n", bounds->child_str, node->line, node->path);
++			cil_tree_log(node, CIL_ERR, "Role %s already bound by parent", bounds->child_str);
+ 			rc = SEPOL_ERR;
+ 			goto exit;
+ 		}
+@@ -2512,8 +2515,8 @@ int cil_resolve_bounds(struct cil_tree_node *current, void *extra_args, enum cil
+ 
+ 		if (type->bounds != NULL) {
+ 			node = ((struct cil_symtab_datum *)type->bounds)->nodes->head->data;
+-			cil_log(CIL_ERR, "Type %s already bound by parent at line %u of %s\n", bounds->child_str, node->line, node->path);
+-			cil_log(CIL_ERR, "Now being bound to parent %s at line %u of %s\n", bounds->parent_str, current->line, current->path);
++			cil_tree_log(node, CIL_ERR, "Type %s already bound by parent", bounds->child_str);
++			cil_tree_log(current, CIL_ERR, "Now being bound to parent %s", bounds->parent_str);
+ 			rc = SEPOL_ERR;
+ 			goto exit;
+ 		}
+@@ -2542,7 +2545,7 @@ int cil_resolve_bounds(struct cil_tree_node *current, void *extra_args, enum cil
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Bad bounds statement at line %u of %s\n", current->line, current->path);
++	cil_tree_log(current, CIL_ERR, "Bad bounds statement");
+ 	return rc;
+ }
+ 
+@@ -2617,12 +2620,10 @@ void cil_print_recursive_call(struct cil_tree_node *call_node, struct cil_tree_n
+ 
+ 	cil_list_for_each(item, trace) {
+ 		curr = item->data;
+-		cil_log(CIL_ERR, "  %s:%d: ", curr->path, curr->line);
+-
+ 		if (curr->flavor == CIL_MACRO) {
+-			cil_log(CIL_ERR, "macro %s\n", DATUM(curr->data)->name);
++			cil_tree_log(curr, CIL_ERR, "macro %s", DATUM(curr->data)->name);
+ 		} else {
+-			cil_log(CIL_ERR, "call %s\n", ((struct cil_call *)curr->data)->macro_str);
++			cil_tree_log(curr, CIL_ERR, "call %s", ((struct cil_call *)curr->data)->macro_str);
+ 		}
+ 	}
+ 
+@@ -2700,7 +2701,7 @@ int cil_resolve_call1(struct cil_tree_node *current, void *extra_args)
+ 		struct cil_tree_node *pc = NULL;
+ 
+ 		if (new_call->args_tree == NULL) {
+-			cil_log(CIL_ERR, "Missing arguments (%s, line: %d)\n", current->path, current->line);
++			cil_tree_log(current, CIL_ERR, "Missing arguments");
+ 			rc = SEPOL_ERR;
+ 			goto exit;
+ 		}
+@@ -2713,7 +2714,7 @@ int cil_resolve_call1(struct cil_tree_node *current, void *extra_args)
+ 			enum cil_flavor flavor = ((struct cil_param*)item->data)->flavor;
+ 
+ 			if (pc == NULL) {
+-				cil_log(CIL_ERR, "Missing arguments (%s, line: %d)\n", current->path, current->line);
++				cil_tree_log(current, CIL_ERR, "Missing arguments");
+ 				rc = SEPOL_ERR;
+ 				goto exit;
+ 			}
+@@ -2890,12 +2891,12 @@ int cil_resolve_call1(struct cil_tree_node *current, void *extra_args)
+ 		}
+ 
+ 		if (pc != NULL) {
+-			cil_log(CIL_ERR, "Unexpected arguments (%s, line: %d)\n", current->path, current->line);
++			cil_tree_log(current, CIL_ERR, "Unexpected arguments");
+ 			rc = SEPOL_ERR;
+ 			goto exit;
+ 		}
+ 	} else if (new_call->args_tree != NULL) {
+-		cil_log(CIL_ERR, "Unexpected arguments (%s, line: %d)\n", current->path, current->line);
++		cil_tree_log(current, CIL_ERR, "Unexpected arguments");
+ 		rc = SEPOL_ERR;
+ 		goto exit;
+ 	}
+@@ -3593,7 +3594,7 @@ int __cil_resolve_ast_node_helper(struct cil_tree_node *node, uint32_t *finished
+ 	if (optstack != NULL) {
+ 		if (node->flavor == CIL_TUNABLE || node->flavor == CIL_MACRO) {
+ 			/* tuanbles and macros are not allowed in optionals*/
+-			cil_log(CIL_ERR, "%s statement is not allowed in optionals (%s:%d)\n", cil_node_to_string(node), node->path, node->line);
++			cil_tree_log(node, CIL_ERR, "%s statement is not allowed in optionals", cil_node_to_string(node));
+ 			rc = SEPOL_ERR;
+ 			goto exit;
+ 		}
+@@ -3601,7 +3602,7 @@ int __cil_resolve_ast_node_helper(struct cil_tree_node *node, uint32_t *finished
+ 
+ 	if (blockstack != NULL) {
+ 		if (node->flavor == CIL_CAT || node->flavor == CIL_SENS) {
+-			cil_log(CIL_ERR, "%s statement is not allowed in blocks (%s:%d)\n", cil_node_to_string(node), node->path, node->line);
++			cil_tree_log(node, CIL_ERR, "%s statement is not allowed in blocks", cil_node_to_string(node));
+ 			rc = SEPOL_ERR;
+ 			goto exit;
+ 		}
+@@ -3612,7 +3613,7 @@ int __cil_resolve_ast_node_helper(struct cil_tree_node *node, uint32_t *finished
+ 			node->flavor == CIL_BLOCK ||
+ 			node->flavor == CIL_BLOCKABSTRACT ||
+ 			node->flavor == CIL_MACRO) {
+-			cil_log(CIL_ERR, "%s statement is not allowed in macros (%s:%d)\n", cil_node_to_string(node), node->path, node->line);
++			cil_tree_log(node, CIL_ERR, "%s statement is not allowed in macros", cil_node_to_string(node));
+ 			rc = SEPOL_ERR;
+ 			goto exit;
+ 		}
+@@ -3626,9 +3627,9 @@ int __cil_resolve_ast_node_helper(struct cil_tree_node *node, uint32_t *finished
+ 			node->flavor == CIL_TUNABLEIF ||
+ 			node->flavor == CIL_NAMETYPETRANSITION)) {
+ 			if (((struct cil_booleanif*)boolif->data)->preserved_tunable) {
+-				cil_log(CIL_ERR, "%s statement is not allowed in booleanifs (tunableif treated as a booleanif) (%s:%d)\n", cil_node_to_string(node), node->path, node->line);
++				cil_tree_log(node, CIL_ERR, "%s statement is not allowed in booleanifs (tunableif treated as a booleanif)", cil_node_to_string(node));
+ 			} else {
+-				cil_log(CIL_ERR, "%s statement is not allowed in booleanifs (%s:%d)\n", cil_node_to_string(node), node->path, node->line);
++				cil_tree_log(node, CIL_ERR, "%s statement is not allowed in booleanifs", cil_node_to_string(node));
+ 			}
+ 			rc = SEPOL_ERR;
+ 			goto exit;
+@@ -3658,14 +3659,13 @@ int __cil_resolve_ast_node_helper(struct cil_tree_node *node, uint32_t *finished
+ 
+ 			struct cil_optional *opt = (struct cil_optional *)optstack->data;
+ 			struct cil_tree_node *opt_node = opt->datum.nodes->head->data;
+-			cil_log(lvl, "Disabling optional '%s' at line %d of %s: ", opt->datum.name, opt_node->line, opt_node->path);
++			cil_tree_log(opt_node, lvl, "Disabling optional '%s'", opt->datum.name);
+ 			/* disable an optional if something failed to resolve */
+ 			opt->enabled = CIL_FALSE;
+ 			rc = SEPOL_OK;
+ 		}
+ 
+-		cil_log(lvl, "Failed to resolve '%s' in %s statement at line %d of %s\n",
+-		        args->last_resolved_name, cil_node_to_string(node), node->line, node->path);
++		cil_tree_log(node, lvl, "Failed to resolve %s statement", cil_node_to_string(node));
+ 		goto exit;
+ 	}
+ 
+@@ -3924,6 +3924,7 @@ exit:
+ 	__cil_ordered_lists_destroy(&extra_args.catorder_lists);
+ 	__cil_ordered_lists_destroy(&extra_args.sensitivityorder_lists);
+ 	cil_list_destroy(&extra_args.in_list, CIL_FALSE);
++	cil_list_destroy(&extra_args.unordered_classorder_lists, CIL_FALSE);
+ 
+ 	return rc;
+ }
+diff --git libsepol-2.5/cil/src/cil_tree.c libsepol-2.5/cil/src/cil_tree.c
+index 1c23efc..9ff9d4b 100644
+--- libsepol-2.5/cil/src/cil_tree.c
++++ libsepol-2.5/cil/src/cil_tree.c
+@@ -59,6 +59,92 @@ __attribute__((noreturn)) __attribute__((format (printf, 1, 2))) void cil_tree_e
+ 	exit(1);
+ }
+ 
++struct cil_tree_node *cil_tree_get_next_path(struct cil_tree_node *node, char **path, int* is_cil)
++{
++	if (!node) {
++		return NULL;
++	}
++
++	node = node->parent;
++
++	while (node) {
++		if (node->flavor == CIL_NODE && node->data == NULL) {
++			if (node->cl_head->data == CIL_KEY_SRC_INFO) {
++				/* Parse Tree */
++				*path = node->cl_head->next->next->data;
++				*is_cil = (node->cl_head->next->data == CIL_KEY_SRC_CIL);
++				return node;
++			}
++			node = node->parent;
++		} else if (node->flavor == CIL_SRC_INFO) {
++				/* AST */
++				struct cil_src_info *info = node->data;
++				*path = info->path;
++				*is_cil = info->is_cil;
++				return node;
++		} else {
++			if (node->flavor == CIL_CALL) {
++				struct cil_call *call = node->data;
++				node = NODE(call->macro);
++			} else if (node->flavor == CIL_BLOCKINHERIT) {
++				struct cil_blockinherit *inherit = node->data;
++				node = NODE(inherit->block);
++			} else {
++				node = node->parent;
++			}
++		}
++	}
++
++	return NULL;
++}
++
++char *cil_tree_get_cil_path(struct cil_tree_node *node)
++{
++	char *path = NULL;
++	int is_cil;
++
++	while (node) {
++		node = cil_tree_get_next_path(node, &path, &is_cil);
++		if (node && is_cil) {
++			return path;
++		}
++	}
++
++	return NULL;
++}
++
++__attribute__((format (printf, 3, 4))) void cil_tree_log(struct cil_tree_node *node, enum cil_log_level lvl, const char* msg, ...)
++{
++	va_list ap;
++
++	va_start(ap, msg);
++	cil_vlog(lvl, msg, ap);
++	va_end(ap);
++
++	if (node) {
++		char *path = NULL;
++		int is_cil;
++		unsigned hll_line = node->hll_line;
++
++		path = cil_tree_get_cil_path(node);
++
++		if (path != NULL) {
++			cil_log(lvl, " at %s:%d", path, node->line);
++		}
++
++		while (node) {
++			node = cil_tree_get_next_path(node, &path, &is_cil);
++			if (node && !is_cil) {
++				cil_log(lvl," from %s:%d", path, hll_line);
++				path = NULL;
++				hll_line = node->hll_line;
++			}
++		}
++	}
++
++	cil_log(lvl,"\n");
++}
++
+ int cil_tree_init(struct cil_tree **tree)
+ {
+ 	struct cil_tree *new_tree = cil_malloc(sizeof(*new_tree));
+@@ -128,8 +214,8 @@ void cil_tree_node_init(struct cil_tree_node **node)
+ 	new_node->data = NULL;
+ 	new_node->next = NULL;
+ 	new_node->flavor = CIL_ROOT;
+-	new_node->line = 0;	
+-	new_node->path = NULL;
++	new_node->line = 0;
++	new_node->hll_line = 0;
+ 
+ 	*node = new_node;
+ }
+@@ -185,7 +271,7 @@ int cil_tree_walk_core(struct cil_tree_node *node,
+ 		if (process_node != NULL) {
+ 			rc = (*process_node)(node, &finished, extra_args);
+ 			if (rc != SEPOL_OK) {
+-				cil_log(CIL_INFO, "Problem at line %d of %s\n", node->line, node->path);
++				cil_tree_log(node, CIL_INFO, "Problem");
+ 				return rc;
+ 			}
+ 		}
+@@ -222,7 +308,7 @@ int cil_tree_walk(struct cil_tree_node *node,
+ 	if (first_child != NULL) {
+ 		rc = (*first_child)(node->cl_head, extra_args);
+ 		if (rc != SEPOL_OK) {
+-			cil_log(CIL_INFO, "Problem at line %d of %s\n", node->line, node->path);
++			cil_tree_log(node, CIL_INFO, "Problem");
+ 			return rc;
+ 		}
+ 	}
+@@ -235,7 +321,7 @@ int cil_tree_walk(struct cil_tree_node *node,
+ 	if (last_child != NULL) {
+ 		rc = (*last_child)(node->cl_tail, extra_args);
+ 		if (rc != SEPOL_OK) {
+-			cil_log(CIL_INFO, "Problem at line %d of %s\n",node->line, node->path);
++			cil_tree_log(node, CIL_INFO, "Problem");
+ 			return rc;
+ 		}
+ 	}
+@@ -1319,6 +1405,8 @@ void cil_tree_print_node(struct cil_tree_node *node)
+ 				cil_log(CIL_INFO, " udp");
+ 			} else if (portcon->proto == CIL_PROTOCOL_TCP) {
+ 				cil_log(CIL_INFO, " tcp");
++			} else if (portcon->proto == CIL_PROTOCOL_DCCP) {
++				cil_log(CIL_INFO, " dccp");
+ 			}
+ 			cil_log(CIL_INFO, " (%d %d)", portcon->port_low, portcon->port_high);
+ 
+diff --git libsepol-2.5/cil/src/cil_tree.h libsepol-2.5/cil/src/cil_tree.h
+index 9bb602f..aeded56 100644
+--- libsepol-2.5/cil/src/cil_tree.h
++++ libsepol-2.5/cil/src/cil_tree.h
+@@ -46,10 +46,14 @@ struct cil_tree_node {
+ 	struct cil_tree_node *next;		//Each element in the list points to the next element
+ 	enum cil_flavor flavor;
+ 	uint32_t line;
+-	char *path;
++	uint32_t hll_line;
+ 	void *data;
+ };
+ 
++struct cil_tree_node *cil_tree_get_next_path(struct cil_tree_node *node, char **path, int* is_cil);
++char *cil_tree_get_cil_path(struct cil_tree_node *node);
++__attribute__((format (printf, 3, 4))) void cil_tree_log(struct cil_tree_node *node, enum cil_log_level lvl, const char* msg, ...);
++
+ int cil_tree_init(struct cil_tree **tree);
+ void cil_tree_destroy(struct cil_tree **tree);
+ void cil_tree_subtree_destroy(struct cil_tree_node *node);
+diff --git libsepol-2.5/cil/src/cil_verify.c libsepol-2.5/cil/src/cil_verify.c
+index 36ec45a..038f77a 100644
+--- libsepol-2.5/cil/src/cil_verify.c
++++ libsepol-2.5/cil/src/cil_verify.c
+@@ -377,25 +377,25 @@ int __cil_verify_ordered_node_helper(struct cil_tree_node *node, __attribute__((
+ 		if (node->flavor == CIL_SID) {
+ 			struct cil_sid *sid = node->data;
+ 			if (sid->ordered == CIL_FALSE) {
+-				cil_log(CIL_ERR, "SID %s not in sidorder statement at line %d of %s\n", sid->datum.name, node->line, node->path);
++				cil_tree_log(node, CIL_ERR, "SID %s not in sidorder statement", sid->datum.name);
+ 				return SEPOL_ERR;
+ 			}
+ 		} else if (node->flavor == CIL_CLASS) {
+ 			struct cil_class *class = node->data;
+ 			if (class->ordered == CIL_FALSE) {
+-				cil_log(CIL_ERR, "Class %s not in classorder statement at line %d of %s\n", class->datum.name, node->line, node->path);
++				cil_tree_log(node, CIL_ERR, "Class %s not in classorder statement", class->datum.name);
+ 				return SEPOL_ERR;
+ 			}
+ 		} else if (node->flavor == CIL_CAT) {
+ 			struct cil_cat *cat = node->data;
+ 			if (cat->ordered == CIL_FALSE) {
+-				cil_log(CIL_ERR, "Category %s not in categoryorder statement at line %d of %s\n", cat->datum.name, node->line, node->path);
++				cil_tree_log(node, CIL_ERR, "Category %s not in categoryorder statement", cat->datum.name);
+ 				return SEPOL_ERR;
+ 			}
+ 		} else if (node->flavor == CIL_SENS) {
+ 			struct cil_sens *sens = node->data;
+ 			if (sens->ordered == CIL_FALSE) {
+-				cil_log(CIL_ERR, "Sensitivity %s not in sensitivityorder statement at line %d of %s\n", sens->datum.name, node->line, node->path);
++				cil_tree_log(node, CIL_ERR, "Sensitivity %s not in sensitivityorder statement", sens->datum.name);
+ 				return SEPOL_ERR;
+ 			}
+ 		}
+@@ -430,7 +430,7 @@ int __cil_verify_initsids(struct cil_list *sids)
+ 		struct cil_sid *sid = i->data;
+ 		if (sid->context == NULL) {
+ 			struct cil_tree_node *node = sid->datum.nodes->head->data;
+-			cil_log(CIL_ERR, "No context assigned to SID %s declared at line %d in %s\n",sid->datum.name, node->line, node->path);
++			cil_tree_log(node, CIL_ERR, "No context assigned to SID %s declared",sid->datum.name);
+ 			rc = SEPOL_ERR;
+ 		}
+ 	}
+@@ -598,7 +598,7 @@ int __cil_verify_named_levelrange(struct cil_db *db, struct cil_tree_node *node)
+ 
+ 	return SEPOL_OK;
+ exit:
+-	cil_log(CIL_ERR, "Invalid named range at line %d of %s\n", node->line, node->path);
++	cil_tree_log(node, CIL_ERR, "Invalid named range");
+ 	return rc;
+ }
+ 
+@@ -638,7 +638,7 @@ static int __cil_verify_user_pre_eval(struct cil_tree_node *node)
+ 
+ 	return SEPOL_OK;
+ exit:
+-	cil_log(CIL_ERR, "Invalid user at line %d of %s\n", node->line, node->path);
++	cil_tree_log(node, CIL_ERR, "Invalid user");
+ 	return rc;
+ }
+ 
+@@ -657,7 +657,7 @@ static int __cil_verify_user_post_eval(struct cil_db *db, struct cil_tree_node *
+ 
+ 	return SEPOL_OK;
+ exit:
+-	cil_log(CIL_ERR, "Invalid user at line %d of %s\n", node->line, node->path);
++	cil_tree_log(node, CIL_ERR, "Invalid user");
+ 	return rc;
+ }
+ 
+@@ -688,7 +688,7 @@ int __cil_verify_role(struct cil_tree_node *node)
+ 
+ 	return SEPOL_OK;
+ exit:
+-	cil_log(CIL_ERR, "Invalid role at line %d of %s\n", node->line, node->path);
++	cil_tree_log(node, CIL_ERR, "Invalid role");
+ 	return rc;
+ }
+ 
+@@ -719,7 +719,7 @@ int __cil_verify_type(struct cil_tree_node *node)
+ 
+ 	return SEPOL_OK;
+ exit:
+-	cil_log(CIL_ERR, "Invalid type at line %d of %s\n", node->line, node->path);
++	cil_tree_log(node, CIL_ERR, "Invalid type");
+ 	return rc;
+ }
+ 
+@@ -813,7 +813,7 @@ int __cil_verify_named_context(struct cil_db *db, struct cil_tree_node *node)
+ 
+ 	return SEPOL_OK;
+ exit:
+-	cil_log(CIL_ERR, "Invalid named context at line %d of %s\n", node->line, node->path);
++	cil_tree_log(node, CIL_ERR, "Invalid named context");
+ 	return rc;
+ }
+ 
+@@ -852,8 +852,7 @@ int __cil_verify_rule(struct cil_tree_node *node, struct cil_complex_symtab *sym
+ 		struct cil_complex_symtab_datum *datum = NULL;
+ 		cil_complex_symtab_search(symtab, &ckey, &datum);
+ 		if (datum == NULL) {
+-			cil_log(CIL_ERR, "Duplicate rule defined on line %d of %s\n", 
+-				node->line, node->path);
++			cil_tree_log(node, CIL_ERR, "Duplicate rule defined");
+ 			rc = SEPOL_ERR;
+ 			goto exit;
+ 		}
+@@ -861,7 +860,7 @@ int __cil_verify_rule(struct cil_tree_node *node, struct cil_complex_symtab *sym
+ 
+ 	return SEPOL_OK;
+ exit:
+-	cil_log(CIL_ERR, "Invalid rule at line %d of %s\n", node->line, node->path);
++	cil_tree_log(node, CIL_ERR, "Invalid rule");
+ 	return rc;
+ }
+ 
+@@ -877,11 +876,9 @@ int __cil_verify_booleanif_helper(struct cil_tree_node *node, __attribute__((unu
+ 		avrule = rule_node->data;
+ 		if (avrule->rule_kind == CIL_AVRULE_NEVERALLOW) {
+ 			if (bif->preserved_tunable) {
+-				cil_log(CIL_ERR, "Neverallow found in tunableif block (treated as a booleanif due to preserve-tunables) at line %d or %s\n",
+-					node->line, node->path);
++				cil_tree_log(node, CIL_ERR, "Neverallow found in tunableif block (treated as a booleanif due to preserve-tunables)");
+ 			} else {
+-				cil_log(CIL_ERR, "Neverallow found in booleanif block at line %d or %s\n",
+-					node->line, node->path);
++				cil_tree_log(node, CIL_ERR, "Neverallow found in booleanif block");
+ 			}
+ 			rc = SEPOL_ERR;
+ 			goto exit;
+@@ -942,11 +939,9 @@ int __cil_verify_booleanif_helper(struct cil_tree_node *node, __attribute__((unu
+ 	default: {
+ 		const char * flavor = cil_node_to_string(node);
+ 		if (bif->preserved_tunable) {
+-			cil_log(CIL_ERR, "Invalid %s statement in tunableif (treated as a booleanif due to preserve-tunables) at line %d of %s\n",
+-					flavor, node->line, node->path);
++			cil_tree_log(node, CIL_ERR, "Invalid %s statement in tunableif (treated as a booleanif due to preserve-tunables)", flavor);
+ 		} else {
+-			cil_log(CIL_ERR, "Invalid %s statement in booleanif at line %d of %s\n",
+-					flavor, node->line, node->path);
++			cil_tree_log(node, CIL_ERR, "Invalid %s statement in booleanif", flavor);
+ 		}
+ 		goto exit;
+ 	}
+@@ -974,9 +969,9 @@ int __cil_verify_booleanif(struct cil_tree_node *node, struct cil_complex_symtab
+ 	return SEPOL_OK;
+ exit:
+ 	if (bif->preserved_tunable) {
+-		cil_log(CIL_ERR, "Invalid tunableif (treated as a booleanif due to preserve-tunables) at line %d of %s\n", node->line, node->path);
++		cil_tree_log(node, CIL_ERR, "Invalid tunableif (treated as a booleanif due to preserve-tunables)");
+ 	} else {
+-		cil_log(CIL_ERR, "Invalid booleanif at line %d of %s\n", node->line, node->path);
++		cil_tree_log(node, CIL_ERR, "Invalid booleanif");
+ 	}
+ 	return rc;
+ }
+@@ -1007,7 +1002,7 @@ int __cil_verify_netifcon(struct cil_db *db, struct cil_tree_node *node)
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Invalid netifcon at line %d of %s\n", node->line, node->path);
++	cil_tree_log(node, CIL_ERR, "Invalid netifcon");
+ 	return rc;
+ }
+ 
+@@ -1028,7 +1023,7 @@ int __cil_verify_genfscon(struct cil_db *db, struct cil_tree_node *node)
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Invalid genfscon at line %d of %s\n", node->line, node->path);
++	cil_tree_log(node, CIL_ERR, "Invalid genfscon");
+ 	return rc;
+ }
+ 
+@@ -1047,8 +1042,7 @@ int __cil_verify_filecon(struct cil_db *db, struct cil_tree_node *node)
+ 	if (ctx->datum.name == NULL) {
+ 		rc = __cil_verify_context(db, ctx);
+ 		if (rc != SEPOL_OK) {
+-			cil_log(CIL_ERR, "Invalid filecon at line %d of %s\n", 
+-				node->line, node->path);
++			cil_tree_log(node, CIL_ERR, "Invalid filecon");
+ 			goto exit;
+ 		}
+ 	}
+@@ -1076,7 +1070,7 @@ int __cil_verify_nodecon(struct cil_db *db, struct cil_tree_node *node)
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Invalid nodecon at line %d of %s\n", node->line, node->path);
++	cil_tree_log(node, CIL_ERR, "Invalid nodecon");
+ 	return rc;
+ }
+ 
+@@ -1097,7 +1091,7 @@ int __cil_verify_portcon(struct cil_db *db, struct cil_tree_node *node)
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Invalid portcon at line %d of %s\n", node->line, node->path);
++	cil_tree_log(node, CIL_ERR, "Invalid portcon");
+ 	return rc;
+ }
+ 
+@@ -1118,7 +1112,7 @@ int __cil_verify_pirqcon(struct cil_db *db, struct cil_tree_node *node)
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Invalid pirqcon at line %d of %s\n", node->line, node->path);
++	cil_tree_log(node, CIL_ERR, "Invalid pirqcon");
+ 	return rc;
+ }
+ 
+@@ -1139,7 +1133,7 @@ int __cil_verify_iomemcon(struct cil_db *db, struct cil_tree_node *node)
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Invalid iomemcon at line %d of %s\n", node->line, node->path);
++	cil_tree_log(node, CIL_ERR, "Invalid iomemcon");
+ 	return rc;
+ }
+ 
+@@ -1160,7 +1154,7 @@ int __cil_verify_ioportcon(struct cil_db *db, struct cil_tree_node *node)
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Invalid ioportcon at line %d of %s\n", node->line, node->path);
++	cil_tree_log(node, CIL_ERR, "Invalid ioportcon");
+ 	return rc;
+ }
+ 
+@@ -1181,7 +1175,7 @@ int __cil_verify_pcidevicecon(struct cil_db *db, struct cil_tree_node *node)
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Invalid pcidevicecon at line %d of %s\n", node->line, node->path);
++	cil_tree_log(node, CIL_ERR, "Invalid pcidevicecon");
+ 	return rc;
+ }
+ 
+@@ -1202,7 +1196,7 @@ int __cil_verify_devicetreecon(struct cil_db *db, struct cil_tree_node *node)
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Invalid devicetreecon at line %d of %s\n", node->line, node->path);
++	cil_tree_log(node, CIL_ERR, "Invalid devicetreecon");
+ 	return rc;
+ }
+ 
+@@ -1223,7 +1217,7 @@ int __cil_verify_fsuse(struct cil_db *db, struct cil_tree_node *node)
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Invalid fsuse at line %d of %s\n", node->line, node->path);
++	cil_tree_log(node, CIL_ERR, "Invalid fsuse");
+ 	return rc;
+ }
+ 
+@@ -1241,7 +1235,7 @@ int __cil_verify_permissionx(struct cil_permissionx *permx, struct cil_tree_node
+ 			kind_str = CIL_KEY_IOCTL;
+ 			break;
+ 		default:
+-			cil_log(CIL_ERR, "Invalid permissionx kind (%d) at line %d of %s\n", permx->kind, node->line, node->path);
++			cil_tree_log(node, CIL_ERR, "Invalid permissionx kind (%d)", permx->kind);
+ 			rc = SEPOL_ERR;
+ 			goto exit;
+ 	}
+@@ -1257,7 +1251,7 @@ int __cil_verify_permissionx(struct cil_permissionx *permx, struct cil_tree_node
+ 			}
+ 
+ 			if (rc == SEPOL_ENOENT) {
+-				cil_log(CIL_ERR, "Invalid permissionx at line %d of %s: %s is not a permission of class %s\n", node->line, node->path, kind_str, class->datum.name);
++				cil_tree_log(node, CIL_ERR, "Invalid permissionx: %s is not a permission of class %s", kind_str, class->datum.name);
+ 				rc = SEPOL_ERR;
+ 				goto exit;
+ 			}
+@@ -1312,7 +1306,7 @@ int __cil_verify_class(struct cil_tree_node *node)
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Invalid class at line %d of %s\n", node->line, node->path);
++	cil_tree_log(node, CIL_ERR, "Invalid class");
+ 	return rc;
+ }
+ 
+@@ -1329,8 +1323,7 @@ int __cil_verify_policycap(struct cil_tree_node *node)
+ 	return SEPOL_OK;
+ 
+ exit:
+-	cil_log(CIL_ERR, "Invalid policycap (%s) at line %d of %s\n", 
+-		(const char*)polcap->datum.name, node->line, node->path);
++	cil_tree_log(node, CIL_ERR, "Invalid policycap (%s)", (const char*)polcap->datum.name);
+ 	return rc;
+ }
+ 
+@@ -1547,14 +1540,14 @@ static int __cil_verify_classpermission(struct cil_tree_node *node)
+ 	struct cil_classpermission *cp = node->data;
+ 
+ 	if (cp->classperms == NULL) {
+-		cil_log(CIL_ERR, "Classpermission %s does not have a classpermissionset at line %d of %s\n", cp->datum.name, node->line, node->path);
++		cil_tree_log(node, CIL_ERR, "Classpermission %s does not have a classpermissionset", cp->datum.name);
+ 		rc = SEPOL_ERR;
+ 		goto exit;
+ 	}
+ 
+ 	rc = __cil_verify_classperms(cp->classperms, &cp->datum);
+ 	if (rc != SEPOL_OK) {
+-		cil_log(CIL_ERR, "Found circular class permissions involving the set %s at line %d of %s\n",cp->datum.name, node->line, node->path);
++		cil_tree_log(node, CIL_ERR, "Found circular class permissions involving the set %s",cp->datum.name);
+ 		goto exit;
+ 	}
+ 
+@@ -1577,14 +1570,14 @@ static int __verify_map_perm_classperms(__attribute__((unused)) hashtab_key_t k,
+ 	struct cil_perm *cmp = (struct cil_perm *)d;
+ 
+ 	if (cmp->classperms == NULL) {
+-		cil_log(CIL_ERR, "Map class %s does not have a classmapping for %s at line %d of %s\n", map_args->class->datum.name, cmp->datum.name, map_args->node->line, map_args->node->path);
++		cil_tree_log(map_args->node, CIL_ERR, "Map class %s does not have a classmapping for %s", map_args->class->datum.name, cmp->datum.name);
+ 		map_args->rc = SEPOL_ERR;
+ 		goto exit;
+ 	}
+ 
+ 	rc = __cil_verify_classperms(cmp->classperms, &cmp->datum);
+ 	if (rc != SEPOL_OK) {
+-		cil_log(CIL_ERR, "Found circular class permissions involving the map class %s and permission %s at line %d of %s\n", map_args->class->datum.name, cmp->datum.name, map_args->node->line, map_args->node->path);
++		cil_tree_log(map_args->node, CIL_ERR, "Found circular class permissions involving the map class %s and permission %s", map_args->class->datum.name, cmp->datum.name);
+ 		map_args->rc = SEPOL_ERR;
+ 		goto exit;
+ 	}
+diff --git libsepol-2.5/include/sepol/port_record.h libsepol-2.5/include/sepol/port_record.h
+index 697cea4..c07d1fa 100644
+--- libsepol-2.5/include/sepol/port_record.h
++++ libsepol-2.5/include/sepol/port_record.h
+@@ -14,6 +14,7 @@ typedef struct sepol_port_key sepol_port_key_t;
+ 
+ #define SEPOL_PROTO_UDP 0
+ #define SEPOL_PROTO_TCP 1
++#define SEPOL_PROTO_DCCP 2
+ 
+ /* Key */
+ extern int sepol_port_compare(const sepol_port_t * port,
+diff --git libsepol-2.5/src/Makefile libsepol-2.5/src/Makefile
+index db6c2ba..b0c901f 100644
+--- libsepol-2.5/src/Makefile
++++ libsepol-2.5/src/Makefile
+@@ -18,15 +18,15 @@ TARGET=libsepol.so
+ LIBPC=libsepol.pc
+ LIBMAP=libsepol.map
+ LIBSO=$(TARGET).$(LIBVERSION)
+-OBJS= $(patsubst %.c,%.o,$(wildcard *.c))
+-LOBJS= $(patsubst %.c,%.lo,$(wildcard *.c))
++OBJS= $(patsubst %.c,%.o,$(sort $(wildcard *.c)))
++LOBJS= $(patsubst %.c,%.lo,$(sort $(wildcard *.c)))
+ CFLAGS ?= -Werror -Wall -W -Wundef -Wshadow -Wmissing-format-attribute -O2
+ 
+ override CFLAGS += -I. -I../include -D_GNU_SOURCE
+ 
+ ifneq ($(DISABLE_CIL),y)
+-OBJS += $(sort $(patsubst %.c,%.o,$(wildcard $(CILDIR)/src/*.c) $(CIL_GENERATED)))
+-LOBJS += $(sort $(patsubst %.c,%.lo,$(wildcard $(CILDIR)/src/*.c) $(CIL_GENERATED)))
++OBJS += $(sort $(patsubst %.c,%.o,$(sort $(wildcard $(CILDIR)/src/*.c)) $(CIL_GENERATED)))
++LOBJS += $(sort $(patsubst %.c,%.lo,$(sort $(wildcard $(CILDIR)/src/*.c)) $(CIL_GENERATED)))
+ override CFLAGS += -I$(CILDIR)/include
+ endif
+ 
+@@ -76,7 +76,7 @@ relabel:
+ 	/sbin/restorecon $(SHLIBDIR)/$(LIBSO)
+ 
+ clean: 
+-	-rm -f $(LIBPC) $(OBJS) $(LOBJS) $(LIBA) $(LIBSO) $(TARGET) $(CIL_GENERATED)
++	-rm -f $(LIBPC) $(LIBMAP) $(OBJS) $(LOBJS) $(LIBA) $(LIBSO) $(TARGET) $(CIL_GENERATED)
+ 
+ indent:
+ 	../../scripts/Lindent $(wildcard *.[ch])
+diff --git libsepol-2.5/src/assertion.c libsepol-2.5/src/assertion.c
+index fbf397f..a4be880 100644
+--- libsepol-2.5/src/assertion.c
++++ libsepol-2.5/src/assertion.c
+@@ -147,36 +147,49 @@ static int report_assertion_extended_permissions(sepol_handle_t *handle,
+ 	avtab_key_t tmp_key;
+ 	avtab_extended_perms_t *xperms;
+ 	avtab_extended_perms_t error;
++	ebitmap_t *sattr = &p->type_attr_map[stype];
++	ebitmap_t *tattr = &p->type_attr_map[ttype];
++	ebitmap_node_t *snode, *tnode;
++	unsigned int i, j;
+ 	int rc = 1;
+ 	int ret = 0;
+ 
+ 	memcpy(&tmp_key, k, sizeof(avtab_key_t));
+ 	tmp_key.specified = AVTAB_XPERMS_ALLOWED;
+ 
+-	for (node = avtab_search_node(avtab, &tmp_key);
+-	     node;
+-	     node = avtab_search_node_next(node, tmp_key.specified)) {
+-		xperms = node->datum.xperms;
+-		if ((xperms->specified != AVTAB_XPERMS_IOCTLFUNCTION)
+-				&& (xperms->specified != AVTAB_XPERMS_IOCTLDRIVER))
++	ebitmap_for_each_bit(sattr, snode, i) {
++		if (!ebitmap_node_get_bit(snode, i))
+ 			continue;
++		ebitmap_for_each_bit(tattr, tnode, j) {
++			if (!ebitmap_node_get_bit(tnode, j))
++				continue;
++			tmp_key.source_type = i + 1;
++			tmp_key.target_type = j + 1;
++			for (node = avtab_search_node(avtab, &tmp_key);
++			     node;
++			     node = avtab_search_node_next(node, tmp_key.specified)) {
++				xperms = node->datum.xperms;
++				if ((xperms->specified != AVTAB_XPERMS_IOCTLFUNCTION)
++						&& (xperms->specified != AVTAB_XPERMS_IOCTLDRIVER))
++					continue;
+ 
+-		rc = check_extended_permissions(avrule->xperms, xperms);
+-		/* failure on the extended permission check_extended_permissionss */
+-		if (rc) {
+-			extended_permissions_violated(&error, avrule->xperms, xperms);
+-			ERR(handle, "neverallowxperm on line %lu of %s (or line %lu of policy.conf) violated by\n"
+-					"allowxperm %s %s:%s %s;",
+-					avrule->source_line, avrule->source_filename, avrule->line,
+-					p->p_type_val_to_name[stype],
+-					p->p_type_val_to_name[ttype],
+-					p->p_class_val_to_name[curperm->tclass - 1],
+-					sepol_extended_perms_to_string(&error));
+-
+-			rc = 0;
+-			ret++;
++				rc = check_extended_permissions(avrule->xperms, xperms);
++				/* failure on the extended permission check_extended_permissions */
++				if (rc) {
++					extended_permissions_violated(&error, avrule->xperms, xperms);
++					ERR(handle, "neverallowxperm on line %lu of %s (or line %lu of policy.conf) violated by\n"
++							"allowxperm %s %s:%s %s;",
++							avrule->source_line, avrule->source_filename, avrule->line,
++							p->p_type_val_to_name[i],
++							p->p_type_val_to_name[j],
++							p->p_class_val_to_name[curperm->tclass - 1],
++							sepol_extended_perms_to_string(&error));
++
++					rc = 0;
++					ret++;
++				}
++			}
+ 		}
+-
+ 	}
+ 
+ 	/* failure on the regular permissions */
+@@ -304,9 +317,57 @@ oom:
+ }
+ 
+ /*
+- * If the ioctl permission is granted in check_assertion_avtab_match for the
+- * source/target/class matching the current avrule neverallow, a lookup is
+- * performed to determine if extended permissions exist for the source/target/class.
++ * Look up the extended permissions in avtab and verify that neverallowed
++ * permissions are not granted.
++ */
++static int check_assertion_extended_permissions_avtab(avrule_t *avrule, avtab_t *avtab,
++						unsigned int stype, unsigned int ttype,
++						avtab_key_t *k, policydb_t *p)
++{
++	avtab_ptr_t node;
++	avtab_key_t tmp_key;
++	avtab_extended_perms_t *xperms;
++	av_extended_perms_t *neverallow_xperms = avrule->xperms;
++	ebitmap_t *sattr = &p->type_attr_map[stype];
++	ebitmap_t *tattr = &p->type_attr_map[ttype];
++	ebitmap_node_t *snode, *tnode;
++	unsigned int i, j;
++	int rc = 1;
++
++	memcpy(&tmp_key, k, sizeof(avtab_key_t));
++	tmp_key.specified = AVTAB_XPERMS_ALLOWED;
++
++	ebitmap_for_each_bit(sattr, snode, i) {
++		if (!ebitmap_node_get_bit(snode, i))
++			continue;
++		ebitmap_for_each_bit(tattr, tnode, j) {
++			if (!ebitmap_node_get_bit(tnode, j))
++				continue;
++			tmp_key.source_type = i + 1;
++			tmp_key.target_type = j + 1;
++			for (node = avtab_search_node(avtab, &tmp_key);
++			     node;
++			     node = avtab_search_node_next(node, tmp_key.specified)) {
++				xperms = node->datum.xperms;
++
++				if ((xperms->specified != AVTAB_XPERMS_IOCTLFUNCTION)
++						&& (xperms->specified != AVTAB_XPERMS_IOCTLDRIVER))
++					continue;
++				rc = check_extended_permissions(neverallow_xperms, xperms);
++				if (rc)
++					break;
++			}
++		}
++	}
++
++	return rc;
++}
++
++/*
++ * When the ioctl permission is granted on an avtab entry that matches an
++ * avrule neverallowxperm entry, enumerate over the matching
++ * source/target/class sets to determine if the extended permissions exist
++ * and if the neverallowed ioctls are granted.
+  *
+  * Four scenarios of interest:
+  * 1. PASS - the ioctl permission is not granted for this source/target/class
+@@ -319,33 +380,72 @@ oom:
+  *    granted
+  */
+ static int check_assertion_extended_permissions(avrule_t *avrule, avtab_t *avtab,
+-						avtab_key_t *k)
++						avtab_key_t *k, policydb_t *p)
+ {
+-	avtab_ptr_t node;
+-	avtab_key_t tmp_key;
+-	avtab_extended_perms_t *xperms;
+-	av_extended_perms_t *neverallow_xperms = avrule->xperms;
+-	int rc = 1;
++	ebitmap_t src_matches, tgt_matches, matches;
++	unsigned int i, j;
++	ebitmap_node_t *snode, *tnode;
++	class_perm_node_t *cp;
++	int rc;
++	int ret = 1;
+ 
+-	memcpy(&tmp_key, k, sizeof(avtab_key_t));
+-	tmp_key.specified = AVTAB_XPERMS_ALLOWED;
++	ebitmap_init(&src_matches);
++	ebitmap_init(&tgt_matches);
++	ebitmap_init(&matches);
++	rc = ebitmap_and(&src_matches, &avrule->stypes.types,
++			 &p->attr_type_map[k->source_type - 1]);
++	if (rc)
++		goto oom;
+ 
+-	for (node = avtab_search_node(avtab, &tmp_key);
+-	     node;
+-	     node = avtab_search_node_next(node, tmp_key.specified)) {
+-		xperms = node->datum.xperms;
+-		if ((xperms->specified != AVTAB_XPERMS_IOCTLFUNCTION)
+-				&& (xperms->specified != AVTAB_XPERMS_IOCTLDRIVER))
+-			continue;
++	if (ebitmap_length(&src_matches) == 0)
++		goto exit;
+ 
+-		rc = check_extended_permissions(neverallow_xperms, xperms);
++	if (avrule->flags == RULE_SELF) {
++		rc = ebitmap_and(&matches, &p->attr_type_map[k->source_type - 1],
++				&p->attr_type_map[k->target_type - 1]);
+ 		if (rc)
+-			break;
++			goto oom;
++		rc = ebitmap_and(&tgt_matches, &avrule->stypes.types, &matches);
++		if (rc)
++			goto oom;
++	} else {
++		rc = ebitmap_and(&tgt_matches, &avrule->ttypes.types,
++				&p->attr_type_map[k->target_type -1]);
++		if (rc)
++			goto oom;
+ 	}
+ 
+-	return rc;
+-}
++	if (ebitmap_length(&tgt_matches) == 0)
++		goto exit;
+ 
++	for (cp = avrule->perms; cp; cp = cp->next) {
++		if (cp->tclass != k->target_class)
++			continue;
++		ebitmap_for_each_bit(&src_matches, snode, i) {
++			if (!ebitmap_node_get_bit(snode, i))
++				continue;
++			ebitmap_for_each_bit(&tgt_matches, tnode, j) {
++				if (!ebitmap_node_get_bit(tnode, j))
++					continue;
++
++				ret = check_assertion_extended_permissions_avtab(
++						avrule, avtab, i, j, k, p);
++				if (ret)
++					goto exit;
++			}
++		}
++	}
++	goto exit;
++
++oom:
++	ERR(NULL, "Out of memory - unable to check neverallows");
++
++exit:
++	ebitmap_destroy(&src_matches);
++	ebitmap_destroy(&tgt_matches);
++	ebitmap_destroy(&matches);
++	return ret;
++}
+ 
+ static int check_assertion_avtab_match(avtab_key_t *k, avtab_datum_t *d, void *args)
+ {
+@@ -355,7 +455,7 @@ static int check_assertion_avtab_match(avtab_key_t *k, avtab_datum_t *d, void *a
+ 	avrule_t *avrule = a->avrule;
+ 	avtab_t *avtab = a->avtab;
+ 
+-	if (k->specified != AVTAB_ALLOWED && k->specified != AVTAB_XPERMS_ALLOWED)
++	if (k->specified != AVTAB_ALLOWED)
+ 		goto exit;
+ 
+ 	if (!match_any_class_permissions(avrule->perms, k->target_class, d->data))
+@@ -386,7 +486,7 @@ static int check_assertion_avtab_match(avtab_key_t *k, avtab_datum_t *d, void *a
+ 		goto exit;
+ 
+ 	if (avrule->specified == AVRULE_XPERMS_NEVERALLOW) {
+-		rc = check_assertion_extended_permissions(avrule, avtab, k);
++		rc = check_assertion_extended_permissions(avrule, avtab, k, p);
+ 		if (rc == 0)
+ 			goto exit;
+ 	}
+diff --git libsepol-2.5/src/conditional.c libsepol-2.5/src/conditional.c
+index ea47cdd..e1bc961 100644
+--- libsepol-2.5/src/conditional.c
++++ libsepol-2.5/src/conditional.c
+@@ -589,14 +589,8 @@ int cond_read_bool(policydb_t * p,
+ 		goto err;
+ 
+ 	len = le32_to_cpu(buf[2]);
+-
+-	key = malloc(len + 1);
+-	if (!key)
+-		goto err;
+-	rc = next_entry(key, fp, len);
+-	if (rc < 0)
++	if (str_read(&key, fp, len))
+ 		goto err;
+-	key[len] = 0;
+ 
+ 	if (p->policy_type != POLICY_KERN &&
+ 	    p->policyvers >= MOD_POLICYDB_VERSION_TUNABLE_SEP) {
+diff --git libsepol-2.5/src/context.c libsepol-2.5/src/context.c
+index 84dad34..a88937f 100644
+--- libsepol-2.5/src/context.c
++++ libsepol-2.5/src/context.c
+@@ -10,6 +10,7 @@
+ #include "context.h"
+ #include "handle.h"
+ #include "mls.h"
++#include "private.h"
+ 
+ /* ----- Compatibility ---- */
+ int policydb_context_isvalid(const policydb_t * p, const context_struct_t * c)
+@@ -55,7 +56,7 @@ int context_is_valid(const policydb_t * p, const context_struct_t * c)
+ 		 * Role must be authorized for the type.
+ 		 */
+ 		role = p->role_val_to_struct[c->role - 1];
+-		if (!ebitmap_get_bit(&role->cache, c->type - 1))
++		if (!role || !ebitmap_get_bit(&role->cache, c->type - 1))
+ 			/* role may not be associated with type */
+ 			return 0;
+ 
+@@ -297,10 +298,18 @@ int context_from_string(sepol_handle_t * handle,
+ 	char *con_cpy = NULL;
+ 	sepol_context_t *ctx_record = NULL;
+ 
++	if (zero_or_saturated(con_str_len)) {
++		ERR(handle, "Invalid context length");
++		goto err;
++	}
++
+ 	/* sepol_context_from_string expects a NULL-terminated string */
+ 	con_cpy = malloc(con_str_len + 1);
+-	if (!con_cpy)
+-		goto omem;
++	if (!con_cpy) {
++		ERR(handle, "out of memory");
++		goto err;
++	}
++
+ 	memcpy(con_cpy, con_str, con_str_len);
+ 	con_cpy[con_str_len] = '\0';
+ 
+@@ -315,9 +324,6 @@ int context_from_string(sepol_handle_t * handle,
+ 	sepol_context_free(ctx_record);
+ 	return STATUS_SUCCESS;
+ 
+-      omem:
+-	ERR(handle, "out of memory");
+-
+       err:
+ 	ERR(handle, "could not create context structure");
+ 	free(con_cpy);
+diff --git libsepol-2.5/src/context_record.c libsepol-2.5/src/context_record.c
+index ac2884a..0a8bbf6 100644
+--- libsepol-2.5/src/context_record.c
++++ libsepol-2.5/src/context_record.c
+@@ -5,6 +5,7 @@
+ 
+ #include "context_internal.h"
+ #include "debug.h"
++#include "private.h"
+ 
+ struct sepol_context {
+ 
+@@ -279,44 +280,69 @@ int sepol_context_from_string(sepol_handle_t * handle,
+ 
+ hidden_def(sepol_context_from_string)
+ 
++static inline int safe_sum(size_t *sum, const size_t augends[], const size_t cnt) {
++
++	size_t a, i;
++
++	*sum = 0;
++	for(i=0; i < cnt; i++) {
++		/* sum should not be smaller than the addend */
++		a = augends[i];
++		*sum += a;
++		if (*sum < a) {
++			return i;
++		}
++	}
++
++	return 0;
++}
++
+ int sepol_context_to_string(sepol_handle_t * handle,
+ 			    const sepol_context_t * con, char **str_ptr)
+ {
+ 
+ 	int rc;
+-	const int user_sz = strlen(con->user);
+-	const int role_sz = strlen(con->role);
+-	const int type_sz = strlen(con->type);
+-	const int mls_sz = (con->mls) ? strlen(con->mls) : 0;
+-	const int total_sz = user_sz + role_sz + type_sz +
+-	    mls_sz + ((con->mls) ? 3 : 2);
+-
+-	char *str = (char *)malloc(total_sz + 1);
+-	if (!str)
+-		goto omem;
++	char *str = NULL;
++	size_t total_sz, err;
++	const size_t sizes[] = {
++			strlen(con->user),                 /* user length */
++			strlen(con->role),                 /* role length */
++			strlen(con->type),                 /* type length */
++			(con->mls) ? strlen(con->mls) : 0, /* mls length */
++			((con->mls) ? 3 : 2) + 1           /* mls has extra ":" also null byte */
++	};
++
++	err = safe_sum(&total_sz, sizes, ARRAY_SIZE(sizes));
++	if (err) {
++		ERR(handle, "invalid size, overflow at position: %zu", err);
++		goto err;
++	}
+ 
++	str = (char *)malloc(total_sz);
++	if (!str) {
++		ERR(handle, "out of memory");
++		goto err;
++	}
+ 	if (con->mls) {
+-		rc = snprintf(str, total_sz + 1, "%s:%s:%s:%s",
++		rc = snprintf(str, total_sz, "%s:%s:%s:%s",
+ 			      con->user, con->role, con->type, con->mls);
+-		if (rc < 0 || (rc >= total_sz + 1)) {
+-			ERR(handle, "print error");
+-			goto err;
+-		}
+ 	} else {
+-		rc = snprintf(str, total_sz + 1, "%s:%s:%s",
++		rc = snprintf(str, total_sz, "%s:%s:%s",
+ 			      con->user, con->role, con->type);
+-		if (rc < 0 || (rc >= total_sz + 1)) {
+-			ERR(handle, "print error");
+-			goto err;
+-		}
++	}
++
++	/*
++	 * rc is >= 0 on the size_t cast and is safe to promote
++	 * to an unsigned value.
++	 */
++	if (rc < 0 || (size_t)rc >= total_sz) {
++		ERR(handle, "print error");
++		goto err;
+ 	}
+ 
+ 	*str_ptr = str;
+ 	return STATUS_SUCCESS;
+ 
+-      omem:
+-	ERR(handle, "out of memory");
+-
+       err:
+ 	ERR(handle, "could not convert context to string");
+ 	free(str);
+diff --git libsepol-2.5/src/ebitmap.c libsepol-2.5/src/ebitmap.c
+index 58f2fc4..fe8beb8 100644
+--- libsepol-2.5/src/ebitmap.c
++++ libsepol-2.5/src/ebitmap.c
+@@ -394,6 +394,10 @@ int ebitmap_read(ebitmap_t * e, void *fp)
+ 		     e->highbit, MAPSIZE);
+ 		goto bad;
+ 	}
++
++	if (e->highbit && !count)
++		goto bad;
++
+ 	l = NULL;
+ 	for (i = 0; i < count; i++) {
+ 		rc = next_entry(buf, fp, sizeof(uint32_t));
+diff --git libsepol-2.5/src/expand.c libsepol-2.5/src/expand.c
+index 9cb7965..004a029 100644
+--- libsepol-2.5/src/expand.c
++++ libsepol-2.5/src/expand.c
+@@ -1855,20 +1855,31 @@ static int expand_avrule_helper(sepol_handle_t * handle,
+ 			else
+ 				avdatump->data = ~cur->data;
+ 		} else if (specified & AVRULE_XPERMS) {
+-			if (!avdatump->xperms) {
++			xperms = avdatump->xperms;
++			if (!xperms) {
+ 				xperms = (avtab_extended_perms_t *)
+ 					calloc(1, sizeof(avtab_extended_perms_t));
+ 				if (!xperms) {
+ 					ERR(handle, "Out of memory!");
+ 					return -1;
+ 				}
+-				node->datum.xperms = xperms;
++				avdatump->xperms = xperms;
+ 			}
+-			node->datum.xperms->specified = extended_perms->specified;
+-			node->datum.xperms->driver = extended_perms->driver;
+ 
++			switch (extended_perms->specified) {
++			case AVRULE_XPERMS_IOCTLFUNCTION:
++				xperms->specified = AVTAB_XPERMS_IOCTLFUNCTION;
++				break;
++			case AVRULE_XPERMS_IOCTLDRIVER:
++				xperms->specified = AVTAB_XPERMS_IOCTLDRIVER;
++				break;
++			default:
++				return -1;
++			}
++
++			xperms->driver = extended_perms->driver;
+ 			for (i = 0; i < ARRAY_SIZE(xperms->perms); i++)
+-				node->datum.xperms->perms[i] |= extended_perms->perms[i];
++				xperms->perms[i] |= extended_perms->perms[i];
+ 		} else {
+ 			assert(0);	/* should never occur */
+ 		}
+@@ -2497,6 +2508,7 @@ int type_set_expand(type_set_t * set, ebitmap_t * t, policydb_t * p,
+ 	unsigned int i;
+ 	ebitmap_t types, neg_types;
+ 	ebitmap_node_t *tnode;
++	int rc =-1;
+ 
+ 	ebitmap_init(&types);
+ 	ebitmap_init(t);
+@@ -2505,17 +2517,29 @@ int type_set_expand(type_set_t * set, ebitmap_t * t, policydb_t * p,
+ 		/* First go through the types and OR all the attributes to types */
+ 		ebitmap_for_each_bit(&set->types, tnode, i) {
+ 			if (ebitmap_node_get_bit(tnode, i)) {
++
++				/*
++				 * invalid policies might have more types set in the ebitmap than
++				 * what's available in the type_val_to_struct mapping
++				 */
++				if (i > p->p_types.nprim - 1)
++					goto err_types;
++
++				if (!p->type_val_to_struct[i]) {
++					goto err_types;
++				}
++
+ 				if (p->type_val_to_struct[i]->flavor ==
+ 				    TYPE_ATTRIB) {
+ 					if (ebitmap_union
+ 					    (&types,
+ 					     &p->type_val_to_struct[i]->
+ 					     types)) {
+-						return -1;
++						goto err_types;
+ 					}
+ 				} else {
+ 					if (ebitmap_set_bit(&types, i, 1)) {
+-						return -1;
++						goto err_types;
+ 					}
+ 				}
+ 			}
+@@ -2523,7 +2547,7 @@ int type_set_expand(type_set_t * set, ebitmap_t * t, policydb_t * p,
+ 	} else {
+ 		/* No expansion of attributes, just copy the set as is. */
+ 		if (ebitmap_cpy(&types, &set->types))
+-			return -1;
++			goto err_types;
+ 	}
+ 
+ 	/* Now do the same thing for negset */
+@@ -2535,11 +2559,11 @@ int type_set_expand(type_set_t * set, ebitmap_t * t, policydb_t * p,
+ 				if (ebitmap_union
+ 				    (&neg_types,
+ 				     &p->type_val_to_struct[i]->types)) {
+-					return -1;
++					goto err_neg;
+ 				}
+ 			} else {
+ 				if (ebitmap_set_bit(&neg_types, i, 1)) {
+-					return -1;
++					goto err_neg;
+ 				}
+ 			}
+ 		}
+@@ -2554,7 +2578,7 @@ int type_set_expand(type_set_t * set, ebitmap_t * t, policydb_t * p,
+ 			    p->type_val_to_struct[i]->flavor == TYPE_ATTRIB)
+ 				continue;
+ 			if (ebitmap_set_bit(t, i, 1))
+-				return -1;
++				goto err_neg;
+ 		}
+ 		goto out;
+ 	}
+@@ -2563,7 +2587,7 @@ int type_set_expand(type_set_t * set, ebitmap_t * t, policydb_t * p,
+ 		if (ebitmap_node_get_bit(tnode, i)
+ 		    && (!ebitmap_get_bit(&neg_types, i)))
+ 			if (ebitmap_set_bit(t, i, 1))
+-				return -1;
++				goto err_neg;
+ 	}
+ 
+ 	if (set->flags & TYPE_COMP) {
+@@ -2575,20 +2599,23 @@ int type_set_expand(type_set_t * set, ebitmap_t * t, policydb_t * p,
+ 			}
+ 			if (ebitmap_get_bit(t, i)) {
+ 				if (ebitmap_set_bit(t, i, 0))
+-					return -1;
++					goto err_neg;
+ 			} else {
+ 				if (ebitmap_set_bit(t, i, 1))
+-					return -1;
++					goto err_neg;
+ 			}
+ 		}
+ 	}
+ 
+-      out:
++	  out:
++	rc = 0;
+ 
+-	ebitmap_destroy(&types);
++	  err_neg:
+ 	ebitmap_destroy(&neg_types);
++	  err_types:
++	ebitmap_destroy(&types);
+ 
+-	return 0;
++	return rc;
+ }
+ 
+ static int copy_neverallow(policydb_t * dest_pol, uint32_t * typemap,
+diff --git libsepol-2.5/src/genbools.c libsepol-2.5/src/genbools.c
+index 6a06ec9..c1f5405 100644
+--- libsepol-2.5/src/genbools.c
++++ libsepol-2.5/src/genbools.c
+@@ -68,7 +68,6 @@ static int load_booleans(struct policydb *policydb, const char *path,
+ {
+ 	FILE *boolf;
+ 	char *buffer = NULL;
+-	size_t size = 0;
+ 	char localbools[BUFSIZ];
+ 	char name[BUFSIZ];
+ 	int val;
+@@ -79,7 +78,7 @@ static int load_booleans(struct policydb *policydb, const char *path,
+ 	if (boolf == NULL)
+ 		goto localbool;
+ 
+-#ifdef DARWIN
++#ifdef __APPLE__
+         if ((buffer = (char *)malloc(255 * sizeof(char))) == NULL) {
+           ERR(NULL, "out of memory");
+ 	  return -1;
+@@ -87,6 +86,7 @@ static int load_booleans(struct policydb *policydb, const char *path,
+ 
+         while(fgets(buffer, 255, boolf) != NULL) {
+ #else
++	size_t size = 0;
+ 	while (getline(&buffer, &size, boolf) > 0) {
+ #endif
+ 		int ret = process_boolean(buffer, name, sizeof(name), &val);
+@@ -111,7 +111,7 @@ static int load_booleans(struct policydb *policydb, const char *path,
+ 	boolf = fopen(localbools, "r");
+ 	if (boolf != NULL) {
+ 
+-#ifdef DARWIN
++#ifdef __APPLE__
+ 
+ 	  while(fgets(buffer, 255, boolf) != NULL) {
+ #else
+diff --git libsepol-2.5/src/genusers.c libsepol-2.5/src/genusers.c
+index 7826b71..5568210 100644
+--- libsepol-2.5/src/genusers.c
++++ libsepol-2.5/src/genusers.c
+@@ -7,7 +7,7 @@
+ 
+ #include <sepol/policydb/policydb.h>
+ 
+-#ifndef DARWIN
++#ifndef __APPLE__
+ #include <stdio_ext.h>
+ #endif
+ 
+@@ -36,7 +36,6 @@ static int load_users(struct policydb *policydb, const char *path)
+ {
+ 	FILE *fp;
+ 	char *buffer = NULL, *p, *q, oldc;
+-	size_t len = 0;
+ 	ssize_t nread;
+ 	unsigned lineno = 0, islist = 0, bit;
+ 	user_datum_t *usrdatum;
+@@ -47,14 +46,16 @@ static int load_users(struct policydb *policydb, const char *path)
+ 	if (fp == NULL)
+ 		return -1;
+ 
+-#ifdef DARWIN
++#ifdef __APPLE__
+ 	if ((buffer = (char *)malloc(255 * sizeof(char))) == NULL) {
+ 	  ERR(NULL, "out of memory");
+ 	  return -1;
+ 	}
+ 
+ 	while(fgets(buffer, 255, fp) != NULL) {
++		nread = strlen(buffer);
+ #else
++	size_t len = 0;
+ 	__fsetlocking(fp, FSETLOCKING_BYCALLER);
+ 	while ((nread = getline(&buffer, &len, fp)) > 0) {
+ #endif
+diff --git libsepol-2.5/src/hierarchy.c libsepol-2.5/src/hierarchy.c
+index 6f73195..778541a 100644
+--- libsepol-2.5/src/hierarchy.c
++++ libsepol-2.5/src/hierarchy.c
+@@ -121,18 +121,6 @@ static int bounds_expand_rule(sepol_handle_t *handle, policydb_t *p,
+ 		}
+ 	}
+ 
+-	if (ebitmap_get_bit(&p->attr_type_map[tgt - 1], parent - 1)) {
+-		avtab_key.target_type = parent;
+-		ebitmap_for_each_bit(&p->attr_type_map[src - 1], tnode, i) {
+-			if (!ebitmap_node_get_bit(tnode, i))
+-				continue;
+-			avtab_key.source_type = i + 1;
+-			rc = bounds_insert_rule(handle, avtab, global, other,
+-						&avtab_key, &datum);
+-			if (rc) goto exit;
+-		}
+-	}
+-
+ exit:
+ 	return rc;
+ }
+@@ -313,45 +301,21 @@ static int bounds_check_rule(sepol_handle_t *handle, policydb_t *p,
+ 		ebitmap_for_each_bit(&p->attr_type_map[tgt - 1], tnode, i) {
+ 			if (!ebitmap_node_get_bit(tnode, i))
+ 				continue;
+-			avtab_key.target_type = i + 1;
+-			d = bounds_not_covered(global_avtab, cur_avtab,
+-					       &avtab_key, data);
+-			if (!d) continue;
+ 			td = p->type_val_to_struct[i];
+ 			if (td && td->bounds) {
+ 				avtab_key.target_type = td->bounds;
+ 				d = bounds_not_covered(global_avtab, cur_avtab,
+ 						       &avtab_key, data);
+-				if (!d) continue;
+-			}
+-			(*numbad)++;
+-			rc = bounds_add_bad(handle, child, i+1, class, d, bad);
+-			if (rc) goto exit;
+-		}
+-	}
+-	if (ebitmap_get_bit(&p->attr_type_map[tgt - 1], child - 1)) {
+-		avtab_key.target_type = parent;
+-		ebitmap_for_each_bit(&p->attr_type_map[src - 1], tnode, i) {
+-			if (!ebitmap_node_get_bit(tnode, i))
+-				continue;
+-			avtab_key.source_type = i + 1;
+-			if (avtab_key.source_type == child) {
+-				/* Checked above */
+-				continue;
+-			}
+-			d = bounds_not_covered(global_avtab, cur_avtab,
+-					       &avtab_key, data);
+-			if (!d) continue;
+-			td = p->type_val_to_struct[i];
+-			if (td && td->bounds) {
+-				avtab_key.source_type = td->bounds;
++			} else {
++				avtab_key.target_type = i + 1;
+ 				d = bounds_not_covered(global_avtab, cur_avtab,
+ 						       &avtab_key, data);
+-				if (!d) continue;
+ 			}
+-			(*numbad)++;
+-			rc = bounds_add_bad(handle, i+1, child, class, d, bad);
+-			if (rc) goto exit;
++			if (d) {
++				(*numbad)++;
++				rc = bounds_add_bad(handle, child, i+1, class, d, bad);
++				if (rc) goto exit;
++			}
+ 		}
+ 	}
+ 
+diff --git libsepol-2.5/src/mls.c libsepol-2.5/src/mls.c
+index 1e84bb7..8047d91 100644
+--- libsepol-2.5/src/mls.c
++++ libsepol-2.5/src/mls.c
+@@ -262,6 +262,7 @@ int mls_context_isvalid(const policydb_t * p, const context_struct_t * c)
+ 	user_datum_t *usrdatum;
+ 	unsigned int i, l;
+ 	ebitmap_node_t *cnode;
++	hashtab_key_t key;
+ 
+ 	if (!p->mls)
+ 		return 1;
+@@ -279,11 +280,12 @@ int mls_context_isvalid(const policydb_t * p, const context_struct_t * c)
+ 		if (!c->range.level[l].sens
+ 		    || c->range.level[l].sens > p->p_levels.nprim)
+ 			return 0;
+-		levdatum = (level_datum_t *) hashtab_search(p->p_levels.table,
+-							    p->
+-							    p_sens_val_to_name
+-							    [c->range.level[l].
+-							     sens - 1]);
++
++		key = p->p_sens_val_to_name[c->range.level[l].sens - 1];
++		if (!key)
++			return 0;
++
++		levdatum = (level_datum_t *) hashtab_search(p->p_levels.table, key);
+ 		if (!levdatum)
+ 			return 0;
+ 
+@@ -310,7 +312,7 @@ int mls_context_isvalid(const policydb_t * p, const context_struct_t * c)
+ 	if (!c->user || c->user > p->p_users.nprim)
+ 		return 0;
+ 	usrdatum = p->user_val_to_struct[c->user - 1];
+-	if (!mls_range_contains(usrdatum->exp_range, c->range))
++	if (!usrdatum || !mls_range_contains(usrdatum->exp_range, c->range))
+ 		return 0;	/* user may not be associated with range */
+ 
+ 	return 1;
+diff --git libsepol-2.5/src/module.c libsepol-2.5/src/module.c
+index 1665ede..1c2bece 100644
+--- libsepol-2.5/src/module.c
++++ libsepol-2.5/src/module.c
+@@ -30,6 +30,7 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <limits.h>
++#include <inttypes.h>
+ 
+ #define SEPOL_PACKAGE_SECTION_FC 0xf97cff90
+ #define SEPOL_PACKAGE_SECTION_SEUSER 0x97cff91
+@@ -792,20 +793,13 @@ int sepol_module_package_info(struct sepol_policy_file *spf, int *type,
+ 				    i);
+ 				goto cleanup;
+ 			}
++
+ 			len = le32_to_cpu(buf[0]);
+-			*name = malloc(len + 1);
+-			if (!*name) {
+-				ERR(file->handle, "out of memory");
+-				goto cleanup;
+-			}
+-			rc = next_entry(*name, file, len);
+-			if (rc < 0) {
+-				ERR(file->handle,
+-				    "cannot get module name string (at section %u)",
+-				    i);
++			if (str_read(name, file, len)) {
++				ERR(file->handle, "%s", strerror(errno));
+ 				goto cleanup;
+ 			}
+-			(*name)[len] = '\0';
++
+ 			rc = next_entry(buf, file, sizeof(uint32_t));
+ 			if (rc < 0) {
+ 				ERR(file->handle,
+@@ -814,19 +808,10 @@ int sepol_module_package_info(struct sepol_policy_file *spf, int *type,
+ 				goto cleanup;
+ 			}
+ 			len = le32_to_cpu(buf[0]);
+-			*version = malloc(len + 1);
+-			if (!*version) {
+-				ERR(file->handle, "out of memory");
+-				goto cleanup;
+-			}
+-			rc = next_entry(*version, file, len);
+-			if (rc < 0) {
+-				ERR(file->handle,
+-				    "cannot get module version string (at section %u)",
+-				    i);
++			if (str_read(version, file, len)) {
++				ERR(file->handle, "%s", strerror(errno));
+ 				goto cleanup;
+ 			}
+-			(*version)[len] = '\0';
+ 			seen |= SEEN_MOD;
+ 			break;
+ 		default:
+diff --git libsepol-2.5/src/module_to_cil.c libsepol-2.5/src/module_to_cil.c
+index 18ec6b9..508a861 100644
+--- libsepol-2.5/src/module_to_cil.c
++++ libsepol-2.5/src/module_to_cil.c
+@@ -26,6 +26,9 @@
+ #include <getopt.h>
+ #include <libgen.h>
+ #include <netinet/in.h>
++#ifndef IPPROTO_DCCP
++#define IPPROTO_DCCP 33
++#endif
+ #include <signal.h>
+ #include <stdarg.h>
+ #include <stdio.h>
+@@ -44,6 +47,8 @@
+ #include <sepol/policydb/services.h>
+ #include <sepol/policydb/util.h>
+ 
++#include "private.h"
++
+ #ifdef __GNUC__
+ #  define UNUSED(x) UNUSED_ ## x __attribute__((__unused__))
+ #else
+@@ -55,7 +60,9 @@ FILE *out_file;
+ #define STACK_SIZE 16
+ #define DEFAULT_LEVEL "systemlow"
+ #define DEFAULT_OBJECT "object_r"
+-#define GEN_REQUIRE_ATTR "cil_gen_require"
++#define GEN_REQUIRE_ATTR "cil_gen_require" /* Also in libsepol/cil/src/cil_post.c */
++#define TYPEATTR_INFIX "_typeattr_"        /* Also in libsepol/cil/src/cil_post.c */
++#define ROLEATTR_INFIX "_roleattr_"
+ 
+ __attribute__ ((format(printf, 1, 2)))
+ static void log_err(const char *fmt, ...)
+@@ -121,7 +128,7 @@ static int get_line(char **start, char *end, char **line)
+ 
+ 	for (len = 0; p < end && *p != '\n' && *p != '\0'; p++, len++);
+ 
+-	if (len == 0) {
++	if (zero_or_saturated(len)) {
+ 		rc = 0;
+ 		goto exit;
+ 	}
+@@ -623,9 +630,9 @@ static int set_to_cil_attr(struct policydb *pdb, int is_type, char ***names, uin
+ 	num_attrs++;
+ 
+ 	if (is_type) {
+-		attr_infix = "_typeattr_";
++		attr_infix = TYPEATTR_INFIX;
+ 	} else {
+-		attr_infix = "_roleattr_";
++		attr_infix = ROLEATTR_INFIX;
+ 	}
+ 
+ 	len = strlen(pdb->name) + strlen(attr_infix) + num_digits(num_attrs) + 1;
+@@ -1070,6 +1077,10 @@ static int avrule_list_to_cil(int indent, struct policydb *pdb, struct avrule *a
+ 	struct type_set *ts;
+ 
+ 	for (avrule = avrule_list; avrule != NULL; avrule = avrule->next) {
++		if (avrule->specified == AVRULE_NEVERALLOW && avrule->source_filename) {
++			cil_println(0, ";;* lmx %lu %s\n",avrule->source_line, avrule->source_filename);
++		}
++
+ 		ts = &avrule->stypes;
+ 		rc = process_typeset(indent, pdb, ts, attr_list, &snames, &num_snames);
+ 		if (rc != 0) {
+@@ -1100,6 +1111,10 @@ static int avrule_list_to_cil(int indent, struct policydb *pdb, struct avrule *a
+ 
+ 		names_destroy(&snames, &num_snames);
+ 		names_destroy(&tnames, &num_tnames);
++
++		if (avrule->specified == AVRULE_NEVERALLOW && avrule->source_filename) {
++			cil_println(0, ";;* lme\n");
++		}
+ 	}
+ 
+ 	return 0;
+@@ -1292,7 +1307,7 @@ static int cond_list_to_cil(int indent, struct policydb *pdb, struct cond_node *
+ {
+ 	int rc = -1;
+ 	struct cond_node *cond;
+-	struct list *attr_list;
++	struct list *attr_list = NULL;
+ 
+ 	rc = list_init(&attr_list);
+ 	if (rc != 0) {
+@@ -2537,6 +2552,7 @@ static int ocontext_selinux_port_to_cil(struct policydb *pdb, struct ocontext *p
+ 		switch (portcon->u.port.protocol) {
+ 		case IPPROTO_TCP: protocol = "tcp"; break;
+ 		case IPPROTO_UDP: protocol = "udp"; break;
++		case IPPROTO_DCCP: protocol = "dccp"; break;
+ 		default:
+ 			log_err("Unknown portcon protocol: %i", portcon->u.port.protocol);
+ 			rc = -1;
+@@ -3470,7 +3486,7 @@ static int block_to_cil(struct policydb *pdb, struct avrule_block *block, struct
+ {
+ 	int rc = -1;
+ 	struct avrule_decl *decl;
+-	struct list *attr_list;
++	struct list *attr_list = NULL;
+ 
+ 	decl = block->branch_list;
+ 
+@@ -3619,7 +3635,7 @@ static int blocks_to_cil(struct policydb *pdb)
+ 	int rc = -1;
+ 	struct avrule_block *block;
+ 	int indent = 0;
+-	struct stack *stack;
++	struct stack *stack = NULL;
+ 
+ 	rc = stack_init(&stack);
+ 	if (rc != 0) {
+@@ -3687,7 +3703,7 @@ static int linked_blocks_to_cil(struct policydb *pdb)
+ 	// Since it is linked, all optional blocks have been resolved
+ 	int rc = -1;
+ 	struct avrule_block *block;
+-	struct stack *stack;
++	struct stack *stack = NULL;
+ 
+ 	rc = stack_init(&stack);
+ 	if (rc != 0) {
+diff --git libsepol-2.5/src/node_record.c libsepol-2.5/src/node_record.c
+index bd48ba0..21043b6 100644
+--- libsepol-2.5/src/node_record.c
++++ libsepol-2.5/src/node_record.c
+@@ -70,7 +70,7 @@ static int node_parse_addr(sepol_handle_t * handle,
+ 				return STATUS_ERR;
+ 			}
+ 
+-#ifdef DARWIN
++#ifdef __APPLE__
+ 			memcpy(addr_bytes, in_addr.s6_addr, 16);
+ #else
+ 			memcpy(addr_bytes, in_addr.s6_addr32, 16);
+@@ -162,7 +162,7 @@ static int node_expand_addr(sepol_handle_t * handle,
+ 		{
+ 			struct in6_addr addr;
+ 			memset(&addr, 0, sizeof(struct in6_addr));
+-#ifdef DARWIN
++#ifdef __APPLE__
+ 			memcpy(&addr.s6_addr[0], addr_bytes, 16);
+ #else
+ 			memcpy(&addr.s6_addr32[0], addr_bytes, 16);
+diff --git libsepol-2.5/src/nodes.c libsepol-2.5/src/nodes.c
+index 50cf21d..820346d 100644
+--- libsepol-2.5/src/nodes.c
++++ libsepol-2.5/src/nodes.c
+@@ -273,6 +273,7 @@ int sepol_node_query(sepol_handle_t * handle,
+ 							   c, SEPOL_PROTO_IP6,
+ 							   response) < 0)
+ 						goto err;
++					return STATUS_SUCCESS;
+ 				}
+ 			}
+ 			break;
+diff --git libsepol-2.5/src/policydb.c libsepol-2.5/src/policydb.c
+index 6a80f94..cdb3cde 100644
+--- libsepol-2.5/src/policydb.c
++++ libsepol-2.5/src/policydb.c
+@@ -1068,13 +1068,13 @@ int policydb_index_others(sepol_handle_t * handle,
+ 
+ 	free(p->role_val_to_struct);
+ 	p->role_val_to_struct = (role_datum_t **)
+-	    malloc(p->p_roles.nprim * sizeof(role_datum_t *));
++	    calloc(p->p_roles.nprim, sizeof(role_datum_t *));
+ 	if (!p->role_val_to_struct)
+ 		return -1;
+ 
+ 	free(p->user_val_to_struct);
+ 	p->user_val_to_struct = (user_datum_t **)
+-	    malloc(p->p_users.nprim * sizeof(user_datum_t *));
++	    calloc(p->p_users.nprim, sizeof(user_datum_t *));
+ 	if (!p->user_val_to_struct)
+ 		return -1;
+ 
+@@ -1911,15 +1911,10 @@ static int perm_read(policydb_t * p
+ 		goto bad;
+ 
+ 	len = le32_to_cpu(buf[0]);
+-	perdatum->s.value = le32_to_cpu(buf[1]);
+-
+-	key = malloc(len + 1);
+-	if (!key)
+-		goto bad;
+-	rc = next_entry(key, fp, len);
+-	if (rc < 0)
++	if(str_read(&key, fp, len))
+ 		goto bad;
+-	key[len] = 0;
++
++	perdatum->s.value = le32_to_cpu(buf[1]);
+ 
+ 	if (hashtab_insert(h, key, perdatum))
+ 		goto bad;
+@@ -1949,6 +1944,9 @@ static int common_read(policydb_t * p, hashtab_t h, struct policy_file *fp)
+ 		goto bad;
+ 
+ 	len = le32_to_cpu(buf[0]);
++	if (zero_or_saturated(len))
++		goto bad;
++
+ 	comdatum->s.value = le32_to_cpu(buf[1]);
+ 
+ 	if (symtab_init(&comdatum->permissions, PERM_SYMTAB_SIZE))
+@@ -2092,7 +2090,11 @@ static int class_read(policydb_t * p, hashtab_t h, struct policy_file *fp)
+ 		goto bad;
+ 
+ 	len = le32_to_cpu(buf[0]);
++	if (zero_or_saturated(len))
++		goto bad;
+ 	len2 = le32_to_cpu(buf[1]);
++	if (is_saturated(len2))
++		goto bad;
+ 	cladatum->s.value = le32_to_cpu(buf[2]);
+ 
+ 	if (symtab_init(&cladatum->permissions, PERM_SYMTAB_SIZE))
+@@ -2199,6 +2201,9 @@ static int role_read(policydb_t * p, hashtab_t h, struct policy_file *fp)
+ 		goto bad;
+ 
+ 	len = le32_to_cpu(buf[0]);
++	if (zero_or_saturated(len))
++		goto bad;
++
+ 	role->s.value = le32_to_cpu(buf[1]);
+ 	if (policydb_has_boundary_feature(p))
+ 		role->bounds = le32_to_cpu(buf[2]);
+@@ -2287,6 +2292,9 @@ static int type_read(policydb_t * p, hashtab_t h, struct policy_file *fp)
+ 		goto bad;
+ 
+ 	len = le32_to_cpu(buf[pos]);
++	if (zero_or_saturated(len))
++		goto bad;
++
+ 	typdatum->s.value = le32_to_cpu(buf[++pos]);
+ 	if (policydb_has_boundary_feature(p)) {
+ 		uint32_t properties;
+@@ -2447,6 +2455,8 @@ int filename_trans_read(filename_trans_t **t, struct policy_file *fp)
+ 		if (rc < 0)
+ 			return -1;
+ 		len = le32_to_cpu(buf[0]);
++		if (zero_or_saturated(len))
++			return -1;
+ 
+ 		name = calloc(len + 1, sizeof(*name));
+ 		if (!name)
+@@ -2556,6 +2566,9 @@ static int ocontext_read_xen(struct policydb_compat_info *info,
+ 				if (rc < 0)
+ 					return -1;
+ 				len = le32_to_cpu(buf[0]);
++				if (zero_or_saturated(len))
++					return -1;
++
+ 				c->u.name = malloc(len + 1);
+ 				if (!c->u.name)
+ 					return -1;
+@@ -2618,6 +2631,8 @@ static int ocontext_read_selinux(struct policydb_compat_info *info,
+ 				if (rc < 0)
+ 					return -1;
+ 				len = le32_to_cpu(buf[0]);
++				if (zero_or_saturated(len))
++					return -1;
+ 				c->u.name = malloc(len + 1);
+ 				if (!c->u.name)
+ 					return -1;
+@@ -2659,6 +2674,8 @@ static int ocontext_read_selinux(struct policydb_compat_info *info,
+ 					return -1;
+ 				c->v.behavior = le32_to_cpu(buf[0]);
+ 				len = le32_to_cpu(buf[1]);
++				if (zero_or_saturated(len))
++					return -1;
+ 				c->u.name = malloc(len + 1);
+ 				if (!c->u.name)
+ 					return -1;
+@@ -2719,7 +2736,7 @@ static int genfs_read(policydb_t * p, struct policy_file *fp)
+ 	uint32_t buf[1];
+ 	size_t nel, nel2, len, len2;
+ 	genfs_t *genfs_p, *newgenfs, *genfs;
+-	unsigned int i, j;
++	size_t i, j;
+ 	ocontext_t *l, *c, *newc = NULL;
+ 	int rc;
+ 
+@@ -2733,6 +2750,8 @@ static int genfs_read(policydb_t * p, struct policy_file *fp)
+ 		if (rc < 0)
+ 			goto bad;
+ 		len = le32_to_cpu(buf[0]);
++		if (zero_or_saturated(len))
++			goto bad;
+ 		newgenfs = calloc(1, sizeof(genfs_t));
+ 		if (!newgenfs)
+ 			goto bad;
+@@ -2778,6 +2797,8 @@ static int genfs_read(policydb_t * p, struct policy_file *fp)
+ 			if (rc < 0)
+ 				goto bad;
+ 			len = le32_to_cpu(buf[0]);
++			if (zero_or_saturated(len))
++				goto bad;
+ 			newc->u.name = malloc(len + 1);
+ 			if (!newc->u.name) {
+ 				goto bad;
+@@ -2812,6 +2833,8 @@ static int genfs_read(policydb_t * p, struct policy_file *fp)
+ 				l->next = newc;
+ 			else
+ 				newgenfs->head = newc;
++			/* clear newc after a new owner has the pointer */
++			newc = NULL;
+ 		}
+ 	}
+ 
+@@ -2875,6 +2898,9 @@ static int user_read(policydb_t * p, hashtab_t h, struct policy_file *fp)
+ 		goto bad;
+ 
+ 	len = le32_to_cpu(buf[0]);
++	if (zero_or_saturated(len))
++		goto bad;
++
+ 	usrdatum->s.value = le32_to_cpu(buf[1]);
+ 	if (policydb_has_boundary_feature(p))
+ 		usrdatum->bounds = le32_to_cpu(buf[2]);
+@@ -2958,6 +2984,9 @@ static int sens_read(policydb_t * p
+ 		goto bad;
+ 
+ 	len = le32_to_cpu(buf[0]);
++	if (zero_or_saturated(len))
++		goto bad;
++
+ 	levdatum->isalias = le32_to_cpu(buf[1]);
+ 
+ 	key = malloc(len + 1);
+@@ -3001,6 +3030,9 @@ static int cat_read(policydb_t * p
+ 		goto bad;
+ 
+ 	len = le32_to_cpu(buf[0]);
++	if(zero_or_saturated(len))
++		goto bad;
++
+ 	catdatum->s.value = le32_to_cpu(buf[1]);
+ 	catdatum->isalias = le32_to_cpu(buf[2]);
+ 
+@@ -3337,6 +3369,8 @@ static int filename_trans_rule_read(filename_trans_rule_t ** r, struct policy_fi
+ 			return -1;
+ 
+ 		len = le32_to_cpu(buf[0]);
++		if (zero_or_saturated(len))
++			return -1;
+ 
+ 		ftr->name = malloc(len + 1);
+ 		if (!ftr->name)
+@@ -3578,6 +3612,8 @@ static int scope_read(policydb_t * p, int symnum, struct policy_file *fp)
+ 	if (rc < 0)
+ 		goto cleanup;
+ 	key_len = le32_to_cpu(buf[0]);
++	if (zero_or_saturated(key_len))
++		goto cleanup;
+ 	key = malloc(key_len + 1);
+ 	if (!key)
+ 		goto cleanup;
+@@ -3662,8 +3698,8 @@ int policydb_read(policydb_t * p, struct policy_file *fp, unsigned verbose)
+ 	}
+ 
+ 	len = buf[1];
+-	if (len > POLICYDB_STRING_MAX_LENGTH) {
+-		ERR(fp->handle, "policydb string length too long ");
++	if (len == 0 || len > POLICYDB_STRING_MAX_LENGTH) {
++		ERR(fp->handle, "policydb string length %s ", len ? "too long" : "zero");
+ 		return POLICYDB_ERROR;
+ 	}
+ 
+@@ -3796,6 +3832,8 @@ int policydb_read(policydb_t * p, struct policy_file *fp, unsigned verbose)
+ 			goto bad;
+ 		}
+ 		len = le32_to_cpu(buf[0]);
++		if (zero_or_saturated(len))
++			goto bad;
+ 		if ((p->name = malloc(len + 1)) == NULL) {
+ 			goto bad;
+ 		}
+@@ -3807,6 +3845,8 @@ int policydb_read(policydb_t * p, struct policy_file *fp, unsigned verbose)
+ 			goto bad;
+ 		}
+ 		len = le32_to_cpu(buf[0]);
++		if (zero_or_saturated(len))
++			goto bad;
+ 		if ((p->version = malloc(len + 1)) == NULL) {
+ 			goto bad;
+ 		}
+@@ -3924,6 +3964,10 @@ int policydb_read(policydb_t * p, struct policy_file *fp, unsigned verbose)
+ 					if (!ebitmap_node_get_bit(tnode, j)
+ 					    || i == j)
+ 						continue;
++
++					if (j >= p->p_types.nprim)
++						goto bad;
++
+ 					if (ebitmap_set_bit
+ 					    (&p->attr_type_map[j], i, 1))
+ 						goto bad;
+@@ -3954,12 +3998,12 @@ int policydb_reindex_users(policydb_t * p)
+ 		free(p->sym_val_to_name[i]);
+ 
+ 	p->user_val_to_struct = (user_datum_t **)
+-	    malloc(p->p_users.nprim * sizeof(user_datum_t *));
++	    calloc(p->p_users.nprim, sizeof(user_datum_t *));
+ 	if (!p->user_val_to_struct)
+ 		return -1;
+ 
+ 	p->sym_val_to_name[i] = (char **)
+-	    malloc(p->symtab[i].nprim * sizeof(char *));
++	    calloc(p->symtab[i].nprim, sizeof(char *));
+ 	if (!p->sym_val_to_name[i])
+ 		return -1;
+ 
+diff --git libsepol-2.5/src/port_record.c libsepol-2.5/src/port_record.c
+index 6a33d93..ed9093b 100644
+--- libsepol-2.5/src/port_record.c
++++ libsepol-2.5/src/port_record.c
+@@ -184,6 +184,8 @@ const char *sepol_port_get_proto_str(int proto)
+ 		return "udp";
+ 	case SEPOL_PROTO_TCP:
+ 		return "tcp";
++	case SEPOL_PROTO_DCCP:
++		return "dccp";
+ 	default:
+ 		return "???";
+ 	}
+diff --git libsepol-2.5/src/ports.c libsepol-2.5/src/ports.c
+index 607a629..62ec602 100644
+--- libsepol-2.5/src/ports.c
++++ libsepol-2.5/src/ports.c
+@@ -1,4 +1,7 @@
+ #include <netinet/in.h>
++#ifndef IPPROTO_DCCP
++#define IPPROTO_DCCP 33
++#endif
+ #include <stdlib.h>
+ 
+ #include "debug.h"
+@@ -16,6 +19,8 @@ static inline int sepol2ipproto(sepol_handle_t * handle, int proto)
+ 		return IPPROTO_TCP;
+ 	case SEPOL_PROTO_UDP:
+ 		return IPPROTO_UDP;
++	case SEPOL_PROTO_DCCP:
++		return IPPROTO_DCCP;
+ 	default:
+ 		ERR(handle, "unsupported protocol %u", proto);
+ 		return STATUS_ERR;
+@@ -30,6 +35,8 @@ static inline int ipproto2sepol(sepol_handle_t * handle, int proto)
+ 		return SEPOL_PROTO_TCP;
+ 	case IPPROTO_UDP:
+ 		return SEPOL_PROTO_UDP;
++	case IPPROTO_DCCP:
++		return SEPOL_PROTO_DCCP;
+ 	default:
+ 		ERR(handle, "invalid protocol %u " "found in policy", proto);
+ 		return STATUS_ERR;
+diff --git libsepol-2.5/src/private.h libsepol-2.5/src/private.h
+index 8a6d4bb..b884c23 100644
+--- libsepol-2.5/src/private.h
++++ libsepol-2.5/src/private.h
+@@ -5,7 +5,7 @@
+ #include <sepol/policydb/policydb.h>
+ 
+ 
+-#ifdef DARWIN
++#ifdef __APPLE__
+ #include <sys/types.h>
+ #include <machine/endian.h>
+ #else
+@@ -16,7 +16,7 @@
+ #include <errno.h>
+ #include <dso.h>
+ 
+-#ifdef DARWIN
++#ifdef __APPLE__
+ #define __BYTE_ORDER  BYTE_ORDER
+ #define __LITTLE_ENDIAN  LITTLE_ENDIAN
+ #endif
+@@ -45,6 +45,9 @@
+ 
+ #define ARRAY_SIZE(x) (sizeof(x)/sizeof((x)[0]))
+ 
++#define is_saturated(x) (x == (typeof(x))-1)
++#define zero_or_saturated(x) ((x == 0) || is_saturated(x))
++
+ /* Policy compatibility information. */
+ struct policydb_compat_info {
+ 	unsigned int type;
+@@ -62,3 +65,4 @@ extern struct policydb_compat_info *policydb_lookup_compat(unsigned int version,
+ extern int next_entry(void *buf, struct policy_file *fp, size_t bytes) hidden;
+ extern size_t put_entry(const void *ptr, size_t size, size_t n,
+ 		        struct policy_file *fp) hidden;
++extern int str_read(char **strp, struct policy_file *fp, size_t len) hidden;
+diff --git libsepol-2.5/src/services.c libsepol-2.5/src/services.c
+index d64a8e8..068759d 100644
+--- libsepol-2.5/src/services.c
++++ libsepol-2.5/src/services.c
+@@ -1152,20 +1152,16 @@ int hidden sepol_compute_av(sepol_security_id_t ssid,
+ int hidden sepol_string_to_security_class(const char *class_name,
+ 			sepol_security_class_t *tclass)
+ {
+-	char *class = NULL;
+-	sepol_security_class_t id;
+-
+-	for (id = 1;; id++) {
+-		class = policydb->p_class_val_to_name[id - 1];
+-		if (class == NULL) {
+-			ERR(NULL, "could not convert %s to class id", class_name);
+-			return STATUS_ERR;
+-		}
+-		if ((strcmp(class, class_name)) == 0) {
+-			*tclass = id;
+-			return STATUS_SUCCESS;
+-		}
++	class_datum_t *tclass_datum;
++
++	tclass_datum = hashtab_search(policydb->p_classes.table,
++				      (hashtab_key_t) class_name);
++	if (!tclass_datum) {
++		ERR(NULL, "unrecognized class %s", class_name);
++		return STATUS_ERR;
+ 	}
++	*tclass = tclass_datum->s.value;
++	return STATUS_SUCCESS;
+ }
+ 
+ /*
+@@ -1643,13 +1639,16 @@ int hidden next_entry(void *buf, struct policy_file *fp, size_t bytes)
+ 			return -1;
+ 		break;
+ 	case PF_USE_MEMORY:
+-		if (bytes > fp->len)
++		if (bytes > fp->len) {
++			errno = EOVERFLOW;
+ 			return -1;
++		}
+ 		memcpy(buf, fp->data, bytes);
+ 		fp->data += bytes;
+ 		fp->len -= bytes;
+ 		break;
+ 	default:
++		errno = EINVAL;
+ 		return -1;
+ 	}
+ 	return 0;
+@@ -1683,6 +1682,40 @@ size_t hidden put_entry(const void *ptr, size_t size, size_t n,
+ }
+ 
+ /*
++ * Reads a string and null terminates it from the policy file.
++ * This is a port of str_read from the SE Linux kernel code.
++ *
++ * It returns:
++ *   0 - Success
++ *  -1 - Failure with errno set
++ */
++int hidden str_read(char **strp, struct policy_file *fp, size_t len)
++{
++	int rc;
++	char *str;
++
++	if (zero_or_saturated(len)) {
++		errno = EINVAL;
++		return -1;
++	}
++
++	str = malloc(len + 1);
++	if (!str)
++		return -1;
++
++	/* it's expected the caller should free the str */
++	*strp = str;
++
++	/* next_entry sets errno */
++	rc = next_entry(str, fp, len);
++	if (rc)
++		return rc;
++
++	str[len] = '\0';
++	return 0;
++}
++
++/*
+  * Read a new set of configuration data from 
+  * a policy database binary representation file.
+  *
+diff --git libsepol-2.5/src/users.c libsepol-2.5/src/users.c
+index ce54c2b..3ffb166 100644
+--- libsepol-2.5/src/users.c
++++ libsepol-2.5/src/users.c
+@@ -19,12 +19,17 @@ static int user_to_record(sepol_handle_t * handle,
+ 
+ 	const char *name = policydb->p_user_val_to_name[user_idx];
+ 	user_datum_t *usrdatum = policydb->user_val_to_struct[user_idx];
+-	ebitmap_t *roles = &(usrdatum->roles.roles);
++	ebitmap_t *roles;
+ 	ebitmap_node_t *rnode;
+ 	unsigned bit;
+ 
+ 	sepol_user_t *tmp_record = NULL;
+ 
++	if (!usrdatum)
++		goto err;
++
++	roles = &(usrdatum->roles.roles);
++
+ 	if (sepol_user_create(handle, &tmp_record) < 0)
+ 		goto err;
+ 
+@@ -234,6 +239,7 @@ int sepol_user_modify(sepol_handle_t * handle,
+ 		if (!tmp_ptr)
+ 			goto omem;
+ 		policydb->user_val_to_struct = tmp_ptr;
++		policydb->user_val_to_struct[policydb->p_users.nprim] = NULL;
+ 
+ 		tmp_ptr = realloc(policydb->sym_val_to_name[SYM_USERS],
+ 				  (policydb->p_users.nprim +
+@@ -241,6 +247,7 @@ int sepol_user_modify(sepol_handle_t * handle,
+ 		if (!tmp_ptr)
+ 			goto omem;
+ 		policydb->sym_val_to_name[SYM_USERS] = tmp_ptr;
++		policydb->p_user_val_to_name[policydb->p_users.nprim] = NULL;
+ 
+ 		/* Need to copy the user name */
+ 		name = strdup(cname);
+diff --git libsepol-2.5/tests/.gitignore libsepol-2.5/tests/.gitignore
+new file mode 100644
+index 0000000..c3f60fd
+--- /dev/null
++++ libsepol-2.5/tests/.gitignore
+@@ -0,0 +1 @@
++libsepol-tests
+diff --git libsepol-2.5/tests/Makefile libsepol-2.5/tests/Makefile
+index dd7bd33..60b3e83 100644
+--- libsepol-2.5/tests/Makefile
++++ libsepol-2.5/tests/Makefile
+@@ -2,7 +2,7 @@ M4 ?= m4
+ MKDIR ?= mkdir
+ EXE ?= libsepol-tests
+ 
+-CFLAGS += -g3 -gdwarf-2 -o0 -Wall -W -Wundef -Wmissing-noreturn -Wmissing-format-attribute -Wno-unused-parameter -Werror
++CFLAGS += -g3 -gdwarf-2 -O0 -Wall -W -Wundef -Wmissing-noreturn -Wmissing-format-attribute -Wno-unused-parameter -Werror
+ 
+ # Statically link libsepol on the assumption that we are going to
+ # be testing internal functions.
+diff --git libsepol-2.5/tests/libsepol-tests.c libsepol-2.5/tests/libsepol-tests.c
+index 9302f72..544c792 100644
+--- libsepol-2.5/tests/libsepol-tests.c
++++ libsepol-2.5/tests/libsepol-tests.c
+@@ -28,6 +28,7 @@
+ #include <CUnit/Console.h>
+ #include <CUnit/TestDB.h>
+ 
++#include <stdbool.h>
+ #include <stdio.h>
+ #include <getopt.h>
+ #include <stdlib.h>
+@@ -51,9 +52,10 @@ static void usage(char *progname)
+ 	printf("\t-i, --interactive\t\tinteractive console\n");
+ }
+ 
+-static int do_tests(int interactive, int verbose)
++static bool do_tests(int interactive, int verbose)
+ {
+ 	CU_pSuite suite = NULL;
++	unsigned int num_failures;
+ 
+ 	if (CUE_SUCCESS != CU_initialize_registry())
+ 		return CU_get_error();
+@@ -73,8 +75,9 @@ static int do_tests(int interactive, int verbose)
+ 		CU_console_run_tests();
+ 	else
+ 		CU_basic_run_tests();
++	num_failures = CU_get_number_of_tests_failed();
+ 	CU_cleanup_registry();
+-	return CU_get_error();
++	return CU_get_error() == CUE_SUCCESS && num_failures == 0;
+ 
+ }
+ 
+@@ -106,12 +109,12 @@ int main(int argc, char **argv)
+ 
+ 	/* first do the non-mls tests */
+ 	mls = 0;
+-	if (do_tests(interactive, verbose))
++	if (!do_tests(interactive, verbose))
+ 		return -1;
+ 
+ 	/* then with mls */
+ 	mls = 1;
+-	if (do_tests(interactive, verbose))
++	if (!do_tests(interactive, verbose))
+ 		return -1;
+ 
+ 	return 0;
+diff --git libsepol-2.5/tests/policies/.gitignore libsepol-2.5/tests/policies/.gitignore
+new file mode 100644
+index 0000000..5a547a8
+--- /dev/null
++++ libsepol-2.5/tests/policies/.gitignore
+@@ -0,0 +1,3 @@
++test-downgrade/
++test-*/*.mls
++test-*/*.std
+diff --git libsepol-2.5/tests/test-linker-roles.c libsepol-2.5/tests/test-linker-roles.c
+index 2c4a804..569e2cc 100644
+--- libsepol-2.5/tests/test-linker-roles.c
++++ libsepol-2.5/tests/test-linker-roles.c
+@@ -132,8 +132,7 @@ void module_role_tests(policydb_t * base)
+ 
+ 	/**** test for type added to base role in module 1 (global) ****/
+ 	decls[0] = (test_find_decl_by_sym(base, SYM_TYPES, "tag_g_b"))->decl_id;
+-	decls[1] = (test_find_decl_by_sym(base, SYM_TYPES, "tag_g_m1"))->decl_id;
+-	test_sym_presence(base, "g_b_role_2", SYM_ROLES, SCOPE_DECL, decls, 2);
++	test_sym_presence(base, "g_b_role_2", SYM_ROLES, SCOPE_DECL, decls, 1);
+ 	/* make sure it has the correct type set (g_m1_type_1, no negset, no flags) */
+ 	types[0] = "g_b_type_2";	/* added in base when declared */
+ 	types[1] = "g_m1_type_1";	/* added in module */
