@@ -1,20 +1,20 @@
 %global	libauditver	2.1.3-4
-%global libsepolver	2.5-10
-%global	libsemanagever	2.5-8
-%global	libselinuxver	2.5-13
-%global	sepolgenver	1.2.3
+%global libsepolver	2.6-0
+%global	libsemanagever	2.6-0
+%global	libselinuxver	2.6-0
+%global	sepolgenver	2.6
 
 %global generatorsdir %{_prefix}/lib/systemd/system-generators
 
 Summary: SELinux policy core utilities
 Name:	 policycoreutils
-Version: 2.5
-Release: 20%{?dist}
+Version: 2.6
+Release: 0.2%{?dist}
 License: GPLv2
 Group:	 System Environment/Base
 # https://github.com/SELinuxProject/selinux/wiki/Releases
-Source: https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20160223/policycoreutils-2.5.tar.gz
-Source1:https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20160223/sepolgen-1.2.3.tar.gz
+Source: https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20161014/policycoreutils-2.6.tar.gz
+Source1: https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20161014/sepolgen-2.6.tar.gz
 URL:	 http://www.selinuxproject.org
 Source2: policycoreutils_man_ru2.tar.bz2
 Source3: system-config-selinux.png
@@ -26,10 +26,10 @@ Source8: selinux-autorelabel.target
 Source9: selinux-autorelabel-generator.sh
 # download https://raw.githubusercontent.com/fedora-selinux/scripts/master/selinux/make-fedora-selinux-patch.sh
 # run:
-# $ VERSION=2.5 ./make-fedora-selinux-patch.sh policycoreutils
+# $ VERSION=2.6 ./make-fedora-selinux-patch.sh policycoreutils
 # HEAD https://github.com/fedora-selinux/selinux/commit/223fc83c6e68cead9b3d8d4e5ca7e95a580952e7
 Patch:	 policycoreutils-fedora.patch
-# $ VERSION=1.2.3 ./make-fedora-selinux-patch.sh sepolgen
+# $ VERSION=2.6 ./make-fedora-selinux-patch.sh sepolgen
 Patch1:  sepolgen-fedora.patch
 Obsoletes: policycoreutils < 2.0.61-2
 Conflicts: filesystem < 3, selinux-policy-base < 3.13.1-138
@@ -65,19 +65,19 @@ to switch roles.
 # create selinux/ directory and extract %{SOURCE0} there
 %setup -q -c -n selinux
 %patch -p0 -b .policycoreutils-fedora
-pushd policycoreutils-2.5
+pushd policycoreutils-%{version}
 popd
 
-cp %{SOURCE3} policycoreutils-2.5/gui/
-tar -xvf %{SOURCE4} -C policycoreutils-2.5/
+cp %{SOURCE3} policycoreutils-%{version}/gui/
+tar -xvf %{SOURCE4} -C policycoreutils-%{version}/
 # extract {%SOURCE1} in selinux/ directory
 %setup -T -D -a 1 -n selinux
 %patch1 -p0 -b .sepolgen-fedora
 
 
 %build
-make -C policycoreutils-2.5 LSPP_PRIV=y SBINDIR="%{_sbindir}" LIBDIR="%{_libdir}" CFLAGS="%{optflags} -fPIE" LDFLAGS="-pie -Wl,-z,relro -Wl,-z,now" SEMODULE_PATH="/usr/sbin" all
-make -C sepolgen-1.2.3 SBINDIR="%{_sbindir}" LSPP_PRIV=y LIBDIR="%{_libdir}" CFLAGS="%{optflags} -fPIE" LDFLAGS="-pie -Wl,-z,relro" all
+make -C policycoreutils-%{version} LSPP_PRIV=y SBINDIR="%{_sbindir}" LIBDIR="%{_libdir}" CFLAGS="%{optflags} -fPIE" LDFLAGS="-pie -Wl,-z,relro -Wl,-z,now" SEMODULE_PATH="/usr/sbin" all
+make -C sepolgen-%{version} SBINDIR="%{_sbindir}" LSPP_PRIV=y LIBDIR="%{_libdir}" CFLAGS="%{optflags} -fPIE" LDFLAGS="-pie -Wl,-z,relro" all
 
 %install
 mkdir -p %{buildroot}%{_bindir}
@@ -87,14 +87,14 @@ mkdir -p %{buildroot}%{_mandir}/man5
 mkdir -p %{buildroot}%{_mandir}/man8
 %{__mkdir} -p %{buildroot}/%{_usr}/share/doc/%{name}/
 
-make -C policycoreutils-2.5 LSPP_PRIV=y  DESTDIR="%{buildroot}" SBINDIR="%{buildroot}%{_sbindir}" LIBDIR="%{buildroot}%{_libdir}" SEMODULE_PATH="/usr/sbin" install
-make -C policycoreutils-2.5 PYTHON=python3 LSPP_PRIV=y  DESTDIR="%{buildroot}" SBINDIR="%{buildroot}%{_sbindir}" LIBDIR="%{buildroot}%{_libdir}" SEMODULE_PATH="/usr/sbin" install
+make -C policycoreutils-%{version} LSPP_PRIV=y  DESTDIR="%{buildroot}" SBINDIR="%{buildroot}%{_sbindir}" LIBDIR="%{buildroot}%{_libdir}" SEMODULE_PATH="/usr/sbin" install
+make -C policycoreutils-%{version} PYTHON=python3 LSPP_PRIV=y  DESTDIR="%{buildroot}" SBINDIR="%{buildroot}%{_sbindir}" LIBDIR="%{buildroot}%{_libdir}" SEMODULE_PATH="/usr/sbin" install
 
 # Systemd
 rm -rf %{buildroot}/%{_sysconfdir}/rc.d/init.d/restorecond
 
-make -C sepolgen-1.2.3 DESTDIR="%{buildroot}" SBINDIR="%{buildroot}%{_sbindir}" LIBDIR="%{buildroot}%{_libdir}" install
-make -C sepolgen-1.2.3 PYTHON=python3 DESTDIR="%{buildroot}" SBINDIR="%{buildroot}%{_sbindir}" LIBDIR="%{buildroot}%{_libdir}" install
+make -C sepolgen-%{version} DESTDIR="%{buildroot}" SBINDIR="%{buildroot}%{_sbindir}" LIBDIR="%{buildroot}%{_libdir}" install
+make -C sepolgen-%{version} PYTHON=python3 DESTDIR="%{buildroot}" SBINDIR="%{buildroot}%{_sbindir}" LIBDIR="%{buildroot}%{_libdir}" install
 
 tar -jxf %{SOURCE2} -C %{buildroot}/
 rm -f %{buildroot}/usr/share/man/ru/man8/genhomedircon.8.gz
@@ -135,7 +135,19 @@ ln -s ../selinux-autorelabel-mark.service %{buildroot}/%{_unitdir}/basic.target.
 
 # change /usr/bin/python3 to /usr/bin/python in policycoreutils-python
 find %{buildroot}%{python_sitelib} %{buildroot}%{python_sitearch} -type f | xargs \
-	sed -i '1s/\(#! *\/usr\/bin\/python\)3/\1/'
+	sed -i '1s%\(#! */usr/bin/python\)3%\1%'
+
+# change /usr/bin/python to /usr/bin/python3 in policycoreutils-python3
+find %{buildroot}%{python3_sitelib} %{buildroot}%{python3_sitearch} -type f | xargs \
+	sed -i '1s%\(#! */usr/bin/python\)\([^3].*\|\)$%\13\2%'
+
+# change /usr/bin/python to /usr/bin/python3 in python-utils
+sed -i '1s%\(#! */usr/bin/python\)\([^3].*\|\)$%\13\2%' \
+	%{buildroot}%{_sbindir}/semanage \
+	%{buildroot}%{_bindir}/chcat \
+	%{buildroot}%{_bindir}/sandbox \
+	%{buildroot}%{_bindir}/audit2allow \
+	%{buildroot}%{_bindir}/audit2why
 
 %find_lang %{name}
 
@@ -183,26 +195,27 @@ The policycoreutils-python3 package contains the interfaces that can be used
 by python 3 in an SELinux environment.
 
 %files python3
-%dir %{python3_sitelib}/seobject
-%{python3_sitelib}/seobject/__init__.py*
-%{python3_sitelib}/seobject/__pycache__
-%{python3_sitelib}/seobject*.egg-info
+# %dir %{python3_sitelib}/seobject
+# %{python3_sitelib}/seobject/__init__.py*
+%{python3_sitearch}/seobject.py*
+%{python3_sitearch}/__pycache__
+# %{python3_sitelib}/seobject*.egg-info
 %{python3_sitearch}/sepolgen
-%dir %{python3_sitearch}/sepolicy
-%{python3_sitearch}/sepolicy/*so
-%{python3_sitearch}/sepolicy/templates
-%dir %{python3_sitearch}/sepolicy/help
-%{python3_sitearch}/sepolicy/help/*
-%{python3_sitearch}/sepolicy/__init__.py*
-%{python3_sitearch}/sepolicy/booleans.py*
-%{python3_sitearch}/sepolicy/communicate.py*
-%{python3_sitearch}/sepolicy/interface.py*
-%{python3_sitearch}/sepolicy/manpage.py*
-%{python3_sitearch}/sepolicy/network.py*
-%{python3_sitearch}/sepolicy/transition.py*
-%{python3_sitearch}/sepolicy/sedbus.py*
-%{python3_sitearch}/sepolicy*.egg-info
-%{python3_sitearch}/sepolicy/__pycache__
+# %dir %{python3_sitearch}/sepolicy
+# %{python3_sitelib}/sepolicy/*so
+%{python3_sitelib}/sepolicy/templates
+%dir %{python3_sitelib}/sepolicy/help
+%{python3_sitelib}/sepolicy/help/*
+%{python3_sitelib}/sepolicy/__init__.py*
+%{python3_sitelib}/sepolicy/booleans.py*
+%{python3_sitelib}/sepolicy/communicate.py*
+%{python3_sitelib}/sepolicy/interface.py*
+%{python3_sitelib}/sepolicy/manpage.py*
+%{python3_sitelib}/sepolicy/network.py*
+%{python3_sitelib}/sepolicy/transition.py*
+%{python3_sitelib}/sepolicy/sedbus.py*
+%{python3_sitelib}/sepolicy*.egg-info
+%{python3_sitelib}/sepolicy/__pycache__
 
 %package python
 Summary: SELinux policy core python utilities
@@ -219,24 +232,25 @@ The policycoreutils-python package contains the management tools use to manage
 an SELinux environment.
 
 %files python
-%dir %{python_sitelib}/seobject
-%{python_sitelib}/seobject/__init__.py*
-%{python_sitelib}/seobject*.egg-info
+# %dir %{python_sitelib}/seobject
+# %{python_sitelib}/seobject/__init__.py*
+%{python_sitearch}/seobject.py*
+# %{python_sitelib}/seobject*.egg-info
 %{python_sitearch}/sepolgen
-%dir %{python_sitearch}/sepolicy
-%{python_sitearch}/sepolicy/*so
-%{python_sitearch}/sepolicy/templates
-%{python_sitearch}/sepolicy/__init__.py*
-%{python_sitearch}/sepolicy/booleans.py*
-%{python_sitearch}/sepolicy/communicate.py*
-%{python_sitearch}/sepolicy/interface.py*
-%{python_sitearch}/sepolicy/manpage.py*
-%{python_sitearch}/sepolicy/network.py*
-%{python_sitearch}/sepolicy/transition.py*
-%{python_sitearch}/sepolicy/sedbus.py*
-%{python_sitearch}/%{name}*.egg-info
-%{python_sitearch}/sepolicy*.egg-info
-%{python_sitearch}/%{name}
+# %dir %{python_sitelib}/sepolicy
+# %{python_sitelib}/sepolicy/*so
+%{python_sitelib}/sepolicy/templates
+%{python_sitelib}/sepolicy/__init__.py*
+%{python_sitelib}/sepolicy/booleans.py*
+%{python_sitelib}/sepolicy/communicate.py*
+%{python_sitelib}/sepolicy/interface.py*
+%{python_sitelib}/sepolicy/manpage.py*
+%{python_sitelib}/sepolicy/network.py*
+%{python_sitelib}/sepolicy/transition.py*
+%{python_sitelib}/sepolicy/sedbus.py*
+# %{python_sitearch}/%{name}*.egg-info
+%{python_sitelib}/sepolicy*.egg-info
+# %{python_sitearch}/%{name}
 
 %package devel
 Summary: SELinux policy core policy devel utilities
@@ -255,8 +269,8 @@ The policycoreutils-devel package contains the management tools use to develop p
 %dir  /var/lib/sepolgen
 /var/lib/sepolgen/perm_map
 %{_bindir}/sepolicy
-%{python_sitearch}/sepolicy/generate.py*
-%{python3_sitearch}/sepolicy/generate.py*
+%{python_sitelib}/sepolicy/generate.py*
+%{python3_sitelib}/sepolicy/generate.py*
 %{_mandir}/man8/sepolgen.8*
 %{_mandir}/man8/sepolicy-booleans.8*
 %{_mandir}/man8/sepolicy-generate.8*
@@ -337,12 +351,12 @@ system-config-selinux is a utility for managing the SELinux environment
 %{_datadir}/system-config-selinux/system-config-selinux.png
 %{_datadir}/system-config-selinux/*.py*
 %{_datadir}/system-config-selinux/*.glade
-%{python_sitearch}/sepolicy/gui.py*
-%{python_sitearch}/sepolicy/sepolicy.glade
-%dir %{python_sitearch}/sepolicy/help
-%{python_sitearch}/sepolicy/help/*
-%{python3_sitearch}/sepolicy/gui.py*
-%{python3_sitearch}/sepolicy/sepolicy.glade
+%{python_sitelib}/sepolicy/gui.py*
+%{python_sitelib}/sepolicy/sepolicy.glade
+%dir %{python_sitelib}/sepolicy/help
+%{python_sitelib}/sepolicy/help/*
+%{python3_sitelib}/sepolicy/gui.py*
+%{python3_sitelib}/sepolicy/sepolicy.glade
 %{_datadir}/icons/hicolor/*/apps/sepolicy.png
 %{_datadir}/pixmaps/sepolicy.png
 %{_mandir}/man8/system-config-selinux.8*
@@ -366,6 +380,7 @@ fi
 
 %files -f %{name}.lang
 %{_sbindir}/restorecon
+%{_sbindir}/restorecon_xattr
 %{_sbindir}/fixfiles
 %{_sbindir}/setfiles
 %{_sbindir}/load_policy
@@ -391,6 +406,7 @@ fi
 %{_mandir}/ru/man8/load_policy.8*
 %{_mandir}/man8/restorecon.8*
 %{_mandir}/ru/man8/restorecon.8*
+%{_mandir}/man8/restorecon_xattr.8*
 %{_mandir}/man8/semodule.8*
 %{_mandir}/ru/man8/semodule.8*
 %{_mandir}/man8/sestatus.8*
@@ -403,7 +419,7 @@ fi
 %{_mandir}/ru/man1/secon.1*
 %{_mandir}/man8/genhomedircon.8*
 %{!?_licensedir:%global license %%doc}
-%license policycoreutils-2.5/COPYING
+%license policycoreutils-%{version}/COPYING
 %doc %{_usr}/share/doc/%{name}
 
 %package restorecond
@@ -424,7 +440,7 @@ The policycoreutils-restorecond package contains the restorecond service.
 %{_mandir}/man8/restorecond.8*
 %{_mandir}/ru/man8/restorecond.8*
 %{!?_licensedir:%global license %%doc}
-%license policycoreutils-2.5/COPYING
+%license policycoreutils-%{version}/COPYING
 
 %post restorecond
 %systemd_post restorecond.service

@@ -1,15 +1,15 @@
 Summary: SELinux binary policy manipulation library 
 Name: libsepol
-Version: 2.5
-Release: 10%{?dist}
+Version: 2.6
+Release: 0.1%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
-Source: https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20160223/libsepol-2.5.tar.gz
+Source: https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20161014/libsepol-2.6.tar.gz
 # download https://raw.githubusercontent.com/fedora-selinux/scripts/master/selinux/make-fedora-selinux-patch.sh
 # run:
-# $ VERSION=2.5 ./make-fedora-selinux-patch.sh libsepol
+# $ VERSION=2.6 ./make-fedora-selinux-patch.sh libsepol
 # HEAD https://github.com/fedora-selinux/selinux/commit/caefad506ca46db441952ab64ebfc6202897516b
-Patch1: libsepol-fedora.patch
+# Patch1: libsepol-fedora.patch
 URL: https://github.com/SELinuxProject/selinux/wiki
 BuildRequires: flex
 
@@ -48,7 +48,7 @@ The libsepol-static package contains the static libraries and header files
 needed for developing applications that manipulate binary policies. 
 
 %prep
-%autosetup -p 1 -n libsepol-2.5
+%autosetup -p 1 -n libsepol-%{version}
 
 # sparc64 is an -fPIC arch, so we need to fix it here
 %ifarch sparc64

@@ -1,17 +1,17 @@
-%define libselinuxver 2.5-12
-%define libsepolver 2.5-10
+%define libselinuxver 2.6-0
+%define libsepolver 2.6-0
 Summary: SELinux policy compiler
 Name: checkpolicy
-Version: 2.5
-Release: 8%{?dist}
+Version: 2.6
+Release: 0.1%{?dist}
 License: GPLv2
 Group: Development/System
-Source: https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20160223/checkpolicy-2.5.tar.gz
+Source: https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20161014/checkpolicy-2.6.tar.gz
 # download https://raw.githubusercontent.com/fedora-selinux/scripts/master/selinux/make-fedora-selinux-patch.sh
 # run:
-# $ VERSION=2.5 ./make-fedora-selinux-patch.sh checkpolicy
+# $ VERSION=2.6 ./make-fedora-selinux-patch.sh checkpolicy
 # HEAD https://github.com/fedora-selinux/selinux/commit/caefad506ca46db441952ab64ebfc6202897516b
-Patch1: checkpolicy-fedora.patch
+# Patch1: checkpolicy-fedora.patch
 Conflicts: selinux-policy-base < 3.13.1-138
 BuildRoot: %{_tmppath}/%{name}-buildroot
 BuildRequires: byacc bison flex flex-static libsepol-static >= %{libsepolver} libselinux-devel  >= %{libselinuxver} 
@@ -31,7 +31,7 @@ This package contains checkpolicy, the SELinux policy compiler.
 Only required for building policies. 
 
 %prep
-%autosetup -p 1 -n checkpolicy-2.5
+%autosetup -p 1 -n checkpolicy-%{version}
 
 %build
 make clean

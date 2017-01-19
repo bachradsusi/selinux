@@ -3,23 +3,23 @@
 %endif
 
 %define ruby_inc %(pkg-config --cflags ruby)
-%define libsepolver 2.5-10
+%define libsepolver 2.6-0
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Summary: SELinux library and simple utilities
 Name: libselinux
-Version: 2.5
-Release: 16%{?dist}
+Version: 2.6
+Release: 0.1%{?dist}
 License: Public Domain
 Group: System Environment/Libraries
 # https://github.com/SELinuxProject/selinux/wiki/Releases
-Source: https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20160223/libselinux-2.5.tar.gz
+Source: https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20160223/libselinux-2.6.tar.gz
 Source1: selinuxconlist.8
 Source2: selinuxdefcon.8
 Url: https://github.com/SELinuxProject/selinux/wiki
 # download https://raw.githubusercontent.com/fedora-selinux/scripts/master/selinux/make-fedora-selinux-patch.sh
 # run:
-# $ VERSION=2.5 ./make-fedora-selinux-patch.sh libselinux
+# $ VERSION=2.6 ./make-fedora-selinux-patch.sh libselinux
 # HEAD https://github.com/fedora-selinux/selinux/commit/3dcc89405fc1efdcd41b96c50b030174fcaf4514
 Patch1: libselinux-fedora.patch
 BuildRequires: pkgconfig python python-devel ruby-devel ruby libsepol-static >= %{libsepolver} swig pcre-devel xz-devel
@@ -103,7 +103,7 @@ The libselinux-static package contains the static libraries
 needed for developing SELinux applications. 
 
 %prep
-%autosetup -p 1 -n libselinux-2.5
+%autosetup -p 1 -n libselinux-%{version}
 
 %build
 export LDFLAGS="%{?__global_ldflags}"
@@ -256,9 +256,6 @@ rm -rf %{buildroot}
 %{ruby_vendorarchdir}/selinux.so
 
 %changelog
-* Fri Jan 13 2017 Vít Ondruch <vondruch@redhat.com> - 2.5-16
-- Rebuilt for https://fedoraproject.org/wiki/Changes/Ruby_2.4
-
 * Wed Jan 11 2017 Petr Lautrbach <plautrba@redhat.com> - 2.5-15
 - Rewrite restorecon() python method
 

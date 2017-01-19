@@ -1,19 +1,19 @@
 %global with_python3 1
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print (get_python_lib(1))")}
 
-%define libsepolver 2.5-10
-%define libselinuxver 2.5-12
+%define libsepolver 2.6-0
+%define libselinuxver 2.6-0
 
 Summary: SELinux binary policy manipulation library 
 Name: libsemanage
-Version: 2.5
-Release: 9%{?dist}
+Version: 2.6
+Release: 0.2%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
-Source: https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20160223/libsemanage-2.5.tar.gz
+Source: https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20160223/libsemanage-2.6.tar.gz
 # download https://raw.githubusercontent.com/fedora-selinux/scripts/master/selinux/make-fedora-selinux-patch.sh
 # run:
-# $ VERSION=2.5 ./make-fedora-selinux-patch.sh libsemanage
+# $ VERSION=2.6 ./make-fedora-selinux-patch.sh libsemanage
 # HEAD https://github.com/fedora-selinux/selinux/commit/caefad506ca46db441952ab64ebfc6202897516b
 Patch1: libsemanage-fedora.patch
 URL: https://github.com/SELinuxProject/selinux/wiki
@@ -86,7 +86,7 @@ SELinux management applications.
 %endif # if with_python3
 
 %prep
-%setup -q -n libsemanage-2.5
+%setup -q -n libsemanage-%{version}
 %patch1 -p1 -b .fedora
 
 
@@ -147,6 +147,8 @@ InstallPythonWrapper \
   
 cp %{SOURCE1} ${RPM_BUILD_ROOT}/etc/selinux/semanage.conf
 ln -sf  %{_libdir}/libsemanage.so.1 ${RPM_BUILD_ROOT}/%{_libdir}/libsemanage.so
+
+sed -i '1s%\(#! */usr/bin/python\)\([^3].*\|\)$%\13\2%' %{buildroot}%{_libexecdir}/selinux/semanage_migrate_store
 
 %clean
 rm -rf ${RPM_BUILD_ROOT}

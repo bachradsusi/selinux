@@ -1,18 +1,18 @@
-%global libsepolver 2.5-10
+%global libsepolver 2.6-0
 
 Name:           secilc
-Version:        2.5
-Release:        6%{?dist}
+Version:        2.6
+Release:        0.1%{?dist}
 Summary:        The SELinux CIL Compiler
 
 License:        BSD
 URL:            https://github.com/SELinuxProject/selinux/wiki
-Source0:        https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20160223/secilc-2.5.tar.gz
+Source0:        https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20161014/secilc-2.6.tar.gz
 # download https://raw.githubusercontent.com/fedora-selinux/scripts/master/selinux/make-fedora-selinux-patch.sh
 # run:
-# $ VERSION=2.5 ./make-fedora-selinux-patch.sh secilc
+# $ VERSION=2.6 ./make-fedora-selinux-patch.sh secilc
 # HEAD https://github.com/fedora-selinux/selinux/commit/4bfb84c7ff7b33cf06b9a6b2317d24054b9db562
-Patch1: secilc-fedora.patch
+# Patch1: secilc-fedora.patch
 
 BuildRequires:  libsepol-static >= %{libsepolver}, dblatex, flex, xmlto, pandoc
 
@@ -35,7 +35,7 @@ http://github.com/SELinuxProject/cil/wiki/
 for more information about the goals and features on the CIL language.
 
 %prep
-%setup -q -n secilc-2.5
+%setup -q -n secilc-%{version}
 
 
 %build

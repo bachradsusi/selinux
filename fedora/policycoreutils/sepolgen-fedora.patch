@@ -1,29 +1,7 @@
-diff --git sepolgen-1.2.3/ChangeLog sepolgen-1.2.3/ChangeLog
-index 7cc0a18..bda7a2e 100644
---- sepolgen-1.2.3/ChangeLog
-+++ sepolgen-1.2.3/ChangeLog
-@@ -1,3 +1,6 @@
-+	* Remove additional files when cleaning, from Nicolas Iooss.
-+	* Add support for TYPEBOUNDS statement in INTERFACE policy files, from Miroslav Grepl.
-+
- 1.2.3 2016-02-23
- 	* Support latest refpolicy interfaces, from Nicolas Iooss.
- 	* Make sepolgen-ifgen output deterministic with Python>=3.3, from Nicolas Iooss.
-diff --git sepolgen-1.2.3/src/sepolgen/Makefile sepolgen-1.2.3/src/sepolgen/Makefile
-index 9ac7651..d3aa771 100644
---- sepolgen-1.2.3/src/sepolgen/Makefile
-+++ sepolgen-1.2.3/src/sepolgen/Makefile
-@@ -11,5 +11,4 @@ install: all
- clean:
- 	rm -f parser.out parsetab.py
- 	rm -f *~ *.pyc
--
--
-+	rm -rf __pycache__
-diff --git sepolgen-1.2.3/src/sepolgen/access.py sepolgen-1.2.3/src/sepolgen/access.py
+diff --git sepolgen-2.6/src/sepolgen/access.py sepolgen-2.6/src/sepolgen/access.py
 index a5d8698..7606561 100644
---- sepolgen-1.2.3/src/sepolgen/access.py
-+++ sepolgen-1.2.3/src/sepolgen/access.py
+--- sepolgen-2.6/src/sepolgen/access.py
++++ sepolgen-2.6/src/sepolgen/access.py
 @@ -90,6 +90,8 @@ class AccessVector(util.Comparison):
              self.audit_msgs = []
              self.type = audit2why.TERULE
@@ -83,10 +61,10 @@ index a5d8698..7606561 100644
              access.type = avc_type
              cls[obj_class, avc_type] = access
  
-diff --git sepolgen-1.2.3/src/sepolgen/audit.py sepolgen-1.2.3/src/sepolgen/audit.py
+diff --git sepolgen-2.6/src/sepolgen/audit.py sepolgen-2.6/src/sepolgen/audit.py
 index 724d3ea..dad0724 100644
---- sepolgen-1.2.3/src/sepolgen/audit.py
-+++ sepolgen-1.2.3/src/sepolgen/audit.py
+--- sepolgen-2.6/src/sepolgen/audit.py
++++ sepolgen-2.6/src/sepolgen/audit.py
 @@ -176,6 +176,7 @@ class AVCMessage(AuditMessage):
          self.exe = ""
          self.path = ""
@@ -205,10 +183,10 @@ index 724d3ea..dad0724 100644
          return av_set
  
  class AVCTypeFilter:
-diff --git sepolgen-1.2.3/src/sepolgen/policygen.py sepolgen-1.2.3/src/sepolgen/policygen.py
+diff --git sepolgen-2.6/src/sepolgen/policygen.py sepolgen-2.6/src/sepolgen/policygen.py
 index 34c8401..f374132 100644
---- sepolgen-1.2.3/src/sepolgen/policygen.py
-+++ sepolgen-1.2.3/src/sepolgen/policygen.py
+--- sepolgen-2.6/src/sepolgen/policygen.py
++++ sepolgen-2.6/src/sepolgen/policygen.py
 @@ -82,8 +82,9 @@ class PolicyGenerator:
              self.module = refpolicy.Module()
  
@@ -274,121 +252,3 @@ index 34c8401..f374132 100644
              if av.type == audit2why.ALLOW:
                  rule.comment += "\n#!!!! This avc is allowed in the current policy"
              if av.type == audit2why.DONTAUDIT:
-diff --git sepolgen-1.2.3/src/sepolgen/refparser.py sepolgen-1.2.3/src/sepolgen/refparser.py
-index 9b1d0c8..2cef8e8 100644
---- sepolgen-1.2.3/src/sepolgen/refparser.py
-+++ sepolgen-1.2.3/src/sepolgen/refparser.py
-@@ -113,6 +113,7 @@ tokens = (
-     'AUDITALLOW',
-     'NEVERALLOW',
-     'PERMISSIVE',
-+    'TYPEBOUNDS',
-     'TYPE_TRANSITION',
-     'TYPE_CHANGE',
-     'TYPE_MEMBER',
-@@ -178,6 +179,7 @@ reserved = {
-     'auditallow' : 'AUDITALLOW',
-     'neverallow' : 'NEVERALLOW',
-     'permissive' : 'PERMISSIVE',
-+    'typebounds' : 'TYPEBOUNDS',
-     'type_transition' : 'TYPE_TRANSITION',
-     'type_change' : 'TYPE_CHANGE',
-     'type_member' : 'TYPE_MEMBER',
-@@ -502,6 +504,7 @@ def p_policy_stmt(p):
-     '''policy_stmt : gen_require
-                    | avrule_def
-                    | typerule_def
-+                   | typebound_def
-                    | typeattribute_def
-                    | roleattribute_def
-                    | interface_call
-@@ -823,6 +826,13 @@ def p_typerule_def(p):
-     t.file_name = p[7]
-     p[0] = t
- 
-+def p_typebound_def(p):
-+    '''typebound_def : TYPEBOUNDS IDENTIFIER comma_list SEMI'''
-+    t = refpolicy.TypeBound()
-+    t.type = p[2]
-+    t.tgt_types.update(p[3])
-+    p[0] = t
-+
- def p_bool(p):
-     '''bool : BOOL IDENTIFIER TRUE SEMI
-             | BOOL IDENTIFIER FALSE SEMI'''
-diff --git sepolgen-1.2.3/src/sepolgen/refpolicy.py sepolgen-1.2.3/src/sepolgen/refpolicy.py
-index 31b40d8..2ee029c 100644
---- sepolgen-1.2.3/src/sepolgen/refpolicy.py
-+++ sepolgen-1.2.3/src/sepolgen/refpolicy.py
-@@ -112,6 +112,9 @@ class Node(PolicyBase):
-     def typerules(self):
-         return filter(lambda x: isinstance(x, TypeRule), walktree(self))
- 
-+    def typebounds(self):
-+        return filter(lambda x: isinstance(x, TypeBound), walktree(self))
-+
-     def typeattributes(self):
-         """Iterate over all of the TypeAttribute children of this Interface."""
-         return filter(lambda x: isinstance(x, TypeAttribute), walktree(self))
-@@ -522,6 +525,19 @@ class TypeRule(Leaf):
-                                      self.tgt_types.to_space_str(),
-                                      self.obj_classes.to_space_str(),
-                                      self.dest_type)
-+class TypeBound(Leaf):
-+    """SElinux typebound statement.
-+
-+    This class represents a typebound statement.
-+    """
-+    def __init__(self, parent=None):
-+        Leaf.__init__(self, parent)
-+        self.type = ""
-+        self.tgt_types = IdSet()
-+
-+    def to_string(self):
-+        return "typebounds %s %s;" % (self.type, self.tgt_types.to_comma_str())
-+
- 
- class RoleAllow(Leaf):
-     def __init__(self, parent=None):
-diff --git sepolgen-1.2.3/tests/.gitignore sepolgen-1.2.3/tests/.gitignore
-new file mode 100644
-index 0000000..c120af8
---- /dev/null
-+++ sepolgen-1.2.3/tests/.gitignore
-@@ -0,0 +1,4 @@
-+module_compile_test.fc
-+module_compile_test.if
-+output
-+tmp/
-diff --git sepolgen-1.2.3/tests/Makefile sepolgen-1.2.3/tests/Makefile
-index 924a9be..e17eef2 100644
---- sepolgen-1.2.3/tests/Makefile
-+++ sepolgen-1.2.3/tests/Makefile
-@@ -4,8 +4,11 @@ clean:
- 	rm -f *~ *.pyc
- 	rm -f parser.out parsetab.py
- 	rm -f out.txt
-+	rm -f module_compile_test.fc
-+	rm -f module_compile_test.if
- 	rm -f module_compile_test.pp
- 	rm -f output
-+	rm -rf __pycache__ tmp
- 
- test:
- 	$(PYTHON) run-tests.py
-diff --git sepolgen-1.2.3/tests/module_compile_test.te sepolgen-1.2.3/tests/module_compile_test.te
-index 446c8dc..b365448 100644
---- sepolgen-1.2.3/tests/module_compile_test.te
-+++ sepolgen-1.2.3/tests/module_compile_test.te
-@@ -1,8 +1,8 @@
--module foo 1.0;
-+module module_compile_test 1.0;
- 
- require {
- 	type foo, bar;
- 	class file { read write };
- }
- 
--allow foo bar : file { read write };
-\ No newline at end of file
-+allow foo bar : file { read write };
