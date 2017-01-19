@@ -1,7 +1,7 @@
 Summary: SELinux binary policy manipulation library 
 Name: libsepol
 Version: 2.6
-Release: 0.1%{?dist}
+Release: 0.2%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20161014/libsepol-2.6.tar.gz
@@ -9,7 +9,7 @@ Source: https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/rele
 # run:
 # $ VERSION=2.6 ./make-fedora-selinux-patch.sh libsepol
 # HEAD https://github.com/fedora-selinux/selinux/commit/caefad506ca46db441952ab64ebfc6202897516b
-# Patch1: libsepol-fedora.patch
+Patch1: libsepol-fedora.patch
 URL: https://github.com/SELinuxProject/selinux/wiki
 BuildRequires: flex
 
