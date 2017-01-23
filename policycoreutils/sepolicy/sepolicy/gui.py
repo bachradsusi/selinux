@@ -26,6 +26,8 @@
 #
 #
 
+import gi
+gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import GLib
@@ -65,6 +67,10 @@ for f in sepolicy.file_type_str:
 
 enabled = [_("No"), _("Yes")]
 action = [_("Disable"), _("Enable")]
+
+
+def compare(a, b):
+    return cmp(a.lower(), b.lower())
 
 import distutils.sysconfig
 ADVANCED_LABEL = (_("Advanced >>"), _("Advanced <<"))
@@ -115,17 +121,11 @@ class SELinuxGui():
             print(e)
             self.quit()
 
-        sepolicy_domains = sepolicy.get_all_domains()
-        sepolicy_domains.sort(compare)
-        if app and app not in sepolicy_domains:
-            self.error(_("%s is not a valid domain" % app))
-            self.quit()
-
         self.init_cur()
         self.application = app
         self.filter_txt = ""
         builder = Gtk.Builder()  # BUILDER OBJ
-        self.code_path = distutils.sysconfig.get_python_lib(plat_specific=True) + "/sepolicy/"
+        self.code_path = distutils.sysconfig.get_python_lib(plat_specific=False) + "/sepolicy/"
         glade_file = self.code_path + "sepolicy.glade"
         builder.add_from_file(glade_file)
         self.outer_notebook = builder.get_object("outer_notebook")
@@ -499,6 +499,8 @@ class SELinuxGui():
 
         loading_gui.show()
         length = len(self.all_domains)
+
+        entrypoint_dict = sepolicy.get_init_entrypoints_str()
         for domain in self.all_domains:
             # After the user selects a path in the drop down menu call
             # get_init_entrypoint_target(entrypoint) to get the transtype
@@ -509,8 +511,7 @@ class SELinuxGui():
             self.progress_bar.set_pulse_step(self.percentage)
             self.idle_func()
 
-            entrypoint = sepolicy.get_init_entrypoint(domain)
-            if entrypoint:
+            for entrypoint in entrypoint_dict.get(domain, []):
                 path = sepolicy.find_entrypoint_path(entrypoint)
                 if path:
                     self.combo_box_add(path, domain)
@@ -672,10 +673,9 @@ class SELinuxGui():
         self.module_dict = {}
         for m in self.dbus.semodule_list().split("\n"):
             mod = m.split()
-            if len(mod) < 3:
+            if len(mod) < 2:
                 continue
             self.module_dict[mod[0]] = {"version": mod[1], "Disabled": (len(mod) > 2)}
-            self.module_dict[mod[1]] = { "priority": mod[0], "Disabled" : (len(mod) > 3) }
 
         self.enable_unconfined_button.set_active(not self.module_dict["unconfined"]["Disabled"])
         self.enable_permissive_button.set_active(not self.module_dict["permissivedomains"]["Disabled"])
@@ -832,7 +832,7 @@ class SELinuxGui():
 
     def populate_system_policy(self):
         selinux_path = selinux.selinux_path()
-        types = [x[1] for x in os.walk(selinux_path) if x[0] == selinux_path][0]
+        types = map(lambda x: x[1], filter(lambda x: x[0] == selinux_path, os.walk(selinux_path)))[0]
         types.sort()
         ctr = 0
         for item in types:
@@ -864,7 +864,7 @@ class SELinuxGui():
         return False
 
     def net_update(self, app, netd, protocol, direction, model):
-        for k in list(netd.keys()):
+        for k in netd.keys():
             for t, ports in netd[k]:
                 pkey = (",".join(ports), protocol)
                 if pkey in self.cur_dict["port"]:
@@ -959,7 +959,7 @@ class SELinuxGui():
         iter = liststore.get_iter(index)
         return liststore.get_value(iter, 0)
 
-    def combo_box_initialize(self, val, desc):
+    def combo_box_add(self, val, val1):
         if val is None:
             return
         iter = self.application_liststore.append()
@@ -980,7 +980,7 @@ class SELinuxGui():
         model, iter = row.get_selected()
         iter = model.convert_iter_to_child_iter(iter)
         iter = self.advanced_search_filter.convert_iter_to_child_iter(iter)
-        app = self.advanced_search_liststore.get_value(iter, 1)
+        app = self.application_liststore.get_value(iter, 1)
         if app is None:
             return
         self.advanced_filter_entry.set_text('')
@@ -1062,9 +1062,9 @@ class SELinuxGui():
         self.transitions_into_tab.set_label(_("Application Transitions Into '%s'" % app))
         self.transitions_from_tab.set_label(_("Application Transitions From '%s'" % app))
         self.transitions_file_tab.set_label(_("File Transitions From '%s'" % app))
-        self.transitions_into_tab.set_tooltip_text(_("Executables which will transition to the '%s', when executing a selected domains entrypoint.") % app)
-        self.transitions_from_tab.set_tooltip_text(_("Executables which will transition to a different domain, when the '%s' executes them.") % app)
-        self.transitions_file_tab.set_tooltip_text(_("Files by '%s' will transitions to a different label." % app))
+        self.transitions_into_tab.set_tooltip_text(_("Executables which will transition to '%s', when executing selected domains entrypoint.") % app)
+        self.transitions_from_tab.set_tooltip_text(_("Executables which will transition to a different domain, when '%s' executes them.") % app)
+        self.transitions_file_tab.set_tooltip_text(_("Files by '%s' with transitions to a different label." % app))
         self.transitions_radio_button.set_tooltip_text(_("Display applications that can transition into or out of the '%s'." % app))
 
         self.application = app
@@ -1108,19 +1108,19 @@ class SELinuxGui():
             if rec[0] == "module":
                 self.cust_dict["module"][rec[-1]] = {"enabled": rec[2] != "-d"}
 
-        for i in keys:
-            if i not in self.cust_dict:
-                self.cust_dict.update({i: {}})
-
-        if not self.cust_dict["module"]:
+        if "module" not in self.cust_dict:
             return
         for semodule, button in [("unconfined", self.disable_unconfined_button), ("permissivedomains", self.disable_permissive_button)]:
             if semodule in self.cust_dict["module"]:
                 button.set_active(self.cust_dict["module"][semodule]["enabled"])
 
+        for i in keys:
+            if i not in self.cust_dict:
+                self.cust_dict.update({i: {}})
+
     def executable_files_initialize(self, application):
         self.entrypoints = sepolicy.get_entrypoints(application)
-        for exe in list(self.entrypoints.keys()):
+        for exe in self.entrypoints.keys():
             if len(self.entrypoints[exe]) == 0:
                 continue
             file_class = self.entrypoints[exe][1]
@@ -1157,7 +1157,7 @@ class SELinuxGui():
     def writable_files_initialize(self, application):
         # Traversing the dictionary data struct
         self.writable_files = sepolicy.get_writable_files(application)
-        for write in list(self.writable_files.keys()):
+        for write in self.writable_files.keys():
             if len(self.writable_files[write]) < 2:
                 self.files_initial_data_insert(self.writable_files_liststore, None, write, _("all files"))
                 continue
@@ -1200,7 +1200,7 @@ class SELinuxGui():
 
     def application_files_initialize(self, application):
         self.file_types = sepolicy.get_file_types(application)
-        for app in list(self.file_types.keys()):
+        for app in self.file_types.keys():
             if len(self.file_types[app]) == 0:
                 continue
             file_class = self.file_types[app][1]
@@ -1286,11 +1286,11 @@ class SELinuxGui():
             niter = self.transitions_from_treestore.append(iter)
             # active[0][1] is either T or F (enabled is all the way at the top)
             self.transitions_from_treestore.set_value(iter, 0, enabled[active[0][1]])
-            markup = '<span foreground="blue"><u>%s</u></span>'
+            markup = ('<span foreground="blue"><u>','</u></span>')
             if active[0][1]:
-                self.transitions_from_treestore.set_value(niter, 2, (_("To disable this transition, go to the " + markup % _("Boolean section."))))
+                self.transitions_from_treestore.set_value(niter, 2, (_("To disable this transition, go to the %sBoolean section%s.") % markup))
             else:
-                self.transitions_from_treestore.set_value(niter, 2, (_("To enable this transition, go to the " + markup % _("Boolean section."))))
+                self.transitions_from_treestore.set_value(niter, 2, (_("To enable this transition, go to the %sBoolean section%s.") % markup))
 
             # active[0][0] is the Bool Name
             self.transitions_from_treestore.set_value(niter, 1, active[0][0])
@@ -1373,8 +1373,8 @@ class SELinuxGui():
                 self.treeview = self.network_in_treeview
                 category = _("listen for inbound connections")
 
-            self.add_button.set_tooltip_text(_("Add new port definition to which the '%(APP)s' domain is allowed to %(PERM)s.") % {"APP": self.application, "PERM": category})
-            self.delete_button.set_tooltip_text(_("Delete modified port definitions to which the '%(APP)s' domain is allowed to %(PERM)s.") % {"APP": self.application, "PERM": category})
+            self.add_button.set_tooltip_text(_("Add new port definition to which the '%(APP)s' domain is allowed to %s.") % {"APP": self.application, "PERM": category})
+            self.delete_button.set_tooltip_text(_("Delete modified port definitions to which the '%(APP)s' domain is allowed to %s.") % {"APP": self.application, "PERM": category})
             self.modify_button.set_tooltip_text(_("Modify port definitions to which the '%(APP)s' domain is allowed to %(PERM)s.") % {"APP": self.application, "PERM": category})
 
         if self.transitions_radio_button.get_active():
@@ -1444,12 +1444,8 @@ class SELinuxGui():
     def stripsort(self, model, row1, row2, user_data):
         sort_column, _ = model.get_sort_column_id()
         val1 = self.unmarkup(model.get_value(row1, sort_column))
-        if val1 is None:
-            val1 = ""
         val2 = self.unmarkup(model.get_value(row2, sort_column))
-        if val2 is None:
-            val2 = ""
-        return (val1 > val2) - (val1 < val2)
+        return cmp(val1, val2)
 
     def display_more_detail(self, windows, path):
         it = self.boolean_filter.get_iter(path)
@@ -1646,7 +1642,7 @@ class SELinuxGui():
                 self.files_class_combolist.set_value(iter, 0, sepolicy.file_type_str[files])
 
             if ipage == EXE_PAGE and self.entrypoints != None:
-                for exe in list(self.entrypoints.keys()):
+                for exe in self.entrypoints.keys():
                     if exe.startswith(compare):
                         iter = self.files_type_combolist.append()
                         self.files_type_combolist.set_value(iter, 0, exe)
@@ -1656,7 +1652,7 @@ class SELinuxGui():
                 self.files_class_combobox.set_sensitive(False)
 
             elif ipage == WRITABLE_PAGE and self.writable_files != None:
-                for write in list(self.writable_files.keys()):
+                for write in self.writable_files.keys():
                     if write.startswith(compare) and not self.exclude_type(write, exclude_list) and write in self.file_types:
                         iter = self.files_type_combolist.append()
                         self.files_type_combolist.set_value(iter, 0, write)
@@ -1720,7 +1716,7 @@ class SELinuxGui():
                 netd += sepolicy.network.get_network_connect(self.application, "udp", "name_bind", check_bools=True)
 
             port_types = []
-            for k in list(netd.keys()):
+            for k in netd.keys():
                 for t, ports in netd[k]:
                     if t not in port_types + ["port_t", "unreserved_port_t"]:
                         if t.endswith("_type"):
@@ -2189,6 +2185,7 @@ class SELinuxGui():
         self.update = True
         self.update_treestore.clear()
         for bools in self.cur_dict["boolean"]:
+            operation = self.cur_dict["boolean"][bools]["action"]
             iter = self.update_treestore.append(None)
             self.update_treestore.set_value(iter, 0, True)
             self.update_treestore.set_value(iter, 1, sepolicy.boolean_desc(bools))
@@ -2419,11 +2416,8 @@ class SELinuxGui():
         cur = selinux.getfilecon(path)[1].split(":")[2]
         con = selinux.matchpathcon(path, 0)[1].split(":")[2]
         if self.verify(_("Run restorecon on %(PATH)s to change its type from %(CUR_CONTEXT)s to the default %(DEF_CONTEXT)s?") % {"PATH": path, "CUR_CONTEXT": cur, "DEF_CONTEXT": con}, title="restorecon dialog") == Gtk.ResponseType.YES:
-            try:
-                self.dbus.restorecon(path)
-                self.application_selected()
-            except dbus.exceptions.DBusException as e:
-                self.error(e)
+            self.dbus.restorecon(path)
+            self.application_selected()
 
     def new_updates(self, *args):
         self.update_button.set_sensitive(self.modified())
@@ -2572,11 +2566,8 @@ class SELinuxGui():
         if not self.finish_init:
             return
 
-        try:
-            self.dbus.setenforce(button.get_active())
-            self.set_enforce_text(button.get_active())
-        except dbus.exceptions.DBusException as e:
-            self.error(e)
+        self.dbus.setenforce(button.get_active())
+        self.set_enforce_text(button.get_active())
 
     def on_browse_select(self, *args):
         filename = self.file_dialog.get_filename()
@@ -2636,22 +2627,16 @@ class SELinuxGui():
             self.system_policy_type_combobox.set_active(self.typeHistory)
             return None
 
-        try:
-            self.dbus.change_default_policy(self.combo_get_active_text(self.system_policy_type_combobox))
-            self.dbus.relabel_on_boot(True)
-            self.typeHistory = self.system_policy_type_combobox.get_active()
-        except dbus.exceptions.DBusException as e:
-            self.error(e)
+        self.dbus.change_default_policy(self.combo_get_active_text(self.system_policy_type_combobox))
+        self.dbus.relabel_on_boot(True)
+        self.typeHistory = self.system_policy_type_combobox.get_active()
 
     def change_default_mode(self, button):
         if not self.finish_init:
             return
         self.enabled_changed(button)
         if button.get_active():
-            try:
-                self.dbus.change_default_mode(button.get_label().lower())
-            except dbus.exceptions.DBusException as e:
-                self.error(e)
+            self.dbus.change_default_mode(button.get_label().lower())
 
     def import_config_show(self, *args):
         self.file_dialog.set_action(Gtk.FileChooserAction.OPEN)
@@ -2794,13 +2779,10 @@ class SELinuxGui():
         if not self.finish_init:
             return
         self.wait_mouse()
-        try:
-            if self.enable_permissive_button.get_active():
-                self.dbus.semanage("module -e permissivedomains")
-            else:
-                self.dbus.semanage("module -d permissivedomains")
-        except dbus.exceptions.DBusException as e:
-            self.error(e)
+        if self.enable_permissive_button.get_active():
+            self.dbus.semanage("module -e permissivedomains")
+        else:
+            self.dbus.semanage("module -d permissivedomains")
         self.ready_mouse()
 
     def confirmation_close(self, button, *args):
