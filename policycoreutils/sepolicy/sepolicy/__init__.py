@@ -9,7 +9,6 @@ import setools
 import glob
 import sepolgen.defaults as defaults
 import sepolgen.interfaces as interfaces
-from sepolgen import util
 import sys
 import os
 import re
@@ -372,7 +371,7 @@ def get_conditionals(src, dest, tclass, perm):
                 allows = []
                 allows.append(i)
     try:
-        for i in [(y) for y in [x for x in allows if set(perm).issubset(x[PERMS]) and x['boolean']]]:
+        for i in map(lambda y: (y), filter(lambda x: set(perm).issubset(x[PERMS]) and x['boolean'], allows)):
             tdict.update({'source': i['source'], 'boolean': i['boolean']})
             if tdict not in tlist:
                 tlist.append(tdict)
@@ -384,52 +383,12 @@ def get_conditionals(src, dest, tclass, perm):
 
 
 def get_conditionals_format_text(cond):
-    enabled = len([x for x in cond if x['boolean'][0][1]]) > 0
-    return _("-- Allowed %s [ %s ]") % (enabled, " || ".join(set(["%s=%d" % (x['boolean'][0][0], x['boolean'][0][1]) for x in cond])))
+    enabled = len(filter(lambda x: x['boolean'][0][1], cond)) > 0
+    return _("-- Allowed %s [ %s ]") % (enabled, " || ".join(set(map(lambda x: "%s=%d" % (x['boolean'][0][0], x['boolean'][0][1]), cond))))
 
 
 def get_types_from_attribute(attribute):
     return list(info(ATTRIBUTE, attribute))[0]["types"]
-
-
-def get_all_modules():
-    all_modules = []
-    cmd = "semodule --list=full 2>/dev/null"
-    try:
-        output = subprocess.check_output(cmd,
-                                         stderr=subprocess.STDOUT,
-                                         shell=True)
-        l = output.split("\n")
-
-    except subprocess.CalledProcessError as e:
-        from .sedbus import SELinuxDBus
-        l = SELinuxDBus().semodule_list().split("\n")
-
-    for i in l:
-        if len(i):
-            all_modules.append(i.split()[1])
-
-    return all_modules
-
-
-def get_all_modules_from_mod_lst():
-    mod_lst_path = ["/usr/share/selinux/targeted/base.lst", "/usr/share/selinux/targeted/modules-base.lst", "/usr/share/selinux/targeted/modules-contrib.lst"]
-    all_modules = []
-    mod_temp = []
-    for i in mod_lst_path:
-        try:
-            fd = open(i, "r")
-            modules = fd.readlines()
-            fd.close()
-            modules = modules[0].split(" ")[:-1]
-            for m in modules:
-                mod_temp.append(m)
-            all_modules.extend(mod_temp)
-            mod_temp = []
-        except:
-            all_modules = []
-
-    return all_modules
 
 
 def get_file_types(setype):
@@ -506,14 +465,14 @@ def find_file(reg):
 
     try:
         pat = re.compile(r"%s$" % reg)
-        return list(filter(pat.match, [path + x for x in os.listdir(path)]))
+        return filter(pat.match, map(lambda x: path + x, os.listdir(path)))
     except:
         return []
 
 
 def find_all_files(domain, exclude_list=[]):
     executable_files = get_entrypoints(domain)
-    for exe in list(executable_files.keys()):
+    for exe in executable_files.keys():
         if exe.endswith("_exec_t") and exe not in exclude_list:
             for path in executable_files[exe]:
                 for f in find_file(path):
@@ -704,6 +663,23 @@ def get_init_entrypoint(transtype):
 
     return entrypoints
 
+def get_init_entrypoints_str():
+    q = setools.TERuleQuery(_pol,
+                            ruletype=["type_transition"],
+                            source="init_t",
+                            tclass=["process"])
+    entrypoints = {}
+    for i in q.results():
+        try:
+            transtype = str(i.default)
+            if transtype in entrypoints:
+                entrypoints[transtype].append(str(i.target))
+            else:
+                entrypoints[transtype] = [str(i.target)]
+        except AttributeError:
+            continue
+
+    return entrypoints
 
 def get_init_entrypoint_target(entrypoint):
     try:
@@ -1041,7 +1017,7 @@ def get_bools(setype):
     bools = []
     domainbools = []
     domainname, short_name = gen_short_name(setype)
-    for i in [x['boolean'] for x in [x for x in search([ALLOW], {'source': setype}) if 'boolean' in x]]:
+    for i in map(lambda x: x['boolean'], filter(lambda x: 'boolean' in x, search([ALLOW], {'source': setype}))):
         for b in i:
             if not isinstance(b, tuple):
                 continue
@@ -1062,8 +1038,6 @@ def get_all_booleans():
     global booleans
     if not booleans:
         booleans = selinux.security_get_boolean_names()[1]
-        if util.PY3:
-            booleans = [util.decode_input(x) for x in booleans]
     return booleans
 
 
@@ -1128,14 +1102,27 @@ def boolean_desc(boolean):
 
 
 def get_os_version():
-    system_release = ""
+    os_version = ""
+    pkg_name = "selinux-policy"
     try:
-        with open('/etc/system-release') as f:
-            system_release = f.readline().rstrip()
-    except IOError:
-        system_release = "Misc"
+        try:
+            from commands import getstatusoutput
+        except ImportError:
+            from subprocess import getstatusoutput
+        rc, output = getstatusoutput("rpm -q '%s'" % pkg_name)
+        if rc == 0:
+            os_version = output.split(".")[-2]
+    except:
+        os_version = ""
 
-    return system_release
+    if os_version[0:2] == "fc":
+        os_version = "Fedora" + os_version[2:]
+    elif os_version[0:2] == "el":
+        os_version = "RHEL" + os_version[2:]
+    else:
+        os_version = ""
+
+    return os_version
 
 
 def reinit():
