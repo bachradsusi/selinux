@@ -9,7 +9,7 @@
 Summary: SELinux policy core utilities
 Name:	 policycoreutils
 Version: 2.6
-Release: 0.3%{?dist}
+Release: 0.4%{?dist}
 License: GPLv2
 Group:	 System Environment/Base
 # https://github.com/SELinuxProject/selinux/wiki/Releases
@@ -147,7 +147,10 @@ sed -i '1s%\(#! */usr/bin/python\)\([^3].*\|\)$%\13\2%' \
 	%{buildroot}%{_bindir}/chcat \
 	%{buildroot}%{_bindir}/sandbox \
 	%{buildroot}%{_bindir}/audit2allow \
-	%{buildroot}%{_bindir}/audit2why
+	%{buildroot}%{_bindir}/audit2why \
+	%{buildroot}%{_bindir}/sepolicy \
+	%{buildroot}%{_bindir}/sepolgen{,-ifgen} \
+	%nil
 
 %find_lang %{name}
 
