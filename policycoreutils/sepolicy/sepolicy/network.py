@@ -23,13 +23,11 @@
 import sepolicy
 
 
-def get_types(src, tclass, perm):
+def get_types(src, tclass, perm, check_bools=False):
     allows = sepolicy.search([sepolicy.ALLOW], {sepolicy.SOURCE: src, sepolicy.CLASS: tclass, sepolicy.PERMS: perm})
     nlist = []
     if allows:
-        for i in [y[sepolicy.TARGET] for y in
-                  [x for x in allows
-                   if set(perm).issubset(x[sepolicy.PERMS]) and (not check_bools or x["enabled"])]]:
+        for i in map(lambda y: y[sepolicy.TARGET], filter(lambda x: set(perm).issubset(x[sepolicy.PERMS]) and (not check_bools or x["enabled"]), allows)):
             if i not in nlist:
                 nlist.append(i)
     return nlist
