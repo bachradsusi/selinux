@@ -1391,7 +1391,7 @@ index 2e67456..0c5f998 100644
  .B sepolicy generate \-\-cgi [\-n NAME] command [\-w WRITE_PATH ]
  .br
 diff --git policycoreutils-2.6/sepolicy/sepolicy.py policycoreutils-2.6/sepolicy/sepolicy.py
-index 3e502a7..35128fd 100755
+index 3e502a7..a4380a7 100755
 --- policycoreutils-2.6/sepolicy/sepolicy.py
 +++ policycoreutils-2.6/sepolicy/sepolicy.py
 @@ -26,6 +26,7 @@ import sys
@@ -1448,7 +1448,7 @@ index 3e502a7..35128fd 100755
          sorted_keys.append(i)
      sorted_keys.sort()
      for k in sorted_keys:
-@@ -253,18 +252,18 @@ def numcmp(val1, val2):
+@@ -253,7 +252,7 @@ def numcmp(val1, val2):
          if v1 < v2:
              return -1
      except:
@@ -1457,22 +1457,15 @@ index 3e502a7..35128fd 100755
  
  
  def _print_net(src, protocol, perm):
-     import sepolicy.network
-     portdict = sepolicy.network.get_network_connect(src, protocol, perm)
+@@ -262,7 +261,7 @@ def _print_net(src, protocol, perm):
      if len(portdict) > 0:
--        bold_start = "\033[1m"
--        bold_end = "\033[0;0m"
+         bold_start = "\033[1m"
+         bold_end = "\033[0;0m"
 -        print "\n" + bold_start + "%s: %s %s" % (src, protocol, perm) + bold_end
--        port_strings = []
--        boolean_text = ""
-+        bold_start="\033[1m"
-+        bold_end="\033[0;0m"
-+        print("\n"+bold_start+"%s: %s %s" % (src, protocol, perm) + bold_end)
-+        port_strings=[]
-+        boolean_text=""
++        print("\n" + bold_start + "%s: %s %s" % (src, protocol, perm) + bold_end)
+         port_strings = []
+         boolean_text = ""
          for p in portdict:
-             for t, recs in portdict[p]:
-                 cond = get_conditionals(src, t, "%s_socket" % protocol, [perm])
 @@ -273,9 +272,9 @@ def _print_net(src, protocol, perm):
                      port_strings.append("%s (%s) %s" % (", ".join(recs), t, boolean_text))
                  else:
@@ -1514,24 +1507,20 @@ index 3e502a7..35128fd 100755
 +                print("Undefined port type")
  
      for t in args.type:
--        if (t, 'tcp') in portrecs.keys():
+         if (t, 'tcp') in portrecs.keys():
 -            print "%s: tcp: %s" % (t, ",".join(portrecs[t, 'tcp']))
--        if (t, 'udp') in portrecs.keys():
++            print("%s: tcp: %s" % (t, ",".join(portrecs[t, 'tcp'])))
+         if (t, 'udp') in portrecs.keys():
 -            print "%s: udp: %s" % (t, ",".join(portrecs[t, 'udp']))
-+        if (t,'tcp') in list(portrecs.keys()):
-+            print("%s: tcp: %s" % (t, ",".join(portrecs[t,'tcp'])))
-+        if (t,'udp') in list(portrecs.keys()):
-+            print("%s: udp: %s" % (t, ",".join(portrecs[t,'udp'])))
++            print( "%s: udp: %s" % (t, ",".join(portrecs[t, 'udp'])))
  
      for a in args.applications:
          d = sepolicy.get_init_transtype(a)
-@@ -356,8 +355,8 @@ def manpage(args):
-         test_domains = args.domain
+@@ -357,7 +356,7 @@ def manpage(args):
  
      for domain in test_domains:
--        m = ManPage(domain, path, args.root, args.source_files, args.web)
+         m = ManPage(domain, path, args.root, args.source_files, args.web)
 -        print m.get_man_page_path()
-+        m = ManPage(domain, path, args.root,args.source_files, args.web)
 +        print(m.get_man_page_path())
  
      if args.web:
@@ -1649,7 +1638,7 @@ index 3e502a7..35128fd 100755
 +        print("Out")
          sys.exit(0)
 diff --git policycoreutils-2.6/sepolicy/sepolicy/__init__.py policycoreutils-2.6/sepolicy/sepolicy/__init__.py
-index 8fbd5b4..2ae794e 100644
+index 8fbd5b4..6ccfedd 100644
 --- policycoreutils-2.6/sepolicy/sepolicy/__init__.py
 +++ policycoreutils-2.6/sepolicy/sepolicy/__init__.py
 @@ -9,6 +9,7 @@ import setools
@@ -1752,15 +1741,28 @@ index 8fbd5b4..2ae794e 100644
          fd.close()
      except:
          sys.stderr.write("could not open interface info [%s]\n" % fn)
-@@ -752,7 +793,6 @@ def get_all_entrypoint_domains():
+@@ -752,7 +793,10 @@ def get_all_entrypoint_domains():
  
  
  def gen_interfaces():
 -    import commands
++    try:
++        from commands import getstatusoutput
++    except ImportError:
++        from subprocess import getstatusoutput
      ifile = defaults.interface_info()
      headers = defaults.headers()
      try:
-@@ -997,7 +1037,7 @@ def get_bools(setype):
+@@ -763,7 +807,7 @@ def gen_interfaces():
+ 
+     if os.getuid() != 0:
+         raise ValueError(_("You must regenerate interface info by running /usr/bin/sepolgen-ifgen"))
+-    print(commands.getstatusoutput("/usr/bin/sepolgen-ifgen")[1])
++    print(getstatusoutput("/usr/bin/sepolgen-ifgen")[1])
+ 
+ 
+ def gen_port_dict():
+@@ -997,7 +1041,7 @@ def get_bools(setype):
      bools = []
      domainbools = []
      domainname, short_name = gen_short_name(setype)
@@ -1769,7 +1771,7 @@ index 8fbd5b4..2ae794e 100644
          for b in i:
              if not isinstance(b, tuple):
                  continue
-@@ -1018,6 +1058,8 @@ def get_all_booleans():
+@@ -1018,6 +1062,8 @@ def get_all_booleans():
      global booleans
      if not booleans:
          booleans = selinux.security_get_boolean_names()[1]
@@ -1778,7 +1780,7 @@ index 8fbd5b4..2ae794e 100644
      return booleans
  
  
-@@ -1082,24 +1124,14 @@ def boolean_desc(boolean):
+@@ -1082,24 +1128,14 @@ def boolean_desc(boolean):
  
  
  def get_os_version():
@@ -1822,9 +1824,20 @@ index cf5f1ff..83ec592 100644
          tlist = tlist + expand_attribute(l)
      return tlist
 diff --git policycoreutils-2.6/sepolicy/sepolicy/communicate.py policycoreutils-2.6/sepolicy/sepolicy/communicate.py
-index b96c4b9..f1c7607 100755
+index b96c4b9..bd733a2 100755
 --- policycoreutils-2.6/sepolicy/sepolicy/communicate.py
 +++ policycoreutils-2.6/sepolicy/sepolicy/communicate.py
+@@ -34,8 +34,8 @@ def usage(parser, msg):
+ 
+ def expand_attribute(attribute):
+     try:
+-        return sepolicy.info(sepolicy.ATTRIBUTE, attribute)[0]["types"]
+-    except RuntimeError:
++        return list(next(sepolicy.info(sepolicy.ATTRIBUTE, attribute))["types"])
++    except StopIteration:
+         return [attribute]
+ 
+ 
 @@ -45,6 +45,6 @@ def get_types(src, tclass, perm):
          raise ValueError("The %s type is not allowed to %s any types" % (src, ",".join(perm)))
  
@@ -1834,11 +1847,43 @@ index b96c4b9..f1c7607 100755
          tlist = tlist + expand_attribute(l)
      return tlist
 diff --git policycoreutils-2.6/sepolicy/sepolicy/generate.py policycoreutils-2.6/sepolicy/sepolicy/generate.py
-index 65b33b6..101bbcd 100644
+index 65b33b6..17718f5 100644
 --- policycoreutils-2.6/sepolicy/sepolicy/generate.py
 +++ policycoreutils-2.6/sepolicy/sepolicy/generate.py
-@@ -48,6 +48,7 @@ from templates import spec
- from templates import user
+@@ -31,23 +31,24 @@ import time
+ import types
+ import platform
+ 
+-from templates import executable
+-from templates import boolean
+-from templates import etc_rw
+-from templates import unit_file
+-from templates import var_cache
+-from templates import var_spool
+-from templates import var_lib
+-from templates import var_log
+-from templates import var_run
+-from templates import tmp
+-from templates import rw
+-from templates import network
+-from templates import script
+-from templates import spec
+-from templates import user
++from .templates import executable
++from .templates import boolean
++from .templates import etc_rw
++from .templates import unit_file
++from .templates import var_cache
++from .templates import var_spool
++from .templates import var_lib
++from .templates import var_log
++from .templates import var_run
++from .templates import tmp
++from .templates import rw
++from .templates import network
++from .templates import script
++from .templates import spec
++from .templates import user
  import sepolgen.interfaces as interfaces
  import sepolgen.defaults as defaults
 +from sepolgen import util
@@ -2671,10 +2716,14 @@ index c2cb971..1ab34af 100644
                  os.remove(v)
  
 diff --git policycoreutils-2.6/sepolicy/sepolicy/manpage.py policycoreutils-2.6/sepolicy/sepolicy/manpage.py
-index 7365f93..ca38322 100755
+index 7365f93..210e258 100755
 --- policycoreutils-2.6/sepolicy/sepolicy/manpage.py
 +++ policycoreutils-2.6/sepolicy/sepolicy/manpage.py
-@@ -31,7 +31,15 @@ import commands
+@@ -27,11 +27,18 @@ __all__ = ['ManPage', 'HTMLManPages', 'manpage_domains', 'manpage_roles', 'gen_d
+ import string
+ import selinux
+ import sepolicy
+-import commands
  import os
  import time
  
@@ -2691,7 +2740,7 @@ index 7365f93..ca38322 100755
  
  equiv_dirs = ["/var"]
  modules_dict = None
-@@ -106,8 +114,8 @@ def gen_domains():
+@@ -106,8 +113,8 @@ def gen_domains():
      for d in sepolicy.get_all_domains():
          found = False
          domain = d[:-2]
@@ -2702,7 +2751,7 @@ index 7365f93..ca38322 100755
          if domain in domains:
              continue
          domains.append(domain)
-@@ -144,9 +152,6 @@ def prettyprint(f, trim):
+@@ -144,9 +151,6 @@ def prettyprint(f, trim):
  manpage_domains = []
  manpage_roles = []
  
@@ -2712,7 +2761,20 @@ index 7365f93..ca38322 100755
  
  def get_alphabet_manpages(manpage_list):
      alphabet_manpages = dict.fromkeys(string.ascii_letters, [])
-@@ -171,7 +176,6 @@ def convert_manpage_to_html(html_manpage, manpage):
+@@ -162,7 +166,11 @@ def get_alphabet_manpages(manpage_list):
+ 
+ 
+ def convert_manpage_to_html(html_manpage, manpage):
+-    rc, output = commands.getstatusoutput("/usr/bin/groff -man -Thtml %s 2>/dev/null" % manpage)
++    try:
++            from commands import getstatusoutput
++    except ImportError:
++            from subprocess import getstatusoutput
++    rc, output = getstatusoutput("/usr/bin/groff -man -Thtml %s 2>/dev/null" % manpage)
+     if rc == 0:
+         print(html_manpage, "has been created")
+         fd = open(html_manpage, 'w')
+@@ -171,7 +179,6 @@ def convert_manpage_to_html(html_manpage, manpage):
  
  
  class HTMLManPages:
@@ -2720,7 +2782,7 @@ index 7365f93..ca38322 100755
      """
              Generate a HHTML Manpages on an given SELinux domains
      """
-@@ -181,30 +185,30 @@ class HTMLManPages:
+@@ -181,30 +188,30 @@ class HTMLManPages:
          self.manpage_domains = get_alphabet_manpages(manpage_domains)
          self.os_version = os_version
          self.old_path = path + "/"
@@ -2757,7 +2819,7 @@ index 7365f93..ca38322 100755
              if len(role):
                  for r in role:
                      convert_manpage_to_html((self.new_path + r.split("_selinux")[0] + ".html"), self.old_path + r)
-@@ -261,16 +265,16 @@ Fedora or Red Hat Enterprise Linux Man Pages.</h2>
+@@ -261,16 +268,16 @@ Fedora or Red Hat Enterprise Linux Man Pages.</h2>
          fd.write("""
  <html>
  <head>
@@ -2778,7 +2840,7 @@ index 7365f93..ca38322 100755
          for letter in self.manpage_roles:
              if len(self.manpage_roles[letter]):
                  fd.write("""
-@@ -324,7 +328,7 @@ Fedora or Red Hat Enterprise Linux Man Pages.</h2>
+@@ -324,7 +331,7 @@ Fedora or Red Hat Enterprise Linux Man Pages.</h2>
  """ % domainname_body)
  
          fd.close()
@@ -2787,7 +2849,7 @@ index 7365f93..ca38322 100755
  
      def _gen_css(self):
          style_css = self.old_path + "style.css"
-@@ -338,9 +342,9 @@ html, body {
+@@ -338,9 +345,9 @@ html, body {
  }
  
  h1, h2, h3, h4, h5, h5 {
@@ -2800,7 +2862,7 @@ index 7365f93..ca38322 100755
  }
  
  a {
-@@ -387,11 +391,10 @@ pre.code {
+@@ -387,11 +394,10 @@ pre.code {
  """)
  
          fd.close()
@@ -2813,7 +2875,7 @@ index 7365f93..ca38322 100755
      """
          Generate a Manpage on an SELinux domain in the specified path
      """
-@@ -449,7 +452,7 @@ class ManPage:
+@@ -449,7 +455,7 @@ class ManPage:
              self.__gen_man_page()
          self.fd.close()
  
@@ -2822,7 +2884,7 @@ index 7365f93..ca38322 100755
              if k == self.domainname:
                  for alias in equiv_dict[k]:
                      self.__gen_man_page_link(alias)
-@@ -501,6 +504,7 @@ class ManPage:
+@@ -501,6 +507,7 @@ class ManPage:
              self._booleans()
  
          self._port_types()
@@ -2830,7 +2892,7 @@ index 7365f93..ca38322 100755
          self._writes()
          self._footer()
  
-@@ -512,6 +516,7 @@ class ManPage:
+@@ -512,6 +519,7 @@ class ManPage:
          print(path)
  
      def __gen_man_page(self):
@@ -2838,7 +2900,7 @@ index 7365f93..ca38322 100755
          self.anon_list = []
  
          self.attributes = {}
-@@ -519,11 +524,22 @@ class ManPage:
+@@ -519,11 +527,22 @@ class ManPage:
          self._get_ptypes()
  
          for domain_type in self.ptypes:
@@ -2861,7 +2923,7 @@ index 7365f93..ca38322 100755
          self._booleans()
          self._nsswitch_domain()
          self._port_types()
-@@ -537,6 +553,34 @@ class ManPage:
+@@ -537,6 +556,34 @@ class ManPage:
              if f.startswith(self.short_name) or f.startswith(self.domainname):
                  self.ptypes.append(f)
  
@@ -2896,7 +2958,7 @@ index 7365f93..ca38322 100755
      def _header(self):
          self.fd.write('.TH  "%(domainname)s_selinux"  "8"  "%(date)s" "%(domainname)s" "SELinux Policy %(domainname)s"'
                        % {'domainname': self.domainname, 'date': time.strftime("%y-%m-%d")})
-@@ -596,7 +640,7 @@ SELinux policy is customizable based on least access required.  %s policy is ext
+@@ -596,7 +643,7 @@ SELinux policy is customizable based on least access required.  %s policy is ext
          nsswitch_types = []
          nsswitch_booleans = ['authlogin_nsswitch_use_ldap', 'kerberos_enabled']
          nsswitchbooltext = ""
@@ -2905,7 +2967,7 @@ index 7365f93..ca38322 100755
              if "nsswitch_domain" in self.attributes[k]:
                  nsswitch_types.append(k)
  
-@@ -686,10 +730,13 @@ Default Defined Ports:""")
+@@ -686,10 +733,13 @@ Default Defined Ports:""")
  
      def _file_context(self):
          flist = []
@@ -2919,7 +2981,7 @@ index 7365f93..ca38322 100755
                  if f in self.fcdict:
                      mpaths = mpaths + self.fcdict[f]["regex"]
          if len(mpaths) == 0:
-@@ -741,14 +788,15 @@ SELinux %(domainname)s policy is very flexible allowing users to setup their %(d
+@@ -741,14 +791,15 @@ SELinux %(domainname)s policy is very flexible allowing users to setup their %(d
  .PP
  """ % {'domainname': self.domainname, 'equiv': e, 'alt': e.split('/')[-1]})
  
@@ -2937,7 +2999,7 @@ index 7365f93..ca38322 100755
  .br
  .B restorecon -R -v /srv/my%(domainname)s_content
  
-@@ -890,7 +938,7 @@ selinux(8), %s(8), semanage(8), restorecon(8), chcon(1), sepolicy(8)
+@@ -890,7 +941,7 @@ selinux(8), %s(8), semanage(8), restorecon(8), chcon(1), sepolicy(8)
  
      def _entrypoints(self):
          try:
@@ -2946,7 +3008,7 @@ index 7365f93..ca38322 100755
          except:
              return
  
-@@ -920,6 +968,17 @@ All executeables with the default executable label, usually stored in /usr/bin a
+@@ -920,6 +971,17 @@ All executeables with the default executable label, usually stored in /usr/bin a
          self.fd.write("""
  %s""" % ", ".join(paths))
  
@@ -2964,7 +3026,7 @@ index 7365f93..ca38322 100755
      def _writes(self):
          permlist = sepolicy.search([sepolicy.ALLOW], {'source': self.type, 'permlist': ['open', 'write'], 'class': 'file'})
          if permlist is None or len(permlist) == 0:
-@@ -1156,7 +1215,7 @@ Three things can happen when %(type)s attempts to execute a program.
+@@ -1156,7 +1218,7 @@ Three things can happen when %(type)s attempts to execute a program.
  
  Execute the following to see the types that the SELinux user %(type)s can execute without transitioning:
  
@@ -2973,7 +3035,7 @@ index 7365f93..ca38322 100755
  
  .TP
  
-@@ -1164,7 +1223,7 @@ Execute the following to see the types that the SELinux user %(type)s can execut
+@@ -1164,7 +1226,7 @@ Execute the following to see the types that the SELinux user %(type)s can execut
  
  Execute the following to see the types that the SELinux user %(type)s can execute and transition:
  
@@ -2982,7 +3044,7 @@ index 7365f93..ca38322 100755
  
  """ % {'user': self.domainname, 'type': self.type})
  
-@@ -1228,7 +1287,7 @@ You need to add %(user)s_r to the staff_u user.  You could setup the staff_u use
+@@ -1228,7 +1290,7 @@ You need to add %(user)s_r to the staff_u user.  You could setup the staff_u use
  SELinux policy also controls which roles can transition to a different role.
  You can list these rules using the following command.
  

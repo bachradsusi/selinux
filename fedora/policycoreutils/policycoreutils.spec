@@ -9,7 +9,7 @@
 Summary: SELinux policy core utilities
 Name:	 policycoreutils
 Version: 2.6
-Release: 0.2%{?dist}
+Release: 0.3%{?dist}
 License: GPLv2
 Group:	 System Environment/Base
 # https://github.com/SELinuxProject/selinux/wiki/Releases
@@ -40,7 +40,7 @@ Provides: /sbin/restorecon
 
 BuildRequires:	pam-devel libcgroup-devel libsepol-static >= %{libsepolver} libsemanage-static >= %{libsemanagever} libselinux-devel >= %{libselinuxver}  libcap-devel audit-libs-devel >=  %{libauditver} gettext
 BuildRequires: desktop-file-utils dbus-devel dbus-glib-devel
-BuildRequires: python python-devel python3 python3-devel setools-devel >= 3.3.8-10
+BuildRequires: python python-devel python3 python3-devel setools-python3 >= 3.3.8-10
 BuildRequires: systemd
 Requires: util-linux grep gawk diffutils rpm sed
 Requires: libsepol >= %{libsepolver} coreutils libselinux-utils >=  %{libselinuxver}
