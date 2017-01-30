@@ -1638,101 +1638,75 @@ index 3e502a7..a4380a7 100755
 +        print("Out")
          sys.exit(0)
 diff --git policycoreutils-2.6/sepolicy/sepolicy/__init__.py policycoreutils-2.6/sepolicy/sepolicy/__init__.py
-index 8fbd5b4..6ccfedd 100644
+index 8fbd5b4..074d20e 100644
 --- policycoreutils-2.6/sepolicy/sepolicy/__init__.py
 +++ policycoreutils-2.6/sepolicy/sepolicy/__init__.py
-@@ -9,6 +9,7 @@ import setools
- import glob
- import sepolgen.defaults as defaults
- import sepolgen.interfaces as interfaces
-+from sepolgen import util
- import sys
- import os
- import re
-@@ -371,7 +372,7 @@ def get_conditionals(src, dest, tclass, perm):
-                 allows = []
-                 allows.append(i)
-     try:
--        for i in map(lambda y: (y), filter(lambda x: set(perm).issubset(x[PERMS]) and x['boolean'], allows)):
-+        for i in [(y) for y in [x for x in allows if set(perm).issubset(x[PERMS]) and x['boolean']]]:
-             tdict.update({'source': i['source'], 'boolean': i['boolean']})
-             if tdict not in tlist:
-                 tlist.append(tdict)
-@@ -383,14 +384,54 @@ def get_conditionals(src, dest, tclass, perm):
+@@ -383,7 +383,12 @@ def get_conditionals(src, dest, tclass, perm):
  
  
  def get_conditionals_format_text(cond):
 -    enabled = len(filter(lambda x: x['boolean'][0][1], cond)) > 0
--    return _("-- Allowed %s [ %s ]") % (enabled, " || ".join(set(map(lambda x: "%s=%d" % (x['boolean'][0][0], x['boolean'][0][1]), cond))))
-+    enabled = len([x for x in cond if x['boolean'][0][1]]) > 0
-+    return _("-- Allowed %s [ %s ]") % (enabled, " || ".join(set(["%s=%d" % (x['boolean'][0][0], x['boolean'][0][1]) for x in cond])))
++
++    enabled = False
++    for x in cond:
++        if x['boolean'][0][1]:
++            enabled = True
++            break
+     return _("-- Allowed %s [ %s ]") % (enabled, " || ".join(set(map(lambda x: "%s=%d" % (x['boolean'][0][0], x['boolean'][0][1]), cond))))
  
  
- def get_types_from_attribute(attribute):
-     return list(info(ATTRIBUTE, attribute))[0]["types"]
- 
- 
-+def get_all_modules():
-+    all_modules = []
-+    cmd = "semodule --list=full 2>/dev/null"
-+    try:
-+        output = subprocess.check_output(cmd,
-+                                         stderr=subprocess.STDOUT,
-+                                         shell=True)
-+        l = output.split("\n")
-+
-+    except subprocess.CalledProcessError as e:
-+        from .sedbus import SELinuxDBus
-+        l = SELinuxDBus().semodule_list().split("\n")
-+
-+    for i in l:
-+        if len(i):
-+            all_modules.append(i.split()[1])
-+
-+    return all_modules
-+
-+
-+def get_all_modules_from_mod_lst():
-+    mod_lst_path = ["/usr/share/selinux/targeted/base.lst", "/usr/share/selinux/targeted/modules-base.lst", "/usr/share/selinux/targeted/modules-contrib.lst"]
-+    all_modules = []
-+    mod_temp = []
-+    for i in mod_lst_path:
-+        try:
-+            fd = open(i, "r")
-+            modules = fd.readlines()
-+            fd.close()
-+            modules = modules[0].split(" ")[:-1]
-+            for m in modules:
-+                mod_temp.append(m)
-+            all_modules.extend(mod_temp)
-+            mod_temp = []
-+        except:
-+            all_modules = []
-+
-+    return all_modules
-+
-+
- def get_file_types(setype):
-     flist = []
-     mpaths = {}
-@@ -465,14 +506,14 @@ def find_file(reg):
+@@ -465,7 +470,7 @@ def find_file(reg):
  
      try:
          pat = re.compile(r"%s$" % reg)
 -        return filter(pat.match, map(lambda x: path + x, os.listdir(path)))
-+        return list(filter(pat.match, [path + x for x in os.listdir(path)]))
++        return [x for x in map(lambda x: path + x, os.listdir(path)) if pat.match(x)]
      except:
          return []
  
+@@ -589,7 +594,7 @@ def get_fcdict(fc_path=selinux.selinux_file_context_path()):
  
- def find_all_files(domain, exclude_list=[]):
-     executable_files = get_entrypoints(domain)
--    for exe in executable_files.keys():
-+    for exe in list(executable_files.keys()):
-         if exe.endswith("_exec_t") and exe not in exclude_list:
-             for path in executable_files[exe]:
-                 for f in find_file(path):
-@@ -695,7 +736,7 @@ def get_methods():
+ def get_transitions_into(setype):
+     try:
+-        return filter(lambda x: x["transtype"] == setype, search([TRANSITION], {'class': 'process'}))
++        return [x for x in search([TRANSITION], {'class': 'process'}) if x["transtype"] == setype]
+     except (TypeError, AttributeError):
+         pass
+     return None
+@@ -605,7 +610,7 @@ def get_transitions(setype):
+ 
+ def get_file_transitions(setype):
+     try:
+-        return filter(lambda x: x['class'] != "process", search([TRANSITION], {'source': setype}))
++        return [x for x in search([TRANSITION], {'source': setype}) if x['class'] != "process"]
+     except (TypeError, AttributeError):
+         pass
+     return None
+@@ -663,6 +668,23 @@ def get_init_entrypoint(transtype):
+ 
+     return entrypoints
+ 
++def get_init_entrypoints_str():
++    q = setools.TERuleQuery(_pol,
++                            ruletype=["type_transition"],
++                            source="init_t",
++                            tclass=["process"])
++    entrypoints = {}
++    for i in q.results():
++        try:
++            transtype = str(i.default)
++            if transtype in entrypoints:
++                entrypoints[transtype].append(str(i.target))
++            else:
++                entrypoints[transtype] = [str(i.target)]
++        except AttributeError:
++            continue
++
++    return entrypoints
+ 
+ def get_init_entrypoint_target(entrypoint):
+     try:
+@@ -695,7 +717,7 @@ def get_methods():
      # List of per_role_template interfaces
          ifs = interfaces.InterfaceSet()
          ifs.from_file(fd)
@@ -1741,7 +1715,7 @@ index 8fbd5b4..6ccfedd 100644
          fd.close()
      except:
          sys.stderr.write("could not open interface info [%s]\n" % fn)
-@@ -752,7 +793,10 @@ def get_all_entrypoint_domains():
+@@ -752,7 +774,10 @@ def get_all_entrypoint_domains():
  
  
  def gen_interfaces():
@@ -1753,7 +1727,7 @@ index 8fbd5b4..6ccfedd 100644
      ifile = defaults.interface_info()
      headers = defaults.headers()
      try:
-@@ -763,7 +807,7 @@ def gen_interfaces():
+@@ -763,7 +788,7 @@ def gen_interfaces():
  
      if os.getuid() != 0:
          raise ValueError(_("You must regenerate interface info by running /usr/bin/sepolgen-ifgen"))
@@ -1762,55 +1736,20 @@ index 8fbd5b4..6ccfedd 100644
  
  
  def gen_port_dict():
-@@ -997,7 +1041,7 @@ def get_bools(setype):
-     bools = []
-     domainbools = []
-     domainname, short_name = gen_short_name(setype)
--    for i in map(lambda x: x['boolean'], filter(lambda x: 'boolean' in x, search([ALLOW], {'source': setype}))):
-+    for i in [x['boolean'] for x in [x for x in search([ALLOW], {'source': setype}) if 'boolean' in x]]:
-         for b in i:
-             if not isinstance(b, tuple):
-                 continue
-@@ -1018,6 +1062,8 @@ def get_all_booleans():
-     global booleans
-     if not booleans:
-         booleans = selinux.security_get_boolean_names()[1]
-+        if util.PY3:
-+            booleans = [util.decode_input(x) for x in booleans]
-     return booleans
- 
- 
-@@ -1082,24 +1128,14 @@ def boolean_desc(boolean):
- 
- 
- def get_os_version():
--    os_version = ""
--    pkg_name = "selinux-policy"
-+    system_release = ""
+@@ -1085,8 +1110,11 @@ def get_os_version():
+     os_version = ""
+     pkg_name = "selinux-policy"
      try:
 -        import commands
 -        rc, output = commands.getstatusoutput("rpm -q '%s'" % pkg_name)
--        if rc == 0:
--            os_version = output.split(".")[-2]
--    except:
--        os_version = ""
--
--    if os_version[0:2] == "fc":
--        os_version = "Fedora" + os_version[2:]
--    elif os_version[0:2] == "el":
--        os_version = "RHEL" + os_version[2:]
--    else:
--        os_version = ""
-+        with open('/etc/system-release') as f:
-+            system_release = f.readline().rstrip()
-+    except IOError:
-+        system_release = "Misc"
- 
--    return os_version
-+    return system_release
- 
- 
- def reinit():
++        try:
++            from commands import getstatusoutput
++        except ImportError:
++            from subprocess import getstatusoutput
++        rc, output = getstatusoutput("rpm -q '%s'" % pkg_name)
+         if rc == 0:
+             os_version = output.split(".")[-2]
+     except:
 diff --git policycoreutils-2.6/sepolicy/sepolicy/booleans.py policycoreutils-2.6/sepolicy/sepolicy/booleans.py
 index cf5f1ff..83ec592 100644
 --- policycoreutils-2.6/sepolicy/sepolicy/booleans.py
@@ -2091,21 +2030,30 @@ index 65b33b6..17718f5 100644
              out += "%s # %s\n" % (self.write_sh(out_dir), _("Setup Script"))
          return out
 diff --git policycoreutils-2.6/sepolicy/sepolicy/gui.py policycoreutils-2.6/sepolicy/sepolicy/gui.py
-index 7f1888c..7ee3954 100644
+index 7f1888c..d3f2bdf 100644
 --- policycoreutils-2.6/sepolicy/sepolicy/gui.py
 +++ policycoreutils-2.6/sepolicy/sepolicy/gui.py
-@@ -66,10 +66,6 @@ for f in sepolicy.file_type_str:
- enabled = [_("No"), _("Yes")]
+@@ -26,6 +26,8 @@
+ #
+ #
+ 
++import gi
++gi.require_version('Gtk', '3.0')
+ from gi.repository import Gtk
+ from gi.repository import Gdk
+ from gi.repository import GLib
+@@ -67,8 +69,8 @@ enabled = [_("No"), _("Yes")]
  action = [_("Disable"), _("Enable")]
  
--
+ 
 -def compare(a, b):
 -    return cmp(a.lower(), b.lower())
--
++def cmp(a, b):
++    return (a > b) - (a < b)
+ 
  import distutils.sysconfig
  ADVANCED_LABEL = (_("Advanced >>"), _("Advanced <<"))
- ADVANCED_SEARCH_LABEL = (_("Advanced Search >>"), _("Advanced Search <<"))
-@@ -110,6 +106,7 @@ class SELinuxGui():
+@@ -110,6 +112,7 @@ class SELinuxGui():
  
      def __init__(self, app=None, test=False):
          self.finish_init = False
@@ -2113,6 +2061,25 @@ index 7f1888c..7ee3954 100644
          self.opage = START_PAGE
          self.dbus = SELinuxDBus()
          try:
+@@ -118,17 +121,11 @@ class SELinuxGui():
+             print(e)
+             self.quit()
+ 
+-        sepolicy_domains = sepolicy.get_all_domains()
+-        sepolicy_domains.sort(compare)
+-        if app and app not in sepolicy_domains:
+-            self.error(_("%s is not a valid domain" % app))
+-            self.quit()
+-
+         self.init_cur()
+         self.application = app
+         self.filter_txt = ""
+         builder = Gtk.Builder()  # BUILDER OBJ
+-        self.code_path = distutils.sysconfig.get_python_lib(plat_specific=True) + "/sepolicy/"
++        self.code_path = distutils.sysconfig.get_python_lib(plat_specific=False) + "/sepolicy/"
+         glade_file = self.code_path + "sepolicy.glade"
+         builder.add_from_file(glade_file)
+         self.outer_notebook = builder.get_object("outer_notebook")
 @@ -147,7 +144,7 @@ class SELinuxGui():
          self.files_add = False
          self.network_add = False
@@ -2149,7 +2116,7 @@ index 7f1888c..7ee3954 100644
          self.entrycompletion_obj.set_minimum_key_length(0)
          self.entrycompletion_obj.set_text_column(0)
          self.entrycompletion_obj.set_match_func(self.match_func, None)
-@@ -491,20 +486,24 @@ class SELinuxGui():
+@@ -491,37 +486,41 @@ class SELinuxGui():
          self.loading = 1
          path = None
          if test:
@@ -2173,6 +2140,8 @@ index 7f1888c..7ee3954 100644
 +
 +        loading_gui.show()
 +        length = len(self.all_domains)
++
++        entrypoint_dict = sepolicy.get_init_entrypoints_str()
 +        for domain in self.all_domains:
              # After the user selects a path in the drop down menu call
              # get_init_entrypoint_target(entrypoint) to get the transtype
@@ -2184,8 +2153,11 @@ index 7f1888c..7ee3954 100644
              self.percentage = float(float(self.loading) / float(length))
              self.progress_bar.set_fraction(self.percentage)
              self.progress_bar.set_pulse_step(self.percentage)
-@@ -514,14 +513,13 @@ class SELinuxGui():
-             if entrypoint:
+             self.idle_func()
+ 
+-            entrypoint = sepolicy.get_init_entrypoint(domain)
+-            if entrypoint:
++            for entrypoint in entrypoint_dict.get(domain, []):
                  path = sepolicy.find_entrypoint_path(entrypoint)
                  if path:
 -                    self.combo_box_initialize(path, None)
@@ -2202,7 +2174,7 @@ index 7f1888c..7ee3954 100644
  
          dic = {
              "on_combo_button_clicked": self.open_combo_menu,
-@@ -553,7 +551,7 @@ class SELinuxGui():
+@@ -553,7 +552,7 @@ class SELinuxGui():
              "on_file_equiv_button_clicked": self.show_file_equiv_page,
              "on_app/system_button_clicked": self.system_interface,
              "on_app/users_button_clicked": self.users_interface,
@@ -2211,7 +2183,7 @@ index 7f1888c..7ee3954 100644
  
              "on_Show_mislabeled_files_toggled": self.show_mislabeled_files,
              "on_Browse_button_files_clicked": self.browse_for_files,
-@@ -569,8 +567,6 @@ class SELinuxGui():
+@@ -569,8 +568,6 @@ class SELinuxGui():
              "on_advanced_filter_entry_changed": self.get_advanced_filter_data,
              "on_advanced_search_treeview_row_activated": self.advanced_item_selected,
              "on_Select_advanced_search_clicked": self.advanced_item_button_push,
@@ -2220,18 +2192,6 @@ index 7f1888c..7ee3954 100644
              "on_info_button_button_press_event": self.on_help_button,
              "on_back_button_clicked": self.on_help_back_clicked,
              "on_forward_button_clicked": self.on_help_forward_clicked,
-@@ -676,9 +672,10 @@ class SELinuxGui():
-         self.module_dict = {}
-         for m in self.dbus.semodule_list().split("\n"):
-             mod = m.split()
--            if len(mod) < 2:
-+            if len(mod) < 3:
-                 continue
-             self.module_dict[mod[0]] = {"version": mod[1], "Disabled": (len(mod) > 2)}
-+            self.module_dict[mod[1]] = { "priority": mod[0], "Disabled" : (len(mod) > 3) }
- 
-         self.enable_unconfined_button.set_active(not self.module_dict["unconfined"]["Disabled"])
-         self.enable_permissive_button.set_active(not self.module_dict["permissivedomains"]["Disabled"])
 @@ -711,7 +708,7 @@ class SELinuxGui():
  
      def match_func(self, completion, key_string, iter, func_data):
@@ -2241,25 +2201,17 @@ index 7f1888c..7ee3954 100644
                  return True
              return False
          except AttributeError:
-@@ -835,7 +832,7 @@ class SELinuxGui():
+@@ -834,8 +831,7 @@ class SELinuxGui():
+             self.enforce_button = self.disabled_button_default
  
      def populate_system_policy(self):
-         selinux_path = selinux.selinux_path()
+-        selinux_path = selinux.selinux_path()
 -        types = map(lambda x: x[1], filter(lambda x: x[0] == selinux_path, os.walk(selinux_path)))[0]
-+        types = [x[1] for x in os.walk(selinux_path) if x[0] == selinux_path][0]
++        types = next(os.walk(selinux.selinux_path(), topdown=True))[1]
          types.sort()
          ctr = 0
          for item in types:
-@@ -867,7 +864,7 @@ class SELinuxGui():
-         return False
- 
-     def net_update(self, app, netd, protocol, direction, model):
--        for k in netd.keys():
-+        for k in list(netd.keys()):
-             for t, ports in netd[k]:
-                 pkey = (",".join(ports), protocol)
-                 if pkey in self.cur_dict["port"]:
-@@ -922,11 +919,11 @@ class SELinuxGui():
+@@ -922,11 +918,11 @@ class SELinuxGui():
          self.ready_mouse()
  
      def network_initialize(self, app):
@@ -2274,8 +2226,12 @@ index 7f1888c..7ee3954 100644
          self.net_update(app, netd, "udp", INBOUND_PAGE, self.network_in_liststore)
  
      def network_initial_data_insert(self, model, ports, portType, protocol):
-@@ -965,9 +962,9 @@ class SELinuxGui():
-     def combo_box_initialize(self, val, desc):
+@@ -962,12 +958,12 @@ class SELinuxGui():
+         iter = liststore.get_iter(index)
+         return liststore.get_value(iter, 0)
+ 
+-    def combo_box_initialize(self, val, desc):
++    def combo_box_add(self, val, val1):
          if val is None:
              return
 -        iter = self.combobox_menu_model.append()
@@ -2287,7 +2243,15 @@ index 7f1888c..7ee3954 100644
  
      def select_type_more(self, *args):
          app = self.moreTypes_treeview.get_selection()
-@@ -990,12 +987,11 @@ class SELinuxGui():
+@@ -983,19 +979,18 @@ class SELinuxGui():
+         model, iter = row.get_selected()
+         iter = model.convert_iter_to_child_iter(iter)
+         iter = self.advanced_search_filter.convert_iter_to_child_iter(iter)
+-        app = self.advanced_search_liststore.get_value(iter, 1)
++        app = self.application_liststore.get_value(iter, 1)
+         if app is None:
+             return
+         self.advanced_filter_entry.set_text('')
          self.advanced_search_window.hide()
          self.reveal_advanced(self.main_advanced_label)
          self.completion_entry.set_text(app)
@@ -2301,7 +2265,7 @@ index 7f1888c..7ee3954 100644
          self.advanced_filter_entry.set_text('')
          self.advanced_search_window.hide()
          self.reveal_advanced(self.main_advanced_label)
-@@ -1004,7 +1000,7 @@ class SELinuxGui():
+@@ -1004,7 +999,7 @@ class SELinuxGui():
  
      def find_application(self, app):
          if app and len(app) > 0:
@@ -2310,76 +2274,35 @@ index 7f1888c..7ee3954 100644
                  if app == items[0]:
                      return True
          return False
-@@ -1112,19 +1108,19 @@ class SELinuxGui():
-             if rec[0] == "module":
-                 self.cust_dict["module"][rec[-1]] = {"enabled": rec[2] != "-d"}
+@@ -1066,9 +1061,9 @@ class SELinuxGui():
+         self.transitions_into_tab.set_label(_("Application Transitions Into '%s'" % app))
+         self.transitions_from_tab.set_label(_("Application Transitions From '%s'" % app))
+         self.transitions_file_tab.set_label(_("File Transitions From '%s'" % app))
+-        self.transitions_into_tab.set_tooltip_text(_("Executables which will transition to the '%s', when executing a selected domains entrypoint.") % app)
+-        self.transitions_from_tab.set_tooltip_text(_("Executables which will transition to a different domain, when the '%s' executes them.") % app)
+-        self.transitions_file_tab.set_tooltip_text(_("Files by '%s' will transitions to a different label." % app))
++        self.transitions_into_tab.set_tooltip_text(_("Executables which will transition to '%s', when executing selected domains entrypoint.") % app)
++        self.transitions_from_tab.set_tooltip_text(_("Executables which will transition to a different domain, when '%s' executes them.") % app)
++        self.transitions_file_tab.set_tooltip_text(_("Files by '%s' with transitions to a different label." % app))
+         self.transitions_radio_button.set_tooltip_text(_("Display applications that can transition into or out of the '%s'." % app))
  
--        if "module" not in self.cust_dict:
-+        for i in keys:
-+            if i not in self.cust_dict:
-+                self.cust_dict.update({i: {}})
-+
-+        if not self.cust_dict["module"]:
-             return
-         for semodule, button in [("unconfined", self.disable_unconfined_button), ("permissivedomains", self.disable_permissive_button)]:
-             if semodule in self.cust_dict["module"]:
-                 button.set_active(self.cust_dict["module"][semodule]["enabled"])
+         self.application = app
+@@ -1290,11 +1285,11 @@ class SELinuxGui():
+             niter = self.transitions_from_treestore.append(iter)
+             # active[0][1] is either T or F (enabled is all the way at the top)
+             self.transitions_from_treestore.set_value(iter, 0, enabled[active[0][1]])
+-            markup = '<span foreground="blue"><u>%s</u></span>'
++            markup = ('<span foreground="blue"><u>','</u></span>')
+             if active[0][1]:
+-                self.transitions_from_treestore.set_value(niter, 2, (_("To disable this transition, go to the " + markup % _("Boolean section."))))
++                self.transitions_from_treestore.set_value(niter, 2, (_("To disable this transition, go to the %sBoolean section%s.") % markup))
+             else:
+-                self.transitions_from_treestore.set_value(niter, 2, (_("To enable this transition, go to the " + markup % _("Boolean section."))))
++                self.transitions_from_treestore.set_value(niter, 2, (_("To enable this transition, go to the %sBoolean section%s.") % markup))
  
--        for i in keys:
--            if i not in self.cust_dict:
--                self.cust_dict.update({i: {}})
--
-     def executable_files_initialize(self, application):
-         self.entrypoints = sepolicy.get_entrypoints(application)
--        for exe in self.entrypoints.keys():
-+        for exe in list(self.entrypoints.keys()):
-             if len(self.entrypoints[exe]) == 0:
-                 continue
-             file_class = self.entrypoints[exe][1]
-@@ -1161,7 +1157,7 @@ class SELinuxGui():
-     def writable_files_initialize(self, application):
-         # Traversing the dictionary data struct
-         self.writable_files = sepolicy.get_writable_files(application)
--        for write in self.writable_files.keys():
-+        for write in list(self.writable_files.keys()):
-             if len(self.writable_files[write]) < 2:
-                 self.files_initial_data_insert(self.writable_files_liststore, None, write, _("all files"))
-                 continue
-@@ -1204,7 +1200,7 @@ class SELinuxGui():
- 
-     def application_files_initialize(self, application):
-         self.file_types = sepolicy.get_file_types(application)
--        for app in self.file_types.keys():
-+        for app in list(self.file_types.keys()):
-             if len(self.file_types[app]) == 0:
-                 continue
-             file_class = self.file_types[app][1]
-@@ -1377,8 +1373,8 @@ class SELinuxGui():
-                 self.treeview = self.network_in_treeview
-                 category = _("listen for inbound connections")
- 
--            self.add_button.set_tooltip_text(_("Add new port definition to which the '%(APP)s' domain is allowed to %s.") % {"APP": self.application, "PERM": category})
--            self.delete_button.set_tooltip_text(_("Delete modified port definitions to which the '%(APP)s' domain is allowed to %s.") % {"APP": self.application, "PERM": category})
-+            self.add_button.set_tooltip_text(_("Add new port definition to which the '%(APP)s' domain is allowed to %(PERM)s.") % {"APP": self.application, "PERM": category})
-+            self.delete_button.set_tooltip_text(_("Delete modified port definitions to which the '%(APP)s' domain is allowed to %(PERM)s.") % {"APP": self.application, "PERM": category})
-             self.modify_button.set_tooltip_text(_("Modify port definitions to which the '%(APP)s' domain is allowed to %(PERM)s.") % {"APP": self.application, "PERM": category})
- 
-         if self.transitions_radio_button.get_active():
-@@ -1448,8 +1444,12 @@ class SELinuxGui():
-     def stripsort(self, model, row1, row2, user_data):
-         sort_column, _ = model.get_sort_column_id()
-         val1 = self.unmarkup(model.get_value(row1, sort_column))
-+        if val1 is None:
-+            val1 = ""
-         val2 = self.unmarkup(model.get_value(row2, sort_column))
--        return cmp(val1, val2)
-+        if val2 is None:
-+            val2 = ""
-+        return (val1 > val2) - (val1 < val2)
- 
-     def display_more_detail(self, windows, path):
-         it = self.boolean_filter.get_iter(path)
-@@ -1635,7 +1635,7 @@ class SELinuxGui():
+             # active[0][0] is the Bool Name
+             self.transitions_from_treestore.set_value(niter, 1, active[0][0])
+@@ -1635,7 +1630,7 @@ class SELinuxGui():
          self.files_type_combolist.clear()
          self.files_class_combolist.clear()
          compare = self.strip_domain(self.application)
@@ -2388,25 +2311,7 @@ index 7f1888c..7ee3954 100644
              if d[0].startswith(compare) and d[0] != self.application and not d[0].startswith("httpd_sys"):
                  exclude_list.append(self.strip_domain(d[0]))
  
-@@ -1646,7 +1646,7 @@ class SELinuxGui():
-                 self.files_class_combolist.set_value(iter, 0, sepolicy.file_type_str[files])
- 
-             if ipage == EXE_PAGE and self.entrypoints != None:
--                for exe in self.entrypoints.keys():
-+                for exe in list(self.entrypoints.keys()):
-                     if exe.startswith(compare):
-                         iter = self.files_type_combolist.append()
-                         self.files_type_combolist.set_value(iter, 0, exe)
-@@ -1656,7 +1656,7 @@ class SELinuxGui():
-                 self.files_class_combobox.set_sensitive(False)
- 
-             elif ipage == WRITABLE_PAGE and self.writable_files != None:
--                for write in self.writable_files.keys():
-+                for write in list(self.writable_files.keys()):
-                     if write.startswith(compare) and not self.exclude_type(write, exclude_list) and write in self.file_types:
-                         iter = self.files_type_combolist.append()
-                         self.files_type_combolist.set_value(iter, 0, write)
-@@ -1714,13 +1714,13 @@ class SELinuxGui():
+@@ -1714,10 +1709,10 @@ class SELinuxGui():
  
          try:
              if ipage == OUTBOUND_PAGE:
@@ -2419,34 +2324,8 @@ index 7f1888c..7ee3954 100644
 +                netd += sepolicy.network.get_network_connect(self.application, "udp", "name_bind", check_bools=True)
  
              port_types = []
--            for k in netd.keys():
-+            for k in list(netd.keys()):
-                 for t, ports in netd[k]:
-                     if t not in port_types + ["port_t", "unreserved_port_t"]:
-                         if t.endswith("_type"):
-@@ -2189,7 +2189,6 @@ class SELinuxGui():
-         self.update = True
-         self.update_treestore.clear()
-         for bools in self.cur_dict["boolean"]:
--            operation = self.cur_dict["boolean"][bools]["action"]
-             iter = self.update_treestore.append(None)
-             self.update_treestore.set_value(iter, 0, True)
-             self.update_treestore.set_value(iter, 1, sepolicy.boolean_desc(bools))
-@@ -2420,8 +2419,11 @@ class SELinuxGui():
-         cur = selinux.getfilecon(path)[1].split(":")[2]
-         con = selinux.matchpathcon(path, 0)[1].split(":")[2]
-         if self.verify(_("Run restorecon on %(PATH)s to change its type from %(CUR_CONTEXT)s to the default %(DEF_CONTEXT)s?") % {"PATH": path, "CUR_CONTEXT": cur, "DEF_CONTEXT": con}, title="restorecon dialog") == Gtk.ResponseType.YES:
--            self.dbus.restorecon(path)
--            self.application_selected()
-+            try:
-+                self.dbus.restorecon(path)
-+                self.application_selected()
-+            except dbus.exceptions.DBusException as e:
-+                self.error(e)
- 
-     def new_updates(self, *args):
-         self.update_button.set_sensitive(self.modified())
-@@ -2550,34 +2552,7 @@ class SELinuxGui():
+             for k in netd.keys():
+@@ -2550,34 +2545,7 @@ class SELinuxGui():
          self.network_mls_label.set_visible(advanced)
          self.network_mls_entry.set_visible(advanced)
  
@@ -2482,7 +2361,7 @@ index 7f1888c..7ee3954 100644
          if label.get_text() == ADVANCED_SEARCH_LABEL[1]:
              label.set_text(ADVANCED_SEARCH_LABEL[0])
              self.close_popup()
-@@ -2585,35 +2560,23 @@ class SELinuxGui():
+@@ -2585,33 +2553,18 @@ class SELinuxGui():
              label.set_text(ADVANCED_SEARCH_LABEL[1])
              self.show_popup(self.advanced_search_window)
  
@@ -2515,64 +2394,12 @@ index 7f1888c..7ee3954 100644
 +            self.current_status_permissive.set_active(True)
  
      def set_enforce(self, button):
--        self.dbus.setenforce(button.get_active())
--        self.set_enforce_text(button.get_active())
 +        if not self.finish_init:
 +            return
 +
-+        try:
-+            self.dbus.setenforce(button.get_active())
-+            self.set_enforce_text(button.get_active())
-+        except dbus.exceptions.DBusException as e:
-+            self.error(e)
+         self.dbus.setenforce(button.get_active())
+         self.set_enforce_text(button.get_active())
  
-     def on_browse_select(self, *args):
-         filename = self.file_dialog.get_filename()
-@@ -2673,16 +2636,22 @@ class SELinuxGui():
-             self.system_policy_type_combobox.set_active(self.typeHistory)
-             return None
- 
--        self.dbus.change_default_policy(self.combo_get_active_text(self.system_policy_type_combobox))
--        self.dbus.relabel_on_boot(True)
--        self.typeHistory = self.system_policy_type_combobox.get_active()
-+        try:
-+            self.dbus.change_default_policy(self.combo_get_active_text(self.system_policy_type_combobox))
-+            self.dbus.relabel_on_boot(True)
-+            self.typeHistory = self.system_policy_type_combobox.get_active()
-+        except dbus.exceptions.DBusException as e:
-+            self.error(e)
- 
-     def change_default_mode(self, button):
-         if not self.finish_init:
-             return
-         self.enabled_changed(button)
-         if button.get_active():
--            self.dbus.change_default_mode(button.get_label().lower())
-+            try:
-+                self.dbus.change_default_mode(button.get_label().lower())
-+            except dbus.exceptions.DBusException as e:
-+                self.error(e)
- 
-     def import_config_show(self, *args):
-         self.file_dialog.set_action(Gtk.FileChooserAction.OPEN)
-@@ -2825,10 +2794,13 @@ class SELinuxGui():
-         if not self.finish_init:
-             return
-         self.wait_mouse()
--        if self.enable_permissive_button.get_active():
--            self.dbus.semanage("module -e permissivedomains")
--        else:
--            self.dbus.semanage("module -d permissivedomains")
-+        try:
-+            if self.enable_permissive_button.get_active():
-+                self.dbus.semanage("module -e permissivedomains")
-+            else:
-+                self.dbus.semanage("module -d permissivedomains")
-+        except dbus.exceptions.DBusException as e:
-+            self.error(e)
-         self.ready_mouse()
- 
-     def confirmation_close(self, button, *args):
 diff --git policycoreutils-2.6/sepolicy/sepolicy/interface.py policycoreutils-2.6/sepolicy/sepolicy/interface.py
 index c2cb971..1ab34af 100644
 --- policycoreutils-2.6/sepolicy/sepolicy/interface.py
@@ -3054,17 +2881,20 @@ index 7365f93..210e258 100755
  SELinux policy allows the %s role%s can transition to the %s_r role.
  
 diff --git policycoreutils-2.6/sepolicy/sepolicy/network.py policycoreutils-2.6/sepolicy/sepolicy/network.py
-index c4d95da..a297c3e 100755
+index c4d95da..115f6b8 100755
 --- policycoreutils-2.6/sepolicy/sepolicy/network.py
 +++ policycoreutils-2.6/sepolicy/sepolicy/network.py
-@@ -27,16 +27,18 @@ def get_types(src, tclass, perm):
+@@ -23,20 +23,20 @@
+ import sepolicy
+ 
+ 
+-def get_types(src, tclass, perm):
++def get_types(src, tclass, perm, check_bools=False):
      allows = sepolicy.search([sepolicy.ALLOW], {sepolicy.SOURCE: src, sepolicy.CLASS: tclass, sepolicy.PERMS: perm})
      nlist = []
      if allows:
 -        for i in map(lambda y: y[sepolicy.TARGET], filter(lambda x: set(perm).issubset(x[sepolicy.PERMS]), allows)):
-+        for i in [y[sepolicy.TARGET] for y in
-+                  [x for x in allows
-+                   if set(perm).issubset(x[sepolicy.PERMS]) and (not check_bools or x["enabled"])]]:
++        for i in map(lambda y: y[sepolicy.TARGET], filter(lambda x: set(perm).issubset(x[sepolicy.PERMS]) and (not check_bools or x["enabled"]), allows)):
              if i not in nlist:
                  nlist.append(i)
      return nlist

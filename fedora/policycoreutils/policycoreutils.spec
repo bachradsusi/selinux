@@ -9,7 +9,7 @@
 Summary: SELinux policy core utilities
 Name:	 policycoreutils
 Version: 2.6
-Release: 0.4%{?dist}
+Release: 0.6%{?dist}
 License: GPLv2
 Group:	 System Environment/Base
 # https://github.com/SELinuxProject/selinux/wiki/Releases
