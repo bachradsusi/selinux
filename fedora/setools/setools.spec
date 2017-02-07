@@ -9,18 +9,15 @@
 %bcond_with python3
 %endif
 
-# % define setools_pre_ver beta.1.8e09d95
+# % global setools_pre_ver beta.1.8e09d95
+# % global gitver f1e5b20
 
-
-%global setools_maj_ver 4.1
-%global setools_min_ver 0
-# %global gitver f1e5b20
 %global sepol_ver 2.6-0
 %global selinux_ver 2.6-0
 
 Name:           setools
-Version:        %{setools_maj_ver}.%{setools_min_ver}
-Release:        0.3%{?setools_pre_ver:.%{setools_pre_ver}}%{?dist}
+Version:        4.1.0
+Release:        0.4%{?setools_pre_ver:.%{setools_pre_ver}}%{?dist}
 Summary:        Policy analysis tools for SELinux
 
 License:        GPLv2
@@ -28,15 +25,14 @@ URL:            https://github.com/TresysTechnology/setools/wiki
 Source0:        https://github.com/TresysTechnology/setools/archive/%{version}%{?setools_pre_ver:-%{setools_pre_ver}}.tar.gz
 Source1:        setools.pam
 Source2:        apol.desktop
-Patch1:         0001-Fix-build.patch
 
-Obsoletes:     setools < 4.0.0, setools-devel < 4.0.0
-BuildRequires: flex,  bison
-BuildRequires: glibc-devel gcc
-BuildRequires: libsepol-devel, libsepol-static
-BuildRequires: qt5-qtbase-devel
-BuildRequires: swig
-BuildRequires: python-devel
+Obsoletes:      setools < 4.0.0, setools-devel < 4.0.0
+BuildRequires:  flex,  bison
+BuildRequires:  glibc-devel gcc
+BuildRequires:  libsepol-devel, libsepol-static
+BuildRequires:  qt5-qtbase-devel
+BuildRequires:  swig
+BuildRequires:  python-devel
 
 # BuildArch:      
 BuildRequires:  python-devel
@@ -103,25 +99,24 @@ Python modules designed to facilitate SELinux policy analysis.
 
 
 %prep
-%setup -c
-# % patch1 -p 0
-sed -i "s%'-Werror', '-Wextra'%'-Wextra'%" setools-4.1.0/setup.py
+%setup
+sed -i "s%'-Werror', '-Wextra'%'-Wextra'%" setup.py
 
-mv setools-%{version}%{?setools_pre_ver:-%{setools_pre_ver}} python2
+# mv setools-%{version}%{?setools_pre_ver:-%{setools_pre_ver}} python2
 
 %if %{with python3}
-cp -a python2 python3
-%endif # with python3
+cp -a ../setools-%{version}%{?setools_pre_ver:-%{setools_pre_ver}} ../setools-%{version}%{?setools_pre_ver:-%{setools_pre_ver}}-python3
+%endif # with python4
 
 
 %build
-pushd python2
+# pushd setools-%{version}%{?setools_pre_ver:-%{setools_pre_ver}}
 # Remove CFLAGS=... for noarch packages (unneeded)
 CFLAGS="%{optflags}" %{__python2} setup.py build
-popd
+# popd
 
 %if %{with python3}
-pushd python3
+pushd ../setools-%{version}%{?setools_pre_ver:-%{setools_pre_ver}}-python3
 # Remove CFLAGS=... for noarch packages (unneeded)
 CFLAGS="%{optflags}" %{__python3} setup.py build
 popd
@@ -130,37 +125,40 @@ popd
 
 %install
 rm -rf %{buildroot}
+# REMOVEME this comment
 # Must do the python3 install first because the scripts in /usr/bin are
 # overwritten with every setup.py install (and we want the python2 version
 # to be the default for now).
+
+# pushd setools-%{version}%{?setools_pre_ver:-%{setools_pre_ver}}
+%{__python2} setup.py install --root %{buildroot}
+# popd
+
 %if %{with python3}
-pushd python3
+pushd ../setools-%{version}%{?setools_pre_ver:-%{setools_pre_ver}}-python3
 %{__python3} setup.py install --root %{buildroot}
 popd
 %endif # with python3
 
-pushd python2
-%{__python2} setup.py install --root %{buildroot}
-popd
-
 
 %check
 %if %{?_with_check:1}%{!?_with_check:0}
-pushd python2
+# pushd setools-%{version}%{?setools_pre_ver:-%{setools_pre_ver}}
 %{__python2} setup.py test
-popd
+# popd
 
 %if %{with python3}
-pushd python3
+pushd ../setools-%{version}%{?setools_pre_ver:-%{setools_pre_ver}}-python3
 %{__python2} setup.py test
 popd
 %endif
 %endif
+
 
 %files
 %defattr(-,root,root,-)
 
-%files -n setools-console
+%files console
 %{_bindir}/sediff
 %{_bindir}/sedta
 %{_bindir}/seinfo
@@ -168,16 +166,18 @@ popd
 %{_bindir}/sesearch
 %{_mandir}/man1/*
 
-%files -n setools-python
-%doc
+%files python
+# %doc AUTHORS ChangeLog KNOWN-BUGS NEWS README
+%license COPYING COPYING.GPL COPYING.LGPL
 # For noarch packages: sitelib
 # %{python2_sitelib}/*
 # For arch-specific packages: sitearch
 %{python2_sitearch}/*
 
 %if %{with python3}
-%files -n setools-python3
-%doc
+%files python3
+%license COPYING COPYING.GPL COPYING.LGPL
+# %doc AUTHORS ChangeLog KNOWN-BUGS NEWS README
 # For noarch packages: sitelib
 # %{python3_sitelib}/*
 # For arch-specific packages: sitearch
@@ -187,12 +187,6 @@ popd
 %files gui
 %{_bindir}/apol
 
-
 %changelog
-* Wed May  4 2016 Petr Lautrbach <plautrba@redhat.com> 4.0.0-0.1
-
-* Thu Feb 25 2016 Petr Lautrbach <plautrba@redhat.com> 4.0.0-0.beta.1
-- 
-
-* Wed Jul 01 2015 Petr Lautrbach <plautrba@redhat.com> 4.0.0-0.alpha2.1.9b28cbe3c7.2
-- initial release
+* Tue Feb 07 2017 Petr Lautrbach <plautrba@redhat.com> - 4.1.0-1
+- New upstream release.
