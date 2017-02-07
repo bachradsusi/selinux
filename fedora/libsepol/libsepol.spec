@@ -1,7 +1,7 @@
 Summary: SELinux binary policy manipulation library 
 Name: libsepol
 Version: 2.6
-Release: 0.2%{?dist}
+Release: 0.3%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
 Source: https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20161014/libsepol-2.6.tar.gz
@@ -106,6 +106,9 @@ exit 0
 %{_libdir}/libsepol.so.1
 
 %changelog
+* Tue Feb 07 2017 Petr Lautrbach <plautrba@redhat.com> - 2.6-0.3
+- Update to upstream release 2016-10-14
+
 * Mon Oct 03 2016 Petr Lautrbach <plautrba@redhat.com> 2.5-10
 - Check for too many permissions in classes and commons in CIL
 - Fix xperm mapping between avrule and avtab
