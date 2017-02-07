@@ -7,10 +7,10 @@
 Summary: SELinux binary policy manipulation library 
 Name: libsemanage
 Version: 2.6
-Release: 0.2%{?dist}
+Release: 0.3%{?dist}
 License: LGPLv2+
 Group: System Environment/Libraries
-Source: https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20160223/libsemanage-2.6.tar.gz
+Source: https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20161014/libsemanage-2.6.tar.gz
 # download https://raw.githubusercontent.com/fedora-selinux/scripts/master/selinux/make-fedora-selinux-patch.sh
 # run:
 # $ VERSION=2.6 ./make-fedora-selinux-patch.sh libsemanage
@@ -196,6 +196,9 @@ rm -rf ${RPM_BUILD_ROOT}
 %endif # if with_python3
 
 %changelog
+* Tue Feb 07 2017 Petr Lautrbach <plautrba@redhat.com> - 2.6-0.3
+- Update to upstream release 2016-10-14
+
 * Fri Dec 09 2016 Charalampos Stratakis <cstratak@redhat.com> - 2.5-9
 - Rebuild for Python 3.6
 
