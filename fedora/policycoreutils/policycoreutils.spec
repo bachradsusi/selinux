@@ -9,7 +9,7 @@
 Summary: SELinux policy core utilities
 Name:	 policycoreutils
 Version: 2.6
-Release: 0.6%{?dist}
+Release: 0.7%{?dist}
 License: GPLv2
 Group:	 System Environment/Base
 # https://github.com/SELinuxProject/selinux/wiki/Releases
@@ -455,6 +455,9 @@ The policycoreutils-restorecond package contains the restorecond service.
 %systemd_postun_with_restart restorecond.service
 
 %changelog
+* Tue Feb 07 2017 Petr Lautrbach <plautrba@redhat.com> - 2.6-0.7
+- Update to upstream release 2016-10-14
+
 * Wed Dec 21 2016 Kevin Fenzi <kevin@scrye.com> - 2.5-20
 - Rebuild for python 3.6
 
