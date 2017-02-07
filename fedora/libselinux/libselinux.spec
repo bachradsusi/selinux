@@ -22,7 +22,12 @@ Url: https://github.com/SELinuxProject/selinux/wiki
 # $ VERSION=2.6 ./make-fedora-selinux-patch.sh libselinux
 # HEAD https://github.com/fedora-selinux/selinux/commit/3dcc89405fc1efdcd41b96c50b030174fcaf4514
 Patch1: libselinux-fedora.patch
-BuildRequires: pkgconfig python python-devel ruby-devel ruby libsepol-static >= %{libsepolver} swig pcre-devel xz-devel
+%if 0%{?fedora} > 25
+BuildRequires: pkgconf-pkg-config
+%else
+BuildRequires: pkgconfig
+%endif
+BuildRequires: python python-devel ruby-devel ruby libsepol-static >= %{libsepolver} swig pcre-devel xz-devel
 %if 0%{?with_python3}
 BuildRequires: python3 python3-devel
 %endif # if with_python3
