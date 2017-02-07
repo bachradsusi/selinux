@@ -3,7 +3,7 @@
 Summary: SELinux policy compiler
 Name: checkpolicy
 Version: 2.6
-Release: 0.1%{?dist}
+Release: 0.2%{?dist}
 License: GPLv2
 Group: Development/System
 Source: https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20161014/checkpolicy-2.6.tar.gz
@@ -61,6 +61,9 @@ rm -rf ${RPM_BUILD_ROOT}
 %{_bindir}/sedispol
 
 %changelog
+* Tue Feb 07 2017 Petr Lautrbach <plautrba@redhat.com> - 2.6-0.2
+- Update to upstream release 2016-10-14
+
 * Mon Oct 03 2016 Petr Lautrbach <plautrba@redhat.com> 2.5-8
 - Add types associated to a role in the current scope when parsing
 
