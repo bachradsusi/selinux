@@ -9,11 +9,11 @@
 Summary: SELinux library and simple utilities
 Name: libselinux
 Version: 2.6
-Release: 0.1%{?dist}
+Release: 0.2%{?dist}
 License: Public Domain
 Group: System Environment/Libraries
 # https://github.com/SELinuxProject/selinux/wiki/Releases
-Source: https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20160223/libselinux-2.6.tar.gz
+Source: https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20161014/libselinux-2.6.tar.gz
 Source1: selinuxconlist.8
 Source2: selinuxdefcon.8
 Url: https://github.com/SELinuxProject/selinux/wiki
@@ -256,6 +256,9 @@ rm -rf %{buildroot}
 %{ruby_vendorarchdir}/selinux.so
 
 %changelog
+* Tue Feb 07 2017 Petr Lautrbach <plautrba@redhat.com> - 2.6-0.2
+- Update to upstream release 2016-10-14
+
 * Wed Jan 11 2017 Petr Lautrbach <plautrba@redhat.com> - 2.5-15
 - Rewrite restorecon() python method
 
