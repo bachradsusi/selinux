@@ -40,7 +40,7 @@ Provides: /sbin/restorecon
 
 BuildRequires:	pam-devel libcgroup-devel libsepol-static >= %{libsepolver} libsemanage-static >= %{libsemanagever} libselinux-devel >= %{libselinuxver}  libcap-devel audit-libs-devel >=  %{libauditver} gettext
 BuildRequires: desktop-file-utils dbus-devel dbus-glib-devel
-BuildRequires: python python-devel python3 python3-devel setools-python3 >= 3.3.8-10
+BuildRequires: python python-devel python3 python3-devel
 BuildRequires: systemd
 Requires: util-linux grep gawk diffutils rpm sed
 Requires: libsepol >= %{libsepolver} coreutils libselinux-utils >=  %{libselinuxver}
