@@ -2,7 +2,7 @@
 
 Name:           secilc
 Version:        2.6
-Release:        0.1%{?dist}
+Release:        0.2%{?dist}
 Summary:        The SELinux CIL Compiler
 
 License:        BSD
@@ -61,6 +61,9 @@ make %{?_smp_mflags} DESTDIR="%{buildroot}" SBINDIR="%{buildroot}%{_sbindir}" LI
 %license COPYING
 
 %changelog
+* Wed Feb 08 2017 Petr Lautrbach <plautrba@redhat.com> - 2.6-0.2
+- Update to upstream release 2016-10-14
+
 * Tue Oct 04 2016 Petr Lautrbach <plautrba@redhat.com> 2.5-6
 - Rebuilt with libsepol-2.5-10
 
