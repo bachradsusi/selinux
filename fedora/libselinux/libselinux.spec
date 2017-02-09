@@ -201,6 +201,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
+%license LICENSE
 %{_libdir}/libselinux.so.*
 %ghost /var/run/setrans
 %{_sbindir}/sefcontext_compile
@@ -263,6 +264,12 @@ rm -rf %{buildroot}
 %changelog
 * Tue Feb 07 2017 Petr Lautrbach <plautrba@redhat.com> - 2.6-0.2
 - Update to upstream release 2016-10-14
+
+* Wed Feb 01 2017 Stephen Gallagher <sgallagh@redhat.com> - 2.5-17
+- Add missing %%license macro
+
+* Fri Jan 13 2017 Vít Ondruch <vondruch@redhat.com> - 2.5-16
+- Rebuilt for https://fedoraproject.org/wiki/Changes/Ruby_2.4
 
 * Wed Jan 11 2017 Petr Lautrbach <plautrba@redhat.com> - 2.5-15
 - Rewrite restorecon() python method
