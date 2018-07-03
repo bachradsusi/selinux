@@ -7,7 +7,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2018-06-29 02:11+0000\n"
+"PO-Revision-Date: 2018-06-29 02:25+0000\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian\n"
 "Language: uk\n"
@@ -42,44 +42,57 @@ msgid ""
 "] [-W windowmanager ] [ -w windowsize ] [[-i file ] ...] [ -t type ] -S\n"
 "%s\n"
 msgstr ""
+"\n"
+"sandbox [-h] [-l рівень ] [-[X|M] [-H домашній_каталог] [-T "
+"тимчасовий_каталог]] [-I файл_включення ] [-W засіб_керування_вікнами ] [ -w "
+"розмір_вікна ] [[-i файл ] ...] [ -t тип ] команда\n"
+"\n"
+"sandbox [-h] [-l рівень ] [-[X|M] [-H домашній_каталог] [-T "
+"тимчасовий_каталог]] [-I файл_включення ] [-W засіб_керування_вікнами ] [ -w "
+"розмір_вікна ] [[-i файл ] ...] [ -t тип ] -S\n"
+"%s\n"
 
 #: ../sandbox:412
 #, python-format
 msgid "%s is not an executable"
-msgstr ""
+msgstr "%s не є виконуваним файлом"
 
 #: ../sandbox:409
 msgid "Command required"
-msgstr ""
+msgstr "Потрібна команда"
 
 #: ../sandbox:399
 msgid "Commands are not allowed in a session sandbox"
-msgstr ""
+msgstr "У пісочниці сенсу команди заборонено"
 
 #: ../sandbox:119
 #, python-format
 msgid "Do you want to save changes to '%s' (Y/N): "
-msgstr ""
+msgstr "Хочете зберегти зміни до «%s» (Y/N): "
 
 #: ../sandbox:132
 #, python-format
 msgid "Do you want to save changes to '%s' (y/N): "
-msgstr ""
+msgstr "Хочете зберенти зміни до «%s» (y/N): "
 
 #: ../sandbox:184
 msgid ""
 "Failed to find any unused category sets.  Consider a larger MCS range for "
 "this user."
 msgstr ""
+"Не вдалося знайти жодного невикористаного набору категорій. Вам варто "
+"встановити ширший діапазон MCS для цього користувача."
 
 #: ../sandbox:215
 msgid "Homedir and tempdir required for level mounts"
 msgstr ""
+"Для монтування з рівнями потрібно вказати домашній каталог і каталог "
+"тимчасових даних"
 
 #: ../sandbox:535
 #, python-format
 msgid "Invalid value %s"
-msgstr ""
+msgstr "Некоректне значення %s"
 
 #: ../sandbox:369
 msgid "MCS/MLS level for the sandbox"
@@ -95,60 +108,64 @@ msgid ""
 "You need to install the selinux-policy-sandbox package in order to run this "
 "command"
 msgstr ""
+"Зараз правила пісочниці не встановлено.\n"
+"Вам слід встановити пакунок selinux-policy-sandbox, щоб запускати цю команду"
 
 #: ../sandbox:342
 msgid "Shred content before tempory directories are removed"
-msgstr ""
+msgstr "Перезаписувати дані до вилучення каталогів із тимчасовими даними"
 
 #: ../sandbox:156
 msgid "User account must be setup with an MCS Range"
-msgstr ""
+msgstr "Має бути налаштовано обліковий запис користувача з діапазоном MCS"
 
 #: ../sandbox:397
 msgid ""
 "You must specify a Homedir and tempdir when setting up a session sandbox"
 msgstr ""
+"Вам слід вказати домашній каталог і каталог тимчасових даних при "
+"налаштуванні пісочниці сеансу"
 
 #: ../sandbox:133
 msgid "[yY]"
-msgstr ""
+msgstr "[yYтТ]"
 
 #: ../sandbox:357
 msgid "alternate /tmp directory to use for mounting"
-msgstr ""
+msgstr "змінити каталог /tmp, який використовується для монтування"
 
 #: ../sandbox:352
 msgid "alternate home directory to use for mounting"
-msgstr ""
+msgstr "змінити домашній каталог, який використовується для монтування"
 
 #: ../sandbox:366
 msgid "alternate window manager"
-msgstr ""
+msgstr "змінити засіб керування вікнами"
 
 #: ../sandbox:336
 msgid "dots per inch for X display"
-msgstr ""
+msgstr "кількість точок на дюйм на графічному дисплеї"
 
 #: ../sandbox:324
 msgid "include file in sandbox"
-msgstr ""
+msgstr "файл включень до пісочниці"
 
 #: ../sandbox:332
 msgid "mount new home and/or tmp directory"
-msgstr ""
+msgstr "змонтувати новий домашній каталог і/або каталог tmp"
 
 #: ../sandbox:327
 msgid "read list of files to include in sandbox from INCLUDEFILE"
-msgstr ""
+msgstr "прочитати список файлів для включення до пісочниці з INCLUDEFILE"
 
 #: ../sandbox:346
 msgid "run X application within a sandbox"
-msgstr ""
+msgstr "запустити програму із графічним інтерфейсом у пісочниці"
 
 #: ../sandbox:339
 msgid "run complete desktop session within sandbox"
-msgstr ""
+msgstr "запустити увесь стільничний сеанс у пісочниці"
 
 #: ../sandbox:329
 msgid "run sandbox with SELinux type"
-msgstr ""
+msgstr "запустити пісочницю із вказаним типом SELinux"

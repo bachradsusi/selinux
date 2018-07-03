@@ -2,7 +2,6 @@
 # Piotr Drąg <piotrdrag@gmail.com>, 2016. #zanata
 # Parag <pnemade@redhat.com>, 2017. #zanata
 # Piotr Drąg <piotrdrag@gmail.com>, 2017. #zanata
-# Vit Mojzis <vmojzis@redhat.com>, 2017. #zanata
 # Piotr Drąg <piotrdrag@gmail.com>, 2018. #zanata
 msgid ""
 msgstr ""
@@ -12,7 +11,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2018-06-22 03:26+0000\n"
+"PO-Revision-Date: 2018-06-29 03:36+0000\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish\n"
 "Language: pl\n"
@@ -26,7 +25,7 @@ msgstr "Domena procesu"
 
 #: ../domainsPage.py:63
 msgid "Domain Name"
-msgstr ""
+msgstr "Nazwa domeny"
 
 #: ../domainsPage.py:68
 msgid "Mode"
@@ -159,27 +158,30 @@ msgstr "Typ\n"
 
 #: ../sepolicy.desktop:3
 msgid "SELinux Policy Management Tool"
-msgstr ""
+msgstr "Narzędzie zarządzania polityką SELinuksa"
 
 #: ../sepolicy.desktop:4 ../selinux-polgengui.desktop:32
 msgid "Generate SELinux policy modules"
-msgstr ""
+msgstr "Tworzenie modułów polityki SELinuksa"
 
 #: ../sepolicy.desktop:5
 msgid "sepolicy"
-msgstr ""
+msgstr "sepolicy"
 
 #: ../sepolicy.desktop:11
 msgid "policy;security;selinux;avc;permission;mac;"
 msgstr ""
+"polityka;zasady;policy;bezpieczeństwo;zabezpieczenia;security;selinux;avc;uprawnienia;permission;mac;"
 
 #: ../org.selinux.config.policy:11
 msgid "Run System Config SELinux"
-msgstr ""
+msgstr "Uruchomienie narzędzia konfiguracji SELinuksa"
 
 #: ../org.selinux.config.policy:12
 msgid "Authentication is required to run system-config-selinux"
 msgstr ""
+"Wymagane jest uwierzytelnienie, aby uruchomić narzędzie konfiguracji "
+"SELinuksa"
 
 #: ../polgen.ui:9
 msgid "Red Hat 2007"
@@ -192,7 +194,7 @@ msgstr "GPL"
 #. TRANSLATORS: Replace this string with your names, one name per line.
 #: ../polgen.ui:13 ../system-config-selinux.ui:15
 msgid "translator-credits"
-msgstr "Piotr Drąg <piotrdrag@gmail.com>, 2006-2017"
+msgstr "Piotr Drąg <piotrdrag@gmail.com>, 2006-2018"
 
 #: ../polgen.ui:34
 msgid "Add Booleans Dialog"
@@ -906,7 +908,7 @@ msgstr "Moduł %s został już wczytany w bieżącej polityce.\n"
 #: ../polgengui.py:733
 msgid ""
 "You must add a name made up of letters and numbers and containing no spaces."
-msgstr "Należy dodać nazwę składającą się z liter i liczb, bez spacji."
+msgstr "Należy dodać nazwę składającą się z liter i liczb, bez spacji."
 
 #: ../polgengui.py:747
 msgid "You must enter a executable"
@@ -925,11 +927,11 @@ msgstr "Login „%s” jest wymagany"
 
 #: ../system-config-selinux.desktop:3
 msgid "SELinux Management"
-msgstr ""
+msgstr "Zarządzanie SELinuksem"
 
 #: ../system-config-selinux.desktop:32
 msgid "Configure SELinux in a graphical setting"
-msgstr ""
+msgstr "Konfiguracja SELinuksa w środowisku graficznym"
 
 #: ../system-config-selinux.desktop:62 ../selinux-polgengui.desktop:62
 msgid "system-config-selinux"
@@ -945,7 +947,7 @@ msgstr "Priorytet"
 
 #: ../modulesPage.py:79
 msgid "Kind"
-msgstr ""
+msgstr "Rodzaj"
 
 #: ../modulesPage.py:147
 msgid "Disable Audit"
