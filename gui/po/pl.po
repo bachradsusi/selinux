@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:10+0200\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2018-06-29 03:36+0000\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish\n"
 "Language: pl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Zanata 4.4.5\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2)\n"
@@ -43,15 +43,19 @@ msgid "SELinux User"
 msgstr "Użytkownik SELinuksa"
 
 #: ../usersPage.py:60 ../loginsPage.py:63
-msgid "SELinux\n"
+msgid ""
+"SELinux\n"
 "User"
-msgstr "Użytkownik\n"
+msgstr ""
+"Użytkownik\n"
 "SELinuksa"
 
 #: ../usersPage.py:65 ../loginsPage.py:66
-msgid "MLS/\n"
+msgid ""
+"MLS/\n"
 "MCS Range"
-msgstr "Zakres MLS/\n"
+msgstr ""
+"Zakres MLS/\n"
 "MCS"
 
 #: ../usersPage.py:69 ../system-config-selinux.ui:1970
@@ -68,9 +72,11 @@ msgid "Network Port"
 msgstr "Port sieciowy"
 
 #: ../portsPage.py:95
-msgid "SELinux Port\n"
+msgid ""
+"SELinux Port\n"
 "Type"
-msgstr "Typ portu\n"
+msgstr ""
+"Typ portu\n"
 "SELinuksa"
 
 #: ../portsPage.py:101 ../system-config-selinux.ui:294
@@ -78,9 +84,11 @@ msgid "Protocol"
 msgstr "Protokół"
 
 #: ../portsPage.py:106 ../system-config-selinux.ui:355
-msgid "MLS/MCS\n"
+msgid ""
+"MLS/MCS\n"
 "Level"
-msgstr "Poziom\n"
+msgstr ""
+"Poziom\n"
 "MLS/MCS"
 
 #: ../portsPage.py:111
@@ -139,21 +147,27 @@ msgid "File Labeling"
 msgstr "Etykiety plików"
 
 #: ../fcontextPage.py:82
-msgid "File\n"
+msgid ""
+"File\n"
 "Specification"
-msgstr "Określenie\n"
+msgstr ""
+"Określenie\n"
 "pliku"
 
 #: ../fcontextPage.py:89
-msgid "Selinux\n"
+msgid ""
+"Selinux\n"
 "File Type"
-msgstr "Typ pliku\n"
+msgstr ""
+"Typ pliku\n"
 "SELinuksa"
 
 #: ../fcontextPage.py:96
-msgid "File\n"
+msgid ""
+"File\n"
 "Type"
-msgstr "Typ\n"
+msgstr ""
+"Typ\n"
 "pliku"
 
 #: ../sepolicy.desktop:3
@@ -171,7 +185,8 @@ msgstr "sepolicy"
 #: ../sepolicy.desktop:11
 msgid "policy;security;selinux;avc;permission;mac;"
 msgstr ""
-"polityka;zasady;policy;bezpieczeństwo;zabezpieczenia;security;selinux;avc;uprawnienia;permission;mac;"
+"polityka;zasady;policy;bezpieczeństwo;zabezpieczenia;security;selinux;avc;"
+"uprawnienia;permission;mac;"
 
 #: ../org.selinux.config.policy:11
 msgid "Run System Config SELinux"
@@ -407,9 +422,11 @@ msgid "Select applications domains that %s will transition to."
 msgstr "Wybór domen aplikacji, do których przemienić %s."
 
 #: ../polgen.ui:972
-msgid "transition \n"
+msgid ""
+"transition \n"
 "role tab"
-msgstr "przejście \n"
+msgstr ""
+"przejście \n"
 "karta roli"
 
 #: ../polgen.ui:989
@@ -417,8 +434,7 @@ msgid "<b>Select the user_roles that will transition to %s:</b>"
 msgstr "<b>Wybór ról użytkownika, do których przemienić %s:</b>"
 
 #: ../polgen.ui:1007
-msgid ""
-"Select the user roles that will transiton to this applications domains."
+msgid "Select the user roles that will transiton to this applications domains."
 msgstr "Wybór ról użytkownika, które przemienić do tych domen aplikacji."
 
 #: ../polgen.ui:1040
@@ -484,9 +500,11 @@ msgid "<b>UDP Ports</b>"
 msgstr "<b>Porty UDP</b>"
 
 #: ../polgen.ui:1492
-msgid "Network\n"
+msgid ""
+"Network\n"
 "Bind tab"
-msgstr "Sieć\n"
+msgstr ""
+"Sieć\n"
 "Karta dowiązywania"
 
 #: ../polgen.ui:1509
@@ -889,9 +907,11 @@ msgstr "Wybór katalogu, w którym utworzyć pliki polityki"
 
 #: ../polgengui.py:683
 #, python-format
-msgid "Type %s_t already defined in current policy.\n"
+msgid ""
+"Type %s_t already defined in current policy.\n"
 "Do you want to continue?"
-msgstr "Typ %s_t został już określony w bieżącej polityce.\n"
+msgstr ""
+"Typ %s_t został już określony w bieżącej polityce.\n"
 "Kontynuować?"
 
 #: ../polgengui.py:683 ../polgengui.py:687
@@ -900,9 +920,11 @@ msgstr "Sprawdź nazwę"
 
 #: ../polgengui.py:687
 #, python-format
-msgid "Module %s already loaded in current policy.\n"
+msgid ""
+"Module %s already loaded in current policy.\n"
 "Do you want to continue?"
-msgstr "Moduł %s został już wczytany w bieżącej polityce.\n"
+msgstr ""
+"Moduł %s został już wczytany w bieżącej polityce.\n"
 "Kontynuować?"
 
 #: ../polgengui.py:733
@@ -915,9 +937,11 @@ msgid "You must enter a executable"
 msgstr "Należy podać plik wykonywalny"
 
 #: ../loginsPage.py:59
-msgid "Login\n"
+msgid ""
+"Login\n"
 "Name"
-msgstr "Login\n"
+msgstr ""
+"Login\n"
 " "
 
 #: ../loginsPage.py:135

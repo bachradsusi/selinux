@@ -5,13 +5,13 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:10+0200\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2017-03-24 09:56+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Hindi\n"
 "Language: hi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Zanata 4.4.5\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
@@ -39,15 +39,19 @@ msgid "SELinux User"
 msgstr "SELinux उपयोक्ता"
 
 #: ../usersPage.py:60 ../loginsPage.py:63
-msgid "SELinux\n"
+msgid ""
+"SELinux\n"
 "User"
-msgstr "SELinux\n"
+msgstr ""
+"SELinux\n"
 "उपयोक्ता"
 
 #: ../usersPage.py:65 ../loginsPage.py:66
-msgid "MLS/\n"
+msgid ""
+"MLS/\n"
 "MCS Range"
-msgstr "MLS/\n"
+msgstr ""
+"MLS/\n"
 "MCS परिसर"
 
 #: ../usersPage.py:69 ../system-config-selinux.ui:1970
@@ -64,9 +68,11 @@ msgid "Network Port"
 msgstr "संजाल पोर्ट"
 
 #: ../portsPage.py:95
-msgid "SELinux Port\n"
+msgid ""
+"SELinux Port\n"
 "Type"
-msgstr "SELinux पोर्ट\n"
+msgstr ""
+"SELinux पोर्ट\n"
 "प्रकार"
 
 #: ../portsPage.py:101 ../system-config-selinux.ui:294
@@ -74,9 +80,11 @@ msgid "Protocol"
 msgstr "प्रोटोकॉल"
 
 #: ../portsPage.py:106 ../system-config-selinux.ui:355
-msgid "MLS/MCS\n"
+msgid ""
+"MLS/MCS\n"
 "Level"
-msgstr "MLS/MCS\n"
+msgstr ""
+"MLS/MCS\n"
 "स्तर"
 
 #: ../portsPage.py:111
@@ -135,21 +143,27 @@ msgid "File Labeling"
 msgstr "फाइल लेबलिंग"
 
 #: ../fcontextPage.py:82
-msgid "File\n"
+msgid ""
+"File\n"
 "Specification"
-msgstr "फाइल\n"
+msgstr ""
+"फाइल\n"
 "विनिर्दिष्टता"
 
 #: ../fcontextPage.py:89
-msgid "Selinux\n"
+msgid ""
+"Selinux\n"
 "File Type"
-msgstr "Selinux\n"
+msgstr ""
+"Selinux\n"
 "फाइल प्रकार"
 
 #: ../fcontextPage.py:96
-msgid "File\n"
+msgid ""
+"File\n"
 "Type"
-msgstr "फाइल\n"
+msgstr ""
+"फाइल\n"
 "प्रकार"
 
 #: ../sepolicy.desktop:3
@@ -210,8 +224,7 @@ msgid ""
 "<b>Select the policy type for the application or user role you want to "
 "confine:</b>"
 msgstr ""
-"<b>अनुप्रयोग या उपयोक्ता भूमिका के लिए नीति प्रकार चुनें जिसे आप सीमित करना "
-"चाहते हैं:</b>"
+"<b>अनुप्रयोग या उपयोक्ता भूमिका के लिए नीति प्रकार चुनें जिसे आप सीमित करना चाहते हैं:</b>"
 
 #: ../polgen.ui:288
 msgid "<b>Applications</b>"
@@ -226,8 +239,8 @@ msgid ""
 "Standard Init Daemon are daemons started on boot via init scripts.  Usually "
 "requires a script in /etc/rc.d/init.d"
 msgstr ""
-"मानक Init डेमॉन वे डेमॉन हैं जो बूट पर init स्क्रिप्ट से होकर आरंभ किया गया. "
-" प्रायः /etc/rc.d/init.d में एक स्क्रिप्ट की जरूरी है"
+"मानक Init डेमॉन वे डेमॉन हैं जो बूट पर init स्क्रिप्ट से होकर आरंभ किया गया.  प्रायः /"
+"etc/rc.d/init.d में एक स्क्रिप्ट की जरूरी है"
 
 #: ../polgen.ui:336
 msgid "DBUS System Daemon"
@@ -249,8 +262,8 @@ msgstr "वेब अनुप्रयोग/स्क्रिप्ट (CGI)"
 msgid ""
 "Web Applications/Script (CGI) CGI scripts started by the web server (apache)"
 msgstr ""
-"वेब अनुप्रयोग/स्क्रिप्ट (CGI) CGI स्क्रिप्ट को वेब सर्वर के द्वारा आरंभ किया "
-"जाता है (apache)"
+"वेब अनुप्रयोग/स्क्रिप्ट (CGI) CGI स्क्रिप्ट को वेब सर्वर के द्वारा आरंभ किया जाता है "
+"(apache)"
 
 #: ../polgen.ui:387
 msgid "User Application"
@@ -261,8 +274,8 @@ msgid ""
 "User Application are any application that you would like to confine that is "
 "started by a user"
 msgstr ""
-"उपयोक्ता अनुप्रयोग कोई अनुप्रयोग है जो सीमित करना चाहेगा जो कि उपयोक्ता के "
-"द्वारा आरंभ हुआ है"
+"उपयोक्ता अनुप्रयोग कोई अनुप्रयोग है जो सीमित करना चाहेगा जो कि उपयोक्ता के द्वारा आरंभ "
+"हुआ है"
 
 #: ../polgen.ui:404
 msgid "Sandbox"
@@ -289,9 +302,8 @@ msgid ""
 "This user will login to a machine only via a terminal or remote login.  By "
 "default this user will have  no setuid, no networking, no su, no sudo."
 msgstr ""
-"यह उपयोक्ता मशीन में लॉगिन मात्र टर्मिनल या दूरस्थ लॉगिन से होगा.  मूलभूत "
-"रूप से यह उपयोक्ता के पास कोई setuid नहीं होगा, कोई संजालन नहीं, कोई su "
-"नहीं, कोई sudo नहीं."
+"यह उपयोक्ता मशीन में लॉगिन मात्र टर्मिनल या दूरस्थ लॉगिन से होगा.  मूलभूत रूप से यह "
+"उपयोक्ता के पास कोई setuid नहीं होगा, कोई संजालन नहीं, कोई su नहीं, कोई sudo नहीं."
 
 #: ../polgen.ui:516
 msgid "Minimal X Windows User Role"
@@ -302,9 +314,8 @@ msgid ""
 "This user can login to a machine via X or terminal.  By default this user "
 "will have no setuid, no networking, no sudo, no su"
 msgstr ""
-"यह उपयोक्ता मशीन में लॉगिन X या टर्मिनल से कर सकता है.  मूलभूत रूप से यह "
-"उपयोक्ता के पास कोई setuid नहीं होगा, कोई संजालन नहीं, कोई sudo नहीं, कोई su "
-"नहीं."
+"यह उपयोक्ता मशीन में लॉगिन X या टर्मिनल से कर सकता है.  मूलभूत रूप से यह उपयोक्ता के पास "
+"कोई setuid नहीं होगा, कोई संजालन नहीं, कोई sudo नहीं, कोई su नहीं."
 
 #: ../polgen.ui:533
 msgid "User Role"
@@ -315,8 +326,8 @@ msgid ""
 "User with full networking, no setuid applications without transition, no "
 "sudo, no su."
 msgstr ""
-"पूर्ण संजालन के साथ उपयोक्ता, कोई setuid अनुप्रयोग बिना संक्रमण के नहीं, कोई "
-"sudo नहीं, कोई su नहीं."
+"पूर्ण संजालन के साथ उपयोक्ता, कोई setuid अनुप्रयोग बिना संक्रमण के नहीं, कोई sudo नहीं, "
+"कोई su नहीं."
 
 #: ../polgen.ui:550
 msgid "Admin User Role"
@@ -327,8 +338,8 @@ msgid ""
 "User with full networking, no setuid applications without transition, no su, "
 "can sudo to Root Administration Roles"
 msgstr ""
-"पूर्ण संजालन के साथ उपयोक्ता, कोई setuid अनुप्रयोग बिना संक्रमण के नहीं, कोई "
-"su नहीं, रूट प्रशासन भूमिका को sudo कर सकता है."
+"पूर्ण संजालन के साथ उपयोक्ता, कोई setuid अनुप्रयोग बिना संक्रमण के नहीं, कोई su नहीं, रूट "
+"प्रशासन भूमिका को sudo कर सकता है."
 
 #: ../polgen.ui:596
 msgid "<b>Root Users</b>"
@@ -344,9 +355,9 @@ msgid ""
 "the machine while running as root.  This user will not be able to login to "
 "the system directly."
 msgstr ""
-"रूट प्रशासन उपयोक्ता  भूमिका चुनें, यदि यह उपयोक्ता मशीन को प्रशासित करने के "
-"लिए प्रयोग किया जाता है रूट के रूप में कार्य करते हुए.  यह उपयोक्ता सिस्टम "
-"में सीधे लॉगिन होने के लिए समर्थ नहीं होगा."
+"रूट प्रशासन उपयोक्ता  भूमिका चुनें, यदि यह उपयोक्ता मशीन को प्रशासित करने के लिए प्रयोग "
+"किया जाता है रूट के रूप में कार्य करते हुए.  यह उपयोक्ता सिस्टम में सीधे लॉगिन होने के लिए "
+"समर्थ नहीं होगा."
 
 #: ../polgen.ui:705
 msgid "<b>Enter name of application or user role:</b>"
@@ -402,9 +413,11 @@ msgid "Select applications domains that %s will transition to."
 msgstr "अनुप्रयोग डोमेन चुनें जिसमें %s संक्रमण करेगा."
 
 #: ../polgen.ui:972
-msgid "transition \n"
+msgid ""
+"transition \n"
 "role tab"
-msgstr "संक्रमण \n"
+msgstr ""
+"संक्रमण \n"
 "भूमिका टैब"
 
 #: ../polgen.ui:989
@@ -412,8 +425,7 @@ msgid "<b>Select the user_roles that will transition to %s:</b>"
 msgstr "<b>उन उपयोक्ता_भूमिका को चुनें जो %s में संक्रमित किया जाएगा:</b>"
 
 #: ../polgen.ui:1007
-msgid ""
-"Select the user roles that will transiton to this applications domains."
+msgid "Select the user roles that will transiton to this applications domains."
 msgstr "उपयोक्ता भूमिका चुनें जो कि इस अनुप्रयोग डोमेन में संक्रमित करेगा."
 
 #: ../polgen.ui:1040
@@ -451,8 +463,7 @@ msgstr "600-1024"
 #: ../polgen.ui:1220 ../polgen.ui:1387
 msgid "Allow %s to call bindresvport with 0. Binding to port 600-1024"
 msgstr ""
-"%s भूमिका को bindresvport को 0 के साथ स्वीकृति दें. पोर्ट 600-1024 में बांध "
-"रहा है"
+"%s भूमिका को bindresvport को 0 के साथ स्वीकृति दें. पोर्ट 600-1024 में बांध रहा है"
 
 #: ../polgen.ui:1233 ../polgen.ui:1400
 msgid "Unreserved Ports (>1024)"
@@ -463,8 +474,8 @@ msgid ""
 "Enter a comma separated list of udp ports or ranges of ports that %s binds "
 "to. Example: 612, 650-660"
 msgstr ""
-"udp पोर्ट या पोर्ट के परिसर का कौमा से अलग किया सूची दाखिल करें जिसमें %s "
-"बंधा है. उदाहरण: 612, 650-660"
+"udp पोर्ट या पोर्ट के परिसर का कौमा से अलग किया सूची दाखिल करें जिसमें %s बंधा है. "
+"उदाहरण: 612, 650-660"
 
 #: ../polgen.ui:1265 ../polgen.ui:1432 ../polgen.ui:1581 ../polgen.ui:1690
 msgid "Select Ports"
@@ -479,9 +490,11 @@ msgid "<b>UDP Ports</b>"
 msgstr "<b>UDP पोर्ट</b>"
 
 #: ../polgen.ui:1492
-msgid "Network\n"
+msgid ""
+"Network\n"
 "Bind tab"
-msgstr "संजाल\n"
+msgstr ""
+"संजाल\n"
 "बाइंड टैब"
 
 #: ../polgen.ui:1509
@@ -497,8 +510,8 @@ msgid ""
 "Enter a comma separated list of tcp ports or ranges of ports that %s "
 "connects to. Example: 612, 650-660"
 msgstr ""
-"tcp पोर्ट या पोर्ट के परिसर का कौमा से अलग किया सूची दाखिल करें जिसमें %s "
-"जुड़ता है. उदाहरण: 612, 650-660"
+"tcp पोर्ट या पोर्ट के परिसर का कौमा से अलग किया सूची दाखिल करें जिसमें %s जुड़ता है. "
+"उदाहरण: 612, 650-660"
 
 #: ../polgen.ui:1674
 msgid "Allows %s to connect to any udp port"
@@ -509,8 +522,8 @@ msgid ""
 "Enter a comma separated list of udp ports or ranges of ports that %s "
 "connects to. Example: 612, 650-660"
 msgstr ""
-"udp पोर्ट या पोर्ट के परिसर का कौमा से अलग किया सूची दाखिल करें जिसमें %s "
-"जुड़ता है. उदाहरण: 612, 650-660"
+"udp पोर्ट या पोर्ट के परिसर का कौमा से अलग किया सूची दाखिल करें जिसमें %s जुड़ता है. "
+"उदाहरण: 612, 650-660"
 
 #: ../polgen.ui:1760
 msgid "<b>Select common application traits for %s:</b>"
@@ -557,8 +570,7 @@ msgid ""
 "Files/Directories which the %s \"manages\". Pid Files, Log Files, /var/lib "
 "Files ..."
 msgstr ""
-"फ़ाइल/निर्देशिका जिसे %s \"प्रबंधित\" करता है. Pid फ़ाइल, लॉग फ़ाइल /var/lib "
-"फ़ाइल ..."
+"फ़ाइल/निर्देशिका जिसे %s \"प्रबंधित\" करता है. Pid फ़ाइल, लॉग फ़ाइल /var/lib फ़ाइल ..."
 
 #: ../polgen.ui:2126
 msgid "<b>Add booleans from the %s policy:</b>"
@@ -712,10 +724,9 @@ msgid ""
 "If you are changing policy types or going from disabled to enforcing, a "
 "relabel is required."
 msgstr ""
-"चुनें यदि आप पूरे फाइल सिस्टम को अगले रिबूट पर फिर लेबल करना चाहते हैं.  "
-"रिलेबल करना लंबा समय ले सकता है, सिस्टम के आकार पर निर्भर करते हुए.  यदि आप "
-"पॉलिसी प्रकार को निष्क्रिय से बाध्यकारी में बदल रहे हैं, फिर लेबल करना जरूरी "
-"है."
+"चुनें यदि आप पूरे फाइल सिस्टम को अगले रिबूट पर फिर लेबल करना चाहते हैं.  रिलेबल करना लंबा "
+"समय ले सकता है, सिस्टम के आकार पर निर्भर करते हुए.  यदि आप पॉलिसी प्रकार को निष्क्रिय "
+"से बाध्यकारी में बदल रहे हैं, फिर लेबल करना जरूरी है."
 
 #: ../system-config-selinux.ui:903
 msgid "Relabel on next reboot."
@@ -817,8 +828,8 @@ msgid ""
 "Enable/Disable additional audit rules, that are normally not reported in the "
 "log files."
 msgstr ""
-"अतिरिक्त ऑडिट नियम सक्रिय/निष्क्रिय करें, जो लॉग फाइल में सामान्यतः रिपोर्ट "
-"नहीं किया हुआ है."
+"अतिरिक्त ऑडिट नियम सक्रिय/निष्क्रिय करें, जो लॉग फाइल में सामान्यतः रिपोर्ट नहीं किया "
+"हुआ है."
 
 #: ../system-config-selinux.ui:1659 ../modulesPage.py:150
 msgid "Enable Audit"
@@ -883,7 +894,8 @@ msgstr "निर्देशिका चुनें जिसमें पॉ
 
 #: ../polgengui.py:683
 #, python-format
-msgid "Type %s_t already defined in current policy.\n"
+msgid ""
+"Type %s_t already defined in current policy.\n"
 "Do you want to continue?"
 msgstr ""
 "मौजूदा नीति में %s_t पहले से परिभाषित है.\n"
@@ -895,7 +907,8 @@ msgstr "नाम जांचें"
 
 #: ../polgengui.py:687
 #, python-format
-msgid "Module %s already loaded in current policy.\n"
+msgid ""
+"Module %s already loaded in current policy.\n"
 "Do you want to continue?"
 msgstr ""
 
@@ -903,17 +916,19 @@ msgstr ""
 msgid ""
 "You must add a name made up of letters and numbers and containing no spaces."
 msgstr ""
-"आपको जरूर अक्षरों, संख्याओं से मिलाकर बनने वाला नाम जोड़ना चाहिए जिसमें कोई "
-"स्थान समाहित नहीं हो."
+"आपको जरूर अक्षरों, संख्याओं से मिलाकर बनने वाला नाम जोड़ना चाहिए जिसमें कोई स्थान समाहित "
+"नहीं हो."
 
 #: ../polgengui.py:747
 msgid "You must enter a executable"
 msgstr "आप जरूर एक एक्सक्यूटेबल दें"
 
 #: ../loginsPage.py:59
-msgid "Login\n"
+msgid ""
+"Login\n"
 "Name"
-msgstr "लॉगिन\n"
+msgstr ""
+"लॉगिन\n"
 "नाम"
 
 #: ../loginsPage.py:135
@@ -963,9 +978,9 @@ msgid ""
 "the next boot. Relabeling takes a long time depending on the size of the "
 "file system.  Do you wish to continue?"
 msgstr ""
-"पॉलिसी प्रकार को बदलना पूरे फाइल सिस्टम को रिलेबल करने का कारण बनेगा अगले "
-"बूट पर. रिलेबलिंग लंबा समय लेता है फाइल सिस्टम के आकार पर निर्भर करते हुए.  "
-"क्या आप जारी रखना चाहते हैं?"
+"पॉलिसी प्रकार को बदलना पूरे फाइल सिस्टम को रिलेबल करने का कारण बनेगा अगले बूट पर. "
+"रिलेबलिंग लंबा समय लेता है फाइल सिस्टम के आकार पर निर्भर करते हुए.  क्या आप जारी रखना "
+"चाहते हैं?"
 
 #: ../statusPage.py:151
 msgid ""
@@ -976,12 +991,11 @@ msgid ""
 "enforce SELinux policy.  Permissive mode does not require a reboot    Do you "
 "wish to continue?"
 msgstr ""
-"SELinux को निष्क्रिय में बदलने के लिए रिबूट की जरूरत होती है.  इसकी सलाह "
-"नहीं दी जाती है.  यदि आप SELinux को वापस लौटाने की सोचते हैं, सिस्टम को "
-"रिलेबल करने की जरूरत होगी.  यदि आप यह देखना चाहते हैं कि SELinux सिस्टम पर "
-"समस्या दे रहा है, आप अनुज्ञात्मक मोड में जा सकते हैं जो सिर्फ त्रुटि देगा और "
-"SELinux पॉलिसी को बाध्यकारी नहीं करेगा.  अनुज्ञात्मक मोड के लिए रिबूट की "
-"जरूरत नहीं है, क्या आप जारी रखना चाहते हैं?"
+"SELinux को निष्क्रिय में बदलने के लिए रिबूट की जरूरत होती है.  इसकी सलाह नहीं दी जाती "
+"है.  यदि आप SELinux को वापस लौटाने की सोचते हैं, सिस्टम को रिलेबल करने की जरूरत "
+"होगी.  यदि आप यह देखना चाहते हैं कि SELinux सिस्टम पर समस्या दे रहा है, आप अनुज्ञात्मक "
+"मोड में जा सकते हैं जो सिर्फ त्रुटि देगा और SELinux पॉलिसी को बाध्यकारी नहीं करेगा.  "
+"अनुज्ञात्मक मोड के लिए रिबूट की जरूरत नहीं है, क्या आप जारी रखना चाहते हैं?"
 
 #: ../statusPage.py:156
 msgid ""
@@ -989,6 +1003,6 @@ msgid ""
 "on the next boot. Relabeling takes a long time depending on the size of the "
 "file system.  Do you wish to continue?"
 msgstr ""
-"सक्रिय SELinux स्थिति में बदलना अगले बूट पर पूरे फाइल सिस्टम के फिर लेबल "
-"किये जाने का कारण बनेगा. फाइल सिस्टम के आकार के आधार पर फिर से लेबल किया "
-"जाना काफी समय लेता है. क्या आप जारी रखना चाहेंगे?"
+"सक्रिय SELinux स्थिति में बदलना अगले बूट पर पूरे फाइल सिस्टम के फिर लेबल किये जाने का "
+"कारण बनेगा. फाइल सिस्टम के आकार के आधार पर फिर से लेबल किया जाना काफी समय लेता है. "
+"क्या आप जारी रखना चाहेंगे?"

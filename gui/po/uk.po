@@ -8,16 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:10+0200\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2018-06-29 02:08+0000\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian\n"
 "Language: uk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Zanata 4.4.5\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 
 #: ../domainsPage.py:55 ../system-config-selinux.ui:1834
 msgid "Process Domain"
@@ -43,15 +43,19 @@ msgid "SELinux User"
 msgstr "Користувач SELinux"
 
 #: ../usersPage.py:60 ../loginsPage.py:63
-msgid "SELinux\n"
+msgid ""
+"SELinux\n"
 "User"
-msgstr "Користувач\n"
+msgstr ""
+"Користувач\n"
 "SELinux"
 
 #: ../usersPage.py:65 ../loginsPage.py:66
-msgid "MLS/\n"
+msgid ""
+"MLS/\n"
 "MCS Range"
-msgstr "Діапазон\n"
+msgstr ""
+"Діапазон\n"
 "MLS/MCS"
 
 #: ../usersPage.py:69 ../system-config-selinux.ui:1970
@@ -68,9 +72,11 @@ msgid "Network Port"
 msgstr "Мережний порт"
 
 #: ../portsPage.py:95
-msgid "SELinux Port\n"
+msgid ""
+"SELinux Port\n"
 "Type"
-msgstr "Тип порту\n"
+msgstr ""
+"Тип порту\n"
 "SELinux"
 
 #: ../portsPage.py:101 ../system-config-selinux.ui:294
@@ -78,9 +84,11 @@ msgid "Protocol"
 msgstr "Протокол"
 
 #: ../portsPage.py:106 ../system-config-selinux.ui:355
-msgid "MLS/MCS\n"
+msgid ""
+"MLS/MCS\n"
 "Level"
-msgstr "Рівень\n"
+msgstr ""
+"Рівень\n"
 "MLS/MCS"
 
 #: ../portsPage.py:111
@@ -139,21 +147,27 @@ msgid "File Labeling"
 msgstr "Призначення позначок файлам"
 
 #: ../fcontextPage.py:82
-msgid "File\n"
+msgid ""
+"File\n"
 "Specification"
-msgstr "Специфікація\n"
+msgstr ""
+"Специфікація\n"
 "файлів"
 
 #: ../fcontextPage.py:89
-msgid "Selinux\n"
+msgid ""
+"Selinux\n"
 "File Type"
-msgstr "Тип файлу\n"
+msgstr ""
+"Тип файлу\n"
 "SELinux"
 
 #: ../fcontextPage.py:96
-msgid "File\n"
+msgid ""
+"File\n"
 "Type"
-msgstr "Тип\n"
+msgstr ""
+"Тип\n"
 "файлу"
 
 #: ../sepolicy.desktop:3
@@ -171,7 +185,8 @@ msgstr "sepolicy"
 #: ../sepolicy.desktop:11
 msgid "policy;security;selinux;avc;permission;mac;"
 msgstr ""
-"policy;security;selinux;avc;permission;mac;правила;безпека;захист;селінукс;дозвіл;авс;мак;"
+"policy;security;selinux;avc;permission;mac;правила;безпека;захист;селінукс;"
+"дозвіл;авс;мак;"
 
 #: ../org.selinux.config.policy:11
 msgid "Run System Config SELinux"
@@ -371,8 +386,7 @@ msgstr "…"
 
 #: ../polgen.ui:776
 msgid "Enter unique name for the confined application or user role."
-msgstr ""
-"Введіть унікальну назву для обмежуваної ролі програми або користувача."
+msgstr "Введіть унікальну назву для обмежуваної ролі програми або користувача."
 
 #: ../polgen.ui:794
 msgid "Executable"
@@ -410,9 +424,11 @@ msgid "Select applications domains that %s will transition to."
 msgstr "Виберіть домени програми, які %s переводитиме."
 
 #: ../polgen.ui:972
-msgid "transition \n"
+msgid ""
+"transition \n"
 "role tab"
-msgstr "перенесення \n"
+msgstr ""
+"перенесення \n"
 "вкладка ролей"
 
 #: ../polgen.ui:989
@@ -420,8 +436,7 @@ msgid "<b>Select the user_roles that will transition to %s:</b>"
 msgstr "<b>Виберіть user_roles які переводитимуть до %s:</b>"
 
 #: ../polgen.ui:1007
-msgid ""
-"Select the user roles that will transiton to this applications domains."
+msgid "Select the user roles that will transiton to this applications domains."
 msgstr "Виберіть ролі користувачів, які слід перенести у домени програм."
 
 #: ../polgen.ui:1040
@@ -486,9 +501,11 @@ msgid "<b>UDP Ports</b>"
 msgstr "<b>Порти UDP</b>"
 
 #: ../polgen.ui:1492
-msgid "Network\n"
+msgid ""
+"Network\n"
 "Bind tab"
-msgstr "Мережа\n"
+msgstr ""
+"Мережа\n"
 "Вкладка прив’язки"
 
 #: ../polgen.ui:1509
@@ -588,7 +605,8 @@ msgstr "Каталог політики"
 msgid ""
 "Copyright (c)2006 Red Hat, Inc.\n"
 "Copyright (c) 2006 Dan Walsh <dwalsh@redhat.com>"
-msgstr "(c) 2006 Red Hat, Inc.\n"
+msgstr ""
+"(c) 2006 Red Hat, Inc.\n"
 "(c) 2006 Dan Walsh <dwalsh@redhat.com>"
 
 #: ../system-config-selinux.ui:53 ../system-config-selinux.ui:433
@@ -735,8 +753,7 @@ msgstr "Відновити первинне значення параметра"
 #: ../system-config-selinux.ui:960
 msgid "Toggle between Customized and All Booleans"
 msgstr ""
-"Перемикання між значенням вказаним користувачем та усіма логічними "
-"значеннями"
+"Перемикання між значенням вказаним користувачем та усіма логічними значеннями"
 
 #: ../system-config-selinux.ui:986 ../system-config-selinux.ui:1122
 #: ../system-config-selinux.ui:1242 ../system-config-selinux.ui:1363
@@ -892,9 +909,11 @@ msgstr "Виберіть каталог, у якому будуть створю
 
 #: ../polgengui.py:683
 #, python-format
-msgid "Type %s_t already defined in current policy.\n"
+msgid ""
+"Type %s_t already defined in current policy.\n"
 "Do you want to continue?"
-msgstr "Тип %s_t вже визначено у поточні політиці.\n"
+msgstr ""
+"Тип %s_t вже визначено у поточні політиці.\n"
 "Продовжити?"
 
 #: ../polgengui.py:683 ../polgengui.py:687
@@ -903,9 +922,11 @@ msgstr "Перевірка назви"
 
 #: ../polgengui.py:687
 #, python-format
-msgid "Module %s already loaded in current policy.\n"
+msgid ""
+"Module %s already loaded in current policy.\n"
 "Do you want to continue?"
-msgstr "Модуль %s вже завантажено у поточні правила.\n"
+msgstr ""
+"Модуль %s вже завантажено у поточні правила.\n"
 "Продовжити?"
 
 #: ../polgengui.py:733
@@ -919,9 +940,11 @@ msgid "You must enter a executable"
 msgstr "Слід вказати виконуваний файл"
 
 #: ../loginsPage.py:59
-msgid "Login\n"
+msgid ""
+"Login\n"
 "Name"
-msgstr "Реєстраційне\n"
+msgstr ""
+"Реєстраційне\n"
 "ім'я"
 
 #: ../loginsPage.py:135

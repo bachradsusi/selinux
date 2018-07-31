@@ -7,13 +7,13 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:10+0200\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2017-11-09 03:29+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Korean\n"
 "Language: ko\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Zanata 4.4.5\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
@@ -41,15 +41,19 @@ msgid "SELinux User"
 msgstr "SELinux 사용자"
 
 #: ../usersPage.py:60 ../loginsPage.py:63
-msgid "SELinux\n"
+msgid ""
+"SELinux\n"
 "User"
-msgstr "SELinux\n"
+msgstr ""
+"SELinux\n"
 "사용자 "
 
 #: ../usersPage.py:65 ../loginsPage.py:66
-msgid "MLS/\n"
+msgid ""
+"MLS/\n"
 "MCS Range"
-msgstr "MLS/\n"
+msgstr ""
+"MLS/\n"
 "MCS 범위 "
 
 #: ../usersPage.py:69 ../system-config-selinux.ui:1970
@@ -66,9 +70,11 @@ msgid "Network Port"
 msgstr "네트워크 포트 "
 
 #: ../portsPage.py:95
-msgid "SELinux Port\n"
+msgid ""
+"SELinux Port\n"
 "Type"
-msgstr "SELinux 포트\n"
+msgstr ""
+"SELinux 포트\n"
 "유형"
 
 #: ../portsPage.py:101 ../system-config-selinux.ui:294
@@ -76,9 +82,11 @@ msgid "Protocol"
 msgstr "프로토콜 "
 
 #: ../portsPage.py:106 ../system-config-selinux.ui:355
-msgid "MLS/MCS\n"
+msgid ""
+"MLS/MCS\n"
 "Level"
-msgstr "MLS/MCS\n"
+msgstr ""
+"MLS/MCS\n"
 "레벨"
 
 #: ../portsPage.py:111
@@ -137,21 +145,27 @@ msgid "File Labeling"
 msgstr "파일 레이블 설정 "
 
 #: ../fcontextPage.py:82
-msgid "File\n"
+msgid ""
+"File\n"
 "Specification"
-msgstr "파일\n"
+msgstr ""
+"파일\n"
 "사양"
 
 #: ../fcontextPage.py:89
-msgid "Selinux\n"
+msgid ""
+"Selinux\n"
 "File Type"
-msgstr "Selinux\n"
+msgstr ""
+"Selinux\n"
 "파일 유형 "
 
 #: ../fcontextPage.py:96
-msgid "File\n"
+msgid ""
+"File\n"
 "Type"
-msgstr "파일\n"
+msgstr ""
+"파일\n"
 "유형"
 
 #: ../sepolicy.desktop:3
@@ -211,7 +225,8 @@ msgstr "SELinux 정책 생성 도구 "
 msgid ""
 "<b>Select the policy type for the application or user role you want to "
 "confine:</b>"
-msgstr "<b>정의하려는 애플리케이션이나 사용자 역할에 대한 정책 유형을 선택합니다:</b>"
+msgstr ""
+"<b>정의하려는 애플리케이션이나 사용자 역할에 대한 정책 유형을 선택합니다:</b>"
 
 #: ../polgen.ui:288
 msgid "<b>Applications</b>"
@@ -226,8 +241,8 @@ msgid ""
 "Standard Init Daemon are daemons started on boot via init scripts.  Usually "
 "requires a script in /etc/rc.d/init.d"
 msgstr ""
-"표준 Init 데몬은 시작할 때 init 스크립트를 통해 시작되는 데몬입니다. 일반적으로 /etc/rc.d/init.d에 스크립트가 "
-"필요합니다 "
+"표준 Init 데몬은 시작할 때 init 스크립트를 통해 시작되는 데몬입니다. 일반적으"
+"로 /etc/rc.d/init.d에 스크립트가 필요합니다 "
 
 #: ../polgen.ui:336
 msgid "DBUS System Daemon"
@@ -248,7 +263,9 @@ msgstr "웹 애플리케이션/스크립트 (CGI)"
 #: ../polgen.ui:374
 msgid ""
 "Web Applications/Script (CGI) CGI scripts started by the web server (apache)"
-msgstr "웹 애플리케이션/스크립트 (CGI) CGI 스크립트는 웹 서버에 의해 시작됩니다 (apache)"
+msgstr ""
+"웹 애플리케이션/스크립트 (CGI) CGI 스크립트는 웹 서버에 의해 시작됩니다 "
+"(apache)"
 
 #: ../polgen.ui:387
 msgid "User Application"
@@ -258,7 +275,9 @@ msgstr "사용자 애플리케이션 "
 msgid ""
 "User Application are any application that you would like to confine that is "
 "started by a user"
-msgstr "사용자 애플리케이션은 사용자에 의해 시작되는 한정하고자 하는 모든 애플리케이션입니다 "
+msgstr ""
+"사용자 애플리케이션은 사용자에 의해 시작되는 한정하고자 하는 모든 애플리케이"
+"션입니다 "
 
 #: ../polgen.ui:404
 msgid "Sandbox"
@@ -285,8 +304,8 @@ msgid ""
 "This user will login to a machine only via a terminal or remote login.  By "
 "default this user will have  no setuid, no networking, no su, no sudo."
 msgstr ""
-"이 사용자는 터미널이나 원격 로그인을 통해서만 시스템에 로그인합니다. 기본값으로 이 사용자는 setuid, 네트워크 운용, su, "
-"sudo를 가지지 않습니다."
+"이 사용자는 터미널이나 원격 로그인을 통해서만 시스템에 로그인합니다. 기본값으"
+"로 이 사용자는 setuid, 네트워크 운용, su, sudo를 가지지 않습니다."
 
 #: ../polgen.ui:516
 msgid "Minimal X Windows User Role"
@@ -297,8 +316,8 @@ msgid ""
 "This user can login to a machine via X or terminal.  By default this user "
 "will have no setuid, no networking, no sudo, no su"
 msgstr ""
-"이 사용자는 X 또는 터미널을 통해 시스템에 로그인할 수 있습니다. 기본값으로 이 사용자는 setuid, 네트워크 운용, su, "
-"sudo를 가지지 않습니다."
+"이 사용자는 X 또는 터미널을 통해 시스템에 로그인할 수 있습니다. 기본값으로 "
+"이 사용자는 setuid, 네트워크 운용, su, sudo를 가지지 않습니다."
 
 #: ../polgen.ui:533
 msgid "User Role"
@@ -308,7 +327,9 @@ msgstr "사용자 역할"
 msgid ""
 "User with full networking, no setuid applications without transition, no "
 "sudo, no su."
-msgstr "사용자는 전체 네트워크 운영을 갖지만 전환없이 setuid 애플리케이션도 sudo도  su도 갖지 않습니다 "
+msgstr ""
+"사용자는 전체 네트워크 운영을 갖지만 전환없이 setuid 애플리케이션도 sudo도  "
+"su도 갖지 않습니다 "
 
 #: ../polgen.ui:550
 msgid "Admin User Role"
@@ -319,8 +340,8 @@ msgid ""
 "User with full networking, no setuid applications without transition, no su, "
 "can sudo to Root Administration Roles"
 msgstr ""
-"사용자는 전체 네트워크 운영을 갖지만 전환없이 setuid 애플리케이션도 su도 갖지 않으며, Root 관리 역할로 sudo를 사용할 수 "
-"있습니다"
+"사용자는 전체 네트워크 운영을 갖지만 전환없이 setuid 애플리케이션도 su도 갖"
+"지 않으며, Root 관리 역할로 sudo를 사용할 수 있습니다"
 
 #: ../polgen.ui:596
 msgid "<b>Root Users</b>"
@@ -336,8 +357,8 @@ msgid ""
 "the machine while running as root.  This user will not be able to login to "
 "the system directly."
 msgstr ""
-"root로 실행하는 동안 사용자를 시스템 관리를 위해 사용하는 경우 Root 관리 사용자 역할을 선택합니다. 이 사용자는 시스템에 직접 "
-"로그인할 수 없습니다."
+"root로 실행하는 동안 사용자를 시스템 관리를 위해 사용하는 경우 Root 관리 사용"
+"자 역할을 선택합니다. 이 사용자는 시스템에 직접 로그인할 수 없습니다."
 
 #: ../polgen.ui:705
 msgid "<b>Enter name of application or user role:</b>"
@@ -370,7 +391,9 @@ msgstr "Init 스크립트 "
 #: ../polgen.ui:821
 msgid ""
 "Enter complete path to init script used to start the confined application."
-msgstr "제한된 애플리케이션을 시작하기 위해 사용하는 init 스크립트로의 전체 경로를 입력합니다."
+msgstr ""
+"제한된 애플리케이션을 시작하기 위해 사용하는 init 스크립트로의 전체 경로를 입"
+"력합니다."
 
 #: ../polgen.ui:883
 msgid "<b>Select existing role to modify:</b>"
@@ -393,9 +416,11 @@ msgid "Select applications domains that %s will transition to."
 msgstr "%s의 전환 대상이 될 애플리케이션 도메인을 선택합니다."
 
 #: ../polgen.ui:972
-msgid "transition \n"
+msgid ""
+"transition \n"
 "role tab"
-msgstr "전환 \n"
+msgstr ""
+"전환 \n"
 "역할 탭"
 
 #: ../polgen.ui:989
@@ -403,8 +428,7 @@ msgid "<b>Select the user_roles that will transition to %s:</b>"
 msgstr "<b>%s로 전환할 사용자 역할을 선택(_R):</b>"
 
 #: ../polgen.ui:1007
-msgid ""
-"Select the user roles that will transiton to this applications domains."
+msgid "Select the user roles that will transiton to this applications domains."
 msgstr "이 애플리케이션 도메인으로 전환할 사용자 역할을 선택합니다."
 
 #: ../polgen.ui:1040
@@ -441,7 +465,8 @@ msgstr "600-1024"
 
 #: ../polgen.ui:1220 ../polgen.ui:1387
 msgid "Allow %s to call bindresvport with 0. Binding to port 600-1024"
-msgstr "%s이 0로 bindresvport를 호출하는 것을 허용합니다. 포트 600-1024로 바인딩"
+msgstr ""
+"%s이 0로 bindresvport를 호출하는 것을 허용합니다. 포트 600-1024로 바인딩"
 
 #: ../polgen.ui:1233 ../polgen.ui:1400
 msgid "Unreserved Ports (>1024)"
@@ -451,7 +476,9 @@ msgstr "예약되지 않은 포트 (>1024)"
 msgid ""
 "Enter a comma separated list of udp ports or ranges of ports that %s binds "
 "to. Example: 612, 650-660"
-msgstr "%s이 바인딩할 포트 범위 또는 udp 포트의 콤마로 분리된 목록을 입력합니다. 예: 612, 650-660"
+msgstr ""
+"%s이 바인딩할 포트 범위 또는 udp 포트의 콤마로 분리된 목록을 입력합니다. 예: "
+"612, 650-660"
 
 #: ../polgen.ui:1265 ../polgen.ui:1432 ../polgen.ui:1581 ../polgen.ui:1690
 msgid "Select Ports"
@@ -466,9 +493,11 @@ msgid "<b>UDP Ports</b>"
 msgstr "<b>UDP 포트</b>"
 
 #: ../polgen.ui:1492
-msgid "Network\n"
+msgid ""
+"Network\n"
 "Bind tab"
-msgstr "네트워크\n"
+msgstr ""
+"네트워크\n"
 "바인딩 탭 "
 
 #: ../polgen.ui:1509
@@ -483,7 +512,9 @@ msgstr "%s이 모든 tcp 포트에 연결하는 것을 허용"
 msgid ""
 "Enter a comma separated list of tcp ports or ranges of ports that %s "
 "connects to. Example: 612, 650-660"
-msgstr "tcp 포트 또는 %s이 연결되는 포트 범위의 콤마로 분리된 목록을 입력합니다. 예: 612, 650-660"
+msgstr ""
+"tcp 포트 또는 %s이 연결되는 포트 범위의 콤마로 분리된 목록을 입력합니다. 예: "
+"612, 650-660"
 
 #: ../polgen.ui:1674
 msgid "Allows %s to connect to any udp port"
@@ -493,7 +524,9 @@ msgstr "udp 포트에 연결하기 위해 %s 허용 "
 msgid ""
 "Enter a comma separated list of udp ports or ranges of ports that %s "
 "connects to. Example: 612, 650-660"
-msgstr "udp 포트 또는 %s이 연결되는 포트 범위의 콤마로 분리된 목록을 입력합니다. 예: 612, 650-660"
+msgstr ""
+"udp 포트 또는 %s이 연결되는 포트 범위의 콤마로 분리된 목록을 입력합니다. 예: "
+"612, 650-660"
 
 #: ../polgen.ui:1760
 msgid "<b>Select common application traits for %s:</b>"
@@ -539,7 +572,8 @@ msgstr "<b>%s이 관리하는 파일/디렉토리 추가</b>"
 msgid ""
 "Files/Directories which the %s \"manages\". Pid Files, Log Files, /var/lib "
 "Files ..."
-msgstr "%s이 \"관리\"하는 파일/디렉토리. Pid 파일, 로그 파일, /var/lib 파일 등 ..."
+msgstr ""
+"%s이 \"관리\"하는 파일/디렉토리. Pid 파일, 로그 파일, /var/lib 파일 등 ..."
 
 #: ../polgen.ui:2126
 msgid "<b>Add booleans from the %s policy:</b>"
@@ -693,8 +727,9 @@ msgid ""
 "If you are changing policy types or going from disabled to enforcing, a "
 "relabel is required."
 msgstr ""
-"다음번 부팅시 전체 파일 시스템의 레이블을 변경할지 여부를 선택합니다. 레이블 변경은 시스템의 크기에 따라 시간이 오래 소요됩니다. 정책 "
-"유형을 변경하거나 비활성화에서 강제로 이동하는 경우 레이블 변경이 필요합니다. "
+"다음번 부팅시 전체 파일 시스템의 레이블을 변경할지 여부를 선택합니다. 레이블 "
+"변경은 시스템의 크기에 따라 시간이 오래 소요됩니다. 정책 유형을 변경하거나 비"
+"활성화에서 강제로 이동하는 경우 레이블 변경이 필요합니다. "
 
 #: ../system-config-selinux.ui:903
 msgid "Relabel on next reboot."
@@ -860,9 +895,11 @@ msgstr "정책 파일을 생성할 디렉토리를 선택합니다 "
 
 #: ../polgengui.py:683
 #, python-format
-msgid "Type %s_t already defined in current policy.\n"
+msgid ""
+"Type %s_t already defined in current policy.\n"
 "Do you want to continue?"
-msgstr "현재 정책에서 이미 정의된 %s_t를 입력합니다.\n"
+msgstr ""
+"현재 정책에서 이미 정의된 %s_t를 입력합니다.\n"
 "계속 진행하시겠습니까?"
 
 #: ../polgengui.py:683 ../polgengui.py:687
@@ -871,9 +908,11 @@ msgstr "이름 확인 "
 
 #: ../polgengui.py:687
 #, python-format
-msgid "Module %s already loaded in current policy.\n"
+msgid ""
+"Module %s already loaded in current policy.\n"
 "Do you want to continue?"
-msgstr "모듈 %s은/는 현재 정책에 이미 로딩되어 있습니다.\n"
+msgstr ""
+"모듈 %s은/는 현재 정책에 이미 로딩되어 있습니다.\n"
 "계속 진행하시겠습니까?"
 
 #: ../polgengui.py:733
@@ -886,9 +925,11 @@ msgid "You must enter a executable"
 msgstr "실행 파일을 입력해야 합니다"
 
 #: ../loginsPage.py:59
-msgid "Login\n"
+msgid ""
+"Login\n"
 "Name"
-msgstr "로그인\n"
+msgstr ""
+"로그인\n"
 "이름"
 
 #: ../loginsPage.py:135
@@ -938,8 +979,9 @@ msgid ""
 "the next boot. Relabeling takes a long time depending on the size of the "
 "file system.  Do you wish to continue?"
 msgstr ""
-"정책 유형을 변경하면 다음 부팅 시 전체 파일 시스템의 레이블 변경의 원인이 됩니다. 레이블 변경은 파일 시스템의 크기에 따라 시간이 "
-"오래 소요됩니다. 계속 진행하시겠습니까?"
+"정책 유형을 변경하면 다음 부팅 시 전체 파일 시스템의 레이블 변경의 원인이 됩"
+"니다. 레이블 변경은 파일 시스템의 크기에 따라 시간이 오래 소요됩니다. 계속 진"
+"행하시겠습니까?"
 
 #: ../statusPage.py:151
 msgid ""
@@ -950,10 +992,12 @@ msgid ""
 "enforce SELinux policy.  Permissive mode does not require a reboot    Do you "
 "wish to continue?"
 msgstr ""
-"SELinux 비활성화로 변경하려면 재부팅해야 합니다. 이는 권장되는 방법이 아닙니다. 나중에 SELinux를 다시 활성화하고자 할 경우 "
-"시스템 레이블 변경이 필요합니다. 단순히 SELinux가 시스템에서 문제의 원인인지 여부를 확인하고 싶은 경우 허용 모드로 전환하면 "
-"오류를 로그하고 SELinux 정책을 강제하지 않을 수 있습니다. 또한 허용 모드로 변경하기 위해 재부팅할 필요가 없습니다. 계속 "
-"진행하시겠습니까?"
+"SELinux 비활성화로 변경하려면 재부팅해야 합니다. 이는 권장되는 방법이 아닙니"
+"다. 나중에 SELinux를 다시 활성화하고자 할 경우 시스템 레이블 변경이 필요합니"
+"다. 단순히 SELinux가 시스템에서 문제의 원인인지 여부를 확인하고 싶은 경우 허"
+"용 모드로 전환하면 오류를 로그하고 SELinux 정책을 강제하지 않을 수 있습니다. "
+"또한 허용 모드로 변경하기 위해 재부팅할 필요가 없습니다. 계속 진행하시겠습니"
+"까?"
 
 #: ../statusPage.py:156
 msgid ""
@@ -961,5 +1005,6 @@ msgid ""
 "on the next boot. Relabeling takes a long time depending on the size of the "
 "file system.  Do you wish to continue?"
 msgstr ""
-"SELinux 활성화로 변경하면 다음 부팅시 전체 파일 시스템의 레이블 변경의 원인이 됩니다. 레이블 변경은 파일 시스템의 크기에 따라 "
-"시간이 오래 소요됩니다. 계속 진행하시겠습니까?"
+"SELinux 활성화로 변경하면 다음 부팅시 전체 파일 시스템의 레이블 변경의 원인"
+"이 됩니다. 레이블 변경은 파일 시스템의 크기에 따라 시간이 오래 소요됩니다. 계"
+"속 진행하시겠습니까?"

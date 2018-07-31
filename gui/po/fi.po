@@ -7,13 +7,13 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:10+0200\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2018-05-12 12:39+0000\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos@iki.fi>\n"
 "Language-Team: Finnish\n"
 "Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Zanata 4.4.5\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
@@ -41,15 +41,19 @@ msgid "SELinux User"
 msgstr "SELinux-käyttäjä"
 
 #: ../usersPage.py:60 ../loginsPage.py:63
-msgid "SELinux\n"
+msgid ""
+"SELinux\n"
 "User"
-msgstr "SELinux\n"
+msgstr ""
+"SELinux\n"
 "Käyttäjä"
 
 #: ../usersPage.py:65 ../loginsPage.py:66
-msgid "MLS/\n"
+msgid ""
+"MLS/\n"
 "MCS Range"
-msgstr "MLS/\n"
+msgstr ""
+"MLS/\n"
 "MCS alue"
 
 #: ../usersPage.py:69 ../system-config-selinux.ui:1970
@@ -66,9 +70,11 @@ msgid "Network Port"
 msgstr "Verkkoportti"
 
 #: ../portsPage.py:95
-msgid "SELinux Port\n"
+msgid ""
+"SELinux Port\n"
 "Type"
-msgstr "SELinux Portti\n"
+msgstr ""
+"SELinux Portti\n"
 "Tyyppi"
 
 #: ../portsPage.py:101 ../system-config-selinux.ui:294
@@ -76,9 +82,11 @@ msgid "Protocol"
 msgstr "Protokolla"
 
 #: ../portsPage.py:106 ../system-config-selinux.ui:355
-msgid "MLS/MCS\n"
+msgid ""
+"MLS/MCS\n"
 "Level"
-msgstr "MLS/MCS\n"
+msgstr ""
+"MLS/MCS\n"
 "Taso"
 
 #: ../portsPage.py:111
@@ -137,21 +145,27 @@ msgid "File Labeling"
 msgstr "Tiedostonimiöinti"
 
 #: ../fcontextPage.py:82
-msgid "File\n"
+msgid ""
+"File\n"
 "Specification"
-msgstr "Tiedosto-\n"
+msgstr ""
+"Tiedosto-\n"
 "määrittely"
 
 #: ../fcontextPage.py:89
-msgid "Selinux\n"
+msgid ""
+"Selinux\n"
 "File Type"
-msgstr "Selinux\n"
+msgstr ""
+"Selinux\n"
 "Tiedostotyyppi"
 
 #: ../fcontextPage.py:96
-msgid "File\n"
+msgid ""
+"File\n"
 "Type"
-msgstr "Tiedosto\n"
+msgstr ""
+"Tiedosto\n"
 "Tyyppi"
 
 #: ../sepolicy.desktop:3
@@ -328,8 +342,7 @@ msgid ""
 "can sudo to Root Administration Roles"
 msgstr ""
 "Käyttäjät joilla on täysi verkonkäyttömahdollisuus, ei setuid-oikeuksia "
-"ilman siirtymistä, ei su:ta, voi siirtyä sudolla Pääkäyttäjän "
-"ylläpitorooliin"
+"ilman siirtymistä, ei su:ta, voi siirtyä sudolla Pääkäyttäjän ylläpitorooliin"
 
 #: ../polgen.ui:596
 msgid "<b>Root Users</b>"
@@ -405,7 +418,8 @@ msgid "Select applications domains that %s will transition to."
 msgstr ""
 
 #: ../polgen.ui:972
-msgid "transition \n"
+msgid ""
+"transition \n"
 "role tab"
 msgstr ""
 
@@ -414,8 +428,7 @@ msgid "<b>Select the user_roles that will transition to %s:</b>"
 msgstr ""
 
 #: ../polgen.ui:1007
-msgid ""
-"Select the user roles that will transiton to this applications domains."
+msgid "Select the user roles that will transiton to this applications domains."
 msgstr "Valitse käyttäjäroolit, jotka siirtyvät tämän ohjelman toimialueelle."
 
 #: ../polgen.ui:1040
@@ -477,7 +490,8 @@ msgid "<b>UDP Ports</b>"
 msgstr "<b>UDP-portit</b>"
 
 #: ../polgen.ui:1492
-msgid "Network\n"
+msgid ""
+"Network\n"
 "Bind tab"
 msgstr ""
 
@@ -879,9 +893,11 @@ msgstr "Valitse hakemisto, jonne käytäntötiedostot generoidaan"
 
 #: ../polgengui.py:683
 #, python-format
-msgid "Type %s_t already defined in current policy.\n"
+msgid ""
+"Type %s_t already defined in current policy.\n"
 "Do you want to continue?"
-msgstr "Tyyppi %s_t on jo määritelty nykyisessä käytännössä.\n"
+msgstr ""
+"Tyyppi %s_t on jo määritelty nykyisessä käytännössä.\n"
 "Haluatko jatkaa?"
 
 #: ../polgengui.py:683 ../polgengui.py:687
@@ -890,7 +906,8 @@ msgstr "Varmista nimi"
 
 #: ../polgengui.py:687
 #, python-format
-msgid "Module %s already loaded in current policy.\n"
+msgid ""
+"Module %s already loaded in current policy.\n"
 "Do you want to continue?"
 msgstr ""
 
@@ -906,9 +923,11 @@ msgid "You must enter a executable"
 msgstr "Suoritettava tiedosto on annettava"
 
 #: ../loginsPage.py:59
-msgid "Login\n"
+msgid ""
+"Login\n"
 "Name"
-msgstr "Kirjautumis\n"
+msgstr ""
+"Kirjautumis\n"
 "Nimi"
 
 #: ../loginsPage.py:135

@@ -10,13 +10,13 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:10+0200\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2018-06-08 03:07+0000\n"
 "Last-Translator: Peter Pan <pan93412@gmail.com>\n"
 "Language-Team: Chinese (Taiwan)\n"
 "Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Zanata 4.4.5\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
@@ -44,15 +44,19 @@ msgid "SELinux User"
 msgstr "SELinux 使用者"
 
 #: ../usersPage.py:60 ../loginsPage.py:63
-msgid "SELinux\n"
+msgid ""
+"SELinux\n"
 "User"
-msgstr "SELinux\n"
+msgstr ""
+"SELinux\n"
 "使用者"
 
 #: ../usersPage.py:65 ../loginsPage.py:66
-msgid "MLS/\n"
+msgid ""
+"MLS/\n"
 "MCS Range"
-msgstr "MLS/\n"
+msgstr ""
+"MLS/\n"
 "MCS 範圍"
 
 #: ../usersPage.py:69 ../system-config-selinux.ui:1970
@@ -69,9 +73,11 @@ msgid "Network Port"
 msgstr "網路連接埠"
 
 #: ../portsPage.py:95
-msgid "SELinux Port\n"
+msgid ""
+"SELinux Port\n"
 "Type"
-msgstr "SELinux 連接埠\n"
+msgstr ""
+"SELinux 連接埠\n"
 "類型"
 
 #: ../portsPage.py:101 ../system-config-selinux.ui:294
@@ -79,9 +85,11 @@ msgid "Protocol"
 msgstr "通訊協定"
 
 #: ../portsPage.py:106 ../system-config-selinux.ui:355
-msgid "MLS/MCS\n"
+msgid ""
+"MLS/MCS\n"
 "Level"
-msgstr "MLS/MCS\n"
+msgstr ""
+"MLS/MCS\n"
 "等級"
 
 #: ../portsPage.py:111
@@ -140,21 +148,27 @@ msgid "File Labeling"
 msgstr "檔案標籤"
 
 #: ../fcontextPage.py:82
-msgid "File\n"
+msgid ""
+"File\n"
 "Specification"
-msgstr "檔案\n"
+msgstr ""
+"檔案\n"
 "規格"
 
 #: ../fcontextPage.py:89
-msgid "Selinux\n"
+msgid ""
+"Selinux\n"
 "File Type"
-msgstr "Selinux\n"
+msgstr ""
+"Selinux\n"
 "檔案類型"
 
 #: ../fcontextPage.py:96
-msgid "File\n"
+msgid ""
+"File\n"
 "Type"
-msgstr "檔案\n"
+msgstr ""
+"檔案\n"
 "類型"
 
 #: ../sepolicy.desktop:3
@@ -230,7 +244,9 @@ msgstr "標準的 Init 幕後程式"
 msgid ""
 "Standard Init Daemon are daemons started on boot via init scripts.  Usually "
 "requires a script in /etc/rc.d/init.d"
-msgstr "標準的 Init 幕後程式 乃透過 init 指令稿在開機時啟用的幕後程式。 一般在 /etc/rc.d/init.d 中需要有個指令稿"
+msgstr ""
+"標準的 Init 幕後程式 乃透過 init 指令稿在開機時啟用的幕後程式。 一般在 /etc/"
+"rc.d/init.d 中需要有個指令稿"
 
 #: ../polgen.ui:336
 msgid "DBUS System Daemon"
@@ -287,7 +303,9 @@ msgstr "最少終端機使用者角色"
 msgid ""
 "This user will login to a machine only via a terminal or remote login.  By "
 "default this user will have  no setuid, no networking, no su, no sudo."
-msgstr "這位使用者只能透過終端機或是遠端登入來登入機器。 就預設值，這位使用者將沒有 setuid、無網路、無 su、無 sudo。"
+msgstr ""
+"這位使用者只能透過終端機或是遠端登入來登入機器。 就預設值，這位使用者將沒有 "
+"setuid、無網路、無 su、無 sudo。"
 
 #: ../polgen.ui:516
 msgid "Minimal X Windows User Role"
@@ -297,7 +315,9 @@ msgstr "最少 X Windows 使用者角色"
 msgid ""
 "This user can login to a machine via X or terminal.  By default this user "
 "will have no setuid, no networking, no sudo, no su"
-msgstr "這位使用者能透過 X 或是終端機來登入機器。 就預設值，這位使用者將沒有 setuid、無網路、無 sudo，並無 su"
+msgstr ""
+"這位使用者能透過 X 或是終端機來登入機器。 就預設值，這位使用者將沒有 setuid、"
+"無網路、無 sudo，並無 su"
 
 #: ../polgen.ui:533
 msgid "User Role"
@@ -317,7 +337,9 @@ msgstr "管理使用者角色"
 msgid ""
 "User with full networking, no setuid applications without transition, no su, "
 "can sudo to Root Administration Roles"
-msgstr "使用者擁有完整網路、沒有無轉移的 setuid 應用程式、無 su，可 sudo 至 Root 管理角色"
+msgstr ""
+"使用者擁有完整網路、沒有無轉移的 setuid 應用程式、無 su，可 sudo 至 Root 管理"
+"角色"
 
 #: ../polgen.ui:596
 msgid "<b>Root Users</b>"
@@ -332,7 +354,9 @@ msgid ""
 "Select Root Administrator User Role, if this user will be used to administer "
 "the machine while running as root.  This user will not be able to login to "
 "the system directly."
-msgstr "若使用者將會以 root 身份管理機器，請選擇 Root 管理使用者角色。 該使用者將無法直接登入系統。"
+msgstr ""
+"若使用者將會以 root 身份管理機器，請選擇 Root 管理使用者角色。 該使用者將無法"
+"直接登入系統。"
 
 #: ../polgen.ui:705
 msgid "<b>Enter name of application or user role:</b>"
@@ -388,9 +412,11 @@ msgid "Select applications domains that %s will transition to."
 msgstr "選擇 %s 將會轉移至的應用程式區域。"
 
 #: ../polgen.ui:972
-msgid "transition \n"
+msgid ""
+"transition \n"
 "role tab"
-msgstr "轉移\n"
+msgstr ""
+"轉移\n"
 "角色分頁"
 
 #: ../polgen.ui:989
@@ -398,8 +424,7 @@ msgid "<b>Select the user_roles that will transition to %s:</b>"
 msgstr "<b>選擇將會轉移至 %s 的 user_roles：</b>"
 
 #: ../polgen.ui:1007
-msgid ""
-"Select the user roles that will transiton to this applications domains."
+msgid "Select the user roles that will transiton to this applications domains."
 msgstr "選擇將會轉換至此應用程式區域的使用者角色。"
 
 #: ../polgen.ui:1040
@@ -446,7 +471,9 @@ msgstr "未預留的連接埠（>1024）"
 msgid ""
 "Enter a comma separated list of udp ports or ranges of ports that %s binds "
 "to. Example: 612, 650-660"
-msgstr "輸入一列以逗號區隔開的 udp 連接埠，或是 %s 綁定至的連接埠範圍之清單。例如：612, 650-660"
+msgstr ""
+"輸入一列以逗號區隔開的 udp 連接埠，或是 %s 綁定至的連接埠範圍之清單。例如："
+"612, 650-660"
 
 #: ../polgen.ui:1265 ../polgen.ui:1432 ../polgen.ui:1581 ../polgen.ui:1690
 msgid "Select Ports"
@@ -461,9 +488,11 @@ msgid "<b>UDP Ports</b>"
 msgstr "<b>UDP 連接埠</b>"
 
 #: ../polgen.ui:1492
-msgid "Network\n"
+msgid ""
+"Network\n"
 "Bind tab"
-msgstr "網路\n"
+msgstr ""
+"網路\n"
 "綁定分頁"
 
 #: ../polgen.ui:1509
@@ -478,7 +507,8 @@ msgstr "允許 %s 連至任何 tcp 連接埠"
 msgid ""
 "Enter a comma separated list of tcp ports or ranges of ports that %s "
 "connects to. Example: 612, 650-660"
-msgstr "輸入一列以逗號區隔開、%s 連至的 tcp 連接埠或連接埠範圍。例如：612, 650-660"
+msgstr ""
+"輸入一列以逗號區隔開、%s 連至的 tcp 連接埠或連接埠範圍。例如：612, 650-660"
 
 #: ../polgen.ui:1674
 msgid "Allows %s to connect to any udp port"
@@ -488,7 +518,8 @@ msgstr "允許 %s 連至任何 udp 連接埠"
 msgid ""
 "Enter a comma separated list of udp ports or ranges of ports that %s "
 "connects to. Example: 612, 650-660"
-msgstr "輸入一列以逗號區隔開、%s 連至的 udp 連接埠或連接埠範圍。例如：612, 650-660"
+msgstr ""
+"輸入一列以逗號區隔開、%s 連至的 udp 連接埠或連接埠範圍。例如：612, 650-660"
 
 #: ../polgen.ui:1760
 msgid "<b>Select common application traits for %s:</b>"
@@ -856,9 +887,11 @@ msgstr "選擇欲在其中產生方針檔案的目錄"
 
 #: ../polgengui.py:683
 #, python-format
-msgid "Type %s_t already defined in current policy.\n"
+msgid ""
+"Type %s_t already defined in current policy.\n"
 "Do you want to continue?"
-msgstr "類型 %s_t 已定義於目前的方針中。\n"
+msgstr ""
+"類型 %s_t 已定義於目前的方針中。\n"
 "您是否希望繼續？"
 
 #: ../polgengui.py:683 ../polgengui.py:687
@@ -867,9 +900,11 @@ msgstr "驗證名稱"
 
 #: ../polgengui.py:687
 #, python-format
-msgid "Module %s already loaded in current policy.\n"
+msgid ""
+"Module %s already loaded in current policy.\n"
 "Do you want to continue?"
-msgstr "模組 %s 已載入目前的政策中。\n"
+msgstr ""
+"模組 %s 已載入目前的政策中。\n"
 "您是否希望繼續？"
 
 #: ../polgengui.py:733
@@ -882,9 +917,11 @@ msgid "You must enter a executable"
 msgstr "您必須輸入一個可執行檔"
 
 #: ../loginsPage.py:59
-msgid "Login\n"
+msgid ""
+"Login\n"
 "Name"
-msgstr "登入\n"
+msgstr ""
+"登入\n"
 "名稱"
 
 #: ../loginsPage.py:135
@@ -933,7 +970,9 @@ msgid ""
 "Changing the policy type will cause a relabel of the entire file system on "
 "the next boot. Relabeling takes a long time depending on the size of the "
 "file system.  Do you wish to continue?"
-msgstr "變更方針類型會在下次開機時，重新標記整個檔案系統。根據檔案系統的大小，重新標記會花上不少時間。\n"
+msgstr ""
+"變更方針類型會在下次開機時，重新標記整個檔案系統。根據檔案系統的大小，重新標"
+"記會花上不少時間。\n"
 "確定要繼續？"
 
 #: ../statusPage.py:151
@@ -948,7 +987,8 @@ msgstr ""
 "停用 SELinux 後需要重新開機。\n"
 "不建議這麼做。\n"
 "如果您之後決定再度啟用 SELinux，系統會需要重新標記。\n"
-"如果您只是想知道 SELinux 是否導致系統發生問題，您可以切換到寬容模式，只記錄錯誤但不使用 SELinux 方針。\n"
+"如果您只是想知道 SELinux 是否導致系統發生問題，您可以切換到寬容模式，只記錄錯"
+"誤但不使用 SELinux 方針。\n"
 "切換到寬容模式並不需要重新開機。\n"
 "確定要繼續？"
 
@@ -957,5 +997,7 @@ msgid ""
 "Changing to SELinux enabled will cause a relabel of the entire file system "
 "on the next boot. Relabeling takes a long time depending on the size of the "
 "file system.  Do you wish to continue?"
-msgstr "啟用 SELinux 會在下次開機時，重新標記整個檔案系統。根據檔案系統的大小，重新標記會花上不少時間。\n"
+msgstr ""
+"啟用 SELinux 會在下次開機時，重新標記整個檔案系統。根據檔案系統的大小，重新標"
+"記會花上不少時間。\n"
 "確定要繼續？"

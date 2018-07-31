@@ -4,13 +4,13 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:10+0200\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2016-01-06 07:01+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Maithili\n"
 "Language: mai\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Zanata 4.4.5\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
@@ -38,15 +38,19 @@ msgid "SELinux User"
 msgstr "SELinux उपयोक्ता"
 
 #: ../usersPage.py:60 ../loginsPage.py:63
-msgid "SELinux\n"
+msgid ""
+"SELinux\n"
 "User"
-msgstr "SELinux\n"
+msgstr ""
+"SELinux\n"
 "प्रयोक्ता"
 
 #: ../usersPage.py:65 ../loginsPage.py:66
-msgid "MLS/\n"
+msgid ""
+"MLS/\n"
 "MCS Range"
-msgstr "MLS/\n"
+msgstr ""
+"MLS/\n"
 "MCS परिसर"
 
 #: ../usersPage.py:69 ../system-config-selinux.ui:1970
@@ -63,9 +67,11 @@ msgid "Network Port"
 msgstr ""
 
 #: ../portsPage.py:95
-msgid "SELinux Port\n"
+msgid ""
+"SELinux Port\n"
 "Type"
-msgstr "SELinux पोर्ट\n"
+msgstr ""
+"SELinux पोर्ट\n"
 "प्रकार"
 
 #: ../portsPage.py:101 ../system-config-selinux.ui:294
@@ -73,9 +79,11 @@ msgid "Protocol"
 msgstr "प्रोटोकॉल"
 
 #: ../portsPage.py:106 ../system-config-selinux.ui:355
-msgid "MLS/MCS\n"
+msgid ""
+"MLS/MCS\n"
 "Level"
-msgstr "MLS/MCS\n"
+msgstr ""
+"MLS/MCS\n"
 "स्तर"
 
 #: ../portsPage.py:111
@@ -134,21 +142,27 @@ msgid "File Labeling"
 msgstr "फाइल लेबलिंग"
 
 #: ../fcontextPage.py:82
-msgid "File\n"
+msgid ""
+"File\n"
 "Specification"
-msgstr "फाइल\n"
+msgstr ""
+"फाइल\n"
 "विनिर्दिष्टता"
 
 #: ../fcontextPage.py:89
-msgid "Selinux\n"
+msgid ""
+"Selinux\n"
 "File Type"
-msgstr "Selinux\n"
+msgstr ""
+"Selinux\n"
 "फाइल प्रकार"
 
 #: ../fcontextPage.py:96
-msgid "File\n"
+msgid ""
+"File\n"
 "Type"
-msgstr "फाइल\n"
+msgstr ""
+"फाइल\n"
 "प्रकार"
 
 #: ../sepolicy.desktop:3
@@ -223,8 +237,8 @@ msgid ""
 "Standard Init Daemon are daemons started on boot via init scripts.  Usually "
 "requires a script in /etc/rc.d/init.d"
 msgstr ""
-"मानक Init डीमन वे डीमन अछि जे बूट पर init स्क्रिप्ट सँ भएकए आरंभ कएल गेल.  "
-"प्रायः /etc/rc.d/init.d मे एकटा स्क्रिप्टक जरूरी अछि"
+"मानक Init डीमन वे डीमन अछि जे बूट पर init स्क्रिप्ट सँ भएकए आरंभ कएल गेल.  प्रायः /etc/"
+"rc.d/init.d मे एकटा स्क्रिप्टक जरूरी अछि"
 
 #: ../polgen.ui:336
 msgid "DBUS System Daemon"
@@ -246,8 +260,8 @@ msgstr "वेब अनुप्रयोग/स्क्रिप्ट (CGI)"
 msgid ""
 "Web Applications/Script (CGI) CGI scripts started by the web server (apache)"
 msgstr ""
-"वेब अनुप्रयोग/स्क्रिप्ट (CGI) CGI स्क्रिप्ट केँ वेब सर्वर क द्वारा आरंभ कएल "
-"जाइत अछि (apache)"
+"वेब अनुप्रयोग/स्क्रिप्ट (CGI) CGI स्क्रिप्ट केँ वेब सर्वर क द्वारा आरंभ कएल जाइत अछि "
+"(apache)"
 
 #: ../polgen.ui:387
 msgid "User Application"
@@ -258,8 +272,8 @@ msgid ""
 "User Application are any application that you would like to confine that is "
 "started by a user"
 msgstr ""
-"प्रयोक्ता अनुप्रयोग कोनो अनुप्रयोग अछि जे सीमित कएनाइ चाहत जे प्रयोक्ता क "
-"द्वारा आरंभ भेल अछि"
+"प्रयोक्ता अनुप्रयोग कोनो अनुप्रयोग अछि जे सीमित कएनाइ चाहत जे प्रयोक्ता क द्वारा आरंभ भेल "
+"अछि"
 
 #: ../polgen.ui:404
 msgid "Sandbox"
@@ -286,9 +300,9 @@ msgid ""
 "This user will login to a machine only via a terminal or remote login.  By "
 "default this user will have  no setuid, no networking, no su, no sudo."
 msgstr ""
-"ई प्रयोक्ता मशीन मे लॉगिन मात्र टर्मिनल अथवा दूरस्थ लॉगिन सँ हाएत.  "
-"पूर्वनिर्धारित रूपेँ ई प्रयोक्ता क पास कोनो setuid नहि हाएत, कोनो संजालन "
-"नहि, कोनो su नहि, कोनो sudo नहि."
+"ई प्रयोक्ता मशीन मे लॉगिन मात्र टर्मिनल अथवा दूरस्थ लॉगिन सँ हाएत.  पूर्वनिर्धारित रूपेँ ई "
+"प्रयोक्ता क पास कोनो setuid नहि हाएत, कोनो संजालन नहि, कोनो su नहि, कोनो sudo "
+"नहि."
 
 #: ../polgen.ui:516
 msgid "Minimal X Windows User Role"
@@ -299,9 +313,8 @@ msgid ""
 "This user can login to a machine via X or terminal.  By default this user "
 "will have no setuid, no networking, no sudo, no su"
 msgstr ""
-"ई प्रयोक्ता मशीन मे लॉगिन X अथवा टर्मिनल सँ कए सकैत अछि.  पूर्वनिर्धारित "
-"रूपेँ ई प्रयोक्ता क पास कोनो setuid नहि हाएत, कोनो संजालन नहि, कोनो sudo "
-"नहि, कोनो su नहि."
+"ई प्रयोक्ता मशीन मे लॉगिन X अथवा टर्मिनल सँ कए सकैत अछि.  पूर्वनिर्धारित रूपेँ ई प्रयोक्ता "
+"क पास कोनो setuid नहि हाएत, कोनो संजालन नहि, कोनो sudo नहि, कोनो su नहि."
 
 #: ../polgen.ui:533
 msgid "User Role"
@@ -312,8 +325,8 @@ msgid ""
 "User with full networking, no setuid applications without transition, no "
 "sudo, no su."
 msgstr ""
-"पूर्ण संजालन क संग प्रयोक्ता, कोनो setuid अनुप्रयोग बिनु संक्रमण क नहि, कोनो "
-"sudo नहि, कोनो su नहि."
+"पूर्ण संजालन क संग प्रयोक्ता, कोनो setuid अनुप्रयोग बिनु संक्रमण क नहि, कोनो sudo नहि, "
+"कोनो su नहि."
 
 #: ../polgen.ui:550
 msgid "Admin User Role"
@@ -324,8 +337,8 @@ msgid ""
 "User with full networking, no setuid applications without transition, no su, "
 "can sudo to Root Administration Roles"
 msgstr ""
-"पूर्ण संजालन क संग प्रयोक्ता, कोनो setuid अनुप्रयोग बिनु संक्रमण क नहि, कोनो "
-"su नहि, रूट प्रशासन भूमिका केँ sudo कए सकैत अछि."
+"पूर्ण संजालन क संग प्रयोक्ता, कोनो setuid अनुप्रयोग बिनु संक्रमण क नहि, कोनो su नहि, रूट "
+"प्रशासन भूमिका केँ sudo कए सकैत अछि."
 
 #: ../polgen.ui:596
 msgid "<b>Root Users</b>"
@@ -341,9 +354,9 @@ msgid ""
 "the machine while running as root.  This user will not be able to login to "
 "the system directly."
 msgstr ""
-"रूट प्रशासन प्रयोक्ता  भूमिका चुनू, जँ ई प्रयोक्ता मशीन केँ प्रशासित करबाक "
-"लेल प्रयोग कएल जाइत अछि रूट क रूपेँ कार्य करते हुए.  ई प्रयोक्ता सिस्टम मे "
-"सीधे लॉगिन होएबा क लेल समर्थ नहि हाएत."
+"रूट प्रशासन प्रयोक्ता  भूमिका चुनू, जँ ई प्रयोक्ता मशीन केँ प्रशासित करबाक लेल प्रयोग कएल "
+"जाइत अछि रूट क रूपेँ कार्य करते हुए.  ई प्रयोक्ता सिस्टम मे सीधे लॉगिन होएबा क लेल समर्थ "
+"नहि हाएत."
 
 #: ../polgen.ui:705
 msgid "<b>Enter name of application or user role:</b>"
@@ -399,7 +412,8 @@ msgid "Select applications domains that %s will transition to."
 msgstr ""
 
 #: ../polgen.ui:972
-msgid "transition \n"
+msgid ""
+"transition \n"
 "role tab"
 msgstr ""
 
@@ -408,8 +422,7 @@ msgid "<b>Select the user_roles that will transition to %s:</b>"
 msgstr ""
 
 #: ../polgen.ui:1007
-msgid ""
-"Select the user roles that will transiton to this applications domains."
+msgid "Select the user roles that will transiton to this applications domains."
 msgstr "प्रयोक्ता भूमिका चुनू जे ई अनुप्रयोग डोमेन मे संक्रमित करताह."
 
 #: ../polgen.ui:1040
@@ -471,7 +484,8 @@ msgid "<b>UDP Ports</b>"
 msgstr "<b>UDP पोर्ट</b>"
 
 #: ../polgen.ui:1492
-msgid "Network\n"
+msgid ""
+"Network\n"
 "Bind tab"
 msgstr ""
 
@@ -697,10 +711,9 @@ msgid ""
 "If you are changing policy types or going from disabled to enforcing, a "
 "relabel is required."
 msgstr ""
-"चुनू जँ अहाँ पूरे फाइल सिस्टम केँ अगले रिबूट पर फेर लेबल कएनाइ चाहैत अछि.  "
-"रिलेबल कएनाइ लंबा समय लए सकैत अछि, सिस्टम क आकार पर निर्भर करते हुए.  जँ "
-"अहाँ पॉलिसी प्रकार केँ निष्क्रिय सँ बाध्यकारी मे बदल रहे अछि, फेर लेबल कएनाइ "
-"जरूरी अछि."
+"चुनू जँ अहाँ पूरे फाइल सिस्टम केँ अगले रिबूट पर फेर लेबल कएनाइ चाहैत अछि.  रिलेबल कएनाइ लंबा "
+"समय लए सकैत अछि, सिस्टम क आकार पर निर्भर करते हुए.  जँ अहाँ पॉलिसी प्रकार केँ निष्क्रिय "
+"सँ बाध्यकारी मे बदल रहे अछि, फेर लेबल कएनाइ जरूरी अछि."
 
 #: ../system-config-selinux.ui:903
 msgid "Relabel on next reboot."
@@ -802,8 +815,8 @@ msgid ""
 "Enable/Disable additional audit rules, that are normally not reported in the "
 "log files."
 msgstr ""
-"बाइली ऑडिट नियम सक्रिय/निष्क्रिय करू, जे लॉग फाइल मे सामान्यतः रिपोर्ट नहि "
-"कएल गेल अछि."
+"बाइली ऑडिट नियम सक्रिय/निष्क्रिय करू, जे लॉग फाइल मे सामान्यतः रिपोर्ट नहि कएल गेल "
+"अछि."
 
 #: ../system-config-selinux.ui:1659 ../modulesPage.py:150
 msgid "Enable Audit"
@@ -868,7 +881,8 @@ msgstr "निर्देशिका चुनू जकरामे पॉल
 
 #: ../polgengui.py:683
 #, python-format
-msgid "Type %s_t already defined in current policy.\n"
+msgid ""
+"Type %s_t already defined in current policy.\n"
 "Do you want to continue?"
 msgstr ""
 "मोजुदा नीति मे %s_t पहिने सँ परिभाषित अछि.\n"
@@ -880,7 +894,8 @@ msgstr "नाम जांचें"
 
 #: ../polgengui.py:687
 #, python-format
-msgid "Module %s already loaded in current policy.\n"
+msgid ""
+"Module %s already loaded in current policy.\n"
 "Do you want to continue?"
 msgstr ""
 
@@ -894,9 +909,11 @@ msgid "You must enter a executable"
 msgstr "अहाँ जरूर एकटा एक्सक्यूटेबल दिअ'"
 
 #: ../loginsPage.py:59
-msgid "Login\n"
+msgid ""
+"Login\n"
 "Name"
-msgstr "लॉगिन\n"
+msgstr ""
+"लॉगिन\n"
 "नाम"
 
 #: ../loginsPage.py:135
@@ -946,9 +963,9 @@ msgid ""
 "the next boot. Relabeling takes a long time depending on the size of the "
 "file system.  Do you wish to continue?"
 msgstr ""
-"पॉलिसी प्रकार केँ बदलना पूरे फाइल सिस्टम केँ रिलेबल करने क कारण बनेगा अगले "
-"बूट पर. रिलेबलिंग लंबा समय लेता अछि फाइल सिस्टम क आकार पर निर्भर करते हुए.  "
-"की अहाँ जारी रखबा चाहैत अछि?"
+"पॉलिसी प्रकार केँ बदलना पूरे फाइल सिस्टम केँ रिलेबल करने क कारण बनेगा अगले बूट पर. "
+"रिलेबलिंग लंबा समय लेता अछि फाइल सिस्टम क आकार पर निर्भर करते हुए.  की अहाँ जारी रखबा "
+"चाहैत अछि?"
 
 #: ../statusPage.py:151
 msgid ""
@@ -959,12 +976,11 @@ msgid ""
 "enforce SELinux policy.  Permissive mode does not require a reboot    Do you "
 "wish to continue?"
 msgstr ""
-"SELinux केँ निष्क्रिय मे बदलबा क लेल रिबूट क जरूरत होती अछि.  एकर सलाह नहि "
-"दी जाती अछि.  जँ अहाँ SELinux केँ वापस लौटाने क सोचते अछि, सिस्टम केँ रिलेबल "
-"करने क जरूरत हाएत.  जँ अहाँ ई देखना चाहैत अछि जे SELinux सिस्टम पर समस्या दे "
-"रहल अछि, अहाँ अनुज्ञात्मक मोड मे जाए सकैत अछि जे सिर्फ त्रुटि देगा आओर "
-"SELinux पॉलिसी केँ बाध्यकारी नहि करताह.  अनुज्ञात्मक मोड क लेल रिबूट क जरूरत "
-"नहि अछि, की अहाँ जारी रखबा चाहैत अछि?"
+"SELinux केँ निष्क्रिय मे बदलबा क लेल रिबूट क जरूरत होती अछि.  एकर सलाह नहि दी जाती "
+"अछि.  जँ अहाँ SELinux केँ वापस लौटाने क सोचते अछि, सिस्टम केँ रिलेबल करने क जरूरत हाएत.  "
+"जँ अहाँ ई देखना चाहैत अछि जे SELinux सिस्टम पर समस्या दे रहल अछि, अहाँ अनुज्ञात्मक मोड मे "
+"जाए सकैत अछि जे सिर्फ त्रुटि देगा आओर SELinux पॉलिसी केँ बाध्यकारी नहि करताह.  "
+"अनुज्ञात्मक मोड क लेल रिबूट क जरूरत नहि अछि, की अहाँ जारी रखबा चाहैत अछि?"
 
 #: ../statusPage.py:156
 msgid ""
@@ -972,6 +988,6 @@ msgid ""
 "on the next boot. Relabeling takes a long time depending on the size of the "
 "file system.  Do you wish to continue?"
 msgstr ""
-"सक्रिय SELinux स्थिति मे बदलना अगले बूट पर पूरे फाइल सिस्टम क फेर लेबल कएल "
-"जाने क कारण बनेगा. फाइल सिस्टम क आकार क आधार पर फेर सँ लेबल कएल जएनाइ काफी "
-"समय लेता अछि. की अहाँ जारी रखबा चाहब?"
+"सक्रिय SELinux स्थिति मे बदलना अगले बूट पर पूरे फाइल सिस्टम क फेर लेबल कएल जाने क कारण "
+"बनेगा. फाइल सिस्टम क आकार क आधार पर फेर सँ लेबल कएल जएनाइ काफी समय लेता अछि. की "
+"अहाँ जारी रखबा चाहब?"
