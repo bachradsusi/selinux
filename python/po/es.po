@@ -10,20 +10,23 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:45+0200\n"
+"PO-Revision-Date: 2018-07-18 07:14+0000\n"
+"Last-Translator: Máximo Castañeda Riloba <mcrcctm@gmail.com>\n"
+"Language-Team: Spanish\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2018-06-04 10:34+0000\n"
-"Last-Translator: Emilio Herrera <ehespinosa57@gmail.com>\n"
-"Language-Team: Spanish\n"
-"Language: es\n"
-"X-Generator: Zanata 4.4.5\n"
+"X-Generator: Zanata 4.5.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../semanage/semanage:256
-msgid "\n"
+msgid ""
+"\n"
 "    Name for the specified infiniband end port.\n"
 msgstr ""
+"\n"
+"    Nombre para el puerto final de infiniband.\n"
 
 #: ../semanage/semanage:245
 msgid ""
@@ -31,29 +34,42 @@ msgid ""
 "    Protocol  for  the specified port (tcp|udp) or internet protocol\n"
 "    version for the specified node (ipv4|ipv6).\n"
 msgstr ""
+"\n"
+"    Protocolo para el puerto (tcp|udp) o versión del protocolo de\n"
+"    internet para el nodo (ipv4|ipv6).\n"
 
 #: ../semanage/semanage:251
-msgid "\n"
+msgid ""
+"\n"
 "    Subnet prefix for  the specified infiniband ibpkey.\n"
 msgstr ""
 
 #: ../sepolicy/sepolicy/interface.py:231
 #, python-format
-msgid "\n"
+msgid ""
+"\n"
 "Compile test for %s failed.\n"
 msgstr ""
+"\n"
+"Falló la prueba de compilación de %s.\n"
 
 #: ../sepolicy/sepolicy/interface.py:234
 #, python-format
-msgid "\n"
+msgid ""
+"\n"
 "Compile test for %s has not run. %s\n"
 msgstr ""
+"\n"
+"No se ha ejecutado la prueba de compilación de %s. %s\n"
 
 #: ../sepolicy/sepolicy/interface.py:240
 #, python-format
-msgid "\n"
+msgid ""
+"\n"
 "Compiling of %s interface is not supported."
 msgstr ""
+"\n"
+"No se admite la compilación del interfaz %s."
 
 #: ../semanage/semanage:236
 msgid ""
@@ -65,23 +81,30 @@ msgid ""
 msgstr ""
 
 #: ../semanage/seobject.py:2624
-msgid "\n"
+msgid ""
+"\n"
 "SELinux Distribution fcontext Equivalence \n"
-msgstr "\n"
+msgstr ""
+"\n"
 "Equivalencia SELinux de distribución de fcontext\n"
 
 #: ../semanage/seobject.py:2629
-msgid "\n"
+msgid ""
+"\n"
 "SELinux Local fcontext Equivalence \n"
-msgstr "\n"
+msgstr ""
+"\n"
 "Equivalencia SELinux Local de fcontext\n"
 
 #: ../semanage/semanage:423
 msgid ""
 "\n"
-"SELinux Roles.  You must enclose multiple roles within quotes,               "
-"   separate by spaces. Or specify -R multiple times.\n"
+"SELinux Roles.  You must enclose multiple roles within "
+"quotes,                  separate by spaces. Or specify -R multiple times.\n"
 msgstr ""
+"\n"
+"Roles SELinux.  Para varios roles debe incluirlos entre "
+"comillas                separados por espacios o bien usar -R varias veces.\n"
 
 #: ../chcat/chcat:133
 #, python-format
@@ -228,7 +251,6 @@ msgstr "Añadir"
 #: ../sepolicy/sepolicy/gui.py:1504
 msgid ""
 "Add File Equivalency Mapping. Mapping will be created when update is applied."
-""
 msgstr ""
 "Agregar mapa de equivalencias de archivos. El mapa será creado cuando la "
 "actualización se aplique."
@@ -242,7 +264,6 @@ msgstr "Agregar etiqueta de archivos para %s"
 #, python-format
 msgid ""
 "Add File Labeling for %s. File labels will be created when update is applied."
-""
 msgstr ""
 "Agregar etiqueta de archivos para %s. Las etiquetas de archivos serán "
 "creadas cuando se aplique la actualización."
@@ -259,8 +280,7 @@ msgstr ""
 "la actualización."
 
 #: ../sepolicy/sepolicy/gui.py:1490
-msgid ""
-"Add Login Mapping. User Mapping will be created when Update is applied."
+msgid "Add Login Mapping. User Mapping will be created when Update is applied."
 msgstr ""
 "Agregar el mapa de ingreso. El mapa de ingreso será creado cuando se aplique "
 "la actualización."
@@ -272,8 +292,7 @@ msgstr "Agregar puerto de red para %s"
 
 #: ../sepolicy/sepolicy/gui.py:1473
 #, python-format
-msgid ""
-"Add Network Port for %s.  Ports will be created when update is applied."
+msgid "Add Network Port for %s.  Ports will be created when update is applied."
 msgstr ""
 "Agregar puerto de red para %s.  Los puertos serán creados cuando se aplique "
 "la actualización."
@@ -308,7 +327,7 @@ msgstr "Agregar un archivo"
 #: ../semanage/semanage:223
 #, python-format
 msgid "Add a record of the %s object type"
-msgstr ""
+msgstr "Añadir un registro del tipo de objeto %s"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:458
 msgid ""
@@ -352,7 +371,6 @@ msgstr "Agregar nueva definición de rol o usuario de SELinux."
 #, python-format
 msgid ""
 "Add new port definition to which the '%(APP)s' domain is allowed to %(PERM)s."
-""
 msgstr ""
 "Agregar definición de nuevo puerto al cual el dominio '%(APP)s' está "
 "autorizado para %(PERM)s."
@@ -483,9 +501,11 @@ msgstr "Formato incorrecto %s: Registro %s"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:2866
 #: ../sepolicy/sepolicy/sepolicy.glade:2956
-msgid "Boolean\n"
+msgid ""
+"Boolean\n"
 "Enabled"
-msgstr "Booleano\n"
+msgstr ""
+"Booleano\n"
 "Activado"
 
 #: ../sepolicy/sepolicy/gui.py:1460
@@ -614,7 +634,7 @@ msgstr "Confirmar todos los cambios en su transacción actual al servidor."
 #: ../sepolicy/sepolicy/interface.py:223
 #, python-format
 msgid "Compiling %s interface"
-msgstr ""
+msgstr "Compilando el interfaz %s"
 
 #: ../sepolicy/sepolicy/generate.py:152
 msgid "Confined Root Administrator Role"
@@ -1189,8 +1209,7 @@ msgstr "No fue posible fijar campo mls en contexto ibpkey para %s/%s"
 #: ../semanage/seobject.py:2098
 #, python-format
 msgid "Could not set mls fields in interface context for %s"
-msgstr ""
-"No se pudieron poner los campos mls en el contexto de interfaz para %s"
+msgstr "No se pudieron poner los campos mls en el contexto de interfaz para %s"
 
 #: ../semanage/seobject.py:1126
 #, python-format
@@ -1337,6 +1356,8 @@ msgstr "Nivel predeterminado"
 msgid ""
 "Default SELinux Level for SELinux user, s0 Default. (MLS/MCS Systems only)"
 msgstr ""
+"Nivel SELinux predeterminado para el usuario SELinux, s0 si no se indica "
+"otra cosa (sólo para sistemas MLS/MCS)."
 
 #: ../sepolicy/sepolicy/sepolicy.glade:4132
 msgid "Delete"
@@ -1364,7 +1385,7 @@ msgstr "Borrar mapa de usuarios modificados."
 #: ../semanage/semanage:269
 #, python-format
 msgid "Delete a record of the %s object type"
-msgstr ""
+msgstr "Borrar un registro del tipo de objeto %s"
 
 #: ../sepolicy/sepolicy/gui.py:2313
 msgid "Delete file equiv labeling."
@@ -1429,15 +1450,15 @@ msgstr "Inhabilitar"
 
 #: ../semanage/semanage:638
 msgid "Disable a module"
-msgstr ""
+msgstr "Desactivar un módulo"
 
 #: ../semanage/semanage:726
 msgid "Disable the boolean"
-msgstr ""
+msgstr "Desactivar el marcador"
 
 #: ../semanage/semanage:771
 msgid "Disable/Enable dontaudit rules in policy"
-msgstr ""
+msgstr "Activar/desactivar reglas dontaudit en la política"
 
 #: ../semanage/seobject.py:392 ../sepolicy/sepolicy/sepolicy.glade:3431
 msgid "Disabled"
@@ -1504,11 +1525,11 @@ msgstr ""
 #: ../semanage/semanage:211
 #, python-format
 msgid "Do not print heading when listing %s object types"
-msgstr ""
+msgstr "No mostrar la cabecera al listar objetos tipo %s"
 
 #: ../semanage/semanage:215
 msgid "Do not reload policy after commit"
-msgstr ""
+msgstr "No recargar la política tras confirmar los cambios"
 
 #: ../sepolicy/sepolicy.py:332 ../sepolicy/sepolicy.py:380
 msgid "Domain name(s) of man pages to be created"
@@ -1520,11 +1541,11 @@ msgstr "Activar"
 
 #: ../semanage/semanage:639
 msgid "Enable a module"
-msgstr ""
+msgstr "Activar un módulo"
 
 #: ../semanage/semanage:725
 msgid "Enable the boolean"
-msgstr ""
+msgstr "Activar el marcador"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:2132
 msgid "Enabled"
@@ -1542,9 +1563,11 @@ msgstr ""
 "predeterminado es s0"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:5489
-msgid "Enter MLS/MCS Range for this SELinux User.\n"
+msgid ""
+"Enter MLS/MCS Range for this SELinux User.\n"
 "s0-s0:c1023"
-msgstr "Ingrese el rango MLS/MCS para este usuario de SELinux.\n"
+msgstr ""
+"Ingrese el rango MLS/MCS para este usuario de SELinux.\n"
 "s0-s0:c1023"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1264
@@ -1569,8 +1592,7 @@ msgstr "Introduzca el tipo de dominio que usted estaría extendiendo"
 
 #: ../sepolicy/sepolicy.py:609
 msgid "Enter domain(s) which this confined admin will administrate"
-msgstr ""
-"Introduzca el dominio(s) que administrará este administrador confinado"
+msgstr "Introduzca el dominio(s) que administrará este administrador confinado"
 
 #: ../sepolicy/sepolicy.py:587
 msgid "Enter interface names, you wish to query"
@@ -1601,7 +1623,6 @@ msgstr ""
 msgid "Enter the port number or range to which you want to add a port type."
 msgstr ""
 "Ingrese el número del puerto o rango al cual desea agregar el tipo de puerto."
-""
 
 #: ../sepolicy/sepolicy/sepolicy.glade:510
 #: ../sepolicy/sepolicy/sepolicy.glade:4063
@@ -1617,7 +1638,7 @@ msgstr "Ya existe una clase equivalente de %s"
 #: ../semanage/seobject.py:2322
 #, python-format
 msgid "Equivalence class for %s does not exist"
-msgstr ""
+msgstr "No existe una clase equivalente para %s"
 
 #: ../sepolicy/sepolicy/gui.py:2323
 #, python-format
@@ -1638,6 +1659,8 @@ msgid ""
 "Executables which will transition to '%s', when executing selected domains "
 "entrypoint."
 msgstr ""
+"Los ejecutables que pasarán a '%s' cuando se ejecuten los puntos de entrada "
+"de los dominios seleccionados."
 
 #: ../sepolicy/sepolicy/gui.py:1071
 #, python-format
@@ -1645,6 +1668,7 @@ msgid ""
 "Executables which will transition to a different domain, when '%s' executes "
 "them."
 msgstr ""
+"Los ejecutables que pasarán a un dominio diferente cuando '%s' los ejecute."
 
 #: ../sepolicy/sepolicy/sepolicy.glade:2930
 msgid ""
@@ -1740,7 +1764,7 @@ msgstr "Clase de archivo: %s"
 #: ../semanage/seobject.py:2389
 #, python-format
 msgid "File context for %s already defined"
-msgstr ""
+msgstr "El contexto de archivo para %s ya está definido"
 
 #: ../semanage/seobject.py:2546
 #, python-format
@@ -1791,8 +1815,7 @@ msgstr ""
 #: ../semanage/seobject.py:2361
 #, python-format
 msgid ""
-"File spec %s conflicts with equivalency rule '%s %s'; Try adding '%s' "
-"instead"
+"File spec %s conflicts with equivalency rule '%s %s'; Try adding '%s' instead"
 msgstr ""
 "Especificación de archivo %s está en conflicto con la regla de equivalencia "
 "'%s %s'; Intente agregar  '%s' en su lugar."
@@ -1948,7 +1971,7 @@ msgstr "Importar"
 
 #: ../semanage/semanage:871
 msgid "Import local customizations"
-msgstr ""
+msgstr "Importar ajustes locales"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:3632
 msgid "Import system settings from another machine"
@@ -1965,7 +1988,7 @@ msgstr "Archivo de entrada"
 #: ../semanage/seobject.py:2072
 #, python-format
 msgid "Interface %s already defined"
-msgstr ""
+msgstr "Ya se ha definido el interfaz %s"
 
 #: ../sepolicy/sepolicy.py:227
 #, python-format
@@ -2041,7 +2064,7 @@ msgstr "Lista las interfaces de la Política SELinux"
 #: ../semanage/semanage:265
 #, python-format
 msgid "List records of the %s object type"
-msgstr ""
+msgstr "Mostrar los registros del tipo de objeto %s"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1915
 #: ../sepolicy/sepolicy/sepolicy.glade:4016
@@ -2141,18 +2164,20 @@ msgstr "Crear ruta recursiva"
 #: ../semanage/semanage:405
 msgid "Manage SELinux confined users (Roles and levels for an SELinux user)"
 msgstr ""
+"Gestiona usuarios confinados SELinux (roles y niveles para un usuario "
+"SELinux)"
 
 #: ../semanage/semanage:625
 msgid "Manage SELinux policy modules"
-msgstr ""
+msgstr "Gestiona los módulos de políticas SELinux"
 
 #: ../semanage/semanage:710
 msgid "Manage booleans to selectively enable functionality"
-msgstr ""
+msgstr "Gestiona los marcadores para activar funcionalidad de modo selectivo"
 
 #: ../semanage/semanage:355
 msgid "Manage file context mapping definitions"
-msgstr ""
+msgstr "Gestiona las definiciones de asignaciones de contextos de ficheros"
 
 #: ../semanage/semanage:543
 msgid "Manage infiniband end port type definitions"
@@ -2168,15 +2193,15 @@ msgstr ""
 
 #: ../semanage/semanage:586
 msgid "Manage network interface type definitions"
-msgstr ""
+msgstr "Gestiona las definiciones de tipos de interfaz de red"
 
 #: ../semanage/semanage:667
 msgid "Manage network node type definitions"
-msgstr ""
+msgstr "Gestiona las definiciones de tipos de nodo de red"
 
 #: ../semanage/semanage:455
 msgid "Manage network port type definitions"
-msgstr ""
+msgstr "Gestiona las definiciones de tipos de puerto de red"
 
 #: ../semanage/semanage:748
 msgid "Manage process type enforcement mode"
@@ -2203,7 +2228,7 @@ msgstr "Existen archivos mal etiquetados"
 #: ../sepolgen/src/sepolgen/interfaces.py:491
 #, python-format
 msgid "Missing interface definition for %s"
-msgstr ""
+msgstr "Falta la definición de interfaz para %s"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:4148
 msgid "Modify"
@@ -2279,7 +2304,7 @@ msgstr "Modificar los usuarios de SELinux"
 #: ../semanage/semanage:261
 #, python-format
 msgid "Modify a record of the %s object type"
-msgstr ""
+msgstr "Modificar un registro del tipo de objeto %s"
 
 #: ../sepolicy/sepolicy/gui.py:2315
 msgid "Modify file equiv labeling."
@@ -2298,7 +2323,6 @@ msgstr "Modificar asignación de ingreso"
 #, python-format
 msgid ""
 "Modify port definitions to which the '%(APP)s' domain is allowed to %(PERM)s."
-""
 msgstr ""
 "Borrar definiciones de puerto modificado al cual el dominio '%(APP)s' está "
 "autorizado para %(PERM)s."
@@ -2336,7 +2360,7 @@ msgstr "Nombre del módulo"
 #: ../semanage/seobject.py:401
 #, python-format
 msgid "Module does not exist: %s "
-msgstr ""
+msgstr "El módulo no existe: %s"
 
 #: ../sepolicy/sepolicy/generate.py:153
 msgid "Module information for a new type"
@@ -2370,7 +2394,7 @@ msgstr ""
 
 #: ../semanage/semanage:640
 msgid "Name of the module to act on"
-msgstr ""
+msgstr "Nombre del módulo sobre el que actuar"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1828
 #: ../sepolicy/sepolicy/sepolicy.glade:2830
@@ -2379,7 +2403,7 @@ msgstr "Red"
 
 #: ../semanage/semanage:681
 msgid "Network Mask"
-msgstr ""
+msgstr "Máscara de red"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:442
 #: ../sepolicy/sepolicy/sepolicy.glade:1120
@@ -2460,7 +2484,7 @@ msgstr "Archivo de salida"
 
 #: ../semanage/semanage:791
 msgid "Output local customizations"
-msgstr ""
+msgstr "Mostrar los ajustes locales"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:483
 #: ../sepolicy/sepolicy/sepolicy.glade:4046
@@ -2566,12 +2590,12 @@ msgstr ""
 
 #: ../semanage/semanage:637
 msgid "Remove a module"
-msgstr ""
+msgstr "Retirar un módulo"
 
 #: ../semanage/semanage:277
 #, python-format
 msgid "Remove all %s objects local customizations"
-msgstr ""
+msgstr "Retirar todos los ajustes locales de los objetos de tipo %s"
 
 #: ../chcat/chcat:115 ../chcat/chcat:194
 msgid "Requires at least one category"
@@ -2705,7 +2729,7 @@ msgstr "Roles SELinux"
 
 #: ../semanage/semanage:227
 msgid "SELinux Type for the object"
-msgstr ""
+msgstr "Tipo SELinux para el objeto"
 
 #: ../semanage/seobject.py:2062 ../semanage/seobject.py:2370
 msgid "SELinux Type is required"
@@ -2774,7 +2798,7 @@ msgstr ""
 #: ../semanage/seobject.py:830
 #, python-format
 msgid "SELinux user %s is already defined"
-msgstr ""
+msgstr "El usuario SELinux %s ya está definido"
 
 #: ../semanage/seobject.py:957
 #, python-format
@@ -2788,7 +2812,7 @@ msgstr "El usuario SELinux %s no está definido"
 
 #: ../semanage/semanage:281
 msgid "SELinux user name"
-msgstr ""
+msgstr "Nombre de usuario SELinux "
 
 #: ../sepolicy/sepolicy/generate.py:145
 msgid "Sandbox"
@@ -2848,7 +2872,7 @@ msgstr ""
 
 #: ../semanage/semanage:207
 msgid "Select a priority for module operations"
-msgstr ""
+msgstr "Elija una prioridad para las operaciones del módulo"
 
 #: ../semanage/semanage:203
 msgid "Select an alternate SELinux Policy Store to manage"
@@ -3027,7 +3051,7 @@ msgstr "Es obligatorio el prefijo de subred"
 
 #: ../semanage/seobject.py:1564
 msgid "Subnet_Prefix"
-msgstr ""
+msgstr "Prefijo subred"
 
 #: ../semanage/seobject.py:2302
 #, python-format
@@ -3084,8 +3108,8 @@ msgstr ""
 
 #: ../sepolicy/sepolicy/sepolicy.glade:332
 msgid ""
-"The entry that was entered is incorrect.  Please try again in the ex:/.../..."
-" format."
+"The entry that was entered is incorrect.  Please try again in the "
+"ex:/.../... format."
 msgstr ""
 "La entrada que ingresó es incorrecta. Por favor intente de nuevo con el "
 "formato  ex:/.../... "
@@ -3097,6 +3121,10 @@ msgid ""
 "# yum install policycoreutils-devel\n"
 "Or similar for your distro."
 msgstr ""
+"Se necesita el módulo python sepolgen para configurar dominios permisivos.\n"
+"Se incluye en el paquete policycoreutils-devel en algunas distribuciones.\n"
+"# yum install policycoreutils-devel\n"
+"O similar para su distro."
 
 #: ../sepolicy/sepolicy/gui.py:1296
 #, python-format
@@ -3110,11 +3138,16 @@ msgstr ""
 
 #: ../audit2allow/audit2allow:238
 #, python-format
-msgid "To make this policy package active, execute:\n"
+msgid ""
+"To make this policy package active, execute:\n"
 "\n"
 "semodule -i %s\n"
 "\n"
 msgstr ""
+"Para activar este paquete de políticas, ejecute:\n"
+"\n"
+"semodule -i %s\n"
+"\n"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1846
 #: ../sepolicy/sepolicy/sepolicy.glade:3121
@@ -3309,9 +3342,11 @@ msgstr "Debe especificar uno de los siguientes valores: %s"
 
 #: ../sepolicy/sepolicy/generate.py:886
 #, python-format
-msgid "You need to define a new type which ends with: \n"
+msgid ""
+"You need to define a new type which ends with: \n"
 " %s"
-msgstr "Necesita definir un nuevo tipo que termine con:\n"
+msgstr ""
+"Necesita definir un nuevo tipo que termine con:\n"
 " %s"
 
 #: ../sepolicy/sepolicy.py:324
@@ -3334,7 +3369,7 @@ msgstr "dispositivo de bloque"
 
 #: ../semanage/semanage:715
 msgid "boolean"
-msgstr ""
+msgstr "marcador"
 
 #: ../sepolicy/sepolicy.py:454
 msgid "boolean to get description"
@@ -3481,7 +3516,7 @@ msgstr ""
 
 #: ../semanage/semanage:471
 msgid "port | port_range"
-msgstr ""
+msgstr "puerto | rango_puertos"
 
 #: ../sepolicy/sepolicy.py:447
 msgid "query SELinux Policy to see description of booleans"

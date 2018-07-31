@@ -7,18 +7,19 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:45+0200\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2018-06-16 01:32+0000\n"
 "Last-Translator: Casey Jones <nahareport@live.com>\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"X-Generator: Zanata 4.4.5\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Zanata 4.5.0\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
 #: ../semanage/semanage:256
-msgid "\n"
+msgid ""
+"\n"
 "    Name for the specified infiniband end port.\n"
 msgstr ""
 
@@ -30,25 +31,29 @@ msgid ""
 msgstr ""
 
 #: ../semanage/semanage:251
-msgid "\n"
+msgid ""
+"\n"
 "    Subnet prefix for  the specified infiniband ibpkey.\n"
 msgstr ""
 
 #: ../sepolicy/sepolicy/interface.py:231
 #, python-format
-msgid "\n"
+msgid ""
+"\n"
 "Compile test for %s failed.\n"
 msgstr ""
 
 #: ../sepolicy/sepolicy/interface.py:234
 #, python-format
-msgid "\n"
+msgid ""
+"\n"
 "Compile test for %s has not run. %s\n"
 msgstr ""
 
 #: ../sepolicy/sepolicy/interface.py:240
 #, python-format
-msgid "\n"
+msgid ""
+"\n"
 "Compiling of %s interface is not supported."
 msgstr ""
 
@@ -62,15 +67,19 @@ msgid ""
 msgstr ""
 
 #: ../semanage/seobject.py:2624
-msgid "\n"
+msgid ""
+"\n"
 "SELinux Distribution fcontext Equivalence \n"
-msgstr "\n"
+msgstr ""
+"\n"
 "SELinux ディストリビューション fcontext の等価\n"
 
 #: ../semanage/seobject.py:2629
-msgid "\n"
+msgid ""
+"\n"
 "SELinux Local fcontext Equivalence \n"
-msgstr "\n"
+msgstr ""
+"\n"
 " SELinux ローカル fcontext の等価\n"
 "\n"
 "\n"
@@ -78,8 +87,8 @@ msgstr "\n"
 #: ../semanage/semanage:423
 msgid ""
 "\n"
-"SELinux Roles.  You must enclose multiple roles within quotes,               "
-"   separate by spaces. Or specify -R multiple times.\n"
+"SELinux Roles.  You must enclose multiple roles within "
+"quotes,                  separate by spaces. Or specify -R multiple times.\n"
 msgstr ""
 
 #: ../chcat/chcat:133
@@ -115,19 +124,25 @@ msgstr "-- Allowed %s [ %s ]"
 #, python-format
 msgid ""
 "-a option can not be used with '%s' domains. Read usage for more details."
-msgstr "'%s' ドメインには -a オプションは使用できません。詳細は使い方をお読みください。"
+msgstr ""
+"'%s' ドメインには -a オプションは使用できません。詳細は使い方をお読みくださ"
+"い。"
 
 #: ../sepolicy/sepolicy.py:538
 #, python-format
 msgid ""
 "-d option can not be used with '%s' domains. Read usage for more details."
-msgstr "'%s' ドメインには -d オプションは使用できません。詳細は使い方をお読みください。"
+msgstr ""
+"'%s' ドメインには -d オプションは使用できません。詳細は使い方をお読みくださ"
+"い。"
 
 #: ../sepolicy/sepolicy.py:533
 #, python-format
 msgid ""
 "-t option can not be used with '%s' domains. Read usage for more details."
-msgstr "'%s' ドメインには -t オプションは使用できません。詳細は使い方をお読みください。"
+msgstr ""
+"'%s' ドメインには -t オプションは使用できません。詳細は使い方をお読みくださ"
+"い。"
 
 #: ../sepolicy/sepolicy.py:546
 msgid "-w option can not be used with the --newtype option"
@@ -139,7 +154,8 @@ msgstr "<b>...データを選択して表示...</b>"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:3995
 msgid "<b>Deny all processes from ptracing or debugging other processes?</b>"
-msgstr "<b>プロセスが別のプロセスのデバッグや ptrace を行わないよう拒否しますか?</b>"
+msgstr ""
+"<b>プロセスが別のプロセスのデバッグや ptrace を行わないよう拒否しますか?</b>"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:3866
 msgid "<b>Disable ability to run unconfined system processes?</b>"
@@ -161,13 +177,17 @@ msgstr "<b>システムモード</b>"
 msgid ""
 "<operation> File Labeling for <selected domain>. File labels will be created "
 "when update is applied."
-msgstr "<operation> <selected domain> のファイルラベル。更新の適用時にファイルラベルが作成されます。"
+msgstr ""
+"<operation> <selected domain> のファイルラベル。更新の適用時にファイルラベル"
+"が作成されます。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1385
 msgid ""
 "<operation> Network Port for <selected domain>.  Ports will be created when "
 "update is applied."
-msgstr "<operation> <selected domain> のネットワークポート。更新の適用時にポートが作成されます。"
+msgstr ""
+"<operation> <selected domain> のネットワークポート。更新の適用時にポートが作"
+"成されます。"
 
 #: ../sepolicy/sepolicy/gui.py:108
 msgid ""
@@ -196,9 +216,10 @@ msgid ""
 "module could cause SELinux to deny access to a domain, that should be "
 "allowed."
 msgstr ""
-"permissive ドメインとは、プロセスが行いたい動作を行えるよう許可し、SELinux "
-"では拒否のログを記録するだけで強制はしないプロセスラベルです。通常、permissive "
-"ドメインは試験的なポリシーを示し、許可されるべきドメインへのアクセスが SELinux により拒否される原因として考えられるモジュールを無効にします。"
+"permissive ドメインとは、プロセスが行いたい動作を行えるよう許可し、SELinux で"
+"は拒否のログを記録するだけで強制はしないプロセスラベルです。通常、permissive "
+"ドメインは試験的なポリシーを示し、許可されるべきドメインへのアクセスが "
+"SELinux により拒否される原因として考えられるモジュールを無効にします。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:5132
 msgid "Action"
@@ -211,8 +232,9 @@ msgstr "追加"
 #: ../sepolicy/sepolicy/gui.py:1504
 msgid ""
 "Add File Equivalency Mapping. Mapping will be created when update is applied."
-""
-msgstr "ファイル等価性マッピングを追加します。更新の適用時にマッピングが作成されます。"
+msgstr ""
+"ファイル等価性マッピングを追加します。更新の適用時にマッピングが作成されま"
+"す。"
 
 #: ../sepolicy/sepolicy/gui.py:1480 ../sepolicy/sepolicy/gui.py:1533
 #, python-format
@@ -223,8 +245,8 @@ msgstr "%s のファイルラベルを追加"
 #, python-format
 msgid ""
 "Add File Labeling for %s. File labels will be created when update is applied."
-""
-msgstr "%s のファイルラベルを追加します。更新の適用時にファイルラベルが作成されます。"
+msgstr ""
+"%s のファイルラベルを追加します。更新の適用時にファイルラベルが作成されます。"
 
 #: ../sepolicy/sepolicy/gui.py:1491
 msgid "Add Login Mapping"
@@ -233,12 +255,14 @@ msgstr "ログインマッピングの追加"
 #: ../sepolicy/sepolicy/sepolicy.glade:1137
 msgid ""
 "Add Login Mapping. Login Mapping will be created when update is applied."
-msgstr "ログインのマッピングを追加します。更新の適用時にマッピングが作成されます。"
+msgstr ""
+"ログインのマッピングを追加します。更新の適用時にマッピングが作成されます。"
 
 #: ../sepolicy/sepolicy/gui.py:1490
-msgid ""
-"Add Login Mapping. User Mapping will be created when Update is applied."
-msgstr "ログインマッピングを追加します。更新の適用時にユーザーマッピングが作成されます。"
+msgid "Add Login Mapping. User Mapping will be created when Update is applied."
+msgstr ""
+"ログインマッピングを追加します。更新の適用時にユーザーマッピングが作成されま"
+"す。"
 
 #: ../sepolicy/sepolicy/gui.py:1474
 #, python-format
@@ -247,9 +271,9 @@ msgstr "%s のネットワークポートを追加"
 
 #: ../sepolicy/sepolicy/gui.py:1473
 #, python-format
-msgid ""
-"Add Network Port for %s.  Ports will be created when update is applied."
-msgstr "%s ネットワークポートを追加します。更新の適用時にポートが作成されます。"
+msgid "Add Network Port for %s.  Ports will be created when update is applied."
+msgstr ""
+"%s ネットワークポートを追加します。更新の適用時にポートが作成されます。"
 
 #: ../sepolicy/sepolicy/gui.py:1505
 msgid "Add SELinux File Equivalency"
@@ -259,7 +283,9 @@ msgstr "SELinux のファイルの等価性を追加"
 msgid ""
 "Add SELinux User Role. SELinux user roles will be created when update is "
 "applied."
-msgstr "SELinux ユーザーロールを追加します。更新の適用時に SELinux ユーザーロールが作成されます。"
+msgstr ""
+"SELinux ユーザーロールを追加します。更新の適用時に SELinux ユーザーロールが作"
+"成されます。"
 
 #: ../sepolicy/sepolicy/gui.py:1497
 msgid "Add SELinux Users"
@@ -268,7 +294,9 @@ msgstr "SELinux ユーザーの追加"
 #: ../sepolicy/sepolicy/sepolicy.glade:5349
 msgid ""
 "Add User Roles. SELinux User Roles will be created when Update is applied."
-msgstr "ユーザーロールを追加します。更新の適用時に SELinux ユーザーロールが作成されます。"
+msgstr ""
+"ユーザーロールを追加します。更新の適用時に SELinux ユーザーロールが作成されま"
+"す。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:621
 msgid "Add a file"
@@ -283,7 +311,9 @@ msgstr ""
 msgid ""
 "Add file Equivalence Mapping.  Mapping will be created when Update is "
 "applied."
-msgstr "ファイルの等価性マッピングを追加します。更新の適用時にマッピングが作成されます。"
+msgstr ""
+"ファイルの等価性マッピングを追加します。更新の適用時にマッピングが作成されま"
+"す。"
 
 #: ../sepolicy/sepolicy/gui.py:2311
 msgid "Add file equiv labeling."
@@ -319,8 +349,9 @@ msgstr "新規の SELinux ユーザーまたはロールの定義を追加しま
 #, python-format
 msgid ""
 "Add new port definition to which the '%(APP)s' domain is allowed to %(PERM)s."
-""
-msgstr "%(PERM)s を許可されている '%(APP)s' ドメインに、新しいポートの定義を追加します。"
+msgstr ""
+"%(PERM)s を許可されている '%(APP)s' ドメインに、新しいポートの定義を追加しま"
+"す。"
 
 #: ../sepolicy/sepolicy/gui.py:2237
 #, python-format
@@ -394,10 +425,12 @@ msgid ""
 "now be confined.  To disable the unconfined_t user you must first remove "
 "unconfined_t from the users/login screens."
 msgstr ""
-"制限のないドメインとは、SELinux "
-"に妨害されずプロセスが行いたい動作を行えるよう許可するプロセスラベルです。このモジュールが有効になっている場合、SELinux "
-"にポリシーが定義されていない初期システムで起動時に開始されたアプリケーションは、制限のないプロセスとして実行されます。unconfined_t "
-"ユーザーを無効にするには、まず unconfined_t をユーザーまたはログインの画面から削除する必要があります。"
+"制限のないドメインとは、SELinux に妨害されずプロセスが行いたい動作を行えるよ"
+"う許可するプロセスラベルです。このモジュールが有効になっている場合、SELinux "
+"にポリシーが定義されていない初期システムで起動時に開始されたアプリケーション"
+"は、制限のないプロセスとして実行されます。unconfined_t ユーザーを無効にするに"
+"は、まず unconfined_t をユーザーまたはログインの画面から削除する必要がありま"
+"す。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1070
 msgid "Analyzing Policy..."
@@ -445,9 +478,11 @@ msgstr "不正な形式 %s: レコード %s"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:2866
 #: ../sepolicy/sepolicy/sepolicy.glade:2956
-msgid "Boolean\n"
+msgid ""
+"Boolean\n"
 "Enabled"
-msgstr "Boolean\n"
+msgstr ""
+"Boolean\n"
 "有効"
 
 #: ../sepolicy/sepolicy/gui.py:1460
@@ -528,7 +563,9 @@ msgid ""
 "the next boot. Relabeling takes a long time depending on the size of the "
 "file system.  Do you wish to continue?"
 msgstr ""
-"ポリシータイプを変更すると、次回システムを再起動するとき時に、ファイルシステム全体のラベルが変更します。ラベル変更は、ファイルシステムのサイズによっては時間がかかります。続行しますか?"
+"ポリシータイプを変更すると、次回システムを再起動するとき時に、ファイルシステ"
+"ム全体のラベルが変更します。ラベル変更は、ファイルシステムのサイズによっては"
+"時間がかかります。続行しますか?"
 
 #: ../sepolicy/sepolicy/gui.py:2768
 msgid ""
@@ -539,10 +576,12 @@ msgid ""
 "enforce SELinux policy.  Permissive mode does not require a reboot.  Do you "
 "wish to continue?"
 msgstr ""
-"SELinux を無効に変更する場合は、再起動が必要です。この変更は推奨されません。後で SELinux "
-"を有効に戻すときに、システムのラベル変更が必要になります。SELinux が問題の原因になっているかどうかを確認したい場合は、Permissive "
-"モードにすると SELinux ポリシーが適用 (enforce) されず、エラーがログに出力されるようになります。また、Permissive "
-"モードへの変更には、再起動は要求されません。続行しますか?"
+"SELinux を無効に変更する場合は、再起動が必要です。この変更は推奨されません。"
+"後で SELinux を有効に戻すときに、システムのラベル変更が必要になります。"
+"SELinux が問題の原因になっているかどうかを確認したい場合は、Permissive モード"
+"にすると SELinux ポリシーが適用 (enforce) されず、エラーがログに出力されるよ"
+"うになります。また、Permissive モードへの変更には、再起動は要求されません。続"
+"行しますか?"
 
 #: ../sepolicy/sepolicy/gui.py:2772
 msgid ""
@@ -550,8 +589,9 @@ msgid ""
 "on the next boot. Relabeling takes a long time depending on the size of the "
 "file system.  Do you wish to continue?"
 msgstr ""
-"SELinux "
-"を有効にすると、次回システムを再起動するときに、ファイルシステム全体のラベルが変更になります。ラベル変更は、ファイルシステムのサイズによっては時間がかかります。続行しますか?"
+"SELinux を有効にすると、次回システムを再起動するときに、ファイルシステム全体"
+"のラベルが変更になります。ラベル変更は、ファイルシステムのサイズによっては時"
+"間がかかります。続行しますか?"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:747
 #: ../sepolicy/sepolicy/sepolicy.glade:2306
@@ -1144,7 +1184,8 @@ msgstr "%s/%s の ibpkey コンテキストに mls フィールドを設定で�
 #: ../semanage/seobject.py:2098
 #, python-format
 msgid "Could not set mls fields in interface context for %s"
-msgstr "%s のインターフェースコンテキストに mls フィールドを設定できませんでした"
+msgstr ""
+"%s のインターフェースコンテキストに mls フィールドを設定できませんでした"
 
 #: ../semanage/seobject.py:1126
 #, python-format
@@ -1163,7 +1204,8 @@ msgstr "%s の名前を設定できませんでした"
 #: ../semanage/seobject.py:512
 #, python-format
 msgid "Could not set permissive domain %s (module installation failed)"
-msgstr "許容ドメイン %s を設定できませんでした (モジュールのインストールに失敗)"
+msgstr ""
+"許容ドメイン %s を設定できませんでした (モジュールのインストールに失敗)"
 
 #: ../semanage/seobject.py:1130
 #, python-format
@@ -1348,7 +1390,9 @@ msgstr "変更済み SELinux ユーザーまたはロールの定義を削除し
 msgid ""
 "Delete modified port definitions to which the '%(APP)s' domain is allowed to "
 "%(PERM)s."
-msgstr "%(PERM)s を許可されている '%(APP)s' ドメインに変更したポートの定義を削除します。"
+msgstr ""
+"%(PERM)s を許可されている '%(APP)s' ドメインに変更したポートの定義を削除しま"
+"す。"
 
 #: ../sepolicy/sepolicy/gui.py:2239
 #, python-format
@@ -1415,7 +1459,9 @@ msgstr "「%s」のポリシーを変更するために使用できるブーリ�
 msgid ""
 "Display boolean information that can be used to modify the policy for the "
 "'selected domain'."
-msgstr "「選択したドメイン」のポリシーを変更するのに使用できるブーリアン情報を表示します。"
+msgstr ""
+"「選択したドメイン」のポリシーを変更するのに使用できるブーリアン情報を表示し"
+"ます。"
 
 #: ../sepolicy/sepolicy/gui.py:1065
 #, python-format
@@ -1436,7 +1482,8 @@ msgstr "「%s」がリッスンを許可されるネットワークポートを�
 msgid ""
 "Display network ports to which the 'selected domain' can connect or listen "
 "to."
-msgstr "「選択したドメイン」がリッスンを許可するネットワークポートを表示します。"
+msgstr ""
+"「選択したドメイン」がリッスンを許可するネットワークポートを表示します。"
 
 #: ../semanage/semanage:211
 #, python-format
@@ -1474,19 +1521,25 @@ msgstr "強制"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:5524
 msgid "Enter Default Level for SELinux User to login with. Default s0"
-msgstr "SELinux ユーザーがログインするデフォルトのレベルを入力します。デフォルトは s0 に設定されます。"
+msgstr ""
+"SELinux ユーザーがログインするデフォルトのレベルを入力します。デフォルトは "
+"s0 に設定されます。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:5489
-msgid "Enter MLS/MCS Range for this SELinux User.\n"
+msgid ""
+"Enter MLS/MCS Range for this SELinux User.\n"
 "s0-s0:c1023"
-msgstr "この SELinux ユーザーの MLS/MCS 範囲を入力します。\n"
+msgstr ""
+"この SELinux ユーザーの MLS/MCS 範囲を入力します。\n"
 "s0-s0:c1023"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1264
 msgid ""
 "Enter MLS/MCS Range for this login User.  Defaults to the range for the "
 "Selected SELinux User."
-msgstr "このログインユーザーの MLS/MCS 範囲を入力します。デフォルトでは選択した SELinux ユーザーの範囲が設定されます。"
+msgstr ""
+"このログインユーザーの MLS/MCS 範囲を入力します。デフォルトでは選択した "
+"SELinux ユーザーの範囲が設定されます。"
 
 #: ../sepolicy/sepolicy.py:606
 msgid "Enter SELinux role(s) to which the administror domain will transition"
@@ -1520,7 +1573,8 @@ msgstr "このポートに割り当てる MLS ラベルを入力します。"
 msgid ""
 "Enter the login user name of the user to which you wish to add SELinux User "
 "confinement."
-msgstr "SELinux ユーザー制限を追加したいユーザーのログインユーザー名を入力します。"
+msgstr ""
+"SELinux ユーザー制限を追加したいユーザーのログインユーザー名を入力します。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:497
 msgid "Enter the path to which you want to setup an equivalence label."
@@ -1577,13 +1631,17 @@ msgstr ""
 msgid ""
 "Executables which will transition to a different domain, when the 'selected "
 "domain' executes them."
-msgstr "「選択したドメイン」がそれらを実行するときに、他のドメインに遷移する実行可能なもの。"
+msgstr ""
+"「選択したドメイン」がそれらを実行するときに、他のドメインに遷移する実行可能"
+"なもの。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:3012
 msgid ""
 "Executables which will transition to the 'selected domain', when executing a "
 "selected domains entrypoint."
-msgstr "選択したドメインのエントリーポイントを実行するときに、「選択したドメイン」に遷移する実行可能なもの。"
+msgstr ""
+"選択したドメインのエントリーポイントを実行するときに、「選択したドメイン」に"
+"遷移する実行可能なもの。"
 
 #: ../sepolicy/sepolicy/generate.py:147
 msgid "Existing Domain Type"
@@ -1641,7 +1699,9 @@ msgid ""
 "content of a particular class in a directory of the destination type. "
 "Optionally a file name could be specified for the transition."
 msgstr ""
-"ファイル遷移では、現在のドメインによって、遷移先タイプのディレクトリー内に特定クラスのコンテンツが作成されるときの動作を定義します。遷移にはオプションでファイル名を指定できます。"
+"ファイル遷移では、現在のドメインによって、遷移先タイプのディレクトリー内に特"
+"定クラスのコンテンツが作成されるときの動作を定義します。遷移にはオプションで"
+"ファイル名を指定できます。"
 
 #: ../sepolicy/sepolicy/gui.py:1063
 #, python-format
@@ -1676,7 +1736,9 @@ msgstr "%s のファイルコンテキストは定義されていません"
 msgid ""
 "File equivalence cause the system to label content under the new path as if "
 "it were under the equivalence path."
-msgstr "ファイルの等価性により、システムは新しいパス配下のコンテンツを、等価パス配下にあるようにラベル付けします。"
+msgstr ""
+"ファイルの等価性により、システムは新しいパス配下のコンテンツを、等価パス配下"
+"にあるようにラベル付けします。"
 
 #: ../sepolicy/sepolicy/gui.py:2319
 #, python-format
@@ -1705,9 +1767,10 @@ msgstr "ファイルの仕様 %s は等価規則 '%s %s' と競合します"
 #: ../semanage/seobject.py:2361
 #, python-format
 msgid ""
-"File spec %s conflicts with equivalency rule '%s %s'; Try adding '%s' "
-"instead"
-msgstr "ファイル仕様 %s は等価規則 '%s %s' と競合します、代わりに '%s' を追加してみてください"
+"File spec %s conflicts with equivalency rule '%s %s'; Try adding '%s' instead"
+msgstr ""
+"ファイル仕様 %s は等価規則 '%s %s' と競合します、代わりに '%s' を追加してみて"
+"ください"
 
 #: ../semanage/seobject.py:2356
 msgid "File specification can not include spaces"
@@ -1761,7 +1824,9 @@ msgstr "'%s' ポリシーの生成"
 
 #: ../sepolicy/sepolicy.py:369
 msgid "Generate HTML man pages structure for selected SELinux man page"
-msgstr "選択された SELinux マニュアルページ向けの HTML マニュアルページの構成を生成する"
+msgstr ""
+"選択された SELinux マニュアルページ向けの HTML マニュアルページの構成を生成す"
+"る"
 
 #: ../sepolicy/sepolicy.py:597
 msgid "Generate SELinux Policy module template"
@@ -1848,7 +1913,8 @@ msgstr "IB デバイス名が必要です"
 msgid ""
 "If-Then-Else rules written in policy that can\n"
 "allow alternative access control."
-msgstr "代替アクセス制御を許可するポリシーに\n"
+msgstr ""
+"代替アクセス制御を許可するポリシーに\n"
 "記述された If-Then-Else のルールです。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:3640
@@ -1961,7 +2027,8 @@ msgstr "ロックダウン"
 msgid ""
 "Lockdown the SELinux System.\n"
 "This screen can be used to turn up the SELinux Protections."
-msgstr "SELinux システムをロックダウンします。\n"
+msgstr ""
+"SELinux システムをロックダウンします。\n"
 "この画面を使用して SELinux 保護を強化します。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1864
@@ -2121,21 +2188,25 @@ msgid ""
 "Modify %(TYPE)s file path for '%(DOMAIN)s' domain. Only bolded items in the "
 "list can be selected, this indicates they were modified previously."
 msgstr ""
-"'%(DOMAIN)s' ドメインの %(TYPE)s "
-"ファイルパスを変更します。選択できるのは一覧内の太字アイテムのみです。つまり、太字アイテムは以前に変更されたということになります。"
+"'%(DOMAIN)s' ドメインの %(TYPE)s ファイルパスを変更します。選択できるのは一覧"
+"内の太字アイテムのみです。つまり、太字アイテムは以前に変更されたということに"
+"なります。"
 
 #: ../sepolicy/sepolicy/gui.py:1604
 msgid ""
 "Modify File Equivalency Mapping. Mapping will be created when update is "
 "applied."
-msgstr "ファイルの等価性マッピングを変更します。更新の適用時にマッピングが作成されます。"
+msgstr ""
+"ファイルの等価性マッピングを変更します。更新の適用時にマッピングが作成されま"
+"す。"
 
 #: ../sepolicy/sepolicy/gui.py:1532
 #, python-format
 msgid ""
 "Modify File Labeling for %s. File labels will be created when update is "
 "applied."
-msgstr "%s のファイルラベルを変更します。更新の適用時にファイルラベルが作成されます。"
+msgstr ""
+"%s のファイルラベルを変更します。更新の適用時にファイルラベルが作成されます。"
 
 #: ../sepolicy/sepolicy/gui.py:1598
 msgid "Modify Login Mapping"
@@ -2144,7 +2215,9 @@ msgstr "ログインマッピングの変更"
 #: ../sepolicy/sepolicy/gui.py:1597
 msgid ""
 "Modify Login Mapping. Login Mapping will be modified when Update is applied."
-msgstr "ログインマッピングを変更します。更新の適用時にログインマッピングが変更されます。"
+msgstr ""
+"ログインマッピングを変更します。更新の適用時にログインマッピングが変更されま"
+"す。"
 
 #: ../sepolicy/sepolicy/gui.py:1691
 #, python-format
@@ -2155,7 +2228,8 @@ msgstr "%s のネットワークポートを変更"
 #, python-format
 msgid ""
 "Modify Network Port for %s.  Ports will be created when update is applied."
-msgstr "%s のネットワークポートを変更します。更新の適用時にポートが作成されます。"
+msgstr ""
+"%s のネットワークポートを変更します。更新の適用時にポートが作成されます。"
 
 #: ../sepolicy/sepolicy/gui.py:1605
 msgid "Modify SELinux File Equivalency"
@@ -2165,7 +2239,9 @@ msgstr "SELinux のファイルの等価性を変更"
 msgid ""
 "Modify SELinux User Role. SELinux user roles will be modified when update is "
 "applied."
-msgstr "SELinux ユーザーロールを変更します。更新の適用時に SELinux ユーザーロールが変更されます。"
+msgstr ""
+"SELinux ユーザーロールを変更します。更新の適用時に SELinux ユーザーロールが変"
+"更されます。"
 
 #: ../sepolicy/sepolicy/gui.py:1589
 msgid "Modify SELinux Users"
@@ -2193,8 +2269,9 @@ msgstr "ログインマッピングの変更"
 #, python-format
 msgid ""
 "Modify port definitions to which the '%(APP)s' domain is allowed to %(PERM)s."
-""
-msgstr "%(PERM)s を許可されている '%(APP)s' ドメインに対するポートの定義を変更します。"
+msgstr ""
+"%(PERM)s を許可されている '%(APP)s' ドメインに対するポートの定義を変更しま"
+"す。"
 
 #: ../sepolicy/sepolicy/gui.py:2241
 #, python-format
@@ -2206,7 +2283,9 @@ msgid ""
 "Modify selected modified File Equivalence definitions. Only bolded items in "
 "the list can be selected, this indicates they were modified previously."
 msgstr ""
-"選択した変更済みファイル等価性の定義を修正します。選択できるのは一覧内の太字アイテムのみです。つまり、太字アイテムは以前に変更されたアイテムということです。"
+"選択した変更済みファイル等価性の定義を修正します。選択できるのは一覧内の太字"
+"アイテムのみです。つまり、太字アイテムは以前に変更されたアイテムということで"
+"す。"
 
 #: ../sepolicy/sepolicy/gui.py:1423
 msgid "Modify selected modified Login Mapping definitions."
@@ -2255,7 +2334,9 @@ msgstr "名前"
 msgid ""
 "Name must be alpha numberic with no spaces. Consider using option \"-n "
 "MODULENAME\""
-msgstr "名前は英数字 (スペースなし) でなければなりません。オプション \"-n モジュール名\" の使用を検討して下さい"
+msgstr ""
+"名前は英数字 (スペースなし) でなければなりません。オプション \"-n モジュール"
+"名\" の使用を検討して下さい"
 
 #: ../semanage/semanage:640
 msgid "Name of the module to act on"
@@ -2501,7 +2582,9 @@ msgstr "変更を元に戻す"
 msgid ""
 "Revert button will launch a dialog window which allows you to revert changes "
 "within the current transaction."
-msgstr "元に戻すボタンから、現在のトランザクション内の変更を元に戻すダイアログウィンドウを起動します。"
+msgstr ""
+"元に戻すボタンから、現在のトランザクション内の変更を元に戻すダイアログウィン"
+"ドウを起動します。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:5069
 msgid ""
@@ -2509,7 +2592,9 @@ msgid ""
 "reset an item, uncheck the checkbox.  All items checked will be updated in "
 "the system when you select update."
 msgstr ""
-"加えた更新をシステムに送信する前に確認します。アイテムをリセットするには、チェックボックスのチェックマークを外します。更新を選択すると、チェックを付けたすべてのアイテムがシステム内で更新されます。"
+"加えた更新をシステムに送信する前に確認します。アイテムをリセットするには、"
+"チェックボックスのチェックマークを外します。更新を選択すると、チェックを付け"
+"たすべてのアイテムがシステム内で更新されます。"
 
 #: ../sepolicy/sepolicy/gui.py:2273
 #, python-format
@@ -2522,8 +2607,8 @@ msgid ""
 "Run restorecon on %(PATH)s to change its type from %(CUR_CONTEXT)s to the "
 "default %(DEF_CONTEXT)s?"
 msgstr ""
-"%(PATH)s で restorecon を実行し、タイプを %(CUR_CONTEXT)s からデフォルトの %(DEF_CONTEXT)s "
-"に変更しますか?"
+"%(PATH)s で restorecon を実行し、タイプを %(CUR_CONTEXT)s からデフォルトの "
+"%(DEF_CONTEXT)s に変更しますか?"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:2909
 msgid "SELinux Application Type"
@@ -2699,7 +2784,8 @@ msgstr "選択"
 #: ../sepolicy/sepolicy/sepolicy.glade:1566
 msgid ""
 "Select <b>tcp</b> if the port type should be assigned to tcp port numbers."
-msgstr "tcp ポート番号に割り当てるポートタイプの場合は <b>tcp</b> を選択します。"
+msgstr ""
+"tcp ポート番号に割り当てるポートタイプの場合は <b>tcp</b> を選択します。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1583
 msgid ""
@@ -2712,7 +2798,9 @@ msgid ""
 "of the specified directory path. objects under the directory to have this "
 "label."
 msgstr ""
-"このラベルを、指定ディレクトリーパスのすべての子に適用したい場合は「パスを再帰的にする」を選択します。このディレクトリー配下のオブジェクトにこのラベルが付けられます。"
+"このラベルを、指定ディレクトリーパスのすべての子に適用したい場合は「パスを再"
+"帰的にする」を選択します。このディレクトリー配下のオブジェクトにこのラベルが"
+"付けられます。"
 
 #: ../semanage/semanage:207
 msgid "Select a priority for module operations"
@@ -2730,19 +2818,25 @@ msgstr "ドメインの選択"
 msgid ""
 "Select file equivalence labeling to delete. File equivalence labeling will "
 "be deleted when update is applied."
-msgstr "削除するファイルの等価性ラベルを選択します。更新の適用時にファイルの等価性ラベルが削除されます。"
+msgstr ""
+"削除するファイルの等価性ラベルを選択します。更新の適用時にファイルの等価性ラ"
+"ベルが削除されます。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:4439
 msgid ""
 "Select file labeling to delete. File labeling will be deleted when update is "
 "applied."
-msgstr "削除するファイルラベルを選択します。更新の適用時にファイルラベルが削除されます。"
+msgstr ""
+"削除するファイルラベルを選択します。更新の適用時にファイルラベルが削除されま"
+"す。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:4867
 msgid ""
 "Select login user mapping to delete. Login user mapping will be deleted when "
 "update is applied."
-msgstr "削除するログインユーザーのマッピングを選択します。更新の適用時にログインユーザーのマッピングが削除されます。"
+msgstr ""
+"削除するログインユーザーのマッピングを選択します。更新の適用時にログインユー"
+"ザーのマッピングが削除されます。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:4583
 msgid "Select ports to delete. Ports will be deleted when update is applied."
@@ -2753,8 +2847,8 @@ msgid ""
 "Select the SELinux User to assign to this login user.  Login users by "
 "default get assigned by the __default__ user."
 msgstr ""
-"このログインユーザーに割り当てる SELinux ユーザーを選択します。デフォルトではログインユーザーには __default__ user "
-"が割り当てられます。"
+"このログインユーザーに割り当てる SELinux ユーザーを選択します。デフォルトでは"
+"ログインユーザーには __default__ user が割り当てられます。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:902
 msgid "Select the SELinux file type to assign to this path."
@@ -2764,7 +2858,9 @@ msgstr "このパスに割り当てる SELinux ファイルタイプを選択し
 msgid ""
 "Select the file class to which this label will be applied.  Defaults to all "
 "classes."
-msgstr "このラベルを適用するクラスを選択します。デフォルトではすべてのクラスに設定されます。"
+msgstr ""
+"このラベルを適用するクラスを選択します。デフォルトではすべてのクラスに設定さ"
+"れます。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1498
 msgid "Select the port type you want to assign to the specified port number."
@@ -2782,7 +2878,9 @@ msgstr "システムの初回起動時にシステムモードを選択します
 msgid ""
 "Select users mapping to delete.Users mapping will be deleted when update is "
 "applied."
-msgstr "削除するユーザーマッピングを選択します。更新の適用時にユーザーマッピングが削除されます。"
+msgstr ""
+"削除するユーザーマッピングを選択します。更新の適用時にユーザーマッピングが削"
+"除されます。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1743
 msgid "Select..."
@@ -2829,26 +2927,34 @@ msgstr "スペックファイル"
 msgid ""
 "Specify a new SELinux user name.  By convention SELinux User names usually "
 "end in an _u."
-msgstr "新しい SELinux ユーザー名を入力します。慣例的に SELinux のユーザー名の末尾は an _u になります。"
+msgstr ""
+"新しい SELinux ユーザー名を入力します。慣例的に SELinux のユーザー名の末尾は "
+"an _u になります。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1279
 msgid ""
 "Specify the MLS Range for this user to login in with.  Defaults to the "
 "selected SELinux Users MLS Range."
-msgstr "このユーザーがログインする MLS 範囲を指定します。デフォルトでは選択した SELinux ユーザーの MLS 範囲が設定されます。"
+msgstr ""
+"このユーザーがログインする MLS 範囲を指定します。デフォルトでは選択した "
+"SELinux ユーザーの MLS 範囲が設定されます。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:5520
 msgid ""
 "Specify the default level that you would like this SELinux user to login "
 "with.  Defaults to s0."
-msgstr "この SELinux ユーザーがログインするデフォルトのレベルを指定します。デフォルトでは s0 に設定されます。"
+msgstr ""
+"この SELinux ユーザーがログインするデフォルトのレベルを指定します。デフォルト"
+"では s0 に設定されます。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:564
 msgid ""
 "Specify the mapping between the new path and the equivalence path.  "
 "Everything under this new path will be labeled as if they were under the "
 "equivalence path."
-msgstr "新しいパスと等価パス間のマッピングを指定します。この新しいパスの配下にあるものはすべて、等価パスの配下にあるようにラベル付けが行われます。"
+msgstr ""
+"新しいパスと等価パス間のマッピングを指定します。この新しいパスの配下にあるも"
+"のはすべて、等価パスの配下にあるようにラベル付けが行われます。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:880
 msgid ""
@@ -2922,13 +3028,16 @@ msgstr "ターゲットドメイン"
 #: ../sepolicy/sepolicy/gui.py:1910
 #, python-format
 msgid "The entry '%s' is not a valid path.  Paths must begin with a '/'."
-msgstr "エントリ '%s' は無効なパスです。パスの先頭は '/' で開始する必要があります。"
+msgstr ""
+"エントリ '%s' は無効なパスです。パスの先頭は '/' で開始する必要があります。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:332
 msgid ""
-"The entry that was entered is incorrect.  Please try again in the ex:/.../..."
-" format."
-msgstr "入力されたエントリーに誤りがあります。ex:/.../... の形式でやり直してください。"
+"The entry that was entered is incorrect.  Please try again in the "
+"ex:/.../... format."
+msgstr ""
+"入力されたエントリーに誤りがあります。ex:/.../... の形式でやり直してくださ"
+"い。"
 
 #: ../semanage/seobject.py:502
 msgid ""
@@ -2950,7 +3059,8 @@ msgstr ""
 
 #: ../audit2allow/audit2allow:238
 #, python-format
-msgid "To make this policy package active, execute:\n"
+msgid ""
+"To make this policy package active, execute:\n"
 "\n"
 "semodule -i %s\n"
 "\n"
@@ -3092,7 +3202,8 @@ msgid ""
 "With this flag, alternative root path needs to include file context files "
 "and policy.xml file"
 msgstr ""
-"このフラグを使用する場合は、代替 root パスにファイルコンテキストのファイルおよび policy.xml ファイルを含ませる必要があります。"
+"このフラグを使用する場合は、代替 root パスにファイルコンテキストのファイルお"
+"よび policy.xml ファイルを含ませる必要があります。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:2449
 msgid "Writable files"
@@ -3114,8 +3225,10 @@ msgid ""
 "All changes that you have made during this session will be lost."
 msgstr ""
 "変更を適用せずにアプリケーションを閉じようとしています。\n"
-"* このセッション中に加えた変更を適用するには、「いいえ」をクリックしてから「更新」をクリックします。\n"
-"* 変更を適用しないままアプリケーションを終了するには、「はい」をクリックします。このセッション中に加えた変更はすべて失われます。"
+"* このセッション中に加えた変更を適用するには、「いいえ」をクリックしてから"
+"「更新」をクリックします。\n"
+"* 変更を適用しないままアプリケーションを終了するには、「はい」をクリックしま"
+"す。このセッション中に加えた変更はすべて失われます。"
 
 #: ../semanage/seobject.py:820
 #, python-format
@@ -3137,7 +3250,9 @@ msgstr "ご使用の、制約されたプロセス用実行ファイルパスを
 
 #: ../sepolicy/sepolicy/__init__.py:831
 msgid "You must regenerate interface info by running /usr/bin/sepolgen-ifgen"
-msgstr "/usr/bin/sepolgen-ifgen を実行し、インターフェース情報を再生成する必要があります"
+msgstr ""
+"/usr/bin/sepolgen-ifgen を実行し、インターフェース情報を再生成する必要があり"
+"ます"
 
 #: ../semanage/seobject.py:2678
 #, python-format
@@ -3146,14 +3261,18 @@ msgstr "次の中から値を 1 つ指定してください: %s"
 
 #: ../sepolicy/sepolicy/generate.py:886
 #, python-format
-msgid "You need to define a new type which ends with: \n"
+msgid ""
+"You need to define a new type which ends with: \n"
 " %s"
-msgstr "次の文字列で終わる新しいタイプを定義する必要があります: \n"
+msgstr ""
+"次の文字列で終わる新しいタイプを定義する必要があります: \n"
 " %s"
 
 #: ../sepolicy/sepolicy.py:324
 msgid "You need to install policycoreutils-gui package to use the gui option"
-msgstr "GUI オプションを使用するには、policycoreutils-gui パッケージをインストールする必要があります。"
+msgstr ""
+"GUI オプションを使用するには、policycoreutils-gui パッケージをインストールす"
+"る必要があります。"
 
 #: ../sepolicy/sepolicy/gui.py:1167 ../sepolicy/sepolicy/__init__.py:74
 msgid "all files"
@@ -3326,7 +3445,9 @@ msgstr "SELinux に問い合わせて boolean の詳細を表示する"
 msgid ""
 "query SELinux Policy to see how a source process domain can transition to "
 "the target process domain"
-msgstr "ソースのプロセスドメインが目的のプロセスドメインにどのように遷移できるかを SELinux ポリシーに問い合わせる"
+msgstr ""
+"ソースのプロセスドメインが目的のプロセスドメインにどのように遷移できるかを "
+"SELinux ポリシーに問い合わせる"
 
 #: ../sepolicy/sepolicy.py:420
 msgid "query SELinux policy to see if domains can communicate with each other"

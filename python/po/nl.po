@@ -7,20 +7,23 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:45+0200\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2018-01-06 03:14+0000\n"
+"PO-Revision-Date: 2018-07-16 02:36+0000\n"
 "Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: Dutch\n"
 "Language: nl\n"
-"X-Generator: Zanata 4.4.5\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Zanata 4.5.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../semanage/semanage:256
-msgid "\n"
+msgid ""
+"\n"
 "    Name for the specified infiniband end port.\n"
 msgstr ""
+"\n"
+"    Naam voor de gespecificeerde infiniband eindpoort.\n"
 
 #: ../semanage/semanage:245
 msgid ""
@@ -28,29 +31,44 @@ msgid ""
 "    Protocol  for  the specified port (tcp|udp) or internet protocol\n"
 "    version for the specified node (ipv4|ipv6).\n"
 msgstr ""
+"\n"
+"    Protocol  voor de gespecificeerde poort (tcp|udp) of internetprotocol\n"
+"    versie voor de gespecificeerde node (ipv4|ipv6).\n"
 
 #: ../semanage/semanage:251
-msgid "\n"
+msgid ""
+"\n"
 "    Subnet prefix for  the specified infiniband ibpkey.\n"
 msgstr ""
+"\n"
+"    Subnet voorvoegsel voor de gespecificeerde infiniband ibpkey.\n"
 
 #: ../sepolicy/sepolicy/interface.py:231
 #, python-format
-msgid "\n"
+msgid ""
+"\n"
 "Compile test for %s failed.\n"
 msgstr ""
+"\n"
+"Compilatietest voor %s mislukte.\n"
 
 #: ../sepolicy/sepolicy/interface.py:234
 #, python-format
-msgid "\n"
+msgid ""
+"\n"
 "Compile test for %s has not run. %s\n"
 msgstr ""
+"\n"
+"Compilatietest voor %s is niet uitgevoerd. %s\n"
 
 #: ../sepolicy/sepolicy/interface.py:240
 #, python-format
-msgid "\n"
+msgid ""
+"\n"
 "Compiling of %s interface is not supported."
 msgstr ""
+"\n"
+"Compilatie van %s interface wordt niet ondersteund."
 
 #: ../semanage/semanage:236
 msgid ""
@@ -60,25 +78,38 @@ msgid ""
 "defaults to the SELinux user record range.\n"
 "SELinux Range for SELinux user defaults to s0.\n"
 msgstr ""
+"\n"
+"MLS/MCS Security Range (alleen voor MLS/MCS systemen)\n"
+"SELinux Range  voor SELinux login mapping\n"
+"standaarden voor de SELinux user record range.\n"
+"SELinux Range voor SELinux gebruiker heeft als standaard s0.\n"
 
 #: ../semanage/seobject.py:2624
-msgid "\n"
+msgid ""
+"\n"
 "SELinux Distribution fcontext Equivalence \n"
-msgstr "\n"
+msgstr ""
+"\n"
 "SELinux Distributie fcontect Equivalentie\n"
 
 #: ../semanage/seobject.py:2629
-msgid "\n"
+msgid ""
+"\n"
 "SELinux Local fcontext Equivalence \n"
-msgstr "\n"
+msgstr ""
+"\n"
 "SELinux Locale fcontext Equivalentie\n"
 
 #: ../semanage/semanage:423
 msgid ""
 "\n"
-"SELinux Roles.  You must enclose multiple roles within quotes,               "
-"   separate by spaces. Or specify -R multiple times.\n"
+"SELinux Roles.  You must enclose multiple roles within "
+"quotes,                  separate by spaces. Or specify -R multiple times.\n"
 msgstr ""
+"\n"
+"SELinux-rollen.  Je moet meerdere rollen omsluiten met "
+"aanhalingstekens,                  en gescheiden door spaties. Of  -R "
+"meerdere keren specificeren.\n"
 
 #: ../chcat/chcat:133
 #, python-format
@@ -223,7 +254,6 @@ msgstr "Toevoegen"
 #: ../sepolicy/sepolicy/gui.py:1504
 msgid ""
 "Add File Equivalency Mapping. Mapping will be created when update is applied."
-""
 msgstr ""
 "Bestandsequivalentiemapping toevoegen. Mapping zal aangemaakt worden als "
 "update toegepast wordt."
@@ -237,7 +267,6 @@ msgstr "Bestandslabeling voor %s toevoegen"
 #, python-format
 msgid ""
 "Add File Labeling for %s. File labels will be created when update is applied."
-""
 msgstr ""
 "Bestandslabeling toevoegen voor %s. Bestandslabels zullen aangemaakt worden "
 "als update toegepast wordt."
@@ -254,8 +283,7 @@ msgstr ""
 "toegepast wordt."
 
 #: ../sepolicy/sepolicy/gui.py:1490
-msgid ""
-"Add Login Mapping. User Mapping will be created when Update is applied."
+msgid "Add Login Mapping. User Mapping will be created when Update is applied."
 msgstr ""
 "Inlogmapping toevoegen. Gebruikersmapping zal aangemaakt worden als Update "
 "toegepast wordt."
@@ -267,8 +295,7 @@ msgstr "Netwerkpoort toevoegen voor %s"
 
 #: ../sepolicy/sepolicy/gui.py:1473
 #, python-format
-msgid ""
-"Add Network Port for %s.  Ports will be created when update is applied."
+msgid "Add Network Port for %s.  Ports will be created when update is applied."
 msgstr ""
 "Voeg netwerkpoort voor %s toe. Poorten zullen aangemaakt worden als update "
 "toegepast wordt."
@@ -303,7 +330,7 @@ msgstr "Bestand toevoegen"
 #: ../semanage/semanage:223
 #, python-format
 msgid "Add a record of the %s object type"
-msgstr ""
+msgstr "Voeg een record van het %s objecttype toe"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:458
 msgid ""
@@ -347,7 +374,6 @@ msgstr "Voeg nieuwe SELinux-gebruiker/rol-definitie toe."
 #, python-format
 msgid ""
 "Add new port definition to which the '%(APP)s' domain is allowed to %(PERM)s."
-""
 msgstr ""
 "Voeg nieuwe poortdefinitie toe waarnaar het '%(APP)s' domein mag %(PERM)s."
 
@@ -363,7 +389,7 @@ msgstr "Gebruiker toevoegen"
 #: ../semanage/seobject.py:1867
 #, python-format
 msgid "Addr %s already defined"
-msgstr ""
+msgstr "Adres %s is al gedefinieerd"
 
 #: ../semanage/seobject.py:1980
 #, python-format
@@ -477,9 +503,11 @@ msgstr "Verkeerd formaat %s: Record %s"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:2866
 #: ../sepolicy/sepolicy/sepolicy.glade:2956
-msgid "Boolean\n"
+msgid ""
+"Boolean\n"
 "Enabled"
-msgstr "Boolean\n"
+msgstr ""
+"Boolean\n"
 "Aangezet"
 
 #: ../sepolicy/sepolicy/gui.py:1460
@@ -610,7 +638,7 @@ msgstr "Alle wijzigingen in je huidige transactie naar de server commiteren."
 #: ../sepolicy/sepolicy/interface.py:223
 #, python-format
 msgid "Compiling %s interface"
-msgstr ""
+msgstr "%s interface compileren"
 
 #: ../sepolicy/sepolicy/generate.py:152
 msgid "Confined Root Administrator Role"
@@ -1327,6 +1355,8 @@ msgstr "Standaardniveau"
 msgid ""
 "Default SELinux Level for SELinux user, s0 Default. (MLS/MCS Systems only)"
 msgstr ""
+"Standaard SELinux niveau voor SELinux gebgruiker, s0 is standaard. (Alleen "
+"voor MLS/MCS systemen)"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:4132
 msgid "Delete"
@@ -1354,7 +1384,7 @@ msgstr "Verwijder Aangepaste Gebruikersmapping"
 #: ../semanage/semanage:269
 #, python-format
 msgid "Delete a record of the %s object type"
-msgstr ""
+msgstr "Verwijder een record van het %s objecttype"
 
 #: ../sepolicy/sepolicy/gui.py:2313
 msgid "Delete file equiv labeling."
@@ -1419,15 +1449,15 @@ msgstr "Uitzetten"
 
 #: ../semanage/semanage:638
 msgid "Disable a module"
-msgstr ""
+msgstr "Een module uitzetten"
 
 #: ../semanage/semanage:726
 msgid "Disable the boolean"
-msgstr ""
+msgstr "Een booleaanse variabele uitzetten"
 
 #: ../semanage/semanage:771
 msgid "Disable/Enable dontaudit rules in policy"
-msgstr ""
+msgstr "Aan/Uit-zetten van dontaudit regels in tactiek"
 
 #: ../semanage/seobject.py:392 ../sepolicy/sepolicy/sepolicy.glade:3431
 msgid "Disabled"
@@ -1444,7 +1474,6 @@ msgid ""
 "domain'."
 msgstr ""
 "Toon applicaties die naar of van het 'geselecteerde domein' over kunnen gaan."
-""
 
 #: ../sepolicy/sepolicy/gui.py:1064
 #, python-format
@@ -1480,7 +1509,6 @@ msgstr ""
 msgid "Display network ports to which the '%s' can connect or listen to."
 msgstr ""
 "Toon netwerkpoorten waar '%s' verbinding mee kan maken of naar kan luisteren."
-""
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1832
 msgid ""
@@ -1493,11 +1521,11 @@ msgstr ""
 #: ../semanage/semanage:211
 #, python-format
 msgid "Do not print heading when listing %s object types"
-msgstr ""
+msgstr "Print geen kop bij het tonen van %s objecttypes"
 
 #: ../semanage/semanage:215
 msgid "Do not reload policy after commit"
-msgstr ""
+msgstr "Laad tactiek niet opnieuw na een toekenning"
 
 #: ../sepolicy/sepolicy.py:332 ../sepolicy/sepolicy.py:380
 msgid "Domain name(s) of man pages to be created"
@@ -1509,11 +1537,11 @@ msgstr "Aanzetten"
 
 #: ../semanage/semanage:639
 msgid "Enable a module"
-msgstr ""
+msgstr "Een module aanzetten"
 
 #: ../semanage/semanage:725
 msgid "Enable the boolean"
-msgstr ""
+msgstr "Een booleaanse variabele aanzetten"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:2132
 msgid "Enabled"
@@ -1531,9 +1559,11 @@ msgstr ""
 "Standaard s0"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:5489
-msgid "Enter MLS/MCS Range for this SELinux User.\n"
+msgid ""
+"Enter MLS/MCS Range for this SELinux User.\n"
 "s0-s0:c1023"
-msgstr "Geef MLS/MCS-bereik voor deze SELinux-gebruiker.\n"
+msgstr ""
+"Geef MLS/MCS-bereik voor deze SELinux-gebruiker.\n"
 "s0-s0:c1023"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1264
@@ -1603,7 +1633,7 @@ msgstr "Equivalentieklasse voor %s bestaat al"
 #: ../semanage/seobject.py:2322
 #, python-format
 msgid "Equivalence class for %s does not exist"
-msgstr ""
+msgstr "Equivalentieklasse voor %s bestaat niet"
 
 #: ../sepolicy/sepolicy/gui.py:2323
 #, python-format
@@ -1624,6 +1654,8 @@ msgid ""
 "Executables which will transition to '%s', when executing selected domains "
 "entrypoint."
 msgstr ""
+"Uitvoerbare bestanden die over zullen gaan naar '%s', bij het uitvoeren van "
+"geselecteerde domeiningangen"
 
 #: ../sepolicy/sepolicy/gui.py:1071
 #, python-format
@@ -1631,6 +1663,8 @@ msgid ""
 "Executables which will transition to a different domain, when '%s' executes "
 "them."
 msgstr ""
+"Uitvoerbare bestanden die naar een ander domein over zullen gaan als '%s' ze "
+"uitvoert."
 
 #: ../sepolicy/sepolicy/sepolicy.glade:2930
 msgid ""
@@ -1662,7 +1696,7 @@ msgstr "Exporteer systeeminstellingen naar een bestand"
 
 #: ../semanage/semanage:273
 msgid "Extract customizable commands, for use within a transaction"
-msgstr ""
+msgstr "Extraheer commando's, voor het gebruik binnen een transactie"
 
 #: ../sepolicy/sepolicy/__init__.py:157
 #, python-format
@@ -1725,14 +1759,13 @@ msgstr "Bestandsklasse: %s"
 #: ../semanage/seobject.py:2389
 #, python-format
 msgid "File context for %s already defined"
-msgstr ""
+msgstr "Bestandsinhoud voor %s is al gedefinieerd"
 
 #: ../semanage/seobject.py:2546
 #, python-format
 msgid "File context for %s is defined in policy, cannot be deleted"
 msgstr ""
-"Bestandscontext voor %s is gedefinieerd in beleid, kan niet worden "
-"verwijderd"
+"Bestandscontext voor %s is gedefinieerd in beleid, kan niet worden verwijderd"
 
 #: ../semanage/seobject.py:2450 ../semanage/seobject.py:2548
 #, python-format
@@ -1769,14 +1802,15 @@ msgstr "Bestandspad :%s"
 #: ../semanage/seobject.py:2311
 #, python-format
 msgid "File spec %s conflicts with equivalency rule '%s %s'"
-msgstr ""
+msgstr "Bestandsspecificatie %s conflicteert met equivalentieregel '%s %s'"
 
 #: ../semanage/seobject.py:2361
 #, python-format
 msgid ""
-"File spec %s conflicts with equivalency rule '%s %s'; Try adding '%s' "
-"instead"
+"File spec %s conflicts with equivalency rule '%s %s'; Try adding '%s' instead"
 msgstr ""
+"Bestandsspecificatie %s conflicteert met equivalentieregel '%s %s'; probeer "
+"'%s' toe te voegen"
 
 #: ../semanage/seobject.py:2356
 msgid "File specification can not include spaces"
@@ -1794,7 +1828,7 @@ msgstr "Bestandenequivalentie"
 #: ../sepolicy/sepolicy/gui.py:1072
 #, python-format
 msgid "Files by '%s' with transitions to a different label."
-msgstr ""
+msgstr "Bestanden door '%s' zullen naar een ander label overgaan."
 
 #: ../sepolicy/sepolicy/gui.py:1060
 #, python-format
@@ -1811,7 +1845,7 @@ msgstr "Filter"
 
 #: ../sepolgen/src/sepolgen/interfaces.py:486
 msgid "Found circular interface class"
-msgstr ""
+msgstr "Rondgaande interfaceklasse gevonden"
 
 #: ../sepolicy/sepolicy.py:626 ../sepolicy/sepolicy.py:629
 #: ../sepolicy/sepolicy.py:632 ../sepolicy/sepolicy.py:635
@@ -1928,7 +1962,7 @@ msgstr "Importeren"
 
 #: ../semanage/semanage:871
 msgid "Import local customizations"
-msgstr ""
+msgstr "Lokale aanpassingen importeren"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:3632
 msgid "Import system settings from another machine"
@@ -1940,12 +1974,12 @@ msgstr "Inkomend"
 
 #: ../semanage/semanage:874
 msgid "Input file"
-msgstr ""
+msgstr "Inputbestand"
 
 #: ../semanage/seobject.py:2072
 #, python-format
 msgid "Interface %s already defined"
-msgstr ""
+msgstr "Interface %s is al gedefinieerd"
 
 #: ../sepolicy/sepolicy.py:227
 #, python-format
@@ -2012,7 +2046,7 @@ msgstr "Linux-gebruiker %s bestaat niet"
 #: ../semanage/semanage:219
 #, python-format
 msgid "List %s local customizations"
-msgstr ""
+msgstr "Toon %s lokale aanpassingen"
 
 #: ../sepolicy/sepolicy.py:567
 msgid "List SELinux Policy interfaces"
@@ -2021,7 +2055,7 @@ msgstr "Toon lijst van SELinux-beleidsinterfaces"
 #: ../semanage/semanage:265
 #, python-format
 msgid "List records of the %s object type"
-msgstr ""
+msgstr "Toon records van het %s objecttype"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1915
 #: ../sepolicy/sepolicy/sepolicy.glade:4016
@@ -2056,7 +2090,7 @@ msgstr "Inlognaam: %s"
 #: ../semanage/seobject.py:561
 #, python-format
 msgid "Login mapping for %s is already defined"
-msgstr ""
+msgstr "Inlogafbeelding voor %s is al gedefinieerd"
 
 #: ../semanage/seobject.py:686
 #, python-format
@@ -2121,46 +2155,51 @@ msgstr "Maak Pad Recursief"
 #: ../semanage/semanage:405
 msgid "Manage SELinux confined users (Roles and levels for an SELinux user)"
 msgstr ""
+"Beheer SELinux beperkte gebruikers (Rollen en niveau's voor een SELinux-"
+"gebruiker)"
 
 #: ../semanage/semanage:625
 msgid "Manage SELinux policy modules"
-msgstr ""
+msgstr "Beheer SELinux-beleidsmodules"
 
 #: ../semanage/semanage:710
 msgid "Manage booleans to selectively enable functionality"
 msgstr ""
+"Beheer booleaanse variabelen om selectief functionaliteit aan te zetten"
 
 #: ../semanage/semanage:355
 msgid "Manage file context mapping definitions"
-msgstr ""
+msgstr "Beheer bestandscontext afbeeldingsdefinities"
 
 #: ../semanage/semanage:543
 msgid "Manage infiniband end port type definitions"
-msgstr ""
+msgstr "Beheer infiniband eindpoort typedefinities"
 
 #: ../semanage/semanage:500
 msgid "Manage infiniband ibpkey type definitions"
-msgstr ""
+msgstr "Beheer infiniband ibpkey typedefinities"
 
 #: ../semanage/semanage:286
 msgid "Manage login mappings between linux users and SELinux confined users"
 msgstr ""
+"Beheer inlogafbeeldingen tussen linux gebruikers en SELinux beperkte "
+"gebruikers"
 
 #: ../semanage/semanage:586
 msgid "Manage network interface type definitions"
-msgstr ""
+msgstr "Beheer netwerkinterface typedefinities"
 
 #: ../semanage/semanage:667
 msgid "Manage network node type definitions"
-msgstr ""
+msgstr "Beheer netwerknode typedefinities"
 
 #: ../semanage/semanage:455
 msgid "Manage network port type definitions"
-msgstr ""
+msgstr "Beheer netwerkpoort typedefinities"
 
 #: ../semanage/semanage:748
 msgid "Manage process type enforcement mode"
-msgstr ""
+msgstr "Beheer procestype handhavingsmodus"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1867
 #: ../sepolicy/sepolicy/sepolicy.glade:1884
@@ -2183,7 +2222,7 @@ msgstr "Er bestaan verkeerd gelabelde bestanden"
 #: ../sepolgen/src/sepolgen/interfaces.py:491
 #, python-format
 msgid "Missing interface definition for %s"
-msgstr ""
+msgstr "Ontbrekende interfacedefinitie voor %s"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:4148
 msgid "Modify"
@@ -2259,7 +2298,7 @@ msgstr "SELinux-gebruikers aanpassen"
 #: ../semanage/semanage:261
 #, python-format
 msgid "Modify a record of the %s object type"
-msgstr ""
+msgstr "Verander een record van het %s objecttype"
 
 #: ../sepolicy/sepolicy/gui.py:2315
 msgid "Modify file equiv labeling."
@@ -2278,7 +2317,6 @@ msgstr "Inlogmapping wijzigen"
 #, python-format
 msgid ""
 "Modify port definitions to which the '%(APP)s' domain is allowed to %(PERM)s."
-""
 msgstr "Verander poortdefinities waarnaar het '%(APP)s' domein mag %(PERM)s."
 
 #: ../sepolicy/sepolicy/gui.py:2241
@@ -2314,7 +2352,7 @@ msgstr "Modulenaam"
 #: ../semanage/seobject.py:401
 #, python-format
 msgid "Module does not exist: %s "
-msgstr ""
+msgstr "Module bestaat niet: %s "
 
 #: ../sepolicy/sepolicy/generate.py:153
 msgid "Module information for a new type"
@@ -2348,7 +2386,7 @@ msgstr ""
 
 #: ../semanage/semanage:640
 msgid "Name of the module to act on"
-msgstr ""
+msgstr "Naam van de module om te behandelen"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1828
 #: ../sepolicy/sepolicy/sepolicy.glade:2830
@@ -2357,7 +2395,7 @@ msgstr "Netwerk"
 
 #: ../semanage/semanage:681
 msgid "Network Mask"
-msgstr ""
+msgstr "Netwerkmasker"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:442
 #: ../sepolicy/sepolicy/sepolicy.glade:1120
@@ -2433,7 +2471,7 @@ msgstr "Output bestand"
 
 #: ../semanage/semanage:791
 msgid "Output local customizations"
-msgstr ""
+msgstr "Lokale aanpassingen leveren"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:483
 #: ../sepolicy/sepolicy/sepolicy.glade:4046
@@ -2537,12 +2575,12 @@ msgstr "Herlabel alle bestanden naar de systeemstandaard bij herstarten"
 
 #: ../semanage/semanage:637
 msgid "Remove a module"
-msgstr ""
+msgstr "Verwijder een module"
 
 #: ../semanage/semanage:277
 #, python-format
 msgid "Remove all %s objects local customizations"
-msgstr ""
+msgstr "Verwijder alle lokale aanpassingen van  %s objecten"
 
 #: ../chcat/chcat:115 ../chcat/chcat:194
 msgid "Requires at least one category"
@@ -2602,9 +2640,9 @@ msgid ""
 "the system when you select update."
 msgstr ""
 "Review de vernieuwingen die je gemaakt hebt voordat je ze doorgeef aan het "
-"systeem. Om een item te herstellen, verwijder je het vinkje uit de checkbox. "
-" Alle aangevinkte items zullen in het systeem vernieuwd worden als je "
-"vernieuwen selecteert."
+"systeem. Om een item te herstellen, verwijder je het vinkje uit de "
+"checkbox.  Alle aangevinkte items zullen in het systeem vernieuwd worden als "
+"je vernieuwen selecteert."
 
 #: ../sepolicy/sepolicy/gui.py:2273
 #, python-format
@@ -2676,7 +2714,7 @@ msgstr "SELinux-rollen"
 
 #: ../semanage/semanage:227
 msgid "SELinux Type for the object"
-msgstr ""
+msgstr "SELinux-type voor het object"
 
 #: ../semanage/seobject.py:2062 ../semanage/seobject.py:2370
 msgid "SELinux Type is required"
@@ -2743,7 +2781,7 @@ msgstr "SELinux-beleid is niet beheerd of krijg geen toegang tot opslag."
 #: ../semanage/seobject.py:830
 #, python-format
 msgid "SELinux user %s is already defined"
-msgstr ""
+msgstr "SELinux-gebruiker %s is al gedefinieerd"
 
 #: ../semanage/seobject.py:957
 #, python-format
@@ -2758,7 +2796,7 @@ msgstr "SELinux-gebruiker %s is niet gedefinieerd"
 
 #: ../semanage/semanage:281
 msgid "SELinux user name"
-msgstr ""
+msgstr "SELinux-gebruikersnaam"
 
 #: ../sepolicy/sepolicy/generate.py:145
 msgid "Sandbox"
@@ -2818,11 +2856,11 @@ msgstr ""
 
 #: ../semanage/semanage:207
 msgid "Select a priority for module operations"
-msgstr ""
+msgstr "Selecteer een prioriteit voor modulebewerkingen"
 
 #: ../semanage/semanage:203
 msgid "Select an alternate SELinux Policy Store to manage"
-msgstr ""
+msgstr "Selecteer een alternatieve SELinux-taktiekopslag om te beheren"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:52
 msgid "Select domain"
@@ -3003,7 +3041,7 @@ msgstr "Subnet-prefix"
 #: ../semanage/seobject.py:2302
 #, python-format
 msgid "Substiture %s is not valid. Substitute is not allowed to end with '/'"
-msgstr ""
+msgstr "Substituut %s is niet geldig. Substituut mag niet eindigen met '/'"
 
 #: ../semanage/semanage:369
 msgid ""
@@ -3015,6 +3053,13 @@ msgid ""
 "                                                                  made "
 "equivalent to that defined for the source."
 msgstr ""
+"Substitueer  doelpad met bronpad  bij het genereren van standaard\n"
+"                                                                  label.  "
+"Dit wordt gebruikt met dcontext. Vereist born en doel\n"
+"                                                                  pad  "
+"argumenten.  De context labeling voor de doel sub-boom wordt\n"
+"                                                                 equivalent "
+"gemaakt aan de definitie van de bron."
 
 #: ../sepolicy/sepolicy/gui.py:2354 ../sepolicy/sepolicy/sepolicy.glade:129
 #: ../sepolicy/sepolicy/sepolicy.glade:1898
@@ -3054,8 +3099,8 @@ msgstr "De invoer '%s' is geen geldig pad. Paden moeten beginnen met een '/'."
 
 #: ../sepolicy/sepolicy/sepolicy.glade:332
 msgid ""
-"The entry that was entered is incorrect.  Please try again in the ex:/.../..."
-" format."
+"The entry that was entered is incorrect.  Please try again in the "
+"ex:/.../... format."
 msgstr ""
 "De opgave is incorrect. Probeer a.u.b. opnieuw in het ex:/.../... formaat."
 
@@ -3066,24 +3111,34 @@ msgid ""
 "# yum install policycoreutils-devel\n"
 "Or similar for your distro."
 msgstr ""
+"De sepolgen python-module is vereist om toelatende domeinen op te zetten.\n"
+"In sommige distributies wordt het geleverd in het policycoreutils-devel "
+"pakket.\n"
+"# yum install policycoreutils-devel\n"
+"Of vergelijkbaar voor jouw distributie."
 
 #: ../sepolicy/sepolicy/gui.py:1296
 #, python-format
 msgid "To disable this transition, go to the %sBoolean section%s."
-msgstr ""
+msgstr "Om deze overgang uit te zetten, ga je naar de %sBooleaanse sectie%s."
 
 #: ../sepolicy/sepolicy/gui.py:1298
 #, python-format
 msgid "To enable this transition, go to the %sBoolean section%s."
-msgstr ""
+msgstr "Om deze transactie aan te zetten, ga je naar de %sBooleaanse sectie%s."
 
 #: ../audit2allow/audit2allow:238
 #, python-format
-msgid "To make this policy package active, execute:\n"
+msgid ""
+"To make this policy package active, execute:\n"
 "\n"
 "semodule -i %s\n"
 "\n"
 msgstr ""
+"Om dit beleidspakket te activeren, voer uit:\n"
+"\n"
+"semodule -i %s\n"
+"\n"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1846
 #: ../sepolicy/sepolicy/sepolicy.glade:3121
@@ -3244,7 +3299,8 @@ msgid ""
 "    *    To leave the application without applying your changes, click Yes.  "
 "All changes that you have made during this session will be lost."
 msgstr ""
-"Je probeert om het programma te sluiten zonder je wijzigingen toe te passen.\n"
+"Je probeert om het programma te sluiten zonder je wijzigingen toe te "
+"passen.\n"
 "* Om wijzigingen die je deze sessie gedaan hebt, klik op Nee en klik dan op "
 "Update.\n"
 "* Om het programma te verlaten zonder je wijzigingen toe te passen, klik op "
@@ -3282,9 +3338,11 @@ msgstr "Je moet een van de volgende waarden opgeven: %s"
 
 #: ../sepolicy/sepolicy/generate.py:886
 #, python-format
-msgid "You need to define a new type which ends with: \n"
+msgid ""
+"You need to define a new type which ends with: \n"
 " %s"
-msgstr "Je moet een nieuw type definieren dat eindigt met:\n"
+msgstr ""
+"Je moet een nieuw type definieren dat eindigt met:\n"
 "%s"
 
 #: ../sepolicy/sepolicy.py:324
@@ -3307,7 +3365,7 @@ msgstr "blokapparaat"
 
 #: ../semanage/semanage:715
 msgid "boolean"
-msgstr ""
+msgstr "boolean"
 
 #: ../sepolicy/sepolicy.py:454
 msgid "boolean to get description"
@@ -3351,7 +3409,7 @@ msgstr "uitvoerbaar bestand om te beperken"
 
 #: ../semanage/semanage:377
 msgid "file_spec"
-msgstr ""
+msgstr "file_spec"
 
 #: ../sepolicy/sepolicy.py:451
 msgid "get all booleans descriptions"
@@ -3359,7 +3417,7 @@ msgstr "verkrijg beschrijvingen van alle Booleans"
 
 #: ../semanage/semanage:559
 msgid "ibendport"
-msgstr ""
+msgstr "ibendport"
 
 #: ../semanage/seobject.py:1614
 #, python-format
@@ -3369,8 +3427,7 @@ msgstr "ibendpoort %s/%s is al gedefinieerd"
 #: ../semanage/seobject.py:1734
 #, python-format
 msgid "ibendport %s/%s is defined in policy, cannot be deleted"
-msgstr ""
-"ibendpoor %s/%s is gedefinieerd in tactiek, kan niet worden verwijderd"
+msgstr "ibendpoor %s/%s is gedefinieerd in tactiek, kan niet worden verwijderd"
 
 #: ../semanage/seobject.py:1676 ../semanage/seobject.py:1728
 #, python-format
@@ -3394,7 +3451,7 @@ msgstr "ibpkey %s/%s is niet gedefinieerd"
 
 #: ../semanage/semanage:601
 msgid "interface_spec"
-msgstr ""
+msgstr "interface_spec"
 
 #: ../sepolicy/sepolicy.py:391
 msgid "list all SELinux port types"
@@ -3407,7 +3464,7 @@ msgstr "luister naar inkomende verbindingen"
 #: ../semanage/semanage:303
 #, python-format
 msgid "login_name | %%groupname"
-msgstr ""
+msgstr "login_naam | %%groepsnaam"
 
 #: ../sepolicy/sepolicy/generate.py:481
 msgid "manage_krb5_rcache must be a boolean value "
@@ -3451,11 +3508,11 @@ msgstr "pad waar de beperkte processen naar zullen moeten schrijven"
 
 #: ../semanage/semanage:516
 msgid "pkey | pkey_range"
-msgstr ""
+msgstr "pkey | pkey_reeks"
 
 #: ../semanage/semanage:471
 msgid "port | port_range"
-msgstr ""
+msgstr "poort | poort_reeks"
 
 #: ../sepolicy/sepolicy.py:447
 msgid "query SELinux Policy to see description of booleans"
@@ -3484,11 +3541,11 @@ msgstr "gewoon bestand"
 
 #: ../semanage/semanage:427
 msgid "selinux_name"
-msgstr ""
+msgstr "selinux_naam"
 
 #: ../semanage/semanage:743
 msgid "semanage permissive: error: the following argument is required: type\n"
-msgstr ""
+msgstr "semanage permissive: fout: het volgende argument is vereist: type\n"
 
 #: ../sepolicy/sepolicy.py:517
 #, python-format

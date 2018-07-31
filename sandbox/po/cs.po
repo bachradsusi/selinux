@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-31 14:48+0200\n"
+"POT-Creation-Date: 2018-06-29 13:56+0200\n"
 "PO-Revision-Date: 2018-06-29 02:09+0000\n"
 "Last-Translator: Petr Lautrbach <plautrba@fedoraproject.org>\n"
 "Language-Team: Czech\n"
@@ -11,40 +11,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Zanata 4.4.5\n"
+"X-Generator: Zanata 4.5.0\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2\n"
-
-#: ../sandbox:119
-#, python-format
-msgid "Do you want to save changes to '%s' (Y/N): "
-msgstr ""
-
-#: ../sandbox:120
-msgid "Sandbox Message"
-msgstr ""
-
-#: ../sandbox:132
-#, python-format
-msgid "Do you want to save changes to '%s' (y/N): "
-msgstr ""
-
-#: ../sandbox:133
-msgid "[yY]"
-msgstr "[yY]"
-
-#: ../sandbox:156
-msgid "User account must be setup with an MCS Range"
-msgstr ""
-
-#: ../sandbox:184
-msgid ""
-"Failed to find any unused category sets.  Consider a larger MCS range for "
-"this user."
-msgstr ""
-
-#: ../sandbox:215
-msgid "Homedir and tempdir required for level mounts"
-msgstr ""
 
 #: ../sandbox:218 ../sandbox:229 ../sandbox:234
 #, python-format
@@ -75,52 +43,50 @@ msgid ""
 "%s\n"
 msgstr ""
 
-#: ../sandbox:324
-msgid "include file in sandbox"
+#: ../sandbox:412
+#, python-format
+msgid "%s is not an executable"
 msgstr ""
 
-#: ../sandbox:327
-msgid "read list of files to include in sandbox from INCLUDEFILE"
+#: ../sandbox:409
+msgid "Command required"
 msgstr ""
 
-#: ../sandbox:329
-msgid "run sandbox with SELinux type"
+#: ../sandbox:399
+msgid "Commands are not allowed in a session sandbox"
 msgstr ""
 
-#: ../sandbox:332
-msgid "mount new home and/or tmp directory"
+#: ../sandbox:119
+#, python-format
+msgid "Do you want to save changes to '%s' (Y/N): "
 msgstr ""
 
-#: ../sandbox:336
-msgid "dots per inch for X display"
+#: ../sandbox:132
+#, python-format
+msgid "Do you want to save changes to '%s' (y/N): "
 msgstr ""
 
-#: ../sandbox:339
-msgid "run complete desktop session within sandbox"
+#: ../sandbox:184
+msgid ""
+"Failed to find any unused category sets.  Consider a larger MCS range for "
+"this user."
 msgstr ""
 
-#: ../sandbox:342
-msgid "Shred content before tempory directories are removed"
+#: ../sandbox:215
+msgid "Homedir and tempdir required for level mounts"
 msgstr ""
 
-#: ../sandbox:346
-msgid "run X application within a sandbox"
-msgstr ""
-
-#: ../sandbox:352
-msgid "alternate home directory to use for mounting"
-msgstr ""
-
-#: ../sandbox:357
-msgid "alternate /tmp directory to use for mounting"
-msgstr ""
-
-#: ../sandbox:366
-msgid "alternate window manager"
+#: ../sandbox:535
+#, python-format
+msgid "Invalid value %s"
 msgstr ""
 
 #: ../sandbox:369
 msgid "MCS/MLS level for the sandbox"
+msgstr ""
+
+#: ../sandbox:120
+msgid "Sandbox Message"
 msgstr ""
 
 #: ../sandbox:385
@@ -130,25 +96,59 @@ msgid ""
 "command"
 msgstr ""
 
+#: ../sandbox:342
+msgid "Shred content before tempory directories are removed"
+msgstr ""
+
+#: ../sandbox:156
+msgid "User account must be setup with an MCS Range"
+msgstr ""
+
 #: ../sandbox:397
 msgid ""
 "You must specify a Homedir and tempdir when setting up a session sandbox"
-msgstr "Bublinku, dej home a temp"
-
-#: ../sandbox:399
-msgid "Commands are not allowed in a session sandbox"
 msgstr ""
 
-#: ../sandbox:409
-msgid "Command required"
+#: ../sandbox:133
+msgid "[yY]"
+msgstr "[yY]"
+
+#: ../sandbox:357
+msgid "alternate /tmp directory to use for mounting"
 msgstr ""
 
-#: ../sandbox:412
-#, python-format
-msgid "%s is not an executable"
+#: ../sandbox:352
+msgid "alternate home directory to use for mounting"
 msgstr ""
 
-#: ../sandbox:535
-#, python-format
-msgid "Invalid value %s"
+#: ../sandbox:366
+msgid "alternate window manager"
+msgstr ""
+
+#: ../sandbox:336
+msgid "dots per inch for X display"
+msgstr ""
+
+#: ../sandbox:324
+msgid "include file in sandbox"
+msgstr ""
+
+#: ../sandbox:332
+msgid "mount new home and/or tmp directory"
+msgstr ""
+
+#: ../sandbox:327
+msgid "read list of files to include in sandbox from INCLUDEFILE"
+msgstr ""
+
+#: ../sandbox:346
+msgid "run X application within a sandbox"
+msgstr ""
+
+#: ../sandbox:339
+msgid "run complete desktop session within sandbox"
+msgstr ""
+
+#: ../sandbox:329
+msgid "run sandbox with SELinux type"
 msgstr ""

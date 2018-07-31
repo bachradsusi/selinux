@@ -7,18 +7,19 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:45+0200\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2018-05-04 03:22+0000\n"
 "Last-Translator: Göran Uddeborg <goeran@uddeborg.se>\n"
 "Language-Team: Swedish\n"
 "Language: sv\n"
-"X-Generator: Zanata 4.4.5\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Zanata 4.5.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../semanage/semanage:256
-msgid "\n"
+msgid ""
+"\n"
 "    Name for the specified infiniband end port.\n"
 msgstr ""
 
@@ -30,25 +31,29 @@ msgid ""
 msgstr ""
 
 #: ../semanage/semanage:251
-msgid "\n"
+msgid ""
+"\n"
 "    Subnet prefix for  the specified infiniband ibpkey.\n"
 msgstr ""
 
 #: ../sepolicy/sepolicy/interface.py:231
 #, python-format
-msgid "\n"
+msgid ""
+"\n"
 "Compile test for %s failed.\n"
 msgstr ""
 
 #: ../sepolicy/sepolicy/interface.py:234
 #, python-format
-msgid "\n"
+msgid ""
+"\n"
 "Compile test for %s has not run. %s\n"
 msgstr ""
 
 #: ../sepolicy/sepolicy/interface.py:240
 #, python-format
-msgid "\n"
+msgid ""
+"\n"
 "Compiling of %s interface is not supported."
 msgstr ""
 
@@ -62,22 +67,26 @@ msgid ""
 msgstr ""
 
 #: ../semanage/seobject.py:2624
-msgid "\n"
+msgid ""
+"\n"
 "SELinux Distribution fcontext Equivalence \n"
-msgstr "\n"
+msgstr ""
+"\n"
 "SELinux-distributionens fcontext-ekvivalens \n"
 
 #: ../semanage/seobject.py:2629
-msgid "\n"
+msgid ""
+"\n"
 "SELinux Local fcontext Equivalence \n"
-msgstr "\n"
+msgstr ""
+"\n"
 "SELinux lokala fcontext-ekvivalens \n"
 
 #: ../semanage/semanage:423
 msgid ""
 "\n"
-"SELinux Roles.  You must enclose multiple roles within quotes,               "
-"   separate by spaces. Or specify -R multiple times.\n"
+"SELinux Roles.  You must enclose multiple roles within "
+"quotes,                  separate by spaces. Or specify -R multiple times.\n"
 msgstr ""
 
 #: ../chcat/chcat:133
@@ -143,8 +152,7 @@ msgstr "<b>…VÄLJ FÖR ATT VISA DATA…</b>"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:3995
 msgid "<b>Deny all processes from ptracing or debugging other processes?</b>"
-msgstr ""
-"<b>Neka alla processer att ptrace:a eller felsöka andra processer?</b>"
+msgstr "<b>Neka alla processer att ptrace:a eller felsöka andra processer?</b>"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:3866
 msgid "<b>Disable ability to run unconfined system processes?</b>"
@@ -222,7 +230,6 @@ msgstr "Lägg till"
 #: ../sepolicy/sepolicy/gui.py:1504
 msgid ""
 "Add File Equivalency Mapping. Mapping will be created when update is applied."
-""
 msgstr ""
 "Lägg till en filekvivalensmappning.  Mappningen kommer skapas när "
 "uppdateringen verkställs."
@@ -236,7 +243,6 @@ msgstr "Lägg till filetikettering för %s"
 #, python-format
 msgid ""
 "Add File Labeling for %s. File labels will be created when update is applied."
-""
 msgstr ""
 "Lägg till filetikettering för %s.  Filetiketter kommer skapas när "
 "uppdateringen verkställs."
@@ -253,8 +259,7 @@ msgstr ""
 "uppdateringen verkställs."
 
 #: ../sepolicy/sepolicy/gui.py:1490
-msgid ""
-"Add Login Mapping. User Mapping will be created when Update is applied."
+msgid "Add Login Mapping. User Mapping will be created when Update is applied."
 msgstr ""
 "Lägg till en inloggningsmappning.  Användarmappningen kommer skapas när "
 "uppdateringen verkställs."
@@ -266,8 +271,7 @@ msgstr "Lägg till en nätverksport för %s"
 
 #: ../sepolicy/sepolicy/gui.py:1473
 #, python-format
-msgid ""
-"Add Network Port for %s.  Ports will be created when update is applied."
+msgid "Add Network Port for %s.  Ports will be created when update is applied."
 msgstr ""
 "Lägg till en nätverksport för %s.  Portar kommer skapas när uppdateringen "
 "verkställs."
@@ -346,7 +350,6 @@ msgstr "Lägg till en ny SELinux-användar-/rolldefinition."
 #, python-format
 msgid ""
 "Add new port definition to which the '%(APP)s' domain is allowed to %(PERM)s."
-""
 msgstr ""
 "Lägg till en ny portdefinition till vilken domänen ”%(APP)s” tillåts att "
 "%(PERM)s."
@@ -477,9 +480,11 @@ msgstr "Felaktigt format %s: Post %s"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:2866
 #: ../sepolicy/sepolicy/sepolicy.glade:2956
-msgid "Boolean\n"
+msgid ""
+"Boolean\n"
 "Enabled"
-msgstr "Boolean\n"
+msgstr ""
+"Boolean\n"
 "Aktiverad"
 
 #: ../sepolicy/sepolicy/gui.py:1460
@@ -717,8 +722,7 @@ msgstr "Kunde inte kontrollera om gränssnittet %s är definierat"
 #: ../semanage/seobject.py:678 ../semanage/seobject.py:684
 #, python-format
 msgid "Could not check if login mapping for %s is defined"
-msgstr ""
-"Kunde inte kontrollera om inloggningskartläggning för %s är definierad"
+msgstr "Kunde inte kontrollera om inloggningskartläggning för %s är definierad"
 
 #: ../semanage/seobject.py:1097 ../semanage/seobject.py:1161
 #: ../semanage/seobject.py:1227 ../semanage/seobject.py:1233
@@ -1527,9 +1531,11 @@ msgstr ""
 "Ange standardnivå för SELinux-användare att logga in med.  Standard är s0"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:5489
-msgid "Enter MLS/MCS Range for this SELinux User.\n"
+msgid ""
+"Enter MLS/MCS Range for this SELinux User.\n"
 "s0-s0:c1023"
-msgstr "Ange MLS/MCS-intervall för denna SELinux-användare.\n"
+msgstr ""
+"Ange MLS/MCS-intervall för denna SELinux-användare.\n"
 "s0-s0:c1023"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1264
@@ -1768,8 +1774,7 @@ msgstr ""
 #: ../semanage/seobject.py:2361
 #, python-format
 msgid ""
-"File spec %s conflicts with equivalency rule '%s %s'; Try adding '%s' "
-"instead"
+"File spec %s conflicts with equivalency rule '%s %s'; Try adding '%s' instead"
 msgstr ""
 
 #: ../semanage/seobject.py:2356
@@ -1824,8 +1829,7 @@ msgstr "Generera ”%s”policy "
 
 #: ../sepolicy/sepolicy.py:369
 msgid "Generate HTML man pages structure for selected SELinux man page"
-msgstr ""
-"Generera en struktur av HTML-manualsidor för valda SELinux-manualsidor"
+msgstr "Generera en struktur av HTML-manualsidor för valda SELinux-manualsidor"
 
 #: ../sepolicy/sepolicy.py:597
 msgid "Generate SELinux Policy module template"
@@ -2270,7 +2274,6 @@ msgstr "Ändra inloggningsmappning"
 #, python-format
 msgid ""
 "Modify port definitions to which the '%(APP)s' domain is allowed to %(PERM)s."
-""
 msgstr ""
 "Andra portdefinitionerna till vilken domänen ”%(APP)s” tillåts att %(PERM)s."
 
@@ -3037,8 +3040,8 @@ msgstr ""
 
 #: ../sepolicy/sepolicy/sepolicy.glade:332
 msgid ""
-"The entry that was entered is incorrect.  Please try again in the ex:/.../..."
-" format."
+"The entry that was entered is incorrect.  Please try again in the "
+"ex:/.../... format."
 msgstr "Posten som angavs är felaktig.  Försök igen i formatet ex:/.../..."
 
 #: ../semanage/seobject.py:502
@@ -3061,7 +3064,8 @@ msgstr ""
 
 #: ../audit2allow/audit2allow:238
 #, python-format
-msgid "To make this policy package active, execute:\n"
+msgid ""
+"To make this policy package active, execute:\n"
 "\n"
 "semodule -i %s\n"
 "\n"
@@ -3264,9 +3268,11 @@ msgstr "Du måste ange ett av följande värden: %s"
 
 #: ../sepolicy/sepolicy/generate.py:886
 #, python-format
-msgid "You need to define a new type which ends with: \n"
+msgid ""
+"You need to define a new type which ends with: \n"
 " %s"
-msgstr "Du behöver definiera en ny typ som slutar med: \n"
+msgstr ""
+"Du behöver definiera en ny typ som slutar med: \n"
 " %s"
 
 #: ../sepolicy/sepolicy.py:324

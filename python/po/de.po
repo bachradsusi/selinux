@@ -7,18 +7,19 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:45+0200\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2017-12-15 08:50+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: German\n"
 "Language: de\n"
-"X-Generator: Zanata 4.4.5\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Zanata 4.5.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../semanage/semanage:256
-msgid "\n"
+msgid ""
+"\n"
 "    Name for the specified infiniband end port.\n"
 msgstr ""
 
@@ -30,25 +31,29 @@ msgid ""
 msgstr ""
 
 #: ../semanage/semanage:251
-msgid "\n"
+msgid ""
+"\n"
 "    Subnet prefix for  the specified infiniband ibpkey.\n"
 msgstr ""
 
 #: ../sepolicy/sepolicy/interface.py:231
 #, python-format
-msgid "\n"
+msgid ""
+"\n"
 "Compile test for %s failed.\n"
 msgstr ""
 
 #: ../sepolicy/sepolicy/interface.py:234
 #, python-format
-msgid "\n"
+msgid ""
+"\n"
 "Compile test for %s has not run. %s\n"
 msgstr ""
 
 #: ../sepolicy/sepolicy/interface.py:240
 #, python-format
-msgid "\n"
+msgid ""
+"\n"
 "Compiling of %s interface is not supported."
 msgstr ""
 
@@ -62,22 +67,26 @@ msgid ""
 msgstr ""
 
 #: ../semanage/seobject.py:2624
-msgid "\n"
+msgid ""
+"\n"
 "SELinux Distribution fcontext Equivalence \n"
-msgstr "\n"
+msgstr ""
+"\n"
 "SELinux Distribution-fcontext-Äquivalenz\n"
 
 #: ../semanage/seobject.py:2629
-msgid "\n"
+msgid ""
+"\n"
 "SELinux Local fcontext Equivalence \n"
-msgstr "\n"
+msgstr ""
+"\n"
 "SELinux Lokale fcontext-Äquivalenz \n"
 
 #: ../semanage/semanage:423
 msgid ""
 "\n"
-"SELinux Roles.  You must enclose multiple roles within quotes,               "
-"   separate by spaces. Or specify -R multiple times.\n"
+"SELinux Roles.  You must enclose multiple roles within "
+"quotes,                  separate by spaces. Or specify -R multiple times.\n"
 msgstr ""
 
 #: ../chcat/chcat:133
@@ -224,7 +233,6 @@ msgstr "Hinzufügen"
 #: ../sepolicy/sepolicy/gui.py:1504
 msgid ""
 "Add File Equivalency Mapping. Mapping will be created when update is applied."
-""
 msgstr ""
 "Dateiäquivalenz-Zuweisung hinzufügen. Die Zuweisung wird erstellt, wenn die "
 "Aktualisierung angewendet wird."
@@ -238,7 +246,6 @@ msgstr "Dateikennzeichnung für %s erstellen"
 #, python-format
 msgid ""
 "Add File Labeling for %s. File labels will be created when update is applied."
-""
 msgstr ""
 "Dateikennzeichnung für %s hinzufügen. Dateikennzeichnungen werden erstellt, "
 "wenn die Aktualisierung angewendet wird."
@@ -255,8 +262,7 @@ msgstr ""
 "Aktualisierung angewendet wird."
 
 #: ../sepolicy/sepolicy/gui.py:1490
-msgid ""
-"Add Login Mapping. User Mapping will be created when Update is applied."
+msgid "Add Login Mapping. User Mapping will be created when Update is applied."
 msgstr ""
 "Login-Zuweisung hinzufügen. Benutzerzuweisung wird erstellt, wenn die "
 "Aktualisierung angewendet wird."
@@ -268,8 +274,7 @@ msgstr "Netzwerkport für %s hinzufügen"
 
 #: ../sepolicy/sepolicy/gui.py:1473
 #, python-format
-msgid ""
-"Add Network Port for %s.  Ports will be created when update is applied."
+msgid "Add Network Port for %s.  Ports will be created when update is applied."
 msgstr ""
 "Netzwerkport für %s hinzufügen. Ports werden erstellt, wenn die "
 "Aktualisierung angewendet wird."
@@ -348,10 +353,8 @@ msgstr "Neue SELinux-Benutzer-/Rollendefinition hinzufügen."
 #, python-format
 msgid ""
 "Add new port definition to which the '%(APP)s' domain is allowed to %(PERM)s."
-""
 msgstr ""
 "Neue Portdefinition hinzufügen, mit der die \"%(APP)s\" Domain %(PERM)s darf."
-""
 
 #: ../sepolicy/sepolicy/gui.py:2237
 #, python-format
@@ -482,9 +485,11 @@ msgstr "Ungültiges Format %s: Record %s"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:2866
 #: ../sepolicy/sepolicy/sepolicy.glade:2956
-msgid "Boolean\n"
+msgid ""
+"Boolean\n"
 "Enabled"
-msgstr "Boolesche Variable\n"
+msgstr ""
+"Boolesche Variable\n"
 "Aktiviert"
 
 #: ../sepolicy/sepolicy/gui.py:1460
@@ -1113,8 +1118,7 @@ msgstr "Konnte Modul %s nicht entfernen (Entfernen fehlgeschlagen)"
 #: ../semanage/seobject.py:518
 #, python-format
 msgid "Could not remove permissive domain %s (remove failed)"
-msgstr ""
-"Konnte permissive Domain %s nicht entfernen (Entfernen fehlgeschlagen)"
+msgstr "Konnte permissive Domain %s nicht entfernen (Entfernen fehlgeschlagen)"
 
 #: ../semanage/seobject.py:852
 #, python-format
@@ -1544,9 +1548,11 @@ msgid "Enter Default Level for SELinux User to login with. Default s0"
 msgstr "Standardlevel zur Anmeldung für SELinux-Benutzer. Standard ist s0"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:5489
-msgid "Enter MLS/MCS Range for this SELinux User.\n"
+msgid ""
+"Enter MLS/MCS Range for this SELinux User.\n"
 "s0-s0:c1023"
-msgstr "MLS/MCS-Bereich für diesen SELinux-Benutzer eingeben.\n"
+msgstr ""
+"MLS/MCS-Bereich für diesen SELinux-Benutzer eingeben.\n"
 "s0-s0:c1023"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1264
@@ -1796,8 +1802,7 @@ msgstr "Dateispezifikation %s kollidiert mit Äquivalenzregel '%s/%s'"
 #: ../semanage/seobject.py:2361
 #, python-format
 msgid ""
-"File spec %s conflicts with equivalency rule '%s %s'; Try adding '%s' "
-"instead"
+"File spec %s conflicts with equivalency rule '%s %s'; Try adding '%s' instead"
 msgstr ""
 "Dateispezifikation %s kollidiert mit Äquivalenzregel '%s %s'; versuchen Sie, "
 "stattdessen '%s' hinzuzufügen"
@@ -2303,7 +2308,6 @@ msgstr "Login-Zuweisung bearbeiten"
 #, python-format
 msgid ""
 "Modify port definitions to which the '%(APP)s' domain is allowed to %(PERM)s."
-""
 msgstr ""
 "Portdefinitionen bearbeiten, mit denen die \"%(APP)s\" Domain %(PERM)s darf."
 
@@ -2395,8 +2399,7 @@ msgstr "Netzwerkport-Definitionen"
 #: ../sepolicy/sepolicy/gui.py:1061
 #, python-format
 msgid "Network Ports to which the '%s' is allowed to connect."
-msgstr ""
-"Netzwerk-Ports, mit welchen die '%s' Domäne Verbindung aufnehmen kann."
+msgstr "Netzwerk-Ports, mit welchen die '%s' Domäne Verbindung aufnehmen kann."
 
 #: ../sepolicy/sepolicy/gui.py:1062
 #, python-format
@@ -2897,7 +2900,6 @@ msgid ""
 msgstr ""
 "Wählen Sie den SELinux-Benutzer, der diesem Login-Benutzer zugeordnet werden "
 "soll. Login-Benutzern wird standardmäßig der __default__ Benutzer zugeordnet."
-""
 
 #: ../sepolicy/sepolicy/sepolicy.glade:902
 msgid "Select the SELinux file type to assign to this path."
@@ -3088,8 +3090,8 @@ msgstr ""
 
 #: ../sepolicy/sepolicy/sepolicy.glade:332
 msgid ""
-"The entry that was entered is incorrect.  Please try again in the ex:/.../..."
-" format."
+"The entry that was entered is incorrect.  Please try again in the "
+"ex:/.../... format."
 msgstr ""
 "Der eingegebene Eintrag war fehlerhaft. Bitte versuchen Sie es erneut im "
 "Format /.../...."
@@ -3114,7 +3116,8 @@ msgstr ""
 
 #: ../audit2allow/audit2allow:238
 #, python-format
-msgid "To make this policy package active, execute:\n"
+msgid ""
+"To make this policy package active, execute:\n"
 "\n"
 "semodule -i %s\n"
 "\n"
@@ -3320,9 +3323,11 @@ msgstr "Sie müssen einen der folgenden Werte angeben: %s"
 
 #: ../sepolicy/sepolicy/generate.py:886
 #, python-format
-msgid "You need to define a new type which ends with: \n"
+msgid ""
+"You need to define a new type which ends with: \n"
 " %s"
-msgstr "Es muss ein neuer Typ mit folgender Endung definiert werden: \n"
+msgstr ""
+"Es muss ein neuer Typ mit folgender Endung definiert werden: \n"
 " %s"
 
 #: ../sepolicy/sepolicy.py:324
@@ -3476,8 +3481,7 @@ msgstr "ein"
 
 #: ../sepolicy/sepolicy.py:365
 msgid "path in which the generated SELinux man pages will be stored"
-msgstr ""
-"Pfad, auf dem die erstellten SELinux-Handbuchseiten gespeichert werden"
+msgstr "Pfad, auf dem die erstellten SELinux-Handbuchseiten gespeichert werden"
 
 #: ../sepolicy/sepolicy.py:619
 msgid "path in which the generated policy files will be stored"

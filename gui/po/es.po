@@ -10,14 +10,14 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:10+0200\n"
-"PO-Revision-Date: 2018-06-25 10:53+0000\n"
+"PO-Revision-Date: 2018-07-18 06:28+0000\n"
 "Last-Translator: Máximo Castañeda Riloba <mcrcctm@gmail.com>\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Zanata 4.4.5\n"
+"X-Generator: Zanata 4.5.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../domainsPage.py:55 ../system-config-selinux.ui:1834
@@ -26,7 +26,7 @@ msgstr "Dominio de proceso"
 
 #: ../domainsPage.py:63
 msgid "Domain Name"
-msgstr ""
+msgstr "Nombre de dominio"
 
 #: ../domainsPage.py:68
 msgid "Mode"
@@ -173,27 +173,27 @@ msgstr ""
 
 #: ../sepolicy.desktop:3
 msgid "SELinux Policy Management Tool"
-msgstr ""
+msgstr "Herramienta de gestión de políticas SELinux"
 
 #: ../sepolicy.desktop:4 ../selinux-polgengui.desktop:32
 msgid "Generate SELinux policy modules"
-msgstr ""
+msgstr "Genere módulos de políticas SELinux"
 
 #: ../sepolicy.desktop:5
 msgid "sepolicy"
-msgstr ""
+msgstr "sepolicy"
 
 #: ../sepolicy.desktop:11
 msgid "policy;security;selinux;avc;permission;mac;"
-msgstr ""
+msgstr "políticas;seguridad;selinux;avc;permisos;mac;"
 
 #: ../org.selinux.config.policy:11
 msgid "Run System Config SELinux"
-msgstr ""
+msgstr "Ejecutar configuración de sistema SELinux"
 
 #: ../org.selinux.config.policy:12
 msgid "Authentication is required to run system-config-selinux"
-msgstr ""
+msgstr "Se requiere autenticación para ejecutar system-config-selinux"
 
 #: ../polgen.ui:9
 msgid "Red Hat 2007"
@@ -958,11 +958,11 @@ msgstr "Es necesario el registro de '%s'"
 
 #: ../system-config-selinux.desktop:3
 msgid "SELinux Management"
-msgstr ""
+msgstr "Gestión de SELinux"
 
 #: ../system-config-selinux.desktop:32
 msgid "Configure SELinux in a graphical setting"
-msgstr ""
+msgstr "Configure SELinux en un entorno gráfico"
 
 #: ../system-config-selinux.desktop:62 ../selinux-polgengui.desktop:62
 msgid "system-config-selinux"
@@ -978,7 +978,7 @@ msgstr "Prioridad"
 
 #: ../modulesPage.py:79
 msgid "Kind"
-msgstr ""
+msgstr "Tipo"
 
 #: ../modulesPage.py:147
 msgid "Disable Audit"

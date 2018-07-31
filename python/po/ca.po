@@ -8,18 +8,19 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:45+0200\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2018-05-13 04:28+0000\n"
 "Last-Translator: Robert Antoni Buj Gelonch <rbuj@fedoraproject.org>\n"
 "Language-Team: Catalan\n"
 "Language: ca\n"
-"X-Generator: Zanata 4.4.5\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Zanata 4.5.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../semanage/semanage:256
-msgid "\n"
+msgid ""
+"\n"
 "    Name for the specified infiniband end port.\n"
 msgstr ""
 
@@ -31,25 +32,29 @@ msgid ""
 msgstr ""
 
 #: ../semanage/semanage:251
-msgid "\n"
+msgid ""
+"\n"
 "    Subnet prefix for  the specified infiniband ibpkey.\n"
 msgstr ""
 
 #: ../sepolicy/sepolicy/interface.py:231
 #, python-format
-msgid "\n"
+msgid ""
+"\n"
 "Compile test for %s failed.\n"
 msgstr ""
 
 #: ../sepolicy/sepolicy/interface.py:234
 #, python-format
-msgid "\n"
+msgid ""
+"\n"
 "Compile test for %s has not run. %s\n"
 msgstr ""
 
 #: ../sepolicy/sepolicy/interface.py:240
 #, python-format
-msgid "\n"
+msgid ""
+"\n"
 "Compiling of %s interface is not supported."
 msgstr ""
 
@@ -63,22 +68,26 @@ msgid ""
 msgstr ""
 
 #: ../semanage/seobject.py:2624
-msgid "\n"
+msgid ""
+"\n"
 "SELinux Distribution fcontext Equivalence \n"
-msgstr "\n"
+msgstr ""
+"\n"
 "Equivalència fcontext de la distribució de SELinux\n"
 
 #: ../semanage/seobject.py:2629
-msgid "\n"
+msgid ""
+"\n"
 "SELinux Local fcontext Equivalence \n"
-msgstr "\n"
+msgstr ""
+"\n"
 "Equivalència fcontext local de SELinux\n"
 
 #: ../semanage/semanage:423
 msgid ""
 "\n"
-"SELinux Roles.  You must enclose multiple roles within quotes,               "
-"   separate by spaces. Or specify -R multiple times.\n"
+"SELinux Roles.  You must enclose multiple roles within "
+"quotes,                  separate by spaces. Or specify -R multiple times.\n"
 msgstr ""
 
 #: ../chcat/chcat:133
@@ -151,8 +160,8 @@ msgstr ""
 #: ../sepolicy/sepolicy/sepolicy.glade:3866
 msgid "<b>Disable ability to run unconfined system processes?</b>"
 msgstr ""
-"<b>Inhabilita la capacitat d'executar els processos de sistema no "
-"confinats?</b>"
+"<b>Inhabilita la capacitat d'executar els processos de sistema no confinats?"
+"</b>"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:3929
 msgid "<b>Disable all permissive processes?</b>"
@@ -226,7 +235,6 @@ msgstr "Afegeix"
 #: ../sepolicy/sepolicy/gui.py:1504
 msgid ""
 "Add File Equivalency Mapping. Mapping will be created when update is applied."
-""
 msgstr ""
 "Afegeix assignació d'equivalència de fitxer. L'assignació es crearà en "
 "actualitzar."
@@ -240,7 +248,6 @@ msgstr "Afegeix etiquetatge de fitxer per %s"
 #, python-format
 msgid ""
 "Add File Labeling for %s. File labels will be created when update is applied."
-""
 msgstr ""
 "Afegeix etiquetatge de fitxer per a %s. Les etiquetes de fitxer es crearan "
 "en actualitzar."
@@ -257,8 +264,7 @@ msgstr ""
 "crearà en actualitzar."
 
 #: ../sepolicy/sepolicy/gui.py:1490
-msgid ""
-"Add Login Mapping. User Mapping will be created when Update is applied."
+msgid "Add Login Mapping. User Mapping will be created when Update is applied."
 msgstr ""
 "Afegeix assignació d'inici de sessió. L'assignació d'inici de sessió es "
 "crearà en actualitzar."
@@ -270,8 +276,7 @@ msgstr "Afegeix port de xarxa per %s"
 
 #: ../sepolicy/sepolicy/gui.py:1473
 #, python-format
-msgid ""
-"Add Network Port for %s.  Ports will be created when update is applied."
+msgid "Add Network Port for %s.  Ports will be created when update is applied."
 msgstr "Afegeix port de xarxa per a %s. Els ports es crearan en actualitzar."
 
 #: ../sepolicy/sepolicy/gui.py:1505
@@ -330,8 +335,7 @@ msgstr "Afegeix l'assignació d'inici de sessió"
 #: ../sepolicy/sepolicy/gui.py:1362
 #, python-format
 msgid "Add new %(TYPE)s file path for '%(DOMAIN)s' domains."
-msgstr ""
-"Afegeix un nou camí als fitxers %(TYPE)s per als dominis '%(DOMAIN)s'."
+msgstr "Afegeix un nou camí als fitxers %(TYPE)s per als dominis '%(DOMAIN)s'."
 
 #: ../sepolicy/sepolicy/gui.py:1430
 msgid "Add new File Equivalence definition."
@@ -349,7 +353,6 @@ msgstr "Afegeix una nova definició d'usuari/rol de SELinux."
 #, python-format
 msgid ""
 "Add new port definition to which the '%(APP)s' domain is allowed to %(PERM)s."
-""
 msgstr ""
 "Afegeix una nova definició de port en la que el domini '%(APP)s' hi pot "
 "%(PERM)s."
@@ -480,9 +483,11 @@ msgstr "Format incorrecte %s: registre %s"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:2866
 #: ../sepolicy/sepolicy/sepolicy.glade:2956
-msgid "Boolean\n"
+msgid ""
+"Boolean\n"
 "Enabled"
-msgstr "Booleà\n"
+msgstr ""
+"Booleà\n"
 "habilitat"
 
 #: ../sepolicy/sepolicy/gui.py:1460
@@ -536,8 +541,7 @@ msgstr "No pot tenir múltiples sensibilitats"
 #: ../chcat/chcat:129 ../chcat/chcat:208
 #, python-format
 msgid "Can not modify sensitivity levels using '+' on %s"
-msgstr ""
-"No es poden modificar els nivells de sensibilitat mitjançant «+» en %s"
+msgstr "No es poden modificar els nivells de sensibilitat mitjançant «+» en %s"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:204
 #: ../sepolicy/sepolicy/sepolicy.glade:539
@@ -1107,8 +1111,7 @@ msgstr "No es pot treure el mòdul %s (l'eliminació ha fallat)"
 #: ../semanage/seobject.py:518
 #, python-format
 msgid "Could not remove permissive domain %s (remove failed)"
-msgstr ""
-"No s'ha pogut eliminar el domini permissiu %s (l'eliminació ha fallat)"
+msgstr "No s'ha pogut eliminar el domini permissiu %s (l'eliminació ha fallat)"
 
 #: ../semanage/seobject.py:852
 #, python-format
@@ -1449,8 +1452,7 @@ msgstr "Desactivat"
 #: ../sepolicy/sepolicy/gui.py:1073
 #, python-format
 msgid "Display applications that can transition into or out of the '%s'."
-msgstr ""
-"Mostra les aplicacions que poden fer la transició dins o fora de «%s»."
+msgstr "Mostra les aplicacions que poden fer la transició dins o fora de «%s»."
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1850
 msgid ""
@@ -1545,9 +1547,11 @@ msgstr ""
 "SELinux. Per defecte s0"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:5489
-msgid "Enter MLS/MCS Range for this SELinux User.\n"
+msgid ""
+"Enter MLS/MCS Range for this SELinux User.\n"
 "s0-s0:c1023"
-msgstr "Introduïu l'interval MLS/MCS per a aquest usuari SELinux.\n"
+msgstr ""
+"Introduïu l'interval MLS/MCS per a aquest usuari SELinux.\n"
 "s0-s0:c1023"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1264
@@ -1792,8 +1796,7 @@ msgstr ""
 #: ../semanage/seobject.py:2361
 #, python-format
 msgid ""
-"File spec %s conflicts with equivalency rule '%s %s'; Try adding '%s' "
-"instead"
+"File spec %s conflicts with equivalency rule '%s %s'; Try adding '%s' instead"
 msgstr ""
 
 #: ../semanage/seobject.py:2356
@@ -2294,7 +2297,6 @@ msgstr "Modifica l'assignació d'inici de sessió"
 #, python-format
 msgid ""
 "Modify port definitions to which the '%(APP)s' domain is allowed to %(PERM)s."
-""
 msgstr ""
 "Modifica les definicions del port a les que el domini '%(APP)s' hi pot "
 "%(PERM)s."
@@ -2397,8 +2399,7 @@ msgstr "Els ports de xarxa als quals «%s» hi pot escoltar."
 
 #: ../sepolicy/sepolicy/sepolicy.glade:2704
 msgid "Network Ports to which the 'selected domain' is allowed to connect."
-msgstr ""
-"Els ports de xarxa als quals el «domini seleccionat» hi pot connectar."
+msgstr "Els ports de xarxa als quals el «domini seleccionat» hi pot connectar."
 
 #: ../sepolicy/sepolicy/sepolicy.glade:2804
 msgid "Network Ports to which the 'selected domain' is allowed to listen."
@@ -2435,8 +2436,7 @@ msgstr "Encara no està implementat"
 
 #: ../sepolicy/sepolicy/generate.py:445
 msgid "Only Daemon apps can use an init script.."
-msgstr ""
-"Tan sols les aplicacions dels dimonis poden executar un script init..."
+msgstr "Tan sols les aplicacions dels dimonis poden executar un script init..."
 
 #: ../chcat/chcat:436
 #, python-format
@@ -2624,8 +2624,9 @@ msgid ""
 "the system when you select update."
 msgstr ""
 "Reviseu les actualitzacions que hàgiu fet abans de posar-les a disposició "
-"del sistema.  Per a restablir un element, desmarqueu la casella de selecció. "
-" En actualitzar s'actualitzaran tots els elements que estiguin marcats."
+"del sistema.  Per a restablir un element, desmarqueu la casella de "
+"selecció.  En actualitzar s'actualitzaran tots els elements que estiguin "
+"marcats."
 
 #: ../sepolicy/sepolicy/gui.py:2273
 #, python-format
@@ -3077,8 +3078,8 @@ msgstr ""
 
 #: ../sepolicy/sepolicy/sepolicy.glade:332
 msgid ""
-"The entry that was entered is incorrect.  Please try again in the ex:/.../..."
-" format."
+"The entry that was entered is incorrect.  Please try again in the "
+"ex:/.../... format."
 msgstr ""
 "L'entrada que es va introduir no és correcta. Proveu-ho un altre cop amb el "
 "format ex:/.../...."
@@ -3103,7 +3104,8 @@ msgstr ""
 
 #: ../audit2allow/audit2allow:238
 #, python-format
-msgid "To make this policy package active, execute:\n"
+msgid ""
+"To make this policy package active, execute:\n"
 "\n"
 "semodule -i %s\n"
 "\n"
@@ -3307,9 +3309,11 @@ msgstr "Heu d'especificar un dels següents valors: %s"
 
 #: ../sepolicy/sepolicy/generate.py:886
 #, python-format
-msgid "You need to define a new type which ends with: \n"
+msgid ""
+"You need to define a new type which ends with: \n"
 " %s"
-msgstr "Necessiteu definir un nou tipus que acabi amb: \n"
+msgstr ""
+"Necessiteu definir un nou tipus que acabi amb: \n"
 " %s"
 
 #: ../sepolicy/sepolicy.py:324
