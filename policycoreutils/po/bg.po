@@ -4,13 +4,13 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:36+0200\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2016-01-06 06:55+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Bulgarian\n"
 "Language: bg\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Zanata 4.4.5\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
@@ -277,11 +277,11 @@ msgstr "не успя изграждането на нов диапазон с �
 msgid "failed to convert new context to string\n"
 msgstr "не успя конвертирането на новия контекст към низ\n"
 
-#. 
+#.
 #. * Error path cleanup
 #. *
 #. * If we reach here, then we failed to exec the new shell.
-#. 
+#.
 #: ../newrole/newrole.c:1336
 msgid "failed to exec shell\n"
 msgstr "стартирането на обвивката не успя\n"
@@ -350,8 +350,7 @@ msgstr "newrole: некоректна парола за %s\n"
 #, c-format
 msgid "newrole: service name configuration hashtable overflow\n"
 msgstr ""
-"newrole: препълване на хеш таблицата на конфигурацията на услугата за "
-"имена\n"
+"newrole: препълване на хеш таблицата на конфигурацията на услугата за имена\n"
 
 #: ../run_init/run_init.c:275
 #, c-format

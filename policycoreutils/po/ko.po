@@ -4,13 +4,13 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:36+0200\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2016-01-06 07:00+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Korean\n"
 "Language: ko\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Zanata 4.4.5\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
@@ -27,12 +27,16 @@ msgstr "%s는 유효한 문맥이 아닙니다\n"
 #: ../newrole/newrole.c:730
 #, c-format
 msgid "%s!  Could not get current context for %s, not relabeling tty.\n"
-msgstr "%s!  %s에 사용되는 대한 최근 문맥을 찾을 수 없습니다, tty 레이블 변경이 되지 않습니다.\n"
+msgstr ""
+"%s!  %s에 사용되는 대한 최근 문맥을 찾을 수 없습니다, tty 레이블 변경이 되지 "
+"않습니다.\n"
 
 #: ../newrole/newrole.c:740
 #, c-format
 msgid "%s!  Could not get new context for %s, not relabeling tty.\n"
-msgstr "%s! %s에 사용되는 대한 새로운 문맥을 찾을 수 없습니다. tty 레이블 변경이 되지 않습니다.\n"
+msgstr ""
+"%s! %s에 사용되는 대한 새로운 문맥을 찾을 수 없습니다. tty 레이블 변경이 되"
+"지 않습니다.\n"
 
 #: ../newrole/newrole.c:750
 #, c-format
@@ -274,11 +278,11 @@ msgstr "%s 레벨의 새로운 범위를 개발하는데 실패했습니다\n"
 msgid "failed to convert new context to string\n"
 msgstr "새로운 문맥을 문자열로 변환하는데 실패했습니다\n"
 
-#. 
+#.
 #. * Error path cleanup
 #. *
 #. * If we reach here, then we failed to exec the new shell.
-#. 
+#.
 #: ../newrole/newrole.c:1336
 msgid "failed to exec shell\n"
 msgstr "쉘을 실행하는데 실패하였습니다\n"

@@ -7,13 +7,13 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:36+0200\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2018-02-23 03:59+0000\n"
 "Last-Translator: Robert Antoni Buj Gelonch <rbuj@fedoraproject.org>\n"
 "Language-Team: Catalan\n"
 "Language: ca\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Zanata 4.4.5\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
@@ -38,8 +38,8 @@ msgstr ""
 #, c-format
 msgid "%s!  Could not get new context for %s, not relabeling tty.\n"
 msgstr ""
-"%s. No s'ha pogut obtenir el nou context per a %s, no es reetiquetarà el tty."
-"\n"
+"%s. No s'ha pogut obtenir el nou context per a %s, no es reetiquetarà el "
+"tty.\n"
 
 #: ../newrole/newrole.c:750
 #, c-format
@@ -62,8 +62,8 @@ msgstr "%s: no es pot carregar la política: %s\n"
 #, c-format
 msgid "Cannot find your entry in the shadow passwd file.\n"
 msgstr ""
-"No s'ha pogut trobar la vostra entrada en el fitxer de contrasenyes ocultes."
-"\n"
+"No s'ha pogut trobar la vostra entrada en el fitxer de contrasenyes "
+"ocultes.\n"
 
 #: ../newrole/newrole.c:1249
 #, c-format
@@ -289,11 +289,11 @@ msgstr "no s'ha pogut muntar el nou rang amb nivell %s\n"
 msgid "failed to convert new context to string\n"
 msgstr "no s'ha pogut convertir el nou context en cadena de text\n"
 
-#. 
+#.
 #. * Error path cleanup
 #. *
 #. * If we reach here, then we failed to exec the new shell.
-#. 
+#.
 #: ../newrole/newrole.c:1336
 msgid "failed to exec shell\n"
 msgstr "no s'ha pogut executar l'intèrpret d'ordres\n"

@@ -5,13 +5,13 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:36+0200\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2018-01-29 06:47+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Danish\n"
 "Language: da\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Zanata 4.4.5\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
@@ -145,8 +145,7 @@ msgstr "Fejl: flere typer angivet\n"
 #, c-format
 msgid "Error: you are not allowed to change levels on a non secure terminal \n"
 msgstr ""
-"Fejl: du har ikke tilladelse til at ændre niveauer fra en usikker terminal "
-"\n"
+"Fejl: du har ikke tilladelse til at ændre niveauer fra en usikker terminal \n"
 
 #: ../newrole/newrole.c:1190 ../newrole/newrole.c:1217
 #, c-format
@@ -277,11 +276,11 @@ msgstr "kunne ikke bygge nyt interval med niveau %s\n"
 msgid "failed to convert new context to string\n"
 msgstr "kunne ikke konvertere ny kontekst til streng\n"
 
-#. 
+#.
 #. * Error path cleanup
 #. *
 #. * If we reach here, then we failed to exec the new shell.
-#. 
+#.
 #: ../newrole/newrole.c:1336
 msgid "failed to exec shell\n"
 msgstr "kunne ikke udføre skal\n"

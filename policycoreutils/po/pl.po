@@ -5,13 +5,13 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:36+0200\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2017-12-11 09:44+0000\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish\n"
 "Language: pl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Zanata 4.4.5\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2)\n"
@@ -280,11 +280,11 @@ msgstr "zbudowanie nowego zakresu z poziomem %s się nie powiodło\n"
 msgid "failed to convert new context to string\n"
 msgstr "przekonwertowanie nowego kontekstu na ciąg tekstowy się nie powiodło\n"
 
-#. 
+#.
 #. * Error path cleanup
 #. *
 #. * If we reach here, then we failed to exec the new shell.
-#. 
+#.
 #: ../newrole/newrole.c:1336
 msgid "failed to exec shell\n"
 msgstr "wykonanie powłoki się nie powiodło\n"

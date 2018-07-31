@@ -4,13 +4,13 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:36+0200\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2016-01-06 06:57+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Gujarati\n"
 "Language: gu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Zanata 4.4.5\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
@@ -27,15 +27,12 @@ msgstr "%s એ માન્ય સંદર્ભ નથી\n"
 #: ../newrole/newrole.c:730
 #, c-format
 msgid "%s!  Could not get current context for %s, not relabeling tty.\n"
-msgstr ""
-"%s!  %s માટે વર્તમાન સંદર્ભ મેળવી શક્યા નહિં, નહિં કે tty નું પુનઃલેબલીકરણ."
-"\n"
+msgstr "%s!  %s માટે વર્તમાન સંદર્ભ મેળવી શક્યા નહિં, નહિં કે tty નું પુનઃલેબલીકરણ.\n"
 
 #: ../newrole/newrole.c:740
 #, c-format
 msgid "%s!  Could not get new context for %s, not relabeling tty.\n"
-msgstr ""
-"%s!  %s માટે નવો સંદર્ભ મેળવી શક્યા નહિં, નહિં કે tty નું પુનઃલેબલીકરણ.\n"
+msgstr "%s!  %s માટે નવો સંદર્ભ મેળવી શક્યા નહિં, નહિં કે tty નું પુનઃલેબલીકરણ.\n"
 
 #: ../newrole/newrole.c:750
 #, c-format
@@ -277,11 +274,11 @@ msgstr "સ્તર %s સાથેની નવી મર્યાદા બ�
 msgid "failed to convert new context to string\n"
 msgstr "શબ્દમાળાના નવા સંદર્ભમાં રૂપાંતરણ કરવામાં નિષ્ફળ\n"
 
-#. 
+#.
 #. * Error path cleanup
 #. *
 #. * If we reach here, then we failed to exec the new shell.
-#. 
+#.
 #: ../newrole/newrole.c:1336
 msgid "failed to exec shell\n"
 msgstr "exec shell માં નિષ્ફળ\n"

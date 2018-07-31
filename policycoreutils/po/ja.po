@@ -5,13 +5,13 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:36+0200\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2017-12-15 08:51+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Zanata 4.4.5\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
@@ -28,12 +28,16 @@ msgstr "%s は有効なコンテキストではありません\n"
 #: ../newrole/newrole.c:730
 #, c-format
 msgid "%s!  Could not get current context for %s, not relabeling tty.\n"
-msgstr "%s! %s の現在のコンテキストを取得できませんでした、再ラベルを行っている tty ではありません。\n"
+msgstr ""
+"%s! %s の現在のコンテキストを取得できませんでした、再ラベルを行っている tty "
+"ではありません。\n"
 
 #: ../newrole/newrole.c:740
 #, c-format
 msgid "%s!  Could not get new context for %s, not relabeling tty.\n"
-msgstr "%s! %s の新しいコンテキストを取得できませんでした、 再ラベルを行っている tty ではありません。\n"
+msgstr ""
+"%s! %s の新しいコンテキストを取得できませんでした、 再ラベルを行っている tty "
+"ではありません。\n"
 
 #: ../newrole/newrole.c:750
 #, c-format
@@ -275,11 +279,11 @@ msgstr "レベル %s で、新しい範囲をビルドするのに失敗しま�
 msgid "failed to convert new context to string\n"
 msgstr "新しいコンテキストの文字列への変換に失敗しました\n"
 
-#. 
+#.
 #. * Error path cleanup
 #. *
 #. * If we reach here, then we failed to exec the new shell.
-#. 
+#.
 #: ../newrole/newrole.c:1336
 msgid "failed to exec shell\n"
 msgstr "シェルの実行に失敗しました\n"

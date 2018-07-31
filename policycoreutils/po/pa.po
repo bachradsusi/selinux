@@ -5,13 +5,13 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:36+0200\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2017-12-15 09:04+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Punjabi\n"
 "Language: pa\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Zanata 4.4.5\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
@@ -28,15 +28,12 @@ msgstr "%s ਇੱਕ ਯੋਗ ਪ੍ਰਸੰਗ ਨਹੀਂ ਹੈ\n"
 #: ../newrole/newrole.c:730
 #, c-format
 msgid "%s!  Could not get current context for %s, not relabeling tty.\n"
-msgstr ""
-"%s!  %s ਲਈ ਮੌਜੂਦਾ ਪ੍ਰਸੰਗ ਨਹੀਂ ਪਤਾ ਕਰ ਸਕਿਆ, tty ਨੂੰ ਰੀ-ਲੇਬਲਿੰਗ ਨਹੀਂ ਕਰ "
-"ਸਕਿਆ।\n"
+msgstr "%s!  %s ਲਈ ਮੌਜੂਦਾ ਪ੍ਰਸੰਗ ਨਹੀਂ ਪਤਾ ਕਰ ਸਕਿਆ, tty ਨੂੰ ਰੀ-ਲੇਬਲਿੰਗ ਨਹੀਂ ਕਰ ਸਕਿਆ।\n"
 
 #: ../newrole/newrole.c:740
 #, c-format
 msgid "%s!  Could not get new context for %s, not relabeling tty.\n"
-msgstr ""
-"%s!  %s ਲਈ ਨਵਾਂ ਪ੍ਰਸੰਗ ਨਹੀਂ ਪਤਾ ਕਰ ਸਕਿਆ, tty ਨੂੰ ਰੀ-ਲੇਬਲਿੰਗ ਨਹੀਂ ਕਰ ਰਿਹਾ।\n"
+msgstr "%s!  %s ਲਈ ਨਵਾਂ ਪ੍ਰਸੰਗ ਨਹੀਂ ਪਤਾ ਕਰ ਸਕਿਆ, tty ਨੂੰ ਰੀ-ਲੇਬਲਿੰਗ ਨਹੀਂ ਕਰ ਰਿਹਾ।\n"
 
 #: ../newrole/newrole.c:750
 #, c-format
@@ -278,11 +275,11 @@ msgstr "ਲੈਵਲ %s ਨਾਲ ਨਵੀਂ ਰੇਂਜ ਬਣਾਉਣ ਵ�
 msgid "failed to convert new context to string\n"
 msgstr "ਨਵੇਂ ਪ੍ਰਸੰਗ ਨੂੰ ਸਤਰ ਵਿੱਚ ਤਬਦੀਲ ਕਰਨ ਵਿੱਚ ਫੇਲ\n"
 
-#. 
+#.
 #. * Error path cleanup
 #. *
 #. * If we reach here, then we failed to exec the new shell.
-#. 
+#.
 #: ../newrole/newrole.c:1336
 msgid "failed to exec shell\n"
 msgstr "ਸ਼ੈੱਲ ਚਲਾਉਣ ਵਿੱਚ ਫੇਲ\n"
