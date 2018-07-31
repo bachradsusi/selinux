@@ -10,13 +10,13 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:10+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2018-03-04 09:46+0000\n"
 "Last-Translator: Jean-Baptiste Holcroft <jean-baptiste@holcroft.fr>\n"
 "Language-Team: French\n"
 "Language: fr\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Zanata 4.5.0\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
 
@@ -44,19 +44,15 @@ msgid "SELinux User"
 msgstr "Identité SELinux"
 
 #: ../usersPage.py:60 ../loginsPage.py:63
-msgid ""
-"SELinux\n"
+msgid "SELinux\n"
 "User"
-msgstr ""
-"Utilisateur\n"
+msgstr "Utilisateur\n"
 "SELinux"
 
 #: ../usersPage.py:65 ../loginsPage.py:66
-msgid ""
-"MLS/\n"
+msgid "MLS/\n"
 "MCS Range"
-msgstr ""
-"Étendue\n"
+msgstr "Étendue\n"
 "MLS/MCS"
 
 #: ../usersPage.py:69 ../system-config-selinux.ui:1970
@@ -73,11 +69,9 @@ msgid "Network Port"
 msgstr "Port réseau"
 
 #: ../portsPage.py:95
-msgid ""
-"SELinux Port\n"
+msgid "SELinux Port\n"
 "Type"
-msgstr ""
-"Port SELinux\n"
+msgstr "Port SELinux\n"
 "Type"
 
 #: ../portsPage.py:101 ../system-config-selinux.ui:294
@@ -85,11 +79,9 @@ msgid "Protocol"
 msgstr "Protocole"
 
 #: ../portsPage.py:106 ../system-config-selinux.ui:355
-msgid ""
-"MLS/MCS\n"
+msgid "MLS/MCS\n"
 "Level"
-msgstr ""
-"Niveau\n"
+msgstr "Niveau\n"
 "MLS/MCS"
 
 #: ../portsPage.py:111
@@ -148,27 +140,21 @@ msgid "File Labeling"
 msgstr "Étiquetage des fichiers"
 
 #: ../fcontextPage.py:82
-msgid ""
-"File\n"
+msgid "File\n"
 "Specification"
-msgstr ""
-"Spécification\n"
+msgstr "Spécification\n"
 "de fichier"
 
 #: ../fcontextPage.py:89
-msgid ""
-"Selinux\n"
+msgid "Selinux\n"
 "File Type"
-msgstr ""
-"Type de fichier\n"
+msgstr "Type de fichier\n"
 "SELinux"
 
 #: ../fcontextPage.py:96
-msgid ""
-"File\n"
+msgid "File\n"
 "Type"
-msgstr ""
-"Type de\n"
+msgstr "Type de\n"
 "Fichier"
 
 #: ../sepolicy.desktop:3
@@ -425,20 +411,20 @@ msgstr ""
 "Sélectionnez les domaines applicatifs vers lesquels %s fera la transition."
 
 #: ../polgen.ui:972
-msgid ""
-"transition \n"
+msgid "transition \n"
 "role tab"
-msgstr ""
-"transition \n"
+msgstr "transition \n"
 "onglet rôle"
 
 #: ../polgen.ui:989
 msgid "<b>Select the user_roles that will transition to %s:</b>"
 msgstr ""
-"<b>Sélectionnez les rôles utilisateurs qui feront la transition vers %s :</b>"
+"<b>Sélectionnez les rôles utilisateurs qui feront la transition vers %s :</"
+"b>"
 
 #: ../polgen.ui:1007
-msgid "Select the user roles that will transiton to this applications domains."
+msgid ""
+"Select the user roles that will transiton to this applications domains."
 msgstr ""
 "Sélectionnez les rôles utilisateur qui transitionneront verss ce domaine "
 "applicatif."
@@ -507,11 +493,9 @@ msgid "<b>UDP Ports</b>"
 msgstr "<b>Ports UDP</b>"
 
 #: ../polgen.ui:1492
-msgid ""
-"Network\n"
+msgid "Network\n"
 "Bind tab"
-msgstr ""
-"Réseau\n"
+msgstr "Réseau\n"
 "Onglet lien"
 
 #: ../polgen.ui:1509
@@ -803,8 +787,7 @@ msgstr "Supprimer une correspondance d’utilisateurs SELinux"
 
 #: ../system-config-selinux.ui:1281 ../loginsPage.py:55
 msgid "User Mapping"
-msgstr ""
-"Correspondance\n"
+msgstr "Correspondance\n"
 "d’utilisateurs"
 
 #: ../system-config-selinux.ui:1313
@@ -923,8 +906,7 @@ msgstr ""
 
 #: ../polgengui.py:683
 #, python-format
-msgid ""
-"Type %s_t already defined in current policy.\n"
+msgid "Type %s_t already defined in current policy.\n"
 "Do you want to continue?"
 msgstr ""
 "Le type %s_t est déjà défini dans la stratégie courante.\n"
@@ -936,8 +918,7 @@ msgstr "Vérifier le nom"
 
 #: ../polgengui.py:687
 #, python-format
-msgid ""
-"Module %s already loaded in current policy.\n"
+msgid "Module %s already loaded in current policy.\n"
 "Do you want to continue?"
 msgstr ""
 "Le module %s est déjà chargé dans la stratégie courante.\n"
@@ -955,11 +936,9 @@ msgid "You must enter a executable"
 msgstr "Vous devez entrer un exécutable"
 
 #: ../loginsPage.py:59
-msgid ""
-"Login\n"
+msgid "Login\n"
 "Name"
-msgstr ""
-"Nom de\n"
+msgstr "Nom de\n"
 "connexion"
 
 #: ../loginsPage.py:135

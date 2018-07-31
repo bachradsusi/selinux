@@ -4,13 +4,13 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:36+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2016-01-06 07:02+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Marathi\n"
 "Language: mr\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Zanata 4.5.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
@@ -27,12 +27,14 @@ msgstr "%s वैध संदर्भ नाही\n"
 #: ../newrole/newrole.c:730
 #, c-format
 msgid "%s!  Could not get current context for %s, not relabeling tty.\n"
-msgstr "%s!  %s साठी चालू संदर्भ प्राप्त करणे अशक्य, tty ला पुनःलेबल करणे टाळले.\n"
+msgstr ""
+"%s!  %s साठी चालू संदर्भ प्राप्त करणे अशक्य, tty ला पुनःलेबल करणे टाळले.\n"
 
 #: ../newrole/newrole.c:740
 #, c-format
 msgid "%s!  Could not get new context for %s, not relabeling tty.\n"
-msgstr "%s!  %s साठी नविन संदर्भ प्राप्त करणे अशक्य, tty ला पुनःलेबल करणे टाळले.\n"
+msgstr ""
+"%s!  %s साठी नविन संदर्भ प्राप्त करणे अशक्य, tty ला पुनःलेबल करणे टाळले.\n"
 
 #: ../newrole/newrole.c:750
 #, c-format
@@ -274,11 +276,11 @@ msgstr "स्तर %s सह नवीन व्याप्ति बिल�
 msgid "failed to convert new context to string\n"
 msgstr "नविन संदर्भास स्ट्रींगमध्ये रुपांतरित करण्यास अपयशी\n"
 
-#.
+#. 
 #. * Error path cleanup
 #. *
 #. * If we reach here, then we failed to exec the new shell.
-#.
+#. 
 #: ../newrole/newrole.c:1336
 msgid "failed to exec shell\n"
 msgstr "शेल exec करण्यास अपयशी\n"

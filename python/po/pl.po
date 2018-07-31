@@ -6,20 +6,19 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:45+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2017-12-15 09:53+0000\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish\n"
 "Language: pl\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Zanata 4.5.0\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2)\n"
 
 #: ../semanage/semanage:256
-msgid ""
-"\n"
+msgid "\n"
 "    Name for the specified infiniband end port.\n"
 msgstr ""
 
@@ -31,29 +30,25 @@ msgid ""
 msgstr ""
 
 #: ../semanage/semanage:251
-msgid ""
-"\n"
+msgid "\n"
 "    Subnet prefix for  the specified infiniband ibpkey.\n"
 msgstr ""
 
 #: ../sepolicy/sepolicy/interface.py:231
 #, python-format
-msgid ""
-"\n"
+msgid "\n"
 "Compile test for %s failed.\n"
 msgstr ""
 
 #: ../sepolicy/sepolicy/interface.py:234
 #, python-format
-msgid ""
-"\n"
+msgid "\n"
 "Compile test for %s has not run. %s\n"
 msgstr ""
 
 #: ../sepolicy/sepolicy/interface.py:240
 #, python-format
-msgid ""
-"\n"
+msgid "\n"
 "Compiling of %s interface is not supported."
 msgstr ""
 
@@ -67,26 +62,22 @@ msgid ""
 msgstr ""
 
 #: ../semanage/seobject.py:2624
-msgid ""
-"\n"
+msgid "\n"
 "SELinux Distribution fcontext Equivalence \n"
-msgstr ""
-"\n"
+msgstr "\n"
 "Równowartość fcontext dystrybucji SELinuksa \n"
 
 #: ../semanage/seobject.py:2629
-msgid ""
-"\n"
+msgid "\n"
 "SELinux Local fcontext Equivalence \n"
-msgstr ""
-"\n"
+msgstr "\n"
 "Lokalna równowartość fcontext SELinuksa \n"
 
 #: ../semanage/semanage:423
 msgid ""
 "\n"
-"SELinux Roles.  You must enclose multiple roles within "
-"quotes,                  separate by spaces. Or specify -R multiple times.\n"
+"SELinux Roles.  You must enclose multiple roles within quotes,               "
+"   separate by spaces. Or specify -R multiple times.\n"
 msgstr ""
 
 #: ../chcat/chcat:133
@@ -233,6 +224,7 @@ msgstr "Dodaj"
 #: ../sepolicy/sepolicy/gui.py:1504
 msgid ""
 "Add File Equivalency Mapping. Mapping will be created when update is applied."
+""
 msgstr ""
 "Dodaje mapowanie równowartości plików. Zostanie ono utworzone po "
 "zastosowaniu aktualizacji."
@@ -246,6 +238,7 @@ msgstr "Dodaj etykietę pliku dla %s"
 #, python-format
 msgid ""
 "Add File Labeling for %s. File labels will be created when update is applied."
+""
 msgstr ""
 "Dodaj etykiety plików dla %s. Zostaną one utworzone po zastosowaniu "
 "aktualizacji."
@@ -259,11 +252,14 @@ msgid ""
 "Add Login Mapping. Login Mapping will be created when update is applied."
 msgstr ""
 "Dodaj mapowanie loginów. Zostanie ono utworzone po zastosowaniu aktualizacji."
+""
 
 #: ../sepolicy/sepolicy/gui.py:1490
-msgid "Add Login Mapping. User Mapping will be created when Update is applied."
+msgid ""
+"Add Login Mapping. User Mapping will be created when Update is applied."
 msgstr ""
 "Dodaj mapowanie loginów. Zostanie ono utworzone po zastosowaniu aktualizacji."
+""
 
 #: ../sepolicy/sepolicy/gui.py:1474
 #, python-format
@@ -272,7 +268,8 @@ msgstr "Dodaj port sieciowy dla %s"
 
 #: ../sepolicy/sepolicy/gui.py:1473
 #, python-format
-msgid "Add Network Port for %s.  Ports will be created when update is applied."
+msgid ""
+"Add Network Port for %s.  Ports will be created when update is applied."
 msgstr ""
 "Dodaj port sieciowy dla %s. Zostanie on utworzony po zastosowaniu "
 "aktualizacji."
@@ -350,6 +347,7 @@ msgstr "Dodaj nową definicję użytkownika/roli SELinuksa."
 #, python-format
 msgid ""
 "Add new port definition to which the '%(APP)s' domain is allowed to %(PERM)s."
+""
 msgstr "Dodaj nową definicję portu, do której domena „%(APP)s” może %(PERM)s."
 
 #: ../sepolicy/sepolicy/gui.py:2237
@@ -478,11 +476,9 @@ msgstr "Błędny format %s: wpis %s"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:2866
 #: ../sepolicy/sepolicy/sepolicy.glade:2956
-msgid ""
-"Boolean\n"
+msgid "Boolean\n"
 "Enabled"
-msgstr ""
-"Zmienna logiczna\n"
+msgstr "Zmienna logiczna\n"
 "Włączone"
 
 #: ../sepolicy/sepolicy/gui.py:1460
@@ -1527,11 +1523,9 @@ msgstr ""
 "Domyślny poziom, z którym użytkownik SELinuksa ma się logować. Domyślnie s0"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:5489
-msgid ""
-"Enter MLS/MCS Range for this SELinux User.\n"
+msgid "Enter MLS/MCS Range for this SELinux User.\n"
 "s0-s0:c1023"
-msgstr ""
-"Zakres MLS/MCS dla tego użytkownika SELinuksa.\n"
+msgstr "Zakres MLS/MCS dla tego użytkownika SELinuksa.\n"
 "s0-s0:c1023"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1264
@@ -1771,7 +1765,8 @@ msgstr ""
 #: ../semanage/seobject.py:2361
 #, python-format
 msgid ""
-"File spec %s conflicts with equivalency rule '%s %s'; Try adding '%s' instead"
+"File spec %s conflicts with equivalency rule '%s %s'; Try adding '%s' "
+"instead"
 msgstr ""
 "Specyfikacja pliku %s jest w konflikcie z regułą równowartości \"%s %s\". "
 "Proszę spróbować dodać \"%s\" zamiast tego"
@@ -2276,7 +2271,9 @@ msgstr "Modyfikuj mapowanie loginu"
 #, python-format
 msgid ""
 "Modify port definitions to which the '%(APP)s' domain is allowed to %(PERM)s."
-msgstr "Modyfikuj definicje portów, do których domena „%(APP)s” może %(PERM)s."
+""
+msgstr ""
+"Modyfikuj definicje portów, do których domena „%(APP)s” może %(PERM)s."
 
 #: ../sepolicy/sepolicy/gui.py:2241
 #, python-format
@@ -2994,7 +2991,8 @@ msgstr "Przedrostek_podsieci"
 #, python-format
 msgid "Substiture %s is not valid. Substitute is not allowed to end with '/'"
 msgstr ""
-"Zamiennik %s jest nieprawidłowy. Zamiennik nie może kończyć się znakiem \"/\""
+"Zamiennik %s jest nieprawidłowy. Zamiennik nie może kończyć się znakiem \"/"
+"\""
 
 #: ../semanage/semanage:369
 msgid ""
@@ -3042,16 +3040,16 @@ msgstr "Domena docelowa"
 #, python-format
 msgid "The entry '%s' is not a valid path.  Paths must begin with a '/'."
 msgstr ""
-"Wpis „%s” nie jest prawidłową ścieżką. Ścieżki muszą zaczynać się znakiem "
-"„/”."
+"Wpis „%s” nie jest prawidłową ścieżką. Ścieżki muszą zaczynać się znakiem „/"
+"”."
 
 #: ../sepolicy/sepolicy/sepolicy.glade:332
 msgid ""
-"The entry that was entered is incorrect.  Please try again in the "
-"ex:/.../... format."
+"The entry that was entered is incorrect.  Please try again in the ex:/.../..."
+" format."
 msgstr ""
-"Podany wpis jest niepoprawny. Proszę spróbować ponownie w formacie "
-"„ex:/.../...”."
+"Podany wpis jest niepoprawny. Proszę spróbować ponownie w formacie „ex:/.../."
+"..”."
 
 #: ../semanage/seobject.py:502
 msgid ""
@@ -3073,8 +3071,7 @@ msgstr ""
 
 #: ../audit2allow/audit2allow:238
 #, python-format
-msgid ""
-"To make this policy package active, execute:\n"
+msgid "To make this policy package active, execute:\n"
 "\n"
 "semodule -i %s\n"
 "\n"
@@ -3275,11 +3272,9 @@ msgstr "Należy podać jedną z poniższych wartości: %s"
 
 #: ../sepolicy/sepolicy/generate.py:886
 #, python-format
-msgid ""
-"You need to define a new type which ends with: \n"
+msgid "You need to define a new type which ends with: \n"
 " %s"
-msgstr ""
-"Należy określić nowy typ kończący się na: \n"
+msgstr "Należy określić nowy typ kończący się na: \n"
 " %s"
 
 #: ../sepolicy/sepolicy.py:324
@@ -3364,7 +3359,8 @@ msgstr "ibendport %s/%s został już określony"
 #: ../semanage/seobject.py:1734
 #, python-format
 msgid "ibendport %s/%s is defined in policy, cannot be deleted"
-msgstr "ibendport %s/%s zostało określone w polityce, nie może zostać usunięte"
+msgstr ""
+"ibendport %s/%s zostało określone w polityce, nie może zostać usunięte"
 
 #: ../semanage/seobject.py:1676 ../semanage/seobject.py:1728
 #, python-format

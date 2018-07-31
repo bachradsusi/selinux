@@ -4,16 +4,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:36+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2016-01-06 07:10+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Serbian (LATIN)\n"
 "Language: sr@latin\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Zanata 4.5.0\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 
 #: ../newrole/newrole.c:797
 #, c-format
@@ -277,11 +277,11 @@ msgstr "neuspela izgradnja novog opsega sa nivoom %s\n"
 msgid "failed to convert new context to string\n"
 msgstr "neuspelo pretvaranje novog konteksta u nisku\n"
 
-#.
+#. 
 #. * Error path cleanup
 #. *
 #. * If we reach here, then we failed to exec the new shell.
-#.
+#. 
 #: ../newrole/newrole.c:1336
 msgid "failed to exec shell\n"
 msgstr "nije uspelo izvršavanje komandnog okruženja\n"

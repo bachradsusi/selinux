@@ -5,13 +5,13 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:36+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2016-01-20 09:52+0000\n"
 "Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: Dutch\n"
 "Language: nl\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Zanata 4.5.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
@@ -212,8 +212,7 @@ msgid ""
 "         <args ...> are the arguments to that script."
 msgstr ""
 "GEBRUIK: run_init <script> <args ...>\n"
-"  waarin: <script> de naam is van het init script dat moet worden "
-"uitgevoerd\n"
+"  waarin: <script> de naam is van het init script dat moet worden uitgevoerd\n"
 "        en <args ...> de argumenten zijn voor dat script."
 
 #: ../newrole/newrole.c:975
@@ -281,11 +280,11 @@ msgstr "samenstellen van nieuwe reeks met niveau %s is mislukt\n"
 msgid "failed to convert new context to string\n"
 msgstr "converteren van nieuwe context naar string is mislukt\n"
 
-#.
+#. 
 #. * Error path cleanup
 #. *
 #. * If we reach here, then we failed to exec the new shell.
-#.
+#. 
 #: ../newrole/newrole.c:1336
 msgid "failed to exec shell\n"
 msgstr "uitvoeren van shell is mislukt\n"

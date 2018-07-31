@@ -5,13 +5,13 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:36+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2016-10-26 07:26+0000\n"
 "Last-Translator: Zdenek <chmelarz@gmail.com>\n"
 "Language-Team: Czech\n"
 "Language: cs\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Zanata 4.5.0\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2\n"
 
@@ -29,7 +29,8 @@ msgstr "%s není platný kontext\n"
 #, c-format
 msgid "%s!  Could not get current context for %s, not relabeling tty.\n"
 msgstr ""
-"%s! Nelze získat současný kontext pro %s, opětovné značení TTY neprovedeno.\n"
+"%s! Nelze získat současný kontext pro %s, opětovné značení TTY neprovedeno."
+"\n"
 
 #: ../newrole/newrole.c:740
 #, c-format
@@ -277,11 +278,11 @@ msgstr "selhalo vytvoření nového rozsahu s úrovní %s\n"
 msgid "failed to convert new context to string\n"
 msgstr "selhal převod nového kontextu na řetězec\n"
 
-#.
+#. 
 #. * Error path cleanup
 #. *
 #. * If we reach here, then we failed to exec the new shell.
-#.
+#. 
 #: ../newrole/newrole.c:1336
 msgid "failed to exec shell\n"
 msgstr "nepodařilo se spustit shell\n"
@@ -319,15 +320,13 @@ msgstr "selhalo nastavení nového rozsahu %s\n"
 #: ../newrole/newrole.c:933
 #, c-format
 msgid "failed to set new role %s\n"
-msgstr ""
-"selhalo nastavení nové role %s\n"
+msgstr "selhalo nastavení nové role %s\n"
 "\n"
 
 #: ../newrole/newrole.c:940
 #, c-format
 msgid "failed to set new type %s\n"
-msgstr ""
-"selhalo nastavení nového typu %s\n"
+msgstr "selhalo nastavení nového typu %s\n"
 "\n"
 
 #: ../run_init/run_init.c:203 ../newrole/newrole.c:368

@@ -7,19 +7,18 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:45+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2017-12-15 08:49+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Chinese (Taiwan)\n"
 "Language: zh_TW\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Zanata 4.5.0\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
 #: ../semanage/semanage:256
-msgid ""
-"\n"
+msgid "\n"
 "    Name for the specified infiniband end port.\n"
 msgstr ""
 
@@ -31,29 +30,25 @@ msgid ""
 msgstr ""
 
 #: ../semanage/semanage:251
-msgid ""
-"\n"
+msgid "\n"
 "    Subnet prefix for  the specified infiniband ibpkey.\n"
 msgstr ""
 
 #: ../sepolicy/sepolicy/interface.py:231
 #, python-format
-msgid ""
-"\n"
+msgid "\n"
 "Compile test for %s failed.\n"
 msgstr ""
 
 #: ../sepolicy/sepolicy/interface.py:234
 #, python-format
-msgid ""
-"\n"
+msgid "\n"
 "Compile test for %s has not run. %s\n"
 msgstr ""
 
 #: ../sepolicy/sepolicy/interface.py:240
 #, python-format
-msgid ""
-"\n"
+msgid "\n"
 "Compiling of %s interface is not supported."
 msgstr ""
 
@@ -67,26 +62,22 @@ msgid ""
 msgstr ""
 
 #: ../semanage/seobject.py:2624
-msgid ""
-"\n"
+msgid "\n"
 "SELinux Distribution fcontext Equivalence \n"
-msgstr ""
-"\n"
+msgstr "\n"
 "SELinux 散布版 fcontext 相等 \n"
 
 #: ../semanage/seobject.py:2629
-msgid ""
-"\n"
+msgid "\n"
 "SELinux Local fcontext Equivalence \n"
-msgstr ""
-"\n"
+msgstr "\n"
 "SELinux 本地端 fcontext 相等 \n"
 
 #: ../semanage/semanage:423
 msgid ""
 "\n"
-"SELinux Roles.  You must enclose multiple roles within "
-"quotes,                  separate by spaces. Or specify -R multiple times.\n"
+"SELinux Roles.  You must enclose multiple roles within quotes,               "
+"   separate by spaces. Or specify -R multiple times.\n"
 msgstr ""
 
 #: ../chcat/chcat:133
@@ -168,16 +159,13 @@ msgstr "<b>系統模式</b>"
 msgid ""
 "<operation> File Labeling for <selected domain>. File labels will be created "
 "when update is applied."
-msgstr ""
-"<operation> <selected domain> 的檔案標籤。當更新套用之後，檔案標籤便會被建"
-"立。"
+msgstr "<operation> <selected domain> 的檔案標籤。當更新套用之後，檔案標籤便會被建立。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1385
 msgid ""
 "<operation> Network Port for <selected domain>.  Ports will be created when "
 "update is applied."
-msgstr ""
-"<operation> 給 <selected domain> 所使用的網路連接埠。套用更新時會建立連接埠。"
+msgstr "<operation> 給 <selected domain> 所使用的網路連接埠。套用更新時會建立連接埠。"
 
 #: ../sepolicy/sepolicy/gui.py:108
 msgid ""
@@ -206,9 +194,8 @@ msgid ""
 "module could cause SELinux to deny access to a domain, that should be "
 "allowed."
 msgstr ""
-"寬容區域是程序標籤，允許程序做其想做之事，而 SELinux 只會紀錄阻絕這件事，但不"
-"強制。通常寬容區域意味著實驗性方針，停用模組會導致 SELinux 阻絕存取區域，但這"
-"應該是被允許的。"
+"寬容區域是程序標籤，允許程序做其想做之事，而 SELinux 只會紀錄阻絕這件事，但不強制。通常寬容區域意味著實驗性方針，停用模組會導致 SELinux "
+"阻絕存取區域，但這應該是被允許的。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:5132
 msgid "Action"
@@ -221,6 +208,7 @@ msgstr "新增"
 #: ../sepolicy/sepolicy/gui.py:1504
 msgid ""
 "Add File Equivalency Mapping. Mapping will be created when update is applied."
+""
 msgstr "新增「檔案相等」對映。當更新套用後，對映便會被建立。"
 
 #: ../sepolicy/sepolicy/gui.py:1480 ../sepolicy/sepolicy/gui.py:1533
@@ -232,6 +220,7 @@ msgstr "為 %s 新增檔案標籤"
 #, python-format
 msgid ""
 "Add File Labeling for %s. File labels will be created when update is applied."
+""
 msgstr "為 %s 新增檔案標籤。套用更新後，會建立新的檔案標籤。"
 
 #: ../sepolicy/sepolicy/gui.py:1491
@@ -244,7 +233,8 @@ msgid ""
 msgstr "新增登入對應。套用更新後會建立登入對應。"
 
 #: ../sepolicy/sepolicy/gui.py:1490
-msgid "Add Login Mapping. User Mapping will be created when Update is applied."
+msgid ""
+"Add Login Mapping. User Mapping will be created when Update is applied."
 msgstr "新增登入對映。套用更新後會建立使用者對映。"
 
 #: ../sepolicy/sepolicy/gui.py:1474
@@ -254,7 +244,8 @@ msgstr "為 %s 新增網路連接埠"
 
 #: ../sepolicy/sepolicy/gui.py:1473
 #, python-format
-msgid "Add Network Port for %s.  Ports will be created when update is applied."
+msgid ""
+"Add Network Port for %s.  Ports will be created when update is applied."
 msgstr "新增 %s 的網路連接埠。當套用了更新之後，連接埠將會被建立。"
 
 #: ../sepolicy/sepolicy/gui.py:1505
@@ -325,6 +316,7 @@ msgstr "新增 SELinux 使用者/角色定義。"
 #, python-format
 msgid ""
 "Add new port definition to which the '%(APP)s' domain is allowed to %(PERM)s."
+""
 msgstr "新增「%(APP)s」區域允許 %(PERM)s 的連接埠定義。"
 
 #: ../sepolicy/sepolicy/gui.py:2237
@@ -399,10 +391,9 @@ msgid ""
 "now be confined.  To disable the unconfined_t user you must first remove "
 "unconfined_t from the users/login screens."
 msgstr ""
-"未受限的區域是程序標籤，允許程序做想做的事，而不受到 SELinux 的干預。啟動時"
-"由 init 系統所執行、但沒有定義 SELinux 方針的應用程式會以未受限的方式執行，前"
-"提是已啟用此模組。停用這模組表示所有幕後程式都會受限。要停用 unconfined_t 使"
-"用者，您必須先從使用者 / 登入畫面移除 unconfined_t。"
+"未受限的區域是程序標籤，允許程序做想做的事，而不受到 SELinux 的干預。啟動時由 init 系統所執行、但沒有定義 SELinux "
+"方針的應用程式會以未受限的方式執行，前提是已啟用此模組。停用這模組表示所有幕後程式都會受限。要停用 unconfined_t 使用者，您必須先從使用者 /"
+" 登入畫面移除 unconfined_t。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1070
 msgid "Analyzing Policy..."
@@ -450,11 +441,9 @@ msgstr "格式錯誤 %s：紀錄 %s"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:2866
 #: ../sepolicy/sepolicy/sepolicy.glade:2956
-msgid ""
-"Boolean\n"
+msgid "Boolean\n"
 "Enabled"
-msgstr ""
-"布林值 \n"
+msgstr "布林值 \n"
 "已啟用"
 
 #: ../sepolicy/sepolicy/gui.py:1460
@@ -534,9 +523,7 @@ msgid ""
 "Changing the policy type will cause a relabel of the entire file system on "
 "the next boot. Relabeling takes a long time depending on the size of the "
 "file system.  Do you wish to continue?"
-msgstr ""
-"變更方針類型會在下次開機時，重新標記整個檔案系統。根據檔案系統的大小，重新標"
-"記會花上不少時間。\n"
+msgstr "變更方針類型會在下次開機時，重新標記整個檔案系統。根據檔案系統的大小，重新標記會花上不少時間。\n"
 "確定要繼續？"
 
 #: ../sepolicy/sepolicy/gui.py:2768
@@ -548,19 +535,15 @@ msgid ""
 "enforce SELinux policy.  Permissive mode does not require a reboot.  Do you "
 "wish to continue?"
 msgstr ""
-"停用 SELinux 後需要重新開機。不建議您這麼做。如果您之後決定再度啟用 SELinux，"
-"系統將會需要再重新標記。如果您只是想知道 SELinux 是否導致系統發生問題，您可以"
-"切換到寬容模式，只記錄錯誤但不使用 SELinux 方針。切換到寬容模式無須重新開機。"
-"確定要繼續？"
+"停用 SELinux 後需要重新開機。不建議您這麼做。如果您之後決定再度啟用 SELinux，系統將會需要再重新標記。如果您只是想知道 SELinux "
+"是否導致系統發生問題，您可以切換到寬容模式，只記錄錯誤但不使用 SELinux 方針。切換到寬容模式無須重新開機。確定要繼續？"
 
 #: ../sepolicy/sepolicy/gui.py:2772
 msgid ""
 "Changing to SELinux enabled will cause a relabel of the entire file system "
 "on the next boot. Relabeling takes a long time depending on the size of the "
 "file system.  Do you wish to continue?"
-msgstr ""
-"啟用 SELinux 會在下次開機時，重新標記整個檔案系統。根據檔案系統的大小，重新標"
-"記會花上不少時間。\n"
+msgstr "啟用 SELinux 會在下次開機時，重新標記整個檔案系統。根據檔案系統的大小，重新標記會花上不少時間。\n"
 "確定要繼續？"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:747
@@ -1487,19 +1470,16 @@ msgid "Enter Default Level for SELinux User to login with. Default s0"
 msgstr "輸入欲登入的 SELinux 之預設等級。預設值為 s0。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:5489
-msgid ""
-"Enter MLS/MCS Range for this SELinux User.\n"
+msgid "Enter MLS/MCS Range for this SELinux User.\n"
 "s0-s0:c1023"
-msgstr ""
-"為此 SELinux 使用者輸入 MLS/MCS 範圍。\n"
+msgstr "為此 SELinux 使用者輸入 MLS/MCS 範圍。\n"
 "s0-s0:c1023"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1264
 msgid ""
 "Enter MLS/MCS Range for this login User.  Defaults to the range for the "
 "Selected SELinux User."
-msgstr ""
-"輸入此登入使用者的 MLS/MCS 範圍。預設值是所選擇的 SELinux 使用者之範圍。"
+msgstr "輸入此登入使用者的 MLS/MCS 範圍。預設值是所選擇的 SELinux 使用者之範圍。"
 
 #: ../sepolicy/sepolicy.py:606
 msgid "Enter SELinux role(s) to which the administror domain will transition"
@@ -1653,9 +1633,7 @@ msgid ""
 "File Transitions define what happens when the current domain creates the "
 "content of a particular class in a directory of the destination type. "
 "Optionally a file name could be specified for the transition."
-msgstr ""
-"「檔案轉移」定義了當現有區域在目的類型的目錄中，建立特定類別的內容時會發生什"
-"麼事。使用者也可指定要轉移的檔名。"
+msgstr "「檔案轉移」定義了當現有區域在目的類型的目錄中，建立特定類別的內容時會發生什麼事。使用者也可指定要轉移的檔名。"
 
 #: ../sepolicy/sepolicy/gui.py:1063
 #, python-format
@@ -1719,7 +1697,8 @@ msgstr "檔案規格 %s 與相等對應規則 '%s %s' 發生衝突"
 #: ../semanage/seobject.py:2361
 #, python-format
 msgid ""
-"File spec %s conflicts with equivalency rule '%s %s'; Try adding '%s' instead"
+"File spec %s conflicts with equivalency rule '%s %s'; Try adding '%s' "
+"instead"
 msgstr "檔案規格 %s 與相等對應規則 '%s %s' 發生衝突；請嘗試加入 '%s' 來代替"
 
 #: ../semanage/seobject.py:2356
@@ -1861,8 +1840,7 @@ msgstr ""
 msgid ""
 "If-Then-Else rules written in policy that can\n"
 "allow alternative access control."
-msgstr ""
-"方針中撰寫的 If-Then-Else 規則\n"
+msgstr "方針中撰寫的 If-Then-Else 規則\n"
 "允許替代的存取控制。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:3640
@@ -1975,8 +1953,7 @@ msgstr "封鎖"
 msgid ""
 "Lockdown the SELinux System.\n"
 "This screen can be used to turn up the SELinux Protections."
-msgstr ""
-"封鎖 SELinux 系統。\n"
+msgstr "封鎖 SELinux 系統。\n"
 "這畫面可以用來帶起 SELinux 防護。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1864
@@ -2135,9 +2112,7 @@ msgstr "修改"
 msgid ""
 "Modify %(TYPE)s file path for '%(DOMAIN)s' domain. Only bolded items in the "
 "list can be selected, this indicates they were modified previously."
-msgstr ""
-"修改 %(TYPE)s 檔案路徑給「%(DOMAIN)s」區域使用。只有清單中加粗體的項目才可以"
-"被選擇，這表示這些項目之前被修改過。"
+msgstr "修改 %(TYPE)s 檔案路徑給「%(DOMAIN)s」區域使用。只有清單中加粗體的項目才可以被選擇，這表示這些項目之前被修改過。"
 
 #: ../sepolicy/sepolicy/gui.py:1604
 msgid ""
@@ -2208,6 +2183,7 @@ msgstr "修改登入對映"
 #, python-format
 msgid ""
 "Modify port definitions to which the '%(APP)s' domain is allowed to %(PERM)s."
+""
 msgstr "修改「%(APP)s」區域允許 %(PERM)s 的連接埠定義。"
 
 #: ../sepolicy/sepolicy/gui.py:2241
@@ -2219,9 +2195,7 @@ msgstr "修改 %s 的連接埠"
 msgid ""
 "Modify selected modified File Equivalence definitions. Only bolded items in "
 "the list can be selected, this indicates they were modified previously."
-msgstr ""
-"修改所選擇修改過的「檔案相等」定義。只有清單中的粗體字項目可以選擇，粗體字表"
-"示這些項目之前被修改過。"
+msgstr "修改所選擇修改過的「檔案相等」定義。只有清單中的粗體字項目可以選擇，粗體字表示這些項目之前被修改過。"
 
 #: ../sepolicy/sepolicy/gui.py:1423
 msgid "Modify selected modified Login Mapping definitions."
@@ -2523,9 +2497,7 @@ msgid ""
 "Review the updates you have made before committing them to the system.  To "
 "reset an item, uncheck the checkbox.  All items checked will be updated in "
 "the system when you select update."
-msgstr ""
-"將更新發送至系統前，先予以檢視。要重新設定項目，先取消勾選。所有勾選的項目會"
-"在您選擇更新時於系統內部更新。"
+msgstr "將更新發送至系統前，先予以檢視。要重新設定項目，先取消勾選。所有勾選的項目會在您選擇更新時於系統內部更新。"
 
 #: ../sepolicy/sepolicy/gui.py:2273
 #, python-format
@@ -2538,8 +2510,7 @@ msgid ""
 "Run restorecon on %(PATH)s to change its type from %(CUR_CONTEXT)s to the "
 "default %(DEF_CONTEXT)s?"
 msgstr ""
-"在 %(PATH)s 上執行 restorecon 以將其類型由 %(CUR_CONTEXT)s 修改為預設的 "
-"%(DEF_CONTEXT)s？"
+"在 %(PATH)s 上執行 restorecon 以將其類型由 %(CUR_CONTEXT)s 修改為預設的 %(DEF_CONTEXT)s？"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:2909
 msgid "SELinux Application Type"
@@ -2727,9 +2698,7 @@ msgid ""
 "Select Make Path Recursive if you want to apply this label to all children "
 "of the specified directory path. objects under the directory to have this "
 "label."
-msgstr ""
-"若您希望將此標籤套用至所有指定目錄路徑的子路徑上，請選擇「使路徑遞迴」。此目"
-"錄下的物件將會擁有此標籤。"
+msgstr "若您希望將此標籤套用至所有指定目錄路徑的子路徑上，請選擇「使路徑遞迴」。此目錄下的物件將會擁有此標籤。"
 
 #: ../semanage/semanage:207
 msgid "Select a priority for module operations"
@@ -2769,9 +2738,7 @@ msgstr "選擇要刪除的連接埠。套用更新時會刪除連接埠。"
 msgid ""
 "Select the SELinux User to assign to this login user.  Login users by "
 "default get assigned by the __default__ user."
-msgstr ""
-"選擇要指定至此登入使用者的 SELinux 使用者。預設上，登入使用者會由 "
-"__default__ 使用者所指定。"
+msgstr "選擇要指定至此登入使用者的 SELinux 使用者。預設上，登入使用者會由 __default__ 使用者所指定。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:902
 msgid "Select the SELinux file type to assign to this path."
@@ -2846,16 +2813,13 @@ msgstr "規格檔案"
 msgid ""
 "Specify a new SELinux user name.  By convention SELinux User names usually "
 "end in an _u."
-msgstr ""
-"指定一組新的 SELinux 使用者名稱。一般 SELinux 使用者名稱會以 an _u 作為結尾。"
+msgstr "指定一組新的 SELinux 使用者名稱。一般 SELinux 使用者名稱會以 an _u 作為結尾。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1279
 msgid ""
 "Specify the MLS Range for this user to login in with.  Defaults to the "
 "selected SELinux Users MLS Range."
-msgstr ""
-"指定此使用者登入時使用的 MLS 範圍。預設值是所選擇的 SELinux 使用者之 MLS 範"
-"圍。"
+msgstr "指定此使用者登入時使用的 MLS 範圍。預設值是所選擇的 SELinux 使用者之 MLS 範圍。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:5520
 msgid ""
@@ -2868,9 +2832,7 @@ msgid ""
 "Specify the mapping between the new path and the equivalence path.  "
 "Everything under this new path will be labeled as if they were under the "
 "equivalence path."
-msgstr ""
-"指定新路徑和相等路徑之間的對映。所有在此新路徑下的項目皆會被標記，如同在相等"
-"路徑下一般。"
+msgstr "指定新路徑和相等路徑之間的對映。所有在此新路徑下的項目皆會被標記，如同在相等路徑下一般。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:880
 msgid ""
@@ -2948,8 +2910,8 @@ msgstr "「%s」項目不是個有效的路徑。路徑必須以「/」作為起
 
 #: ../sepolicy/sepolicy/sepolicy.glade:332
 msgid ""
-"The entry that was entered is incorrect.  Please try again in the "
-"ex:/.../... format."
+"The entry that was entered is incorrect.  Please try again in the ex:/.../..."
+" format."
 msgstr "輸入的項目錯誤。請以 ex:/.../... 格式再試一次。"
 
 #: ../semanage/seobject.py:502
@@ -2972,8 +2934,7 @@ msgstr ""
 
 #: ../audit2allow/audit2allow:238
 #, python-format
-msgid ""
-"To make this policy package active, execute:\n"
+msgid "To make this policy package active, execute:\n"
 "\n"
 "semodule -i %s\n"
 "\n"
@@ -3137,8 +3098,7 @@ msgid ""
 msgstr ""
 "您正嘗試在未套用變更的情況下，關閉此應用程式。\n"
 "    *    若要套用您在此工作階段中所進行的變更，請點選「否」並點選「更新」。\n"
-"    *    若要在不套用變更的情況下退出應用程式，請點選「是」。您將會失去在此工"
-"作階段中所進行的所有變更。"
+"    *    若要在不套用變更的情況下退出應用程式，請點選「是」。您將會失去在此工作階段中所進行的所有變更。"
 
 #: ../semanage/seobject.py:820
 #, python-format
@@ -3169,11 +3129,9 @@ msgstr "您必須指定下列其中一個值：%s"
 
 #: ../sepolicy/sepolicy/generate.py:886
 #, python-format
-msgid ""
-"You need to define a new type which ends with: \n"
+msgid "You need to define a new type which ends with: \n"
 " %s"
-msgstr ""
-"您需要定義新的類型，並且該類型以此作為結尾：\n"
+msgstr "您需要定義新的類型，並且該類型以此作為結尾：\n"
 " %s"
 
 #: ../sepolicy/sepolicy.py:324

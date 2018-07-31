@@ -8,23 +8,21 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:45+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2018-06-29 04:59+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
 "Language: uk\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Zanata 4.5.0\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 
 #: ../semanage/semanage:256
-msgid ""
-"\n"
+msgid "\n"
 "    Name for the specified infiniband end port.\n"
-msgstr ""
-"\n"
+msgstr "\n"
 "    Назва вказаного кінцевого порту infiniband.\n"
 
 #: ../semanage/semanage:245
@@ -38,38 +36,30 @@ msgstr ""
 "    протоколу для вказаного вузла (ipv4|ipv6).\n"
 
 #: ../semanage/semanage:251
-msgid ""
-"\n"
+msgid "\n"
 "    Subnet prefix for  the specified infiniband ibpkey.\n"
-msgstr ""
-"\n"
+msgstr "\n"
 "    Префікс підмережі для вказаного ibp-ключа infiniband.\n"
 
 #: ../sepolicy/sepolicy/interface.py:231
 #, python-format
-msgid ""
-"\n"
+msgid "\n"
 "Compile test for %s failed.\n"
-msgstr ""
-"\n"
+msgstr "\n"
 "Не вдалося виконати компіляцію перевірки для %s.\n"
 
 #: ../sepolicy/sepolicy/interface.py:234
 #, python-format
-msgid ""
-"\n"
+msgid "\n"
 "Compile test for %s has not run. %s\n"
-msgstr ""
-"\n"
+msgstr "\n"
 "Компіляція перевірки для %s не запустилася. %s\n"
 
 #: ../sepolicy/sepolicy/interface.py:240
 #, python-format
-msgid ""
-"\n"
+msgid "\n"
 "Compiling of %s interface is not supported."
-msgstr ""
-"\n"
+msgstr "\n"
 "Компіляції інтерфейсу %s не передбачено."
 
 #: ../semanage/semanage:236
@@ -87,30 +77,26 @@ msgstr ""
 "Діапазон SELinux для користувача SELinux, типово s0.\n"
 
 #: ../semanage/seobject.py:2624
-msgid ""
-"\n"
+msgid "\n"
 "SELinux Distribution fcontext Equivalence \n"
-msgstr ""
-"\n"
+msgstr "\n"
 "Еквівалентність файлових контекстів дистрибутива SELinux\n"
 
 #: ../semanage/seobject.py:2629
-msgid ""
-"\n"
+msgid "\n"
 "SELinux Local fcontext Equivalence \n"
-msgstr ""
-"\n"
+msgstr "\n"
 "Еквівалентність локальних файлових контекстів SELinux\n"
 
 #: ../semanage/semanage:423
 msgid ""
 "\n"
-"SELinux Roles.  You must enclose multiple roles within "
-"quotes,                  separate by spaces. Or specify -R multiple times.\n"
+"SELinux Roles.  You must enclose multiple roles within quotes,               "
+"   separate by spaces. Or specify -R multiple times.\n"
 msgstr ""
 "\n"
-"Ролі SELinux. Декілька записів слід брати у лапки і відокремлювати "
-"пробілами. Також можна вказати -R декілька разів.\n"
+"Ролі SELinux. Декілька записів слід брати у лапки і відокремлювати пробілами."
+" Також можна вказати -R декілька разів.\n"
 
 #: ../chcat/chcat:133
 #, python-format
@@ -176,8 +162,8 @@ msgstr "<b>…ПОЗНАЧТЕ, ЩОБ ПЕРЕГЛЯНУТИ ДАНІ…</b>"
 #: ../sepolicy/sepolicy/sepolicy.glade:3995
 msgid "<b>Deny all processes from ptracing or debugging other processes?</b>"
 msgstr ""
-"<b>Заборонити усім процесам виконувати ptrace та діагностику інших процесів?"
-"</b>"
+"<b>Заборонити усім процесам виконувати ptrace та діагностику інших "
+"процесів?</b>"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:3866
 msgid "<b>Disable ability to run unconfined system processes?</b>"
@@ -255,6 +241,7 @@ msgstr "Додати"
 #: ../sepolicy/sepolicy/gui.py:1504
 msgid ""
 "Add File Equivalency Mapping. Mapping will be created when update is applied."
+""
 msgstr ""
 "Додати прив’язку рівнозначності файлів. Прив’язку буде створено під час "
 "застосування оновлення."
@@ -268,6 +255,7 @@ msgstr "Додати мітки файлів для %s"
 #, python-format
 msgid ""
 "Add File Labeling for %s. File labels will be created when update is applied."
+""
 msgstr ""
 "Додати мітки файлів для %s. Мітки файлів буде створено під час застосування "
 "оновлення."
@@ -284,7 +272,8 @@ msgstr ""
 "застосування оновлення."
 
 #: ../sepolicy/sepolicy/gui.py:1490
-msgid "Add Login Mapping. User Mapping will be created when Update is applied."
+msgid ""
+"Add Login Mapping. User Mapping will be created when Update is applied."
 msgstr ""
 "Додати прив’язку реєстраційного запису. Прив’язку буде створено під час "
 "застосування оновлення."
@@ -296,7 +285,8 @@ msgstr "Додати мережевий порт для %s"
 
 #: ../sepolicy/sepolicy/gui.py:1473
 #, python-format
-msgid "Add Network Port for %s.  Ports will be created when update is applied."
+msgid ""
+"Add Network Port for %s.  Ports will be created when update is applied."
 msgstr ""
 "Додати мережевий порт для %s. Записи портів буде створено під час "
 "застосування оновлення."
@@ -375,8 +365,10 @@ msgstr "Додати нове визначення користувача/рол
 #, python-format
 msgid ""
 "Add new port definition to which the '%(APP)s' domain is allowed to %(PERM)s."
+""
 msgstr ""
 "Додати визначення нового порту, до якого домену «%(APP)s» дозволено %(PERM)s."
+""
 
 #: ../sepolicy/sepolicy/gui.py:2237
 #, python-format
@@ -506,11 +498,9 @@ msgstr "Неправильний формат %s: Запис %s"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:2866
 #: ../sepolicy/sepolicy/sepolicy.glade:2956
-msgid ""
-"Boolean\n"
+msgid "Boolean\n"
 "Enabled"
-msgstr ""
-"Змінну\n"
+msgstr "Змінну\n"
 "увімкнено"
 
 #: ../sepolicy/sepolicy/gui.py:1460
@@ -1560,11 +1550,9 @@ msgstr ""
 "Введіть типовий рівень входу для користувача SELinux. Типовим є рівень s0."
 
 #: ../sepolicy/sepolicy/sepolicy.glade:5489
-msgid ""
-"Enter MLS/MCS Range for this SELinux User.\n"
+msgid "Enter MLS/MCS Range for this SELinux User.\n"
 "s0-s0:c1023"
-msgstr ""
-"Введіть діапазон MLS/MCS для цього користувача SELinux.\n"
+msgstr "Введіть діапазон MLS/MCS для цього користувача SELinux.\n"
 "s0-s0:c1023"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1264
@@ -1699,7 +1687,8 @@ msgstr "Експортувати параметри системи до файл
 
 #: ../semanage/semanage:273
 msgid "Extract customizable commands, for use within a transaction"
-msgstr "Видобути придатні до налаштовування команди для використання у цій дії"
+msgstr ""
+"Видобути придатні до налаштовування команди для використання у цій дії"
 
 #: ../sepolicy/sepolicy/__init__.py:157
 #, python-format
@@ -1809,7 +1798,8 @@ msgstr "Специфікація файла %s конфліктує із пра�
 #: ../semanage/seobject.py:2361
 #, python-format
 msgid ""
-"File spec %s conflicts with equivalency rule '%s %s'; Try adding '%s' instead"
+"File spec %s conflicts with equivalency rule '%s %s'; Try adding '%s' "
+"instead"
 msgstr ""
 "Специфікація файла s конфліктує із правилом еквівалентності «%s %s». "
 "Спробуйте додати замість неї «%s»"
@@ -2317,6 +2307,7 @@ msgstr "Змінити прив’язку реєстраційного запи
 #, python-format
 msgid ""
 "Modify port definitions to which the '%(APP)s' domain is allowed to %(PERM)s."
+""
 msgstr ""
 "Змінити визначення портів, до яких домену «%(APP)s» дозволено %(PERM)s."
 
@@ -3050,8 +3041,8 @@ msgid ""
 "                                                                  made "
 "equivalent to that defined for the source."
 msgstr ""
-"Замінити шлях призначення початковим шляхом під час створення типової "
-"мітки. \n"
+"Замінити шлях призначення початковим шляхом під час створення типової мітки. "
+"\n"
 "Використовується із fcontext. Потребує визначення аргументів початкового "
 "шляху і \n"
 "шляху призначення. Мітки контекстів для підієрархії призначення буде "
@@ -3099,8 +3090,8 @@ msgstr ""
 
 #: ../sepolicy/sepolicy/sepolicy.glade:332
 msgid ""
-"The entry that was entered is incorrect.  Please try again in the "
-"ex:/.../... format."
+"The entry that was entered is incorrect.  Please try again in the ex:/.../..."
+" format."
 msgstr ""
 "Введений запис є некоректним. Будь ласка, спробуйте вказати його у форматі "
 "ex:/.../..."
@@ -3129,8 +3120,7 @@ msgstr "Щоб увімкнути цей перехід, перейдіть до
 
 #: ../audit2allow/audit2allow:238
 #, python-format
-msgid ""
-"To make this policy package active, execute:\n"
+msgid "To make this policy package active, execute:\n"
 "\n"
 "semodule -i %s\n"
 "\n"
@@ -3337,11 +3327,9 @@ msgstr "Слід вказати одне з таких значень: %s"
 
 #: ../sepolicy/sepolicy/generate.py:886
 #, python-format
-msgid ""
-"You need to define a new type which ends with: \n"
+msgid "You need to define a new type which ends with: \n"
 " %s"
-msgstr ""
-"Вам слід визначити новий тип, назва якого завершуватиметься так: \n"
+msgstr "Вам слід визначити новий тип, назва якого завершуватиметься так: \n"
 " %s"
 
 #: ../sepolicy/sepolicy.py:324
@@ -3566,7 +3554,8 @@ msgstr ""
 
 #: ../sepolicy/sepolicy.py:400
 msgid "show ports to which this domain can bind and/or connect"
-msgstr "показати порти, з якими може зв’язуватися і/або з’єднуватися цей домен"
+msgstr ""
+"показати порти, з якими може зв’язуватися і/або з’єднуватися цей домен"
 
 #: ../sepolicy/sepolicy/__init__.py:79
 msgid "socket file"

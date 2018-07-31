@@ -5,19 +5,18 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:45+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2017-12-15 08:51+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Korean\n"
 "Language: ko\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Zanata 4.5.0\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
 #: ../semanage/semanage:256
-msgid ""
-"\n"
+msgid "\n"
 "    Name for the specified infiniband end port.\n"
 msgstr ""
 
@@ -29,29 +28,25 @@ msgid ""
 msgstr ""
 
 #: ../semanage/semanage:251
-msgid ""
-"\n"
+msgid "\n"
 "    Subnet prefix for  the specified infiniband ibpkey.\n"
 msgstr ""
 
 #: ../sepolicy/sepolicy/interface.py:231
 #, python-format
-msgid ""
-"\n"
+msgid "\n"
 "Compile test for %s failed.\n"
 msgstr ""
 
 #: ../sepolicy/sepolicy/interface.py:234
 #, python-format
-msgid ""
-"\n"
+msgid "\n"
 "Compile test for %s has not run. %s\n"
 msgstr ""
 
 #: ../sepolicy/sepolicy/interface.py:240
 #, python-format
-msgid ""
-"\n"
+msgid "\n"
 "Compiling of %s interface is not supported."
 msgstr ""
 
@@ -65,26 +60,22 @@ msgid ""
 msgstr ""
 
 #: ../semanage/seobject.py:2624
-msgid ""
-"\n"
+msgid "\n"
 "SELinux Distribution fcontext Equivalence \n"
-msgstr ""
-"\n"
+msgstr "\n"
 "SELinux 배포판 fcontext 해당 \n"
 
 #: ../semanage/seobject.py:2629
-msgid ""
-"\n"
+msgid "\n"
 "SELinux Local fcontext Equivalence \n"
-msgstr ""
-"\n"
+msgstr "\n"
 "SELinux 로컬 fcontext 해당 \n"
 
 #: ../semanage/semanage:423
 msgid ""
 "\n"
-"SELinux Roles.  You must enclose multiple roles within "
-"quotes,                  separate by spaces. Or specify -R multiple times.\n"
+"SELinux Roles.  You must enclose multiple roles within quotes,               "
+"   separate by spaces. Or specify -R multiple times.\n"
 msgstr ""
 
 #: ../chcat/chcat:133
@@ -120,25 +111,19 @@ msgstr "-- Allowed %s [ %s ]"
 #, python-format
 msgid ""
 "-a option can not be used with '%s' domains. Read usage for more details."
-msgstr ""
-"-a 옵션은 '%s' 도메인에서 사용할 수 없습니다. 보다 자세한 내용은 사용법을 읽"
-"어보십시오. "
+msgstr "-a 옵션은 '%s' 도메인에서 사용할 수 없습니다. 보다 자세한 내용은 사용법을 읽어보십시오. "
 
 #: ../sepolicy/sepolicy.py:538
 #, python-format
 msgid ""
 "-d option can not be used with '%s' domains. Read usage for more details."
-msgstr ""
-"-d 옵션은 '%s' 도메인에서 사용할 수 없습니다. 보다 자세한 내용은 사용법을 읽"
-"어보십시오. "
+msgstr "-d 옵션은 '%s' 도메인에서 사용할 수 없습니다. 보다 자세한 내용은 사용법을 읽어보십시오. "
 
 #: ../sepolicy/sepolicy.py:533
 #, python-format
 msgid ""
 "-t option can not be used with '%s' domains. Read usage for more details."
-msgstr ""
-"-t 옵션은 '%s' 도메인에서 사용할 수 없습니다. 보다 자세한 내용은 사용법을 읽"
-"어보십시오. "
+msgstr "-t 옵션은 '%s' 도메인에서 사용할 수 없습니다. 보다 자세한 내용은 사용법을 읽어보십시오. "
 
 #: ../sepolicy/sepolicy.py:546
 msgid "-w option can not be used with the --newtype option"
@@ -150,14 +135,11 @@ msgstr "<b>...데이터 표시를 선택...</b>"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:3995
 msgid "<b>Deny all processes from ptracing or debugging other processes?</b>"
-msgstr ""
-"<b>모든 프로세스에서 다른 프로세스의 ptrace 또는 디버깅을 거부하시겠습니까?</"
-"b>"
+msgstr "<b>모든 프로세스에서 다른 프로세스의 ptrace 또는 디버깅을 거부하시겠습니까?</b>"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:3866
 msgid "<b>Disable ability to run unconfined system processes?</b>"
-msgstr ""
-"<b>제한없는 시스템 프로세스를 실행하기 위해 기능을 비활성화하시겠습니까?</b>"
+msgstr "<b>제한없는 시스템 프로세스를 실행하기 위해 기능을 비활성화하시겠습니까?</b>"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:3929
 msgid "<b>Disable all permissive processes?</b>"
@@ -175,17 +157,13 @@ msgstr "<b>시스템 모드</b>"
 msgid ""
 "<operation> File Labeling for <selected domain>. File labels will be created "
 "when update is applied."
-msgstr ""
-"<operation> 파일 레이블 <selected domain>. 파일 레이블은 업데이트 적용 시 생"
-"성됩니다."
+msgstr "<operation> 파일 레이블 <selected domain>. 파일 레이블은 업데이트 적용 시 생성됩니다."
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1385
 msgid ""
 "<operation> Network Port for <selected domain>.  Ports will be created when "
 "update is applied."
-msgstr ""
-"<operation> 네트워크 포트 <selected domain>. 업데이트 적용 시 포트가 생성됩니"
-"다. "
+msgstr "<operation> 네트워크 포트 <selected domain>. 업데이트 적용 시 포트가 생성됩니다. "
 
 #: ../sepolicy/sepolicy/gui.py:108
 msgid ""
@@ -214,10 +192,9 @@ msgid ""
 "module could cause SELinux to deny access to a domain, that should be "
 "allowed."
 msgstr ""
-"허용 도메인은 프로세스 레이블로 프로세스가 원하는 것을 실행하게 하고 SELinux"
-"는 거부 사항만을 기록하며 이를 강제 수행하지 못하게 할 수 있습니다. 일반적으"
-"로 허용 도메인은 시험적인 정책으로 SELinux가 도메인에 대한 액세스 거부의 원인"
-"이 될 수 있는 모듈을 비활성화합니다. "
+"허용 도메인은 프로세스 레이블로 프로세스가 원하는 것을 실행하게 하고 SELinux는 거부 사항만을 기록하며 이를 강제 수행하지 못하게 "
+"할 수 있습니다. 일반적으로 허용 도메인은 시험적인 정책으로 SELinux가 도메인에 대한 액세스 거부의 원인이 될 수 있는 모듈을 "
+"비활성화합니다. "
 
 #: ../sepolicy/sepolicy/sepolicy.glade:5132
 msgid "Action"
@@ -230,6 +207,7 @@ msgstr "추가"
 #: ../sepolicy/sepolicy/gui.py:1504
 msgid ""
 "Add File Equivalency Mapping. Mapping will be created when update is applied."
+""
 msgstr "파일 등가 맵핑을 추가합니다. 업데이트 적용시 맵핑이 생성됩니다. "
 
 #: ../sepolicy/sepolicy/gui.py:1480 ../sepolicy/sepolicy/gui.py:1533
@@ -241,8 +219,8 @@ msgstr "%s의 파일 레이블 추가 "
 #, python-format
 msgid ""
 "Add File Labeling for %s. File labels will be created when update is applied."
-msgstr ""
-"%s의 파일 레이블을 추가합니다. 업데이트 적용시 파일 레이블이 생성됩니다. "
+""
+msgstr "%s의 파일 레이블을 추가합니다. 업데이트 적용시 파일 레이블이 생성됩니다. "
 
 #: ../sepolicy/sepolicy/gui.py:1491
 msgid "Add Login Mapping"
@@ -254,7 +232,8 @@ msgid ""
 msgstr "로그인 맵핑을 추가합니다. 업데이트 적용 시 로그인 맵핑이 생성됩니다. "
 
 #: ../sepolicy/sepolicy/gui.py:1490
-msgid "Add Login Mapping. User Mapping will be created when Update is applied."
+msgid ""
+"Add Login Mapping. User Mapping will be created when Update is applied."
 msgstr "로그인 맵핑을 추가합니다. 사용자 맵핑은 업데이트 적용 시 생성됩니다."
 
 #: ../sepolicy/sepolicy/gui.py:1474
@@ -264,7 +243,8 @@ msgstr "%s의 네트워크 포트를 추가합니다 "
 
 #: ../sepolicy/sepolicy/gui.py:1473
 #, python-format
-msgid "Add Network Port for %s.  Ports will be created when update is applied."
+msgid ""
+"Add Network Port for %s.  Ports will be created when update is applied."
 msgstr "%s의 네트워크 포트를 추가합니다. 업데이트 적용 시 포트가 생성됩니다."
 
 #: ../sepolicy/sepolicy/gui.py:1505
@@ -275,9 +255,7 @@ msgstr "SELinux 파일 등가 추가 "
 msgid ""
 "Add SELinux User Role. SELinux user roles will be created when update is "
 "applied."
-msgstr ""
-"SELinux 사용자 역할을 추가합니다. SELinux 사용자 역할은 업데이트 적용 시 생성"
-"됩니다."
+msgstr "SELinux 사용자 역할을 추가합니다. SELinux 사용자 역할은 업데이트 적용 시 생성됩니다."
 
 #: ../sepolicy/sepolicy/gui.py:1497
 msgid "Add SELinux Users"
@@ -286,8 +264,7 @@ msgstr "SELinux 사용자 추가 "
 #: ../sepolicy/sepolicy/sepolicy.glade:5349
 msgid ""
 "Add User Roles. SELinux User Roles will be created when Update is applied."
-msgstr ""
-"사용자 역할을 추가합니다. 업데이트 적용 시 SELinux 사용자 역할이 생성됩니다. "
+msgstr "사용자 역할을 추가합니다. 업데이트 적용 시 SELinux 사용자 역할이 생성됩니다. "
 
 #: ../sepolicy/sepolicy/sepolicy.glade:621
 msgid "Add a file"
@@ -338,8 +315,8 @@ msgstr "새로운 SELinux 사용자/역할 정의를 추가합니다."
 #, python-format
 msgid ""
 "Add new port definition to which the '%(APP)s' domain is allowed to %(PERM)s."
-msgstr ""
-"'%(APP)s' 도메인이 %(PERM)s에 허용되는 것에 대한 새 포트 정의를 추가합니다."
+""
+msgstr "'%(APP)s' 도메인이 %(PERM)s에 허용되는 것에 대한 새 포트 정의를 추가합니다."
 
 #: ../sepolicy/sepolicy/gui.py:2237
 #, python-format
@@ -413,12 +390,10 @@ msgid ""
 "now be confined.  To disable the unconfined_t user you must first remove "
 "unconfined_t from the users/login screens."
 msgstr ""
-"제한이 없는 도메인은 프로세스 레이블로 SELinux의 간섭을 받지 않고 프로스세에 "
-"원하는 사항을 실행시킬 수 있습니다. 이 모듈이 활성화되어 있으면 부팅시 init "
-"시스템에 의해 애플리케이션이 실행되어 지정된 SELinux 정책이 없는 SELinux는 제"
-"한 없이 실행됩니다. 이 모듈을 비활성화하면 모든 데몬이 제한받게 됩니다. "
-"unconfined_t 사용자를 비활성화하려면 먼저 사용자/로그인 화면에서 unconfined_t"
-"를 제거해야 합니다. "
+"제한이 없는 도메인은 프로세스 레이블로 SELinux의 간섭을 받지 않고 프로스세에 원하는 사항을 실행시킬 수 있습니다. 이 모듈이 "
+"활성화되어 있으면 부팅시 init 시스템에 의해 애플리케이션이 실행되어 지정된 SELinux 정책이 없는 SELinux는 제한 없이 "
+"실행됩니다. 이 모듈을 비활성화하면 모든 데몬이 제한받게 됩니다. unconfined_t 사용자를 비활성화하려면 먼저 사용자/로그인 "
+"화면에서 unconfined_t를 제거해야 합니다. "
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1070
 msgid "Analyzing Policy..."
@@ -466,11 +441,9 @@ msgstr ""
 
 #: ../sepolicy/sepolicy/sepolicy.glade:2866
 #: ../sepolicy/sepolicy/sepolicy.glade:2956
-msgid ""
-"Boolean\n"
+msgid "Boolean\n"
 "Enabled"
-msgstr ""
-"부울\n"
+msgstr "부울\n"
 "활성화됨"
 
 #: ../sepolicy/sepolicy/gui.py:1460
@@ -551,9 +524,8 @@ msgid ""
 "the next boot. Relabeling takes a long time depending on the size of the "
 "file system.  Do you wish to continue?"
 msgstr ""
-"정책 유형을 변경하면 다음 부팅 시 전체 파일 시스템의 레이블 변경의 원인이 됩"
-"니다. 레이블 변경은 파일 시스템의 크기에 따라 시간이 오래 소요됩니다. 계속 진"
-"행하시겠습니까?"
+"정책 유형을 변경하면 다음 부팅 시 전체 파일 시스템의 레이블 변경의 원인이 됩니다. 레이블 변경은 파일 시스템의 크기에 따라 시간이 "
+"오래 소요됩니다. 계속 진행하시겠습니까?"
 
 #: ../sepolicy/sepolicy/gui.py:2768
 msgid ""
@@ -564,12 +536,10 @@ msgid ""
 "enforce SELinux policy.  Permissive mode does not require a reboot.  Do you "
 "wish to continue?"
 msgstr ""
-"SELinux 비활성화로 변경하려면 재부팅해야 합니다. 이는 권장되는 방법이 아닙니"
-"다. 나중에 SELinux를 다시 활성화하고자 할 경우 시스템 레이블 변경이 필요합니"
-"다. 단순히 SELinux가 시스템에서 문제의 원인인지 여부를 확인하고 싶은 경우 허"
-"용 모드로 전환하면 오류를 로그하고 SELinux 정책을 강제하지 않을 수 있습니다. "
-"또한 허용 모드로 변경하기 위해 재부팅할 필요가 없습니다. 계속 진행하시겠습니"
-"까?"
+"SELinux 비활성화로 변경하려면 재부팅해야 합니다. 이는 권장되는 방법이 아닙니다. 나중에 SELinux를 다시 활성화하고자 할 경우 "
+"시스템 레이블 변경이 필요합니다. 단순히 SELinux가 시스템에서 문제의 원인인지 여부를 확인하고 싶은 경우 허용 모드로 전환하면 "
+"오류를 로그하고 SELinux 정책을 강제하지 않을 수 있습니다. 또한 허용 모드로 변경하기 위해 재부팅할 필요가 없습니다. 계속 "
+"진행하시겠습니까?"
 
 #: ../sepolicy/sepolicy/gui.py:2772
 msgid ""
@@ -577,9 +547,8 @@ msgid ""
 "on the next boot. Relabeling takes a long time depending on the size of the "
 "file system.  Do you wish to continue?"
 msgstr ""
-"SELinux 활성화로 변경하면 다음 부팅시 전체 파일 시스템의 레이블 변경의 원인"
-"이 됩니다. 레이블 변경은 파일 시스템의 크기에 따라 시간이 오래 소요됩니다. 계"
-"속 진행하시겠습니까?"
+"SELinux 활성화로 변경하면 다음 부팅시 전체 파일 시스템의 레이블 변경의 원인이 됩니다. 레이블 변경은 파일 시스템의 크기에 따라 "
+"시간이 오래 소요됩니다. 계속 진행하시겠습니까?"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:747
 #: ../sepolicy/sepolicy/sepolicy.glade:2306
@@ -1376,9 +1345,7 @@ msgstr "수정된 SELinux 사용자/역할 정의를 삭제합니다. "
 msgid ""
 "Delete modified port definitions to which the '%(APP)s' domain is allowed to "
 "%(PERM)s."
-msgstr ""
-"'%(APP)s' 도메인이 %(PERM)s에 허용되는 것에 대한 수정된 포트 정의를 삭제합니"
-"다."
+msgstr "'%(APP)s' 도메인이 %(PERM)s에 허용되는 것에 대한 수정된 포트 정의를 삭제합니다."
 
 #: ../sepolicy/sepolicy/gui.py:2239
 #, python-format
@@ -1432,9 +1399,7 @@ msgstr "'%s'으로 또는 도메인 밖으로 전환할 수 있는 애플리케�
 msgid ""
 "Display applications that can transition into or out of the 'selected "
 "domain'."
-msgstr ""
-"'선택한 도메인'으로 또는 도메인 밖으로 전환할 수 있는 애플리케이션을 표시합니"
-"다."
+msgstr "'선택한 도메인'으로 또는 도메인 밖으로 전환할 수 있는 애플리케이션을 표시합니다."
 
 #: ../sepolicy/sepolicy/gui.py:1064
 #, python-format
@@ -1447,8 +1412,7 @@ msgstr "'%s'의 정책을 수정하는데 사용할 수 있는 부울 정보를 
 msgid ""
 "Display boolean information that can be used to modify the policy for the "
 "'selected domain'."
-msgstr ""
-"'선택한 도메인'의 정책을 수정하기 위해 사용할 수 있는 부울 정보를 표시합니다."
+msgstr "'선택한 도메인'의 정책을 수정하기 위해 사용할 수 있는 부울 정보를 표시합니다."
 
 #: ../sepolicy/sepolicy/gui.py:1065
 #, python-format
@@ -1507,25 +1471,19 @@ msgstr "강제 "
 
 #: ../sepolicy/sepolicy/sepolicy.glade:5524
 msgid "Enter Default Level for SELinux User to login with. Default s0"
-msgstr ""
-"SELinux 사용자가 로그인할 때 사용할 기본 수준을 입력합니다. 기본값은 s0입니"
-"다 "
+msgstr "SELinux 사용자가 로그인할 때 사용할 기본 수준을 입력합니다. 기본값은 s0입니다 "
 
 #: ../sepolicy/sepolicy/sepolicy.glade:5489
-msgid ""
-"Enter MLS/MCS Range for this SELinux User.\n"
+msgid "Enter MLS/MCS Range for this SELinux User.\n"
 "s0-s0:c1023"
-msgstr ""
-"SELinux 사용자의 MLS/MCS 범위를 입력합니다.\n"
+msgstr "SELinux 사용자의 MLS/MCS 범위를 입력합니다.\n"
 "s0-s0:c1023"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1264
 msgid ""
 "Enter MLS/MCS Range for this login User.  Defaults to the range for the "
 "Selected SELinux User."
-msgstr ""
-"로그인 사용자의 MLS/MCS 범위를 입력합니다. 기본값으로 선택한 SELinux 사용자"
-"의 범위로 설정됩니다."
+msgstr "로그인 사용자의 MLS/MCS 범위를 입력합니다. 기본값으로 선택한 SELinux 사용자의 범위로 설정됩니다."
 
 #: ../sepolicy/sepolicy.py:606
 msgid "Enter SELinux role(s) to which the administror domain will transition"
@@ -1559,8 +1517,7 @@ msgstr "이 포트에 할당할 MLS 레이블을 입력합니다. "
 msgid ""
 "Enter the login user name of the user to which you wish to add SELinux User "
 "confinement."
-msgstr ""
-"SELinux 사용자 제한을 추가하려는 사용자의 로그인 사용자 이름을 입력합니다. "
+msgstr "SELinux 사용자 제한을 추가하려는 사용자의 로그인 사용자 이름을 입력합니다. "
 
 #: ../sepolicy/sepolicy/sepolicy.glade:497
 msgid "Enter the path to which you want to setup an equivalence label."
@@ -1617,17 +1574,13 @@ msgstr ""
 msgid ""
 "Executables which will transition to a different domain, when the 'selected "
 "domain' executes them."
-msgstr ""
-"'선택한 도메인'이 이를 실행할 때 다른 도메인으로 전환할 실행 가능한 파일입니"
-"다."
+msgstr "'선택한 도메인'이 이를 실행할 때 다른 도메인으로 전환할 실행 가능한 파일입니다."
 
 #: ../sepolicy/sepolicy/sepolicy.glade:3012
 msgid ""
 "Executables which will transition to the 'selected domain', when executing a "
 "selected domains entrypoint."
-msgstr ""
-"선택한 도메인 엔트리 포인트를 실행할 때 'selected domain'로 전환될 실행 가능"
-"한 파일입니다."
+msgstr "선택한 도메인 엔트리 포인트를 실행할 때 'selected domain'로 전환될 실행 가능한 파일입니다."
 
 #: ../sepolicy/sepolicy/generate.py:147
 msgid "Existing Domain Type"
@@ -1685,9 +1638,8 @@ msgid ""
 "content of a particular class in a directory of the destination type. "
 "Optionally a file name could be specified for the transition."
 msgstr ""
-"현재 도메인이 대상 유형의 디렉토리에 있는 특정 클래스의 내용을 생성할 때 발생"
-"하는 사항을 파일 전환은 정의합니다. 옵션으로 파일 이름은 전환에 대해 지정할 "
-"수 있습니다."
+"현재 도메인이 대상 유형의 디렉토리에 있는 특정 클래스의 내용을 생성할 때 발생하는 사항을 파일 전환은 정의합니다. 옵션으로 파일 이름은 "
+"전환에 대해 지정할 수 있습니다."
 
 #: ../sepolicy/sepolicy/gui.py:1063
 #, python-format
@@ -1722,9 +1674,7 @@ msgstr "%s에 대한 파일 문맥이 저정되지 않았습니다"
 msgid ""
 "File equivalence cause the system to label content under the new path as if "
 "it were under the equivalence path."
-msgstr ""
-"파일 등가는 시스템이 등가 경로에 있는 것처럼 새로운 경로 아래의 내용을 레이블"
-"하게 합니다."
+msgstr "파일 등가는 시스템이 등가 경로에 있는 것처럼 새로운 경로 아래의 내용을 레이블하게 합니다."
 
 #: ../sepolicy/sepolicy/gui.py:2319
 #, python-format
@@ -1753,7 +1703,8 @@ msgstr ""
 #: ../semanage/seobject.py:2361
 #, python-format
 msgid ""
-"File spec %s conflicts with equivalency rule '%s %s'; Try adding '%s' instead"
+"File spec %s conflicts with equivalency rule '%s %s'; Try adding '%s' "
+"instead"
 msgstr ""
 
 #: ../semanage/seobject.py:2356
@@ -1895,8 +1846,7 @@ msgstr ""
 msgid ""
 "If-Then-Else rules written in policy that can\n"
 "allow alternative access control."
-msgstr ""
-"대체 액세스 제어를 허용할 수 있는 정책에 작성된\n"
+msgstr "대체 액세스 제어를 허용할 수 있는 정책에 작성된\n"
 "If-Then-Else 규칙입니다."
 
 #: ../sepolicy/sepolicy/sepolicy.glade:3640
@@ -2009,8 +1959,7 @@ msgstr "잠금 "
 msgid ""
 "Lockdown the SELinux System.\n"
 "This screen can be used to turn up the SELinux Protections."
-msgstr ""
-"SELinux 시스템을 잠금합니다.\n"
+msgstr "SELinux 시스템을 잠금합니다.\n"
 "이 화면에서 SELinux 보안을 켤 수 있습니다."
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1864
@@ -2170,9 +2119,8 @@ msgid ""
 "Modify %(TYPE)s file path for '%(DOMAIN)s' domain. Only bolded items in the "
 "list can be selected, this indicates they were modified previously."
 msgstr ""
-"'%(DOMAIN)s' 도메인의 %(TYPE)s 파일 경로를 수정합니다. 목록에서 굵게 표시된 "
-"항목만 선택할 수 있습니다. 굵게 표시된 항목은 이전에 수정되었음을 나타내는 것"
-"입니다."
+"'%(DOMAIN)s' 도메인의 %(TYPE)s 파일 경로를 수정합니다. 목록에서 굵게 표시된 항목만 선택할 수 있습니다. 굵게 표시된 "
+"항목은 이전에 수정되었음을 나타내는 것입니다."
 
 #: ../sepolicy/sepolicy/gui.py:1604
 msgid ""
@@ -2185,8 +2133,7 @@ msgstr "파일 등가 맵핑을 수정합니다. 업데이트 적용시 맵핑�
 msgid ""
 "Modify File Labeling for %s. File labels will be created when update is "
 "applied."
-msgstr ""
-"%s의 파일 레이블을 수정합니다. 업데이트 적용시 파일 레이블이 생성됩니다. "
+msgstr "%s의 파일 레이블을 수정합니다. 업데이트 적용시 파일 레이블이 생성됩니다. "
 
 #: ../sepolicy/sepolicy/gui.py:1598
 msgid "Modify Login Mapping"
@@ -2216,9 +2163,7 @@ msgstr "SELinux 파일 등가 수정 "
 msgid ""
 "Modify SELinux User Role. SELinux user roles will be modified when update is "
 "applied."
-msgstr ""
-"SELinux 사용자 역할을 수정합니다. SELinux 사용자 역할은 업데이트 적용시 수정"
-"됩니다. "
+msgstr "SELinux 사용자 역할을 수정합니다. SELinux 사용자 역할은 업데이트 적용시 수정됩니다. "
 
 #: ../sepolicy/sepolicy/gui.py:1589
 msgid "Modify SELinux Users"
@@ -2246,8 +2191,8 @@ msgstr "로그인 맵핑을 수정합니다 "
 #, python-format
 msgid ""
 "Modify port definitions to which the '%(APP)s' domain is allowed to %(PERM)s."
-msgstr ""
-"'%(APP)s' 도메인이 %(PERM)s에 허용되는 것에 대한 포트 정의를 수정합니다."
+""
+msgstr "'%(APP)s' 도메인이 %(PERM)s에 허용되는 것에 대한 포트 정의를 수정합니다."
 
 #: ../sepolicy/sepolicy/gui.py:2241
 #, python-format
@@ -2259,9 +2204,8 @@ msgid ""
 "Modify selected modified File Equivalence definitions. Only bolded items in "
 "the list can be selected, this indicates they were modified previously."
 msgstr ""
-"수정된 파일 등가 정의에서 선택한 것을 변경합니다. 목록에서 굵게 표시된 항목"
-"만 선택할 수 있습니다. 굵게 표시된 항목은 이전에 수정되었음을 나타내는 것입니"
-"다."
+"수정된 파일 등가 정의에서 선택한 것을 변경합니다. 목록에서 굵게 표시된 항목만 선택할 수 있습니다. 굵게 표시된 항목은 이전에 "
+"수정되었음을 나타내는 것입니다."
 
 #: ../sepolicy/sepolicy/gui.py:1423
 msgid "Modify selected modified Login Mapping definitions."
@@ -2310,9 +2254,7 @@ msgstr "이름"
 msgid ""
 "Name must be alpha numberic with no spaces. Consider using option \"-n "
 "MODULENAME\""
-msgstr ""
-"이름은 공백이 없는 영문 숫자로 구성되어야 합니다. \"-n MODULENAME\" 옵션의 사"
-"용을 고려해 보십시오"
+msgstr "이름은 공백이 없는 영문 숫자로 구성되어야 합니다. \"-n MODULENAME\" 옵션의 사용을 고려해 보십시오"
 
 #: ../semanage/semanage:640
 msgid "Name of the module to act on"
@@ -2558,9 +2500,7 @@ msgstr "변경 사항 되돌리기 "
 msgid ""
 "Revert button will launch a dialog window which allows you to revert changes "
 "within the current transaction."
-msgstr ""
-"되돌리기 버튼을 누르면 대화 창이 시작되어 현재 트랜젝션의 변경 내용을 되돌리"
-"기할 수 있습니다. "
+msgstr "되돌리기 버튼을 누르면 대화 창이 시작되어 현재 트랜젝션의 변경 내용을 되돌리기할 수 있습니다. "
 
 #: ../sepolicy/sepolicy/sepolicy.glade:5069
 msgid ""
@@ -2568,9 +2508,8 @@ msgid ""
 "reset an item, uncheck the checkbox.  All items checked will be updated in "
 "the system when you select update."
 msgstr ""
-"시스템에 업데이트 사항을 커밋하기 전 이를 다시 확인합니다. 항목을 다시 설정하"
-"려면 확인란의 체크 표시를 선택 해제합니다. 선택된 모든 항목은 업데이트 선택"
-"시 시스템에 업데이트됩니다. "
+"시스템에 업데이트 사항을 커밋하기 전 이를 다시 확인합니다. 항목을 다시 설정하려면 확인란의 체크 표시를 선택 해제합니다. 선택된 모든 "
+"항목은 업데이트 선택시 시스템에 업데이트됩니다. "
 
 #: ../sepolicy/sepolicy/gui.py:2273
 #, python-format
@@ -2583,8 +2522,8 @@ msgid ""
 "Run restorecon on %(PATH)s to change its type from %(CUR_CONTEXT)s to the "
 "default %(DEF_CONTEXT)s?"
 msgstr ""
-"%(PATH)s에서 restorecon을 수행하여 유형을 %(CUR_CONTEXT)s에서 기본 "
-"%(DEF_CONTEXT)s로 변경하시겠습니까?"
+"%(PATH)s에서 restorecon을 수행하여 유형을 %(CUR_CONTEXT)s에서 기본 %(DEF_CONTEXT)s로 "
+"변경하시겠습니까?"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:2909
 msgid "SELinux Application Type"
@@ -2714,8 +2653,7 @@ msgstr ""
 #: ../semanage/seobject.py:957
 #, python-format
 msgid "SELinux user %s is defined in policy, cannot be deleted"
-msgstr ""
-"%s에 대한 SELinux 사용자가 정책에 지정되어 있어 이를 삭제할 수 없습니다"
+msgstr "%s에 대한 SELinux 사용자가 정책에 지정되어 있어 이를 삭제할 수 없습니다"
 
 #: ../semanage/seobject.py:895 ../semanage/seobject.py:951
 #, python-format
@@ -2774,8 +2712,8 @@ msgid ""
 "of the specified directory path. objects under the directory to have this "
 "label."
 msgstr ""
-"지정된 디렉토리 경로의 모든 자식에 이 레이블을 적용하고자 할 경우 재귀적 경"
-"로 사용을 선택합니다. 이 레이블을 갖게 될 디렉토리 아래의 객체입니다."
+"지정된 디렉토리 경로의 모든 자식에 이 레이블을 적용하고자 할 경우 재귀적 경로 사용을 선택합니다. 이 레이블을 갖게 될 디렉토리 아래의 "
+"객체입니다."
 
 #: ../semanage/semanage:207
 msgid "Select a priority for module operations"
@@ -2793,25 +2731,19 @@ msgstr "도메인 선택 "
 msgid ""
 "Select file equivalence labeling to delete. File equivalence labeling will "
 "be deleted when update is applied."
-msgstr ""
-"삭제할 파일에 해당하는 레이블을 선택합니다. 파일에 해당하는 레이블은 업데이"
-"트 적용시 삭제됩니다. "
+msgstr "삭제할 파일에 해당하는 레이블을 선택합니다. 파일에 해당하는 레이블은 업데이트 적용시 삭제됩니다. "
 
 #: ../sepolicy/sepolicy/sepolicy.glade:4439
 msgid ""
 "Select file labeling to delete. File labeling will be deleted when update is "
 "applied."
-msgstr ""
-"삭제할 파일의 레이블을 선택합니다. 파일의 레이블은 업데이트 적용시 삭제됩니"
-"다. "
+msgstr "삭제할 파일의 레이블을 선택합니다. 파일의 레이블은 업데이트 적용시 삭제됩니다. "
 
 #: ../sepolicy/sepolicy/sepolicy.glade:4867
 msgid ""
 "Select login user mapping to delete. Login user mapping will be deleted when "
 "update is applied."
-msgstr ""
-"삭제할 로그인 사용자 맵핑을 선택합니다. 업데이트 적용 시 로그인 사용자 맵핑"
-"은 삭제됩니다."
+msgstr "삭제할 로그인 사용자 맵핑을 선택합니다. 업데이트 적용 시 로그인 사용자 맵핑은 삭제됩니다."
 
 #: ../sepolicy/sepolicy/sepolicy.glade:4583
 msgid "Select ports to delete. Ports will be deleted when update is applied."
@@ -2822,8 +2754,7 @@ msgid ""
 "Select the SELinux User to assign to this login user.  Login users by "
 "default get assigned by the __default__ user."
 msgstr ""
-"로그인 사용자에게 할당할 SELinux 사용자를 선택합니다. 기본값으로 로그인 사용"
-"자는 __default__ 사용자에 의해 할당됩니다. "
+"로그인 사용자에게 할당할 SELinux 사용자를 선택합니다. 기본값으로 로그인 사용자는 __default__ 사용자에 의해 할당됩니다. "
 
 #: ../sepolicy/sepolicy/sepolicy.glade:902
 msgid "Select the SELinux file type to assign to this path."
@@ -2833,9 +2764,7 @@ msgstr "경로에 할당할 SELinux 파일 유형을 선택합니다."
 msgid ""
 "Select the file class to which this label will be applied.  Defaults to all "
 "classes."
-msgstr ""
-"레이블을 적용할 파일 클래스를 선택합니다. 기본적으로 모든 클래스에 설정됩니"
-"다."
+msgstr "레이블을 적용할 파일 클래스를 선택합니다. 기본적으로 모든 클래스에 설정됩니다."
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1498
 msgid "Select the port type you want to assign to the specified port number."
@@ -2853,8 +2782,7 @@ msgstr "시스템을 처음 시작할 때 시스템 모드를 선택합니다 "
 msgid ""
 "Select users mapping to delete.Users mapping will be deleted when update is "
 "applied."
-msgstr ""
-"삭제할 사용자 맵핑을 선택합니다. 업데이트 적용 시 사용자 맵핑은 삭제됩니다."
+msgstr "삭제할 사용자 맵핑을 선택합니다. 업데이트 적용 시 사용자 맵핑은 삭제됩니다."
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1743
 msgid "Select..."
@@ -2901,25 +2829,19 @@ msgstr "Spec 파일 "
 msgid ""
 "Specify a new SELinux user name.  By convention SELinux User names usually "
 "end in an _u."
-msgstr ""
-"새로운 SELinux 사용자 이름을 지정합니다. 일반적으로 SELinux 사용자 이름은 _u"
-"로 끝납니다."
+msgstr "새로운 SELinux 사용자 이름을 지정합니다. 일반적으로 SELinux 사용자 이름은 _u로 끝납니다."
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1279
 msgid ""
 "Specify the MLS Range for this user to login in with.  Defaults to the "
 "selected SELinux Users MLS Range."
-msgstr ""
-"로그인할 사용자의 MLS 범위를 지정합니다. 기본값으로 선택한 SELinux 사용자 "
-"MLS 범위가 설정됩니다. "
+msgstr "로그인할 사용자의 MLS 범위를 지정합니다. 기본값으로 선택한 SELinux 사용자 MLS 범위가 설정됩니다. "
 
 #: ../sepolicy/sepolicy/sepolicy.glade:5520
 msgid ""
 "Specify the default level that you would like this SELinux user to login "
 "with.  Defaults to s0."
-msgstr ""
-"이 SELinux 사용자가 로그인할 때 사용할 기본 수준을 지정합니다. 기본값은 s0입"
-"니다. "
+msgstr "이 SELinux 사용자가 로그인할 때 사용할 기본 수준을 지정합니다. 기본값은 s0입니다. "
 
 #: ../sepolicy/sepolicy/sepolicy.glade:564
 msgid ""
@@ -2927,8 +2849,7 @@ msgid ""
 "Everything under this new path will be labeled as if they were under the "
 "equivalence path."
 msgstr ""
-"새 경로와 동등한 경로 간의 맵핑을 지정합니다. 새 경로에 있는 모든것은 동등한 "
-"경로 아래 있는 모든것으로 동등하게 레이블됩니다. "
+"새 경로와 동등한 경로 간의 맵핑을 지정합니다. 새 경로에 있는 모든것은 동등한 경로 아래 있는 모든것으로 동등하게 레이블됩니다. "
 
 #: ../sepolicy/sepolicy/sepolicy.glade:880
 msgid ""
@@ -3006,10 +2927,9 @@ msgstr "항목 '%s'은 올바른 경로가 아닙니다. 경로는 '/'로 시작
 
 #: ../sepolicy/sepolicy/sepolicy.glade:332
 msgid ""
-"The entry that was entered is incorrect.  Please try again in the "
-"ex:/.../... format."
-msgstr ""
-"입력된 항목이 올바르지 않습니다. ex:/.../... 형식으로 다시 입력하십시오. "
+"The entry that was entered is incorrect.  Please try again in the ex:/.../..."
+" format."
+msgstr "입력된 항목이 올바르지 않습니다. ex:/.../... 형식으로 다시 입력하십시오. "
 
 #: ../semanage/seobject.py:502
 msgid ""
@@ -3031,8 +2951,7 @@ msgstr ""
 
 #: ../audit2allow/audit2allow:238
 #, python-format
-msgid ""
-"To make this policy package active, execute:\n"
+msgid "To make this policy package active, execute:\n"
 "\n"
 "semodule -i %s\n"
 "\n"
@@ -3173,9 +3092,7 @@ msgstr "웹 애플리케이션/스크립트 (CGI)"
 msgid ""
 "With this flag, alternative root path needs to include file context files "
 "and policy.xml file"
-msgstr ""
-"이 플래그에는 파일 문맥 파일 및 policy.xml 파일을 포함하기 위해 대체할 수 있"
-"는 root 경로가 필요합니다 "
+msgstr "이 플래그에는 파일 문맥 파일 및 policy.xml 파일을 포함하기 위해 대체할 수 있는 root 경로가 필요합니다 "
 
 #: ../sepolicy/sepolicy/sepolicy.glade:2449
 msgid "Writable files"
@@ -3197,10 +3114,8 @@ msgid ""
 "All changes that you have made during this session will be lost."
 msgstr ""
 "변경 사항을 적용하지 않고 애플리케이션을 종료하려고 합니다.\n"
-"    *    이 세션에서 변경 내용을 적용하려면 아니요를 클릭한 후 업데이트를 클"
-"릭합니다.\n"
-"    *    변경 사항을 적용하지 않고 애플리케이션을 닫으려면 예를 클릭합니다. "
-"이 세션에서의 모든 변경된 내용은 손실됩니다."
+"    *    이 세션에서 변경 내용을 적용하려면 아니요를 클릭한 후 업데이트를 클릭합니다.\n"
+"    *    변경 사항을 적용하지 않고 애플리케이션을 닫으려면 예를 클릭합니다. 이 세션에서의 모든 변경된 내용은 손실됩니다."
 
 #: ../semanage/seobject.py:820
 #, python-format
@@ -3222,8 +3137,7 @@ msgstr "제한된 프로세스의 실행 파일 경로를 입력해야 합니다
 
 #: ../sepolicy/sepolicy/__init__.py:831
 msgid "You must regenerate interface info by running /usr/bin/sepolgen-ifgen"
-msgstr ""
-"/usr/bin/sepolgen-ifgen을 실행하여 인터페이스 정보를 다시 생성해야 합니다 "
+msgstr "/usr/bin/sepolgen-ifgen을 실행하여 인터페이스 정보를 다시 생성해야 합니다 "
 
 #: ../semanage/seobject.py:2678
 #, python-format
@@ -3232,11 +3146,9 @@ msgstr "다음의 값 중 하나를 반드시 지정해야 합니다: %s"
 
 #: ../sepolicy/sepolicy/generate.py:886
 #, python-format
-msgid ""
-"You need to define a new type which ends with: \n"
+msgid "You need to define a new type which ends with: \n"
 " %s"
-msgstr ""
-"다음과 같이 끝나는 새로운 유형을 정의해야 합니다: \n"
+msgstr "다음과 같이 끝나는 새로운 유형을 정의해야 합니다: \n"
 " %s"
 
 #: ../sepolicy/sepolicy.py:324
@@ -3414,9 +3326,7 @@ msgstr "부울 설명을 확인하기 위해 SELinux 정책을 쿼리 "
 msgid ""
 "query SELinux Policy to see how a source process domain can transition to "
 "the target process domain"
-msgstr ""
-"소스 프로세스 도메인이 대상 프로세스 도메인으로 전환하는 방법을 확인하기 위"
-"한 SELinux 정책을 쿼리 "
+msgstr "소스 프로세스 도메인이 대상 프로세스 도메인으로 전환하는 방법을 확인하기 위한 SELinux 정책을 쿼리 "
 
 #: ../sepolicy/sepolicy.py:420
 msgid "query SELinux policy to see if domains can communicate with each other"

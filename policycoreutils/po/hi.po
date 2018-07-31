@@ -4,13 +4,13 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:36+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2016-01-06 06:57+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Hindi\n"
 "Language: hi\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Zanata 4.5.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
@@ -27,7 +27,8 @@ msgstr "%s एक वैध संदर्भ नहीं है\n"
 #: ../newrole/newrole.c:730
 #, c-format
 msgid "%s!  Could not get current context for %s, not relabeling tty.\n"
-msgstr "%s!  %s के लिये मौजूदा संदर्भ नहीं पा सकता, tty फिर लेबल नहीं कर रहा है.\n"
+msgstr ""
+"%s!  %s के लिये मौजूदा संदर्भ नहीं पा सकता, tty फिर लेबल नहीं कर रहा है.\n"
 
 #: ../newrole/newrole.c:740
 #, c-format
@@ -143,7 +144,9 @@ msgstr "त्रुटि: बहुल प्रकार निर्दि�
 #: ../newrole/newrole.c:890
 #, c-format
 msgid "Error: you are not allowed to change levels on a non secure terminal \n"
-msgstr "त्रुटि: आपको असुरक्षित टर्मिनल पर लेबल को बदलने के लिए अनुमति प्राप्त नहीं है \n"
+msgstr ""
+"त्रुटि: आपको असुरक्षित टर्मिनल पर लेबल को बदलने के लिए अनुमति प्राप्त नहीं "
+"है \n"
 
 #: ../newrole/newrole.c:1190 ../newrole/newrole.c:1217
 #, c-format
@@ -196,7 +199,8 @@ msgstr "क्षमा करें, newrole सिर्फ SELinux कर्�
 #: ../run_init/run_init.c:361
 #, c-format
 msgid "Sorry, run_init may be used only on a SELinux kernel.\n"
-msgstr "क्षमा करें, run_init को सिर्फ SELinux कर्नेल पर प्रयोग किया जा सकता है.\n"
+msgstr ""
+"क्षमा करें, run_init को सिर्फ SELinux कर्नेल पर प्रयोग किया जा सकता है.\n"
 
 #. USAGE_STRING describes the command-line args of this program.
 #: ../run_init/run_init.c:67
@@ -274,11 +278,11 @@ msgstr "%s स्तर के साथ नया परिसर बनान�
 msgid "failed to convert new context to string\n"
 msgstr "नया संदर्भ स्ट्रिंग में बदलने में विफल\n"
 
-#.
+#. 
 #. * Error path cleanup
 #. *
 #. * If we reach here, then we failed to exec the new shell.
-#.
+#. 
 #: ../newrole/newrole.c:1336
 msgid "failed to exec shell\n"
 msgstr "शेल निष्पादन में विफल\n"

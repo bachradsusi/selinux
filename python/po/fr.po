@@ -8,19 +8,18 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:45+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2018-03-04 09:46+0000\n"
 "Last-Translator: Jean-Baptiste Holcroft <jean-baptiste@holcroft.fr>\n"
 "Language-Team: French\n"
 "Language: fr\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Zanata 4.5.0\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
 
 #: ../semanage/semanage:256
-msgid ""
-"\n"
+msgid "\n"
 "    Name for the specified infiniband end port.\n"
 msgstr ""
 
@@ -32,29 +31,25 @@ msgid ""
 msgstr ""
 
 #: ../semanage/semanage:251
-msgid ""
-"\n"
+msgid "\n"
 "    Subnet prefix for  the specified infiniband ibpkey.\n"
 msgstr ""
 
 #: ../sepolicy/sepolicy/interface.py:231
 #, python-format
-msgid ""
-"\n"
+msgid "\n"
 "Compile test for %s failed.\n"
 msgstr ""
 
 #: ../sepolicy/sepolicy/interface.py:234
 #, python-format
-msgid ""
-"\n"
+msgid "\n"
 "Compile test for %s has not run. %s\n"
 msgstr ""
 
 #: ../sepolicy/sepolicy/interface.py:240
 #, python-format
-msgid ""
-"\n"
+msgid "\n"
 "Compiling of %s interface is not supported."
 msgstr ""
 
@@ -68,26 +63,22 @@ msgid ""
 msgstr ""
 
 #: ../semanage/seobject.py:2624
-msgid ""
-"\n"
+msgid "\n"
 "SELinux Distribution fcontext Equivalence \n"
-msgstr ""
-"\n"
+msgstr "\n"
 "Équivalence fcontext de distribution SELinux \n"
 
 #: ../semanage/seobject.py:2629
-msgid ""
-"\n"
+msgid "\n"
 "SELinux Local fcontext Equivalence \n"
-msgstr ""
-"\n"
+msgstr "\n"
 "Équivalence fcontext locale SELinux \n"
 
 #: ../semanage/semanage:423
 msgid ""
 "\n"
-"SELinux Roles.  You must enclose multiple roles within "
-"quotes,                  separate by spaces. Or specify -R multiple times.\n"
+"SELinux Roles.  You must enclose multiple roles within quotes,               "
+"   separate by spaces. Or specify -R multiple times.\n"
 msgstr ""
 
 #: ../chcat/chcat:133
@@ -160,7 +151,8 @@ msgstr ""
 #: ../sepolicy/sepolicy/sepolicy.glade:3866
 msgid "<b>Disable ability to run unconfined system processes?</b>"
 msgstr ""
-"<b>Désactiver la capacité d’exécution de processus système non confinés ?</b>"
+"<b>Désactiver la capacité d’exécution de processus système non confinés ?</"
+"b>"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:3929
 msgid "<b>Disable all permissive processes?</b>"
@@ -200,10 +192,10 @@ msgid ""
 "  * Change the system mode to Enforcing</small>\n"
 msgstr ""
 "<small>\n"
-"Pour passer du mode « Désactivé » (Disabled) au mode "
-"« Appliqué » (Enforcing)\n"
-"- Passez du mode système « Désactivé » (Disabled) au mode "
-"« Permissif » (Permissive)\n"
+"Pour passer du mode « Désactivé » (Disabled) au mode « Appliqué » "
+"(Enforcing)\n"
+"- Passez du mode système « Désactivé » (Disabled) au mode « Permissif » "
+"(Permissive)\n"
 "- Redémarrez afin que le système puisse effectuer un nouvel étiquetage\n"
 "- Une fois que le système fonctionne comme prévu\n"
 "  * Basculez le mode système sur « Appliqué » (Enforcing)</small>\n"
@@ -236,6 +228,7 @@ msgstr "Ajouter"
 #: ../sepolicy/sepolicy/gui.py:1504
 msgid ""
 "Add File Equivalency Mapping. Mapping will be created when update is applied."
+""
 msgstr ""
 "Ajouter le mappage d’équivalence de fichiers. Le mappage sera créé une fois "
 "la mise à jour appliquée."
@@ -249,6 +242,7 @@ msgstr "Ajouter l’étiquetage de fichier pour %s"
 #, python-format
 msgid ""
 "Add File Labeling for %s. File labels will be created when update is applied."
+""
 msgstr ""
 "Ajouter l’étiquetage de fichier pour %s. Les étiquettes de fichiers seront "
 "créées une fois la mise à jour appliquée."
@@ -265,7 +259,8 @@ msgstr ""
 "la mise à jour appliquée."
 
 #: ../sepolicy/sepolicy/gui.py:1490
-msgid "Add Login Mapping. User Mapping will be created when Update is applied."
+msgid ""
+"Add Login Mapping. User Mapping will be created when Update is applied."
 msgstr ""
 "Ajouter le mappage de connexion. Le mappage utilisateur sera créé une fois "
 "la mise à jour appliquée."
@@ -277,7 +272,8 @@ msgstr "Ajouter le port réseau pour %s"
 
 #: ../sepolicy/sepolicy/gui.py:1473
 #, python-format
-msgid "Add Network Port for %s.  Ports will be created when update is applied."
+msgid ""
+"Add Network Port for %s.  Ports will be created when update is applied."
 msgstr ""
 "Ajouter le port réseau pour %s. Les ports seront créés une fois la mise à "
 "jour appliquée."
@@ -358,6 +354,7 @@ msgstr "Ajouter une nouvelle définition de rôle ou utilisateur SELinux."
 #, python-format
 msgid ""
 "Add new port definition to which the '%(APP)s' domain is allowed to %(PERM)s."
+""
 msgstr ""
 "Ajouter une nouvelle définition de port avec laquelle le domaine « %(APP)s » "
 "est autorisé à %(PERM)s."
@@ -491,11 +488,9 @@ msgstr "Mauvais format %s : Record %s"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:2866
 #: ../sepolicy/sepolicy/sepolicy.glade:2956
-msgid ""
-"Boolean\n"
+msgid "Boolean\n"
 "Enabled"
-msgstr ""
-"Booléen\n"
+msgstr "Booléen\n"
 "Activé"
 
 #: ../sepolicy/sepolicy/gui.py:1460
@@ -1200,7 +1195,8 @@ msgstr ""
 #, python-format
 msgid "Could not set mls fields in ibendport context for %s/%s"
 msgstr ""
-"Impossible de définir les champs MLS dans le contexte du ibendport pour %s/%s"
+"Impossible de définir les champs MLS dans le contexte du ibendport pour %s/"
+"%s"
 
 #: ../semanage/seobject.py:1394
 #, python-format
@@ -1254,7 +1250,8 @@ msgstr "Impossible de définir le rôle dans le contexte du fichier pour %s"
 #: ../semanage/seobject.py:1632
 #, python-format
 msgid "Could not set role in ibendport context for %s/%s"
-msgstr "Impossible de définir le rôle dans le contexte du ibendport pour %s/%s"
+msgstr ""
+"Impossible de définir le rôle dans le contexte du ibendport pour %s/%s"
 
 #: ../semanage/seobject.py:1385
 #, python-format
@@ -1284,7 +1281,8 @@ msgstr "Impossible de définir le type dans le contexte du fichier pour %s"
 #: ../semanage/seobject.py:1636
 #, python-format
 msgid "Could not set type in ibendport context for %s/%s"
-msgstr "Impossible de définir le type dans le contexte du ibendport pour %s/%s"
+msgstr ""
+"Impossible de définir le type dans le contexte du ibendport pour %s/%s"
 
 #: ../semanage/seobject.py:1389
 #, python-format
@@ -1420,7 +1418,8 @@ msgstr "Supprimer les définitions des mappages de connexion modifiées."
 
 #: ../sepolicy/sepolicy/gui.py:1413
 msgid "Delete modified SELinux User/Role definitions."
-msgstr "Supprimer les définitions d’utilisateur ou de rôles SELinux modifiées."
+msgstr ""
+"Supprimer les définitions d’utilisateur ou de rôles SELinux modifiées."
 
 #: ../sepolicy/sepolicy/gui.py:1382
 #, python-format
@@ -1521,7 +1520,8 @@ msgstr ""
 #: ../sepolicy/sepolicy/gui.py:1066
 #, python-format
 msgid "Display network ports to which the '%s' can connect or listen to."
-msgstr "Afficher les ports réseaux que le « %s » peut se connecter ou écouter."
+msgstr ""
+"Afficher les ports réseaux que le « %s » peut se connecter ou écouter."
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1832
 msgid ""
@@ -1572,11 +1572,9 @@ msgstr ""
 "connectera. La valeur par défaut est s0"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:5489
-msgid ""
-"Enter MLS/MCS Range for this SELinux User.\n"
+msgid "Enter MLS/MCS Range for this SELinux User.\n"
 "s0-s0:c1023"
-msgstr ""
-"Saisissez la plage MLS/MCS pour cet utilisateur SELinux.\n"
+msgstr "Saisissez la plage MLS/MCS pour cet utilisateur SELinux.\n"
 "s0-s0:c1023"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1264
@@ -1746,7 +1744,8 @@ msgstr "Le fichier effectue une transition à partir de « %s »"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:3098
 msgid "File Transitions From 'select domain'"
-msgstr "Le fichier effectue une transition à partir du « domaine sélectionné »"
+msgstr ""
+"Le fichier effectue une transition à partir du « domaine sélectionné »"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:3028
 msgid ""
@@ -1827,7 +1826,8 @@ msgstr ""
 #: ../semanage/seobject.py:2361
 #, python-format
 msgid ""
-"File spec %s conflicts with equivalency rule '%s %s'; Try adding '%s' instead"
+"File spec %s conflicts with equivalency rule '%s %s'; Try adding '%s' "
+"instead"
 msgstr ""
 "La spécification du fichier %s est en conflit avec la règle d'équivalence "
 "« %s %s ». Essayez plutôt d'ajouter « %s »"
@@ -2334,6 +2334,7 @@ msgstr "Modifier le mappage de connexion"
 #, python-format
 msgid ""
 "Modify port definitions to which the '%(APP)s' domain is allowed to %(PERM)s."
+""
 msgstr ""
 "Modifier les définitions de port avec lesquelles le domaine « %(APP)s » est "
 "autorisé à %(PERM)s."
@@ -2558,7 +2559,8 @@ msgstr "Le numéro du port doit être entre 1 et 65536"
 #: ../sepolicy/sepolicy/generate.py:194
 #, python-format
 msgid "Ports must be numbers or ranges of numbers from 1 to %d "
-msgstr "Les ports doivent être des nombres ou des plages de numéros de 1 à %d "
+msgstr ""
+"Les ports doivent être des nombres ou des plages de numéros de 1 à %d "
 
 #: ../semanage/seobject.py:1035
 msgid "Prefix"
@@ -2926,9 +2928,9 @@ msgid ""
 "Select the SELinux User to assign to this login user.  Login users by "
 "default get assigned by the __default__ user."
 msgstr ""
-"Sélectionnez l’utilisateur SELinux à assigner à cet utilisateur de "
-"connexion. Par défaut, les utilisateurs de connexion sont assignés par "
-"l’utilisateur « __default__ user »."
+"Sélectionnez l’utilisateur SELinux à assigner à cet utilisateur de connexion."
+" Par défaut, les utilisateurs de connexion sont assignés par l’utilisateur "
+"« __default__ user »."
 
 #: ../sepolicy/sepolicy/sepolicy.glade:902
 msgid "Select the SELinux file type to assign to this path."
@@ -3124,11 +3126,11 @@ msgstr ""
 
 #: ../sepolicy/sepolicy/sepolicy.glade:332
 msgid ""
-"The entry that was entered is incorrect.  Please try again in the "
-"ex:/.../... format."
+"The entry that was entered is incorrect.  Please try again in the ex:/.../..."
+" format."
 msgstr ""
-"L’entrée saisie est incorrecte. Veuillez réessayer sous le format "
-"ex:/.../... ."
+"L’entrée saisie est incorrecte. Veuillez réessayer sous le format ex:/.../..."
+" ."
 
 #: ../semanage/seobject.py:502
 msgid ""
@@ -3150,8 +3152,7 @@ msgstr ""
 
 #: ../audit2allow/audit2allow:238
 #, python-format
-msgid ""
-"To make this policy package active, execute:\n"
+msgid "To make this policy package active, execute:\n"
 "\n"
 "semodule -i %s\n"
 "\n"
@@ -3340,7 +3341,8 @@ msgstr "Vous devez entrer un type valide de stratégie"
 
 #: ../sepolicy/sepolicy/generate.py:1114
 msgid "You must enter the executable path for your confined process"
-msgstr "Vous devez entrer le chemin de exécutable pour votre processus confiné"
+msgstr ""
+"Vous devez entrer le chemin de exécutable pour votre processus confiné"
 
 #: ../sepolicy/sepolicy/__init__.py:831
 msgid "You must regenerate interface info by running /usr/bin/sepolgen-ifgen"
@@ -3355,11 +3357,9 @@ msgstr "Vous devez spécifier une des valeurs suivantes : %s"
 
 #: ../sepolicy/sepolicy/generate.py:886
 #, python-format
-msgid ""
-"You need to define a new type which ends with: \n"
+msgid "You need to define a new type which ends with: \n"
 " %s"
-msgstr ""
-"Vous devez définir un nouveau type qui se termine par :\n"
+msgstr "Vous devez définir un nouveau type qui se termine par :\n"
 " %s"
 
 #: ../sepolicy/sepolicy.py:324

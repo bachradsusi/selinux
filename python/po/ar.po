@@ -8,20 +8,19 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:45+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2017-03-24 09:57+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Arabic\n"
 "Language: ar\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Zanata 4.5.0\n"
 "Plural-Forms: nplurals=6; plural= n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
 
 #: ../semanage/semanage:256
-msgid ""
-"\n"
+msgid "\n"
 "    Name for the specified infiniband end port.\n"
 msgstr ""
 
@@ -33,29 +32,25 @@ msgid ""
 msgstr ""
 
 #: ../semanage/semanage:251
-msgid ""
-"\n"
+msgid "\n"
 "    Subnet prefix for  the specified infiniband ibpkey.\n"
 msgstr ""
 
 #: ../sepolicy/sepolicy/interface.py:231
 #, python-format
-msgid ""
-"\n"
+msgid "\n"
 "Compile test for %s failed.\n"
 msgstr ""
 
 #: ../sepolicy/sepolicy/interface.py:234
 #, python-format
-msgid ""
-"\n"
+msgid "\n"
 "Compile test for %s has not run. %s\n"
 msgstr ""
 
 #: ../sepolicy/sepolicy/interface.py:240
 #, python-format
-msgid ""
-"\n"
+msgid "\n"
 "Compiling of %s interface is not supported."
 msgstr ""
 
@@ -69,22 +64,20 @@ msgid ""
 msgstr ""
 
 #: ../semanage/seobject.py:2624
-msgid ""
-"\n"
+msgid "\n"
 "SELinux Distribution fcontext Equivalence \n"
 msgstr ""
 
 #: ../semanage/seobject.py:2629
-msgid ""
-"\n"
+msgid "\n"
 "SELinux Local fcontext Equivalence \n"
 msgstr ""
 
 #: ../semanage/semanage:423
 msgid ""
 "\n"
-"SELinux Roles.  You must enclose multiple roles within "
-"quotes,                  separate by spaces. Or specify -R multiple times.\n"
+"SELinux Roles.  You must enclose multiple roles within quotes,               "
+"   separate by spaces. Or specify -R multiple times.\n"
 msgstr ""
 
 #: ../chcat/chcat:133
@@ -207,6 +200,7 @@ msgstr "إضافة"
 #: ../sepolicy/sepolicy/gui.py:1504
 msgid ""
 "Add File Equivalency Mapping. Mapping will be created when update is applied."
+""
 msgstr ""
 
 #: ../sepolicy/sepolicy/gui.py:1480 ../sepolicy/sepolicy/gui.py:1533
@@ -218,6 +212,7 @@ msgstr ""
 #, python-format
 msgid ""
 "Add File Labeling for %s. File labels will be created when update is applied."
+""
 msgstr ""
 
 #: ../sepolicy/sepolicy/gui.py:1491
@@ -230,7 +225,8 @@ msgid ""
 msgstr ""
 
 #: ../sepolicy/sepolicy/gui.py:1490
-msgid "Add Login Mapping. User Mapping will be created when Update is applied."
+msgid ""
+"Add Login Mapping. User Mapping will be created when Update is applied."
 msgstr ""
 
 #: ../sepolicy/sepolicy/gui.py:1474
@@ -240,7 +236,8 @@ msgstr ""
 
 #: ../sepolicy/sepolicy/gui.py:1473
 #, python-format
-msgid "Add Network Port for %s.  Ports will be created when update is applied."
+msgid ""
+"Add Network Port for %s.  Ports will be created when update is applied."
 msgstr ""
 
 #: ../sepolicy/sepolicy/gui.py:1505
@@ -311,6 +308,7 @@ msgstr ""
 #, python-format
 msgid ""
 "Add new port definition to which the '%(APP)s' domain is allowed to %(PERM)s."
+""
 msgstr ""
 
 #: ../sepolicy/sepolicy/gui.py:2237
@@ -432,8 +430,7 @@ msgstr "بنية خاطئة %s: سجّل %s"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:2866
 #: ../sepolicy/sepolicy/sepolicy.glade:2956
-msgid ""
-"Boolean\n"
+msgid "Boolean\n"
 "Enabled"
 msgstr ""
 
@@ -516,8 +513,8 @@ msgid ""
 "file system.  Do you wish to continue?"
 msgstr ""
 "تغيير نوع السياسة سيسبب إعادة عنونة ملفات النظام الكلي عند إعادة التشغيل. "
-"إعادة العنونة يمكن أن تستغرق وقتاً طويلاً، اعتماداً على حجم النظام. هل ترغب في "
-"الاستمرار؟"
+"إعادة العنونة يمكن أن تستغرق وقتاً طويلاً، اعتماداً على حجم النظام. هل ترغب "
+"في الاستمرار؟"
 
 #: ../sepolicy/sepolicy/gui.py:2768
 msgid ""
@@ -536,8 +533,8 @@ msgid ""
 "file system.  Do you wish to continue?"
 msgstr ""
 "تغيير لتمكين SELinux سوف يسبب إعادة عنونة نظام الملفات الكلي عند إعادة "
-"التشغيل. إعادة العنونة يمكن أن تستغرق وقتاً طويلاً، اعتماداً على حجم النظام. هل "
-"ترغب في الاستمرار؟"
+"التشغيل. إعادة العنونة يمكن أن تستغرق وقتاً طويلاً، اعتماداً على حجم النظام. "
+"هل ترغب في الاستمرار؟"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:747
 #: ../sepolicy/sepolicy/sepolicy.glade:2306
@@ -1463,8 +1460,7 @@ msgid "Enter Default Level for SELinux User to login with. Default s0"
 msgstr ""
 
 #: ../sepolicy/sepolicy/sepolicy.glade:5489
-msgid ""
-"Enter MLS/MCS Range for this SELinux User.\n"
+msgid "Enter MLS/MCS Range for this SELinux User.\n"
 "s0-s0:c1023"
 msgstr ""
 
@@ -1690,7 +1686,8 @@ msgstr ""
 #: ../semanage/seobject.py:2361
 #, python-format
 msgid ""
-"File spec %s conflicts with equivalency rule '%s %s'; Try adding '%s' instead"
+"File spec %s conflicts with equivalency rule '%s %s'; Try adding '%s' "
+"instead"
 msgstr ""
 
 #: ../semanage/seobject.py:2356
@@ -2173,6 +2170,7 @@ msgstr ""
 #, python-format
 msgid ""
 "Modify port definitions to which the '%(APP)s' domain is allowed to %(PERM)s."
+""
 msgstr ""
 
 #: ../sepolicy/sepolicy/gui.py:2241
@@ -2898,8 +2896,8 @@ msgstr ""
 
 #: ../sepolicy/sepolicy/sepolicy.glade:332
 msgid ""
-"The entry that was entered is incorrect.  Please try again in the "
-"ex:/.../... format."
+"The entry that was entered is incorrect.  Please try again in the ex:/.../..."
+" format."
 msgstr ""
 
 #: ../semanage/seobject.py:502
@@ -2922,8 +2920,7 @@ msgstr ""
 
 #: ../audit2allow/audit2allow:238
 #, python-format
-msgid ""
-"To make this policy package active, execute:\n"
+msgid "To make this policy package active, execute:\n"
 "\n"
 "semodule -i %s\n"
 "\n"
@@ -3115,8 +3112,7 @@ msgstr "يجب أن تحدد أحد القيم التالية: %s"
 
 #: ../sepolicy/sepolicy/generate.py:886
 #, python-format
-msgid ""
-"You need to define a new type which ends with: \n"
+msgid "You need to define a new type which ends with: \n"
 " %s"
 msgstr ""
 

@@ -7,19 +7,18 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:45+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2017-12-15 08:48+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Chinese (China)\n"
 "Language: zh_CN\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Zanata 4.5.0\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
 #: ../semanage/semanage:256
-msgid ""
-"\n"
+msgid "\n"
 "    Name for the specified infiniband end port.\n"
 msgstr ""
 
@@ -31,29 +30,25 @@ msgid ""
 msgstr ""
 
 #: ../semanage/semanage:251
-msgid ""
-"\n"
+msgid "\n"
 "    Subnet prefix for  the specified infiniband ibpkey.\n"
 msgstr ""
 
 #: ../sepolicy/sepolicy/interface.py:231
 #, python-format
-msgid ""
-"\n"
+msgid "\n"
 "Compile test for %s failed.\n"
 msgstr ""
 
 #: ../sepolicy/sepolicy/interface.py:234
 #, python-format
-msgid ""
-"\n"
+msgid "\n"
 "Compile test for %s has not run. %s\n"
 msgstr ""
 
 #: ../sepolicy/sepolicy/interface.py:240
 #, python-format
-msgid ""
-"\n"
+msgid "\n"
 "Compiling of %s interface is not supported."
 msgstr ""
 
@@ -67,26 +62,22 @@ msgid ""
 msgstr ""
 
 #: ../semanage/seobject.py:2624
-msgid ""
-"\n"
+msgid "\n"
 "SELinux Distribution fcontext Equivalence \n"
-msgstr ""
-"\n"
+msgstr "\n"
 "SELinux Distribution fcontext Equivalence\n"
 
 #: ../semanage/seobject.py:2629
-msgid ""
-"\n"
+msgid "\n"
 "SELinux Local fcontext Equivalence \n"
-msgstr ""
-"\n"
+msgstr "\n"
 "SELinux Local fcontext Equivalence\n"
 
 #: ../semanage/semanage:423
 msgid ""
 "\n"
-"SELinux Roles.  You must enclose multiple roles within "
-"quotes,                  separate by spaces. Or specify -R multiple times.\n"
+"SELinux Roles.  You must enclose multiple roles within quotes,               "
+"   separate by spaces. Or specify -R multiple times.\n"
 msgstr ""
 
 #: ../chcat/chcat:133
@@ -168,8 +159,7 @@ msgstr "<b>系统模式</b>"
 msgid ""
 "<operation> File Labeling for <selected domain>. File labels will be created "
 "when update is applied."
-msgstr ""
-"<operation> File Labeling for <selected domain>。应用此更新时生成文件标签。"
+msgstr "<operation> File Labeling for <selected domain>。应用此更新时生成文件标签。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1385
 msgid ""
@@ -204,9 +194,8 @@ msgid ""
 "module could cause SELinux to deny access to a domain, that should be "
 "allowed."
 msgstr ""
-"Permissive 域是一个进程标签，可允许进程执行其想要的操作，SELinux 只记录拒绝的"
-"操作但不会强制其执行。通常 permissive 域代表实验性策略，禁用该模块将导致 "
-"SELinux 拒绝对某个本应允许域的访问。"
+"Permissive 域是一个进程标签，可允许进程执行其想要的操作，SELinux 只记录拒绝的操作但不会强制其执行。通常 permissive "
+"域代表实验性策略，禁用该模块将导致 SELinux 拒绝对某个本应允许域的访问。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:5132
 msgid "Action"
@@ -219,6 +208,7 @@ msgstr "添加"
 #: ../sepolicy/sepolicy/gui.py:1504
 msgid ""
 "Add File Equivalency Mapping. Mapping will be created when update is applied."
+""
 msgstr "添加文件等价映射。应用更新时将生成映射。"
 
 #: ../sepolicy/sepolicy/gui.py:1480 ../sepolicy/sepolicy/gui.py:1533
@@ -230,6 +220,7 @@ msgstr "为 %s 添加文件标签"
 #, python-format
 msgid ""
 "Add File Labeling for %s. File labels will be created when update is applied."
+""
 msgstr "为 %s 添加文件标签。应用更新时将生成文件标签。"
 
 #: ../sepolicy/sepolicy/gui.py:1491
@@ -242,7 +233,8 @@ msgid ""
 msgstr "添加登录映射。应用更新时会生成登录映射。"
 
 #: ../sepolicy/sepolicy/gui.py:1490
-msgid "Add Login Mapping. User Mapping will be created when Update is applied."
+msgid ""
+"Add Login Mapping. User Mapping will be created when Update is applied."
 msgstr "添加登录映射。应用更新时将生成用户映射。"
 
 #: ../sepolicy/sepolicy/gui.py:1474
@@ -252,7 +244,8 @@ msgstr "为 %s 添加网络端口"
 
 #: ../sepolicy/sepolicy/gui.py:1473
 #, python-format
-msgid "Add Network Port for %s.  Ports will be created when update is applied."
+msgid ""
+"Add Network Port for %s.  Ports will be created when update is applied."
 msgstr "为 %s 添加网络端口。应用更新时生成端口。"
 
 #: ../sepolicy/sepolicy/gui.py:1505
@@ -323,6 +316,7 @@ msgstr "添加新 SELinux 用户/角色定义。"
 #, python-format
 msgid ""
 "Add new port definition to which the '%(APP)s' domain is allowed to %(PERM)s."
+""
 msgstr "添加新的端口定义以便 %(PERM)s 可允许 '%(APP)s' 域。"
 
 #: ../sepolicy/sepolicy/gui.py:2237
@@ -397,10 +391,9 @@ msgid ""
 "now be confined.  To disable the unconfined_t user you must first remove "
 "unconfined_t from the users/login screens."
 msgstr ""
-"未限制的域是一个进程标签，可允许进程执行其想要的操作而没有任何 SELinux 干预。"
-"引导时由 init system 启动且没有 SELinux 策略定义的程序，如果已启用该模块，则"
-"将作为未限制程序运行。禁用它意味着限制将限制所有守护进程。要禁用 "
-"unconfined_t 用户，您必须首先在用户/登录页面中移除 unconfined_t。"
+"未限制的域是一个进程标签，可允许进程执行其想要的操作而没有任何 SELinux 干预。引导时由 init system 启动且没有 SELinux "
+"策略定义的程序，如果已启用该模块，则将作为未限制程序运行。禁用它意味着限制将限制所有守护进程。要禁用 unconfined_t 用户，您必须首先在用户/"
+"登录页面中移除 unconfined_t。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1070
 msgid "Analyzing Policy..."
@@ -448,11 +441,9 @@ msgstr "错误格式 %s：记录 %s"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:2866
 #: ../sepolicy/sepolicy/sepolicy.glade:2956
-msgid ""
-"Boolean\n"
+msgid "Boolean\n"
 "Enabled"
-msgstr ""
-"布尔值\n"
+msgstr "布尔值\n"
 "已启用"
 
 #: ../sepolicy/sepolicy/gui.py:1460
@@ -532,9 +523,7 @@ msgid ""
 "Changing the policy type will cause a relabel of the entire file system on "
 "the next boot. Relabeling takes a long time depending on the size of the "
 "file system.  Do you wish to continue?"
-msgstr ""
-"更改策略类型将导致在下一次引导时重新标记整个文件系统。重新标记需要一定的时"
-"间，具体要看文件系统的大小。您要继续吗？"
+msgstr "更改策略类型将导致在下一次引导时重新标记整个文件系统。重新标记需要一定的时间，具体要看文件系统的大小。您要继续吗？"
 
 #: ../sepolicy/sepolicy/gui.py:2768
 msgid ""
@@ -545,19 +534,16 @@ msgid ""
 "enforce SELinux policy.  Permissive mode does not require a reboot.  Do you "
 "wish to continue?"
 msgstr ""
-"将 SELinux 改为禁用的状态需要重启方可生效。不推荐使用此选项。如果您以后决定重"
-"新启用 SELinux，则需要重新标记该系统。如果您要看是否因为 SELinux 造成您系统中"
-"的错误，您可以选择 permissive 模式，这个模式只记录出错信息，且不强制执行 "
-"SELinux 策略。Permissive 策略不要求重启。您要继续吗？"
+"将 SELinux 改为禁用的状态需要重启方可生效。不推荐使用此选项。如果您以后决定重新启用 SELinux，则需要重新标记该系统。如果您要看是否因为 "
+"SELinux 造成您系统中的错误，您可以选择 permissive 模式，这个模式只记录出错信息，且不强制执行 SELinux "
+"策略。Permissive 策略不要求重启。您要继续吗？"
 
 #: ../sepolicy/sepolicy/gui.py:2772
 msgid ""
 "Changing to SELinux enabled will cause a relabel of the entire file system "
 "on the next boot. Relabeling takes a long time depending on the size of the "
 "file system.  Do you wish to continue?"
-msgstr ""
-"更改为启用 SELinux 将导致在下一次引导时重新标记整个文件系统。重新标记需要一定"
-"的时间，具体要看文件系统的大小。您要继续吗？"
+msgstr "更改为启用 SELinux 将导致在下一次引导时重新标记整个文件系统。重新标记需要一定的时间，具体要看文件系统的大小。您要继续吗？"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:747
 #: ../sepolicy/sepolicy/sepolicy.glade:2306
@@ -1483,11 +1469,9 @@ msgid "Enter Default Level for SELinux User to login with. Default s0"
 msgstr "输入 SELinux 用户登录的默认级别。默认为 s0。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:5489
-msgid ""
-"Enter MLS/MCS Range for this SELinux User.\n"
+msgid "Enter MLS/MCS Range for this SELinux User.\n"
 "s0-s0:c1023"
-msgstr ""
-"输入这个 SELinux 用户的 MLS/MCS 范围。\n"
+msgstr "输入这个 SELinux 用户的 MLS/MCS 范围。\n"
 "s0-s0:c1023"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1264
@@ -1648,9 +1632,7 @@ msgid ""
 "File Transitions define what happens when the current domain creates the "
 "content of a particular class in a directory of the destination type. "
 "Optionally a file name could be specified for the transition."
-msgstr ""
-"文件转换规定当目前域在目标类型的目录中生成特定类型内容时会出现什么情况。或者"
-"可为该转换指定文件名称。"
+msgstr "文件转换规定当目前域在目标类型的目录中生成特定类型内容时会出现什么情况。或者可为该转换指定文件名称。"
 
 #: ../sepolicy/sepolicy/gui.py:1063
 #, python-format
@@ -1714,7 +1696,8 @@ msgstr "文件 spec %s 与相当的规则 '%s %s' 冲突"
 #: ../semanage/seobject.py:2361
 #, python-format
 msgid ""
-"File spec %s conflicts with equivalency rule '%s %s'; Try adding '%s' instead"
+"File spec %s conflicts with equivalency rule '%s %s'; Try adding '%s' "
+"instead"
 msgstr "文件 spec %s 与等效规则 '%s %s' 冲突；请尝试添加 '%s'。"
 
 #: ../semanage/seobject.py:2356
@@ -1856,8 +1839,7 @@ msgstr ""
 msgid ""
 "If-Then-Else rules written in policy that can\n"
 "allow alternative access control."
-msgstr ""
-"策略中写入的 If-Then-Else 规则\n"
+msgstr "策略中写入的 If-Then-Else 规则\n"
 "可允许备选访问控制。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:3640
@@ -1970,8 +1952,7 @@ msgstr "锁定"
 msgid ""
 "Lockdown the SELinux System.\n"
 "This screen can be used to turn up the SELinux Protections."
-msgstr ""
-"锁定 SELinux 系统。\n"
+msgstr "锁定 SELinux 系统。\n"
 "本页面可用来打开 SELinux 保护。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:1864
@@ -2130,9 +2111,7 @@ msgstr "修改"
 msgid ""
 "Modify %(TYPE)s file path for '%(DOMAIN)s' domain. Only bolded items in the "
 "list can be selected, this indicates they were modified previously."
-msgstr ""
-"为 '%(DOMAIN)s' 域修改 %(TYPE)s 文件路径。只选择列表中黑体字部分，黑体字代表"
-"之前修改过他们。"
+msgstr "为 '%(DOMAIN)s' 域修改 %(TYPE)s 文件路径。只选择列表中黑体字部分，黑体字代表之前修改过他们。"
 
 #: ../sepolicy/sepolicy/gui.py:1604
 msgid ""
@@ -2203,6 +2182,7 @@ msgstr "修改登录映射"
 #, python-format
 msgid ""
 "Modify port definitions to which the '%(APP)s' domain is allowed to %(PERM)s."
+""
 msgstr "修改端口定义以便 %(PERM)s 可允许 '%(APP)s' 域。"
 
 #: ../sepolicy/sepolicy/gui.py:2241
@@ -2214,9 +2194,7 @@ msgstr "为 %s 修改端口"
 msgid ""
 "Modify selected modified File Equivalence definitions. Only bolded items in "
 "the list can be selected, this indicates they were modified previously."
-msgstr ""
-"修改所选修改的文件等价定义。值选择列表中黑体字的项目，黑体字代表它们之前被修"
-"改过。"
+msgstr "修改所选修改的文件等价定义。值选择列表中黑体字的项目，黑体字代表它们之前被修改过。"
 
 #: ../sepolicy/sepolicy/gui.py:1423
 msgid "Modify selected modified Login Mapping definitions."
@@ -2511,17 +2489,14 @@ msgstr "恢复更改"
 msgid ""
 "Revert button will launch a dialog window which allows you to revert changes "
 "within the current transaction."
-msgstr ""
-"恢复按钮将打开一个对话窗口，您可以在该窗口中恢复当前转换过程中进行的修改。"
+msgstr "恢复按钮将打开一个对话窗口，您可以在该窗口中恢复当前转换过程中进行的修改。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:5069
 msgid ""
 "Review the updates you have made before committing them to the system.  To "
 "reset an item, uncheck the checkbox.  All items checked will be updated in "
 "the system when you select update."
-msgstr ""
-"在向提供提交更新前要进行检查。要重新设置某个项目，只要取消其选择即可。您选择"
-"更新后将更新所有选择的项目。"
+msgstr "在向提供提交更新前要进行检查。要重新设置某个项目，只要取消其选择即可。您选择更新后将更新所有选择的项目。"
 
 #: ../sepolicy/sepolicy/gui.py:2273
 #, python-format
@@ -2534,8 +2509,7 @@ msgid ""
 "Run restorecon on %(PATH)s to change its type from %(CUR_CONTEXT)s to the "
 "default %(DEF_CONTEXT)s?"
 msgstr ""
-"在 %(PATH)s 中运行 restorecon 将其类型从 %(CUR_CONTEXT)s 改为默认的 "
-"%(DEF_CONTEXT)s》"
+"在 %(PATH)s 中运行 restorecon 将其类型从 %(CUR_CONTEXT)s 改为默认的 %(DEF_CONTEXT)s》"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:2909
 msgid "SELinux Application Type"
@@ -2723,9 +2697,7 @@ msgid ""
 "Select Make Path Recursive if you want to apply this label to all children "
 "of the specified directory path. objects under the directory to have this "
 "label."
-msgstr ""
-"如果您要将这个标签应用到指定目录路径中的所有子文件中，请选择生成路径递，以便"
-"该目录中的所有项目都使用这个标签。"
+msgstr "如果您要将这个标签应用到指定目录路径中的所有子文件中，请选择生成路径递，以便该目录中的所有项目都使用这个标签。"
 
 #: ../semanage/semanage:207
 msgid "Select a priority for module operations"
@@ -2765,9 +2737,7 @@ msgstr "选择要删除的端口。应用更新时将删除端口。"
 msgid ""
 "Select the SELinux User to assign to this login user.  Login users by "
 "default get assigned by the __default__ user."
-msgstr ""
-"选择要为其分配这个登录用户的 SELinux 用户。默认情况下登录用户由 __default__ "
-"user 分配。"
+msgstr "选择要为其分配这个登录用户的 SELinux 用户。默认情况下登录用户由 __default__ user 分配。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:902
 msgid "Select the SELinux file type to assign to this path."
@@ -2861,9 +2831,7 @@ msgid ""
 "Specify the mapping between the new path and the equivalence path.  "
 "Everything under this new path will be labeled as if they were under the "
 "equivalence path."
-msgstr ""
-"指定新路径与对等路径之间的映射。新路径中的所有内容如果也在对等路径中，则都将"
-"被标记。"
+msgstr "指定新路径与对等路径之间的映射。新路径中的所有内容如果也在对等路径中，则都将被标记。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:880
 msgid ""
@@ -2941,8 +2909,8 @@ msgstr "条目 '%s' 是无效路径。路径必须以 '/' 开始。"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:332
 msgid ""
-"The entry that was entered is incorrect.  Please try again in the "
-"ex:/.../... format."
+"The entry that was entered is incorrect.  Please try again in the ex:/.../..."
+" format."
 msgstr "该条目未正确输入。请使用 ex:/.../... 格式再试一次。"
 
 #: ../semanage/seobject.py:502
@@ -2965,8 +2933,7 @@ msgstr ""
 
 #: ../audit2allow/audit2allow:238
 #, python-format
-msgid ""
-"To make this policy package active, execute:\n"
+msgid "To make this policy package active, execute:\n"
 "\n"
 "semodule -i %s\n"
 "\n"
@@ -3107,8 +3074,7 @@ msgstr "网页应用程序/脚本 (CGI)"
 msgid ""
 "With this flag, alternative root path needs to include file context files "
 "and policy.xml file"
-msgstr ""
-"使用这个标签，需要在文件上下文文件以及 policy.xml 文件中包含可替换 root 路径"
+msgstr "使用这个标签，需要在文件上下文文件以及 policy.xml 文件中包含可替换 root 路径"
 
 #: ../sepolicy/sepolicy/sepolicy.glade:2449
 msgid "Writable files"
@@ -3131,8 +3097,7 @@ msgid ""
 msgstr ""
 "您要关闭该程序而不进行任何更改。\n"
 "* 要应用您在此会话中进行的更改，请点击否，并点击更新。\n"
-"* 要让程序不采用您所做的更改，请点击是。这样您将丢失所有您在此会话中进行的更"
-"改。"
+"* 要让程序不采用您所做的更改，请点击是。这样您将丢失所有您在此会话中进行的更改。"
 
 #: ../semanage/seobject.py:820
 #, python-format
@@ -3163,11 +3128,9 @@ msgstr "您必需指定以下值之一：%s"
 
 #: ../sepolicy/sepolicy/generate.py:886
 #, python-format
-msgid ""
-"You need to define a new type which ends with: \n"
+msgid "You need to define a new type which ends with: \n"
 " %s"
-msgstr ""
-"您需要定义一个新类型，其结尾为：\n"
+msgstr "您需要定义一个新类型，其结尾为：\n"
 "%s"
 
 #: ../sepolicy/sepolicy.py:324

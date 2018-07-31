@@ -5,13 +5,13 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:10+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2016-09-05 10:26+0000\n"
 "Last-Translator: Ricardo Pinto <ricardo.bigote@gmail.com>\n"
 "Language-Team: Portuguese\n"
 "Language: pt\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Zanata 4.5.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
@@ -39,19 +39,15 @@ msgid "SELinux User"
 msgstr "Utilizador SELinux"
 
 #: ../usersPage.py:60 ../loginsPage.py:63
-msgid ""
-"SELinux\n"
+msgid "SELinux\n"
 "User"
-msgstr ""
-"Utilizador\n"
+msgstr "Utilizador\n"
 "SELinux"
 
 #: ../usersPage.py:65 ../loginsPage.py:66
-msgid ""
-"MLS/\n"
+msgid "MLS/\n"
 "MCS Range"
-msgstr ""
-"Intervalo\n"
+msgstr "Intervalo\n"
 "MLS/MCS"
 
 #: ../usersPage.py:69 ../system-config-selinux.ui:1970
@@ -68,11 +64,9 @@ msgid "Network Port"
 msgstr "Porto de Rede"
 
 #: ../portsPage.py:95
-msgid ""
-"SELinux Port\n"
+msgid "SELinux Port\n"
 "Type"
-msgstr ""
-"Tipo do Porto\n"
+msgstr "Tipo do Porto\n"
 "SELinux"
 
 #: ../portsPage.py:101 ../system-config-selinux.ui:294
@@ -80,11 +74,9 @@ msgid "Protocol"
 msgstr "Protocolo"
 
 #: ../portsPage.py:106 ../system-config-selinux.ui:355
-msgid ""
-"MLS/MCS\n"
+msgid "MLS/MCS\n"
 "Level"
-msgstr ""
-"Nível\n"
+msgstr "Nível\n"
 "MLS/MCS"
 
 #: ../portsPage.py:111
@@ -143,27 +135,21 @@ msgid "File Labeling"
 msgstr "Etiquetagem de Ficheiros"
 
 #: ../fcontextPage.py:82
-msgid ""
-"File\n"
+msgid "File\n"
 "Specification"
-msgstr ""
-"Especificação\n"
+msgstr "Especificação\n"
 "do Ficheiro"
 
 #: ../fcontextPage.py:89
-msgid ""
-"Selinux\n"
+msgid "Selinux\n"
 "File Type"
-msgstr ""
-"Tipo de Ficheiro\n"
+msgstr "Tipo de Ficheiro\n"
 "SELinux"
 
 #: ../fcontextPage.py:96
-msgid ""
-"File\n"
+msgid "File\n"
 "Type"
-msgstr ""
-"Tipo de\n"
+msgstr "Tipo de\n"
 "Ficheiro"
 
 #: ../sepolicy.desktop:3
@@ -263,7 +249,8 @@ msgstr "Aplicação/Script Web (CGI)"
 msgid ""
 "Web Applications/Script (CGI) CGI scripts started by the web server (apache)"
 msgstr ""
-"Aplicações/Scripts Web (CGI) são scripts iniciados pelo servidor web (apache)"
+"Aplicações/Scripts Web (CGI) são scripts iniciados pelo servidor web "
+"(apache)"
 
 #: ../polgen.ui:387
 msgid "User Application"
@@ -418,8 +405,7 @@ msgid "Select applications domains that %s will transition to."
 msgstr ""
 
 #: ../polgen.ui:972
-msgid ""
-"transition \n"
+msgid "transition \n"
 "role tab"
 msgstr ""
 
@@ -428,7 +414,8 @@ msgid "<b>Select the user_roles that will transition to %s:</b>"
 msgstr ""
 
 #: ../polgen.ui:1007
-msgid "Select the user roles that will transiton to this applications domains."
+msgid ""
+"Select the user roles that will transiton to this applications domains."
 msgstr ""
 "Selecione os perfis de utilizador que irão transitar para os domínios desta "
 "aplicação."
@@ -439,7 +426,8 @@ msgstr ""
 
 #: ../polgen.ui:1058 ../polgen.ui:1109
 msgid "Select the domains that you would like this user administer."
-msgstr "Seleccione os domínios que gostaria que este utilizador administrasse."
+msgstr ""
+"Seleccione os domínios que gostaria que este utilizador administrasse."
 
 #: ../polgen.ui:1091
 msgid "<b>Select additional roles for %s:</b>"
@@ -492,8 +480,7 @@ msgid "<b>UDP Ports</b>"
 msgstr "<b>Portos UDP</b>"
 
 #: ../polgen.ui:1492
-msgid ""
-"Network\n"
+msgid "Network\n"
 "Bind tab"
 msgstr ""
 
@@ -894,11 +881,9 @@ msgstr "Seleccione o directório onde se pode gerar os ficheiros de políticas"
 
 #: ../polgengui.py:683
 #, python-format
-msgid ""
-"Type %s_t already defined in current policy.\n"
+msgid "Type %s_t already defined in current policy.\n"
 "Do you want to continue?"
-msgstr ""
-"Tipo %s_t já está definido na política actual.\n"
+msgstr "Tipo %s_t já está definido na política actual.\n"
 "Deseja continuar?"
 
 #: ../polgengui.py:683 ../polgengui.py:687
@@ -907,8 +892,7 @@ msgstr "Verificar nome"
 
 #: ../polgengui.py:687
 #, python-format
-msgid ""
-"Module %s already loaded in current policy.\n"
+msgid "Module %s already loaded in current policy.\n"
 "Do you want to continue?"
 msgstr ""
 
@@ -922,11 +906,9 @@ msgid "You must enter a executable"
 msgstr "Tem de inserir um executável"
 
 #: ../loginsPage.py:59
-msgid ""
-"Login\n"
+msgid "Login\n"
 "Name"
-msgstr ""
-"Nome da\n"
+msgstr "Nome da\n"
 "Conta"
 
 #: ../loginsPage.py:135
@@ -989,11 +971,11 @@ msgid ""
 "enforce SELinux policy.  Permissive mode does not require a reboot    Do you "
 "wish to continue?"
 msgstr ""
-"A mudança para a desactivação do SELinux necessita de um reinício do "
-"sistema. Isto não é recomendado. Se optar por activar de novo o SELinux, o "
-"sistema terá de ser etiquetado novamente. Se apenas pretender verificar se o "
-"SELinux está a provocar algum problema no seu sistema, poderá mudar para o "
-"modo permissivo, que só irá registar os erros e não irá forçar a política do "
+"A mudança para a desactivação do SELinux necessita de um reinício do sistema."
+" Isto não é recomendado. Se optar por activar de novo o SELinux, o sistema "
+"terá de ser etiquetado novamente. Se apenas pretender verificar se o SELinux "
+"está a provocar algum problema no seu sistema, poderá mudar para o modo "
+"permissivo, que só irá registar os erros e não irá forçar a política do "
 "SELinux. O modo permissivo não necessita de reiniciar o sistema. Deseja "
 "continuar?"
 

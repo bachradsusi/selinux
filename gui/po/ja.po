@@ -9,13 +9,13 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:10+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2018-02-10 05:18+0000\n"
 "Last-Translator: Casey Jones <nahareport@live.com>\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Zanata 4.5.0\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
@@ -43,19 +43,15 @@ msgid "SELinux User"
 msgstr "SELinux ユーザー"
 
 #: ../usersPage.py:60 ../loginsPage.py:63
-msgid ""
-"SELinux\n"
+msgid "SELinux\n"
 "User"
-msgstr ""
-"SELinux\n"
+msgstr "SELinux\n"
 "ユーザー"
 
 #: ../usersPage.py:65 ../loginsPage.py:66
-msgid ""
-"MLS/\n"
+msgid "MLS/\n"
 "MCS Range"
-msgstr ""
-"MLS/\n"
+msgstr "MLS/\n"
 "MCS 範囲"
 
 #: ../usersPage.py:69 ../system-config-selinux.ui:1970
@@ -72,11 +68,9 @@ msgid "Network Port"
 msgstr "ネットワークポート"
 
 #: ../portsPage.py:95
-msgid ""
-"SELinux Port\n"
+msgid "SELinux Port\n"
 "Type"
-msgstr ""
-"SELinux ポート\n"
+msgstr "SELinux ポート\n"
 "タイプ"
 
 #: ../portsPage.py:101 ../system-config-selinux.ui:294
@@ -84,11 +78,9 @@ msgid "Protocol"
 msgstr "プロトコル"
 
 #: ../portsPage.py:106 ../system-config-selinux.ui:355
-msgid ""
-"MLS/MCS\n"
+msgid "MLS/MCS\n"
 "Level"
-msgstr ""
-"MLS/MCS\n"
+msgstr "MLS/MCS\n"
 "レベル"
 
 #: ../portsPage.py:111
@@ -98,9 +90,7 @@ msgstr "ポート"
 #: ../portsPage.py:213
 #, python-format
 msgid "Port number \"%s\" is not valid.  0 < PORT_NUMBER < 65536 "
-msgstr ""
-"ポート番号 \"%s\" は無効です。ポート番号は 0 - 65536 (両端は含まない) にして"
-"ください。 "
+msgstr "ポート番号 \"%s\" は無効です。ポート番号は 0 - 65536 (両端は含まない) にしてください。 "
 
 #: ../portsPage.py:258
 msgid "List View"
@@ -149,27 +139,21 @@ msgid "File Labeling"
 msgstr "ファイルのラベル付け"
 
 #: ../fcontextPage.py:82
-msgid ""
-"File\n"
+msgid "File\n"
 "Specification"
-msgstr ""
-"ファイル\n"
+msgstr "ファイル\n"
 "仕様"
 
 #: ../fcontextPage.py:89
-msgid ""
-"Selinux\n"
+msgid "Selinux\n"
 "File Type"
-msgstr ""
-"SELinux\n"
+msgstr "SELinux\n"
 "ファイル形式"
 
 #: ../fcontextPage.py:96
-msgid ""
-"File\n"
+msgid "File\n"
 "Type"
-msgstr ""
-"ファイル\n"
+msgstr "ファイル\n"
 "形式"
 
 #: ../sepolicy.desktop:3
@@ -229,9 +213,7 @@ msgstr "SELinux ポリシー生成ツール"
 msgid ""
 "<b>Select the policy type for the application or user role you want to "
 "confine:</b>"
-msgstr ""
-"<b>制約したいアプリケーション、またはユーザーロールのポリシータイプを選択:</"
-"b>"
+msgstr "<b>制約したいアプリケーション、またはユーザーロールのポリシータイプを選択:</b>"
 
 #: ../polgen.ui:288
 msgid "<b>Applications</b>"
@@ -246,8 +228,8 @@ msgid ""
 "Standard Init Daemon are daemons started on boot via init scripts.  Usually "
 "requires a script in /etc/rc.d/init.d"
 msgstr ""
-"標準的な Init デーモンは、起動時に init スクリプト経由で開始するデーモンで"
-"す。通常、/etc/rc.d/init.d にスクリプトが必要です。"
+"標準的な Init デーモンは、起動時に init スクリプト経由で開始するデーモンです。通常、/etc/rc.d/init.d "
+"にスクリプトが必要です。"
 
 #: ../polgen.ui:336
 msgid "DBUS System Daemon"
@@ -268,9 +250,7 @@ msgstr "ウェブアプリケーション/スクリプト (CGI)"
 #: ../polgen.ui:374
 msgid ""
 "Web Applications/Script (CGI) CGI scripts started by the web server (apache)"
-msgstr ""
-"ウェブアプリケーション/スクリプト (CGI) は、ウェブサーバー (apache) が開始す"
-"る CGI スクリプトです"
+msgstr "ウェブアプリケーション/スクリプト (CGI) は、ウェブサーバー (apache) が開始する CGI スクリプトです"
 
 #: ../polgen.ui:387
 msgid "User Application"
@@ -280,8 +260,7 @@ msgstr "ユーザーアプリケーション"
 msgid ""
 "User Application are any application that you would like to confine that is "
 "started by a user"
-msgstr ""
-"ユーザーアプリケーションとは、ユーザーが開始して制約するアプリケーションです"
+msgstr "ユーザーアプリケーションとは、ユーザーが開始して制約するアプリケーションです"
 
 #: ../polgen.ui:404
 msgid "Sandbox"
@@ -308,9 +287,8 @@ msgid ""
 "This user will login to a machine only via a terminal or remote login.  By "
 "default this user will have  no setuid, no networking, no su, no sudo."
 msgstr ""
-"このユーザーはターミナル、又はリモートログインを介してのみマシンにログインし"
-"ます。デフォルトでは、このユーザーは、setuid も、ネットワーク運用も、su も、"
-"sudo も持ちません。"
+"このユーザーはターミナル、又はリモートログインを介してのみマシンにログインします。デフォルトでは、このユーザーは、setuid "
+"も、ネットワーク運用も、su も、sudo も持ちません。"
 
 #: ../polgen.ui:516
 msgid "Minimal X Windows User Role"
@@ -321,9 +299,8 @@ msgid ""
 "This user can login to a machine via X or terminal.  By default this user "
 "will have no setuid, no networking, no sudo, no su"
 msgstr ""
-"このユーザーは、X またはターミナルを介してマシンにログインできます。デフォル"
-"トでは、このユーザーは、setuid も、ネットワーク運用も、su も、sudo も持ちませ"
-"ん。"
+"このユーザーは、X またはターミナルを介してマシンにログインできます。デフォルトでは、このユーザーは、setuid も、ネットワーク運用も、su "
+"も、sudo も持ちません。"
 
 #: ../polgen.ui:533
 msgid "User Role"
@@ -333,9 +310,7 @@ msgstr "ユーザーロール"
 msgid ""
 "User with full networking, no setuid applications without transition, no "
 "sudo, no su."
-msgstr ""
-"ユーザーは、ネットワーク運用はすべて可能ですが、遷移のない setuid アプリケー"
-"ション、su 、sudo は使用できません。"
+msgstr "ユーザーは、ネットワーク運用はすべて可能ですが、遷移のない setuid アプリケーション、su 、sudo は使用できません。"
 
 #: ../polgen.ui:550
 msgid "Admin User Role"
@@ -346,8 +321,8 @@ msgid ""
 "User with full networking, no setuid applications without transition, no su, "
 "can sudo to Root Administration Roles"
 msgstr ""
-"ユーザー、ネットワーク運用はすべて可能ですが、遷移のない setuid アプリケー"
-"ションと su は使用できません。Root の管理ロールのため、sudo は使用できます。"
+"ユーザー、ネットワーク運用はすべて可能ですが、遷移のない setuid アプリケーションと su は使用できません。Root "
+"の管理ロールのため、sudo は使用できます。"
 
 #: ../polgen.ui:596
 msgid "<b>Root Users</b>"
@@ -363,9 +338,8 @@ msgid ""
 "the machine while running as root.  This user will not be able to login to "
 "the system directly."
 msgstr ""
-"root として実行中のマシンの管理を、このユーザーで行うには、Root 管理ユーザー"
-"ロールを選択します。このユーザーで、システムに直接ログインすることはできませ"
-"ん。"
+"root として実行中のマシンの管理を、このユーザーで行うには、Root "
+"管理ユーザーロールを選択します。このユーザーで、システムに直接ログインすることはできません。"
 
 #: ../polgen.ui:705
 msgid "<b>Enter name of application or user role:</b>"
@@ -398,9 +372,7 @@ msgstr "Init スクリプト"
 #: ../polgen.ui:821
 msgid ""
 "Enter complete path to init script used to start the confined application."
-msgstr ""
-"制約されたアプリケーションの開始に使用する、init スクリプトの完全パスを記入し"
-"ます。"
+msgstr "制約されたアプリケーションの開始に使用する、init スクリプトの完全パスを記入します。"
 
 #: ../polgen.ui:883
 msgid "<b>Select existing role to modify:</b>"
@@ -423,11 +395,9 @@ msgid "Select applications domains that %s will transition to."
 msgstr "%s の遷移先となるアプリケーションドメインを選択します。"
 
 #: ../polgen.ui:972
-msgid ""
-"transition \n"
+msgid "transition \n"
 "role tab"
-msgstr ""
-"遷移\n"
+msgstr "遷移\n"
 "ロールタブ"
 
 #: ../polgen.ui:989
@@ -435,7 +405,8 @@ msgid "<b>Select the user_roles that will transition to %s:</b>"
 msgstr "<b>%s に遷移するユーザーロールの選択 (_R):</b>"
 
 #: ../polgen.ui:1007
-msgid "Select the user roles that will transiton to this applications domains."
+msgid ""
+"Select the user roles that will transiton to this applications domains."
 msgstr "このアプリケーションドメインに遷移するユーザーロールを選択します"
 
 #: ../polgen.ui:1040
@@ -472,9 +443,7 @@ msgstr "600-1024"
 
 #: ../polgen.ui:1220 ../polgen.ui:1387
 msgid "Allow %s to call bindresvport with 0. Binding to port 600-1024"
-msgstr ""
-"ゼロの付いた bindresvport へのコールを %s に許可する。ポート 600-1024 にバイ"
-"ンド"
+msgstr "ゼロの付いた bindresvport へのコールを %s に許可する。ポート 600-1024 にバインド"
 
 #: ../polgen.ui:1233 ../polgen.ui:1400
 msgid "Unreserved Ports (>1024)"
@@ -484,9 +453,7 @@ msgstr "非予約ポート (>1024)"
 msgid ""
 "Enter a comma separated list of udp ports or ranges of ports that %s binds "
 "to. Example: 612, 650-660"
-msgstr ""
-"udp ポート、または %s のバインド先となるポート群の範囲を、コンマで区切った一"
-"覧を記入します。例: 612, 650-660"
+msgstr "udp ポート、または %s のバインド先となるポート群の範囲を、コンマで区切った一覧を記入します。例: 612, 650-660"
 
 #: ../polgen.ui:1265 ../polgen.ui:1432 ../polgen.ui:1581 ../polgen.ui:1690
 msgid "Select Ports"
@@ -501,11 +468,9 @@ msgid "<b>UDP Ports</b>"
 msgstr "<b>UDP ポート</b>"
 
 #: ../polgen.ui:1492
-msgid ""
-"Network\n"
+msgid "Network\n"
 "Bind tab"
-msgstr ""
-"ネットワーク\n"
+msgstr "ネットワーク\n"
 "バインドタブ"
 
 #: ../polgen.ui:1509
@@ -520,9 +485,7 @@ msgstr "%s が、全ての tcp ポートに接続するのを許可する"
 msgid ""
 "Enter a comma separated list of tcp ports or ranges of ports that %s "
 "connects to. Example: 612, 650-660"
-msgstr ""
-"tcp ポート、または %s の接続先となるポート群の範囲を、コンマで区切った一覧を"
-"記入します。例: 612, 650-660"
+msgstr "tcp ポート、または %s の接続先となるポート群の範囲を、コンマで区切った一覧を記入します。例: 612, 650-660"
 
 #: ../polgen.ui:1674
 msgid "Allows %s to connect to any udp port"
@@ -532,9 +495,7 @@ msgstr "全ての udp ポートへの接続を %s に許可する"
 msgid ""
 "Enter a comma separated list of udp ports or ranges of ports that %s "
 "connects to. Example: 612, 650-660"
-msgstr ""
-"udp ポート、または %s の接続先となるポート群の範囲を、コンマで区切った一覧を"
-"記入します。例: 612, 650-660"
+msgstr "udp ポート、または %s の接続先となるポート群の範囲を、コンマで区切った一覧を記入します。例: 612, 650-660"
 
 #: ../polgen.ui:1760
 msgid "<b>Select common application traits for %s:</b>"
@@ -580,9 +541,7 @@ msgstr "<b>%s が管理するファイル/ディレクトリーの追加</b>"
 msgid ""
 "Files/Directories which the %s \"manages\". Pid Files, Log Files, /var/lib "
 "Files ..."
-msgstr ""
-"%s が「管理する」ファイル/ディレクトリー。Pid ファイル、ログファイル、/var/"
-"lib ファイルなど..."
+msgstr "%s が「管理する」ファイル/ディレクトリー。Pid ファイル、ログファイル、/var/lib ファイルなど..."
 
 #: ../polgen.ui:2126
 msgid "<b>Add booleans from the %s policy:</b>"
@@ -736,10 +695,8 @@ msgid ""
 "If you are changing policy types or going from disabled to enforcing, a "
 "relabel is required."
 msgstr ""
-"次回の再起動時に、ファイルシステム全体のラベルを変更したい場合は選択します。"
-"ラベル変更は、システムのサイズによっては時間がかかります。ポリシータイプを変"
-"更したり、Disabled から Enforcing に変更する場合は、ラベルを変更する必要があ"
-"ります。"
+"次回の再起動時に、ファイルシステム全体のラベルを変更したい場合は選択します。ラベル変更は、システムのサイズによっては時間がかかります。ポリシータイプを変更したり、Disabled "
+"から Enforcing に変更する場合は、ラベルを変更する必要があります。"
 
 #: ../system-config-selinux.ui:903
 msgid "Relabel on next reboot."
@@ -905,11 +862,9 @@ msgstr "ポリシーファイルを生成するディレクトリーを選択し
 
 #: ../polgengui.py:683
 #, python-format
-msgid ""
-"Type %s_t already defined in current policy.\n"
+msgid "Type %s_t already defined in current policy.\n"
 "Do you want to continue?"
-msgstr ""
-"現在のポリシーに既に定義されている %s_t を記入します。\n"
+msgstr "現在のポリシーに既に定義されている %s_t を記入します。\n"
 "続行しますか?"
 
 #: ../polgengui.py:683 ../polgengui.py:687
@@ -918,11 +873,9 @@ msgstr "名前の確認"
 
 #: ../polgengui.py:687
 #, python-format
-msgid ""
-"Module %s already loaded in current policy.\n"
+msgid "Module %s already loaded in current policy.\n"
 "Do you want to continue?"
-msgstr ""
-"モジュール %s.pp は、既に現在のポリシーにロードされています。\n"
+msgstr "モジュール %s.pp は、既に現在のポリシーにロードされています。\n"
 "続行しますか?"
 
 #: ../polgengui.py:733
@@ -935,11 +888,9 @@ msgid "You must enter a executable"
 msgstr "実行ファイルを記入する必要があります"
 
 #: ../loginsPage.py:59
-msgid ""
-"Login\n"
+msgid "Login\n"
 "Name"
-msgstr ""
-"ログイン\n"
+msgstr "ログイン\n"
 "名"
 
 #: ../loginsPage.py:135
@@ -989,9 +940,7 @@ msgid ""
 "the next boot. Relabeling takes a long time depending on the size of the "
 "file system.  Do you wish to continue?"
 msgstr ""
-"ポリシータイプを変更すると、次回システムを再起動するとき時に、ファイルシステ"
-"ム全体のラベルが変更します。ラベル変更は、ファイルシステムのサイズによっては"
-"時間がかかります。続行しますか?"
+"ポリシータイプを変更すると、次回システムを再起動するとき時に、ファイルシステム全体のラベルが変更します。ラベル変更は、ファイルシステムのサイズによっては時間がかかります。続行しますか?"
 
 #: ../statusPage.py:151
 msgid ""
@@ -1002,12 +951,10 @@ msgid ""
 "enforce SELinux policy.  Permissive mode does not require a reboot    Do you "
 "wish to continue?"
 msgstr ""
-"SELinux を無効にする場合は、再起動が必要です。この変更は推奨されません。後で "
-"SELinux を有効に戻すときに、システムのラベル変更が必要になります。SELinux が"
-"問題の原因になっているかどうかを確認したい場合は、Permissive モードにすると "
-"SELinux ポリシーが適用 (enforce) されず、エラーがログに出力されるようになりま"
-"す。また、Permissive モードへの変更には、再起動が要求されません。続行します"
-"か?　"
+"SELinux を無効にする場合は、再起動が必要です。この変更は推奨されません。後で SELinux "
+"を有効に戻すときに、システムのラベル変更が必要になります。SELinux が問題の原因になっているかどうかを確認したい場合は、Permissive "
+"モードにすると SELinux ポリシーが適用 (enforce) されず、エラーがログに出力されるようになります。また、Permissive "
+"モードへの変更には、再起動が要求されません。続行しますか?　"
 
 #: ../statusPage.py:156
 msgid ""
@@ -1015,6 +962,5 @@ msgid ""
 "on the next boot. Relabeling takes a long time depending on the size of the "
 "file system.  Do you wish to continue?"
 msgstr ""
-"SELinux を有効にすると、次回システムを再起動するときに、ファイルシステム全体"
-"のラベルが変更になります。ラベル変更は、ファイルシステムのサイズによっては時"
-"間がかかります。続行しますか?"
+"SELinux "
+"を有効にすると、次回システムを再起動するときに、ファイルシステム全体のラベルが変更になります。ラベル変更は、ファイルシステムのサイズによっては時間がかかります。続行しますか?"

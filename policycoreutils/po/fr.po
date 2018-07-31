@@ -5,13 +5,13 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:36+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2018-03-04 09:46+0000\n"
 "Last-Translator: Jean-Baptiste Holcroft <jean-baptiste@holcroft.fr>\n"
 "Language-Team: French\n"
 "Language: fr\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Zanata 4.5.0\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
 
@@ -59,8 +59,8 @@ msgstr "%s : Ne peut charger la stratégie :  %s\n"
 #, c-format
 msgid "Cannot find your entry in the shadow passwd file.\n"
 msgstr ""
-"Impossible de trouver votre entrée dans le fichier des mots de passe "
-"cachés.\n"
+"Impossible de trouver votre entrée dans le fichier des mots de passe cachés."
+"\n"
 
 #: ../newrole/newrole.c:1249
 #, c-format
@@ -285,11 +285,11 @@ msgstr "échec de construction de la nouvelle plage avec le niveau %s\n"
 msgid "failed to convert new context to string\n"
 msgstr "échec de conversion du contexte en chaîne\n"
 
-#.
+#. 
 #. * Error path cleanup
 #. *
 #. * If we reach here, then we failed to exec the new shell.
-#.
+#. 
 #: ../newrole/newrole.c:1336
 msgid "failed to exec shell\n"
 msgstr "échec de l’exécution du shell\n"

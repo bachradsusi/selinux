@@ -4,13 +4,13 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:10+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2016-01-06 07:03+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Norwegian Bokmål\n"
 "Language: nb\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Zanata 4.5.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
@@ -38,19 +38,15 @@ msgid "SELinux User"
 msgstr ""
 
 #: ../usersPage.py:60 ../loginsPage.py:63
-msgid ""
-"SELinux\n"
+msgid "SELinux\n"
 "User"
-msgstr ""
-"SELinux\n"
+msgstr "SELinux\n"
 "Bruker"
 
 #: ../usersPage.py:65 ../loginsPage.py:66
-msgid ""
-"MLS/\n"
+msgid "MLS/\n"
 "MCS Range"
-msgstr ""
-"MLS/\n"
+msgstr "MLS/\n"
 "MCS-område"
 
 #: ../usersPage.py:69 ../system-config-selinux.ui:1970
@@ -67,8 +63,7 @@ msgid "Network Port"
 msgstr ""
 
 #: ../portsPage.py:95
-msgid ""
-"SELinux Port\n"
+msgid "SELinux Port\n"
 "Type"
 msgstr ""
 
@@ -77,8 +72,7 @@ msgid "Protocol"
 msgstr "Protokoll"
 
 #: ../portsPage.py:106 ../system-config-selinux.ui:355
-msgid ""
-"MLS/MCS\n"
+msgid "MLS/MCS\n"
 "Level"
 msgstr ""
 
@@ -138,20 +132,17 @@ msgid "File Labeling"
 msgstr ""
 
 #: ../fcontextPage.py:82
-msgid ""
-"File\n"
+msgid "File\n"
 "Specification"
 msgstr ""
 
 #: ../fcontextPage.py:89
-msgid ""
-"Selinux\n"
+msgid "Selinux\n"
 "File Type"
 msgstr ""
 
 #: ../fcontextPage.py:96
-msgid ""
-"File\n"
+msgid "File\n"
 "Type"
 msgstr ""
 
@@ -384,8 +375,7 @@ msgid "Select applications domains that %s will transition to."
 msgstr ""
 
 #: ../polgen.ui:972
-msgid ""
-"transition \n"
+msgid "transition \n"
 "role tab"
 msgstr ""
 
@@ -394,7 +384,8 @@ msgid "<b>Select the user_roles that will transition to %s:</b>"
 msgstr ""
 
 #: ../polgen.ui:1007
-msgid "Select the user roles that will transiton to this applications domains."
+msgid ""
+"Select the user roles that will transiton to this applications domains."
 msgstr ""
 
 #: ../polgen.ui:1040
@@ -456,8 +447,7 @@ msgid "<b>UDP Ports</b>"
 msgstr "<b>UDP-porter</b>"
 
 #: ../polgen.ui:1492
-msgid ""
-"Network\n"
+msgid "Network\n"
 "Bind tab"
 msgstr ""
 
@@ -846,8 +836,7 @@ msgstr ""
 
 #: ../polgengui.py:683
 #, python-format
-msgid ""
-"Type %s_t already defined in current policy.\n"
+msgid "Type %s_t already defined in current policy.\n"
 "Do you want to continue?"
 msgstr ""
 
@@ -857,8 +846,7 @@ msgstr ""
 
 #: ../polgengui.py:687
 #, python-format
-msgid ""
-"Module %s already loaded in current policy.\n"
+msgid "Module %s already loaded in current policy.\n"
 "Do you want to continue?"
 msgstr ""
 
@@ -872,8 +860,7 @@ msgid "You must enter a executable"
 msgstr ""
 
 #: ../loginsPage.py:59
-msgid ""
-"Login\n"
+msgid "Login\n"
 "Name"
 msgstr ""
 

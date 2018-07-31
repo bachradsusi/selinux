@@ -9,13 +9,13 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-29 12:10+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2017-11-09 03:28+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Chinese (China)\n"
 "Language: zh_CN\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Zanata 4.5.0\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
@@ -43,14 +43,12 @@ msgid "SELinux User"
 msgstr "SELinux 用户"
 
 #: ../usersPage.py:60 ../loginsPage.py:63
-msgid ""
-"SELinux\n"
+msgid "SELinux\n"
 "User"
 msgstr "SELinux 用户"
 
 #: ../usersPage.py:65 ../loginsPage.py:66
-msgid ""
-"MLS/\n"
+msgid "MLS/\n"
 "MCS Range"
 msgstr "MLS/⏎ MCS 范围"
 
@@ -68,11 +66,9 @@ msgid "Network Port"
 msgstr "网络端口"
 
 #: ../portsPage.py:95
-msgid ""
-"SELinux Port\n"
+msgid "SELinux Port\n"
 "Type"
-msgstr ""
-"SELinux 端口\n"
+msgstr "SELinux 端口\n"
 "类型"
 
 #: ../portsPage.py:101 ../system-config-selinux.ui:294
@@ -80,11 +76,9 @@ msgid "Protocol"
 msgstr "协议"
 
 #: ../portsPage.py:106 ../system-config-selinux.ui:355
-msgid ""
-"MLS/MCS\n"
+msgid "MLS/MCS\n"
 "Level"
-msgstr ""
-"MLS/MCS\n"
+msgstr "MLS/MCS\n"
 "等级"
 
 #: ../portsPage.py:111
@@ -143,20 +137,17 @@ msgid "File Labeling"
 msgstr "文件标签"
 
 #: ../fcontextPage.py:82
-msgid ""
-"File\n"
+msgid "File\n"
 "Specification"
 msgstr "文件说明"
 
 #: ../fcontextPage.py:89
-msgid ""
-"Selinux\n"
+msgid "Selinux\n"
 "File Type"
 msgstr "Selinux 文件类型"
 
 #: ../fcontextPage.py:96
-msgid ""
-"File\n"
+msgid "File\n"
 "Type"
 msgstr " 文件类型"
 
@@ -231,9 +222,7 @@ msgstr "标准初始化守护进程"
 msgid ""
 "Standard Init Daemon are daemons started on boot via init scripts.  Usually "
 "requires a script in /etc/rc.d/init.d"
-msgstr ""
-"标准初始化守护进程是那些通过 init 脚步启动的守护进程。通常需要在 /etc/rc.d/"
-"init.d 中有一个脚本。"
+msgstr "标准初始化守护进程是那些通过 init 脚步启动的守护进程。通常需要在 /etc/rc.d/init.d 中有一个脚本。"
 
 #: ../polgen.ui:336
 msgid "DBUS System Daemon"
@@ -290,9 +279,7 @@ msgstr "最低终端用户角色"
 msgid ""
 "This user will login to a machine only via a terminal or remote login.  By "
 "default this user will have  no setuid, no networking, no su, no sudo."
-msgstr ""
-"这个用户将使用终端或者远程登录登录某台机器。默认情况下这个用户将没有 setuid、"
-"联网、su、sudo 权限。"
+msgstr "这个用户将使用终端或者远程登录登录某台机器。默认情况下这个用户将没有 setuid、联网、su、sudo 权限。"
 
 #: ../polgen.ui:516
 msgid "Minimal X Windows User Role"
@@ -302,9 +289,7 @@ msgstr "最低 X 视窗用户角色"
 msgid ""
 "This user can login to a machine via X or terminal.  By default this user "
 "will have no setuid, no networking, no sudo, no su"
-msgstr ""
-"这个用户通过 X 或者终端登录到某台机器。默认情况下这个用户将没有 setuid、联"
-"网、su、sudo 权限。"
+msgstr "这个用户通过 X 或者终端登录到某台机器。默认情况下这个用户将没有 setuid、联网、su、sudo 权限。"
 
 #: ../polgen.ui:533
 msgid "User Role"
@@ -324,9 +309,7 @@ msgstr "管理员用户角色"
 msgid ""
 "User with full networking, no setuid applications without transition, no su, "
 "can sudo to Root Administration Roles"
-msgstr ""
-"用户可完全联网，没有不转换的 setuid 应用程序，没有 sudo，可以 sudo 为 Root 管"
-"理员角色。"
+msgstr "用户可完全联网，没有不转换的 setuid 应用程序，没有 sudo，可以 sudo 为 Root 管理员角色。"
 
 #: ../polgen.ui:596
 msgid "<b>Root Users</b>"
@@ -341,9 +324,7 @@ msgid ""
 "Select Root Administrator User Role, if this user will be used to administer "
 "the machine while running as root.  This user will not be able to login to "
 "the system directly."
-msgstr ""
-"如果要使用这个用户管理作为 root 运行的机器，则请选择 Root 管理员用户角色。这"
-"个用户将无法直接登录到该系统。"
+msgstr "如果要使用这个用户管理作为 root 运行的机器，则请选择 Root 管理员用户角色。这个用户将无法直接登录到该系统。"
 
 #: ../polgen.ui:705
 msgid "<b>Enter name of application or user role:</b>"
@@ -399,11 +380,9 @@ msgid "Select applications domains that %s will transition to."
 msgstr "选择 %s 要转换成的程序域。"
 
 #: ../polgen.ui:972
-msgid ""
-"transition \n"
+msgid "transition \n"
 "role tab"
-msgstr ""
-"转换 \n"
+msgstr "转换 \n"
 "角色标签"
 
 #: ../polgen.ui:989
@@ -411,7 +390,8 @@ msgid "<b>Select the user_roles that will transition to %s:</b>"
 msgstr "<b>选择要转换成 %s 的 user_roles：</b>"
 
 #: ../polgen.ui:1007
-msgid "Select the user roles that will transiton to this applications domains."
+msgid ""
+"Select the user roles that will transiton to this applications domains."
 msgstr "选择要转换成这个程序域的用户角色。"
 
 #: ../polgen.ui:1040
@@ -473,11 +453,9 @@ msgid "<b>UDP Ports</b>"
 msgstr "<b>UDP 端口</b>"
 
 #: ../polgen.ui:1492
-msgid ""
-"Network\n"
+msgid "Network\n"
 "Bind tab"
-msgstr ""
-"网络\n"
+msgstr "网络\n"
 "捆绑标签"
 
 #: ../polgen.ui:1509
@@ -492,8 +470,7 @@ msgstr "允许 %s 连接到任意 tcp 端口"
 msgid ""
 "Enter a comma separated list of tcp ports or ranges of ports that %s "
 "connects to. Example: 612, 650-660"
-msgstr ""
-"输入使用逗号分开的 %s 要连接的 tcp 端口或者端口范围列表，例如：612, 650-660"
+msgstr "输入使用逗号分开的 %s 要连接的 tcp 端口或者端口范围列表，例如：612, 650-660"
 
 #: ../polgen.ui:1674
 msgid "Allows %s to connect to any udp port"
@@ -503,8 +480,7 @@ msgstr "允许 %s 连接到任意 udp 端口"
 msgid ""
 "Enter a comma separated list of udp ports or ranges of ports that %s "
 "connects to. Example: 612, 650-660"
-msgstr ""
-"输入使用逗号分开的 %s 要连接的 udp 端口或者端口范围列表，例如：612, 650-660"
+msgstr "输入使用逗号分开的 %s 要连接的 udp 端口或者端口范围列表，例如：612, 650-660"
 
 #: ../polgen.ui:1760
 msgid "<b>Select common application traits for %s:</b>"
@@ -704,9 +680,8 @@ msgid ""
 "If you are changing policy types or going from disabled to enforcing, a "
 "relabel is required."
 msgstr ""
-"如果您要在下次重启时重新标记整个系统则请选择此选项。重新标记需要一些时间，具"
-"体要看系统的大小。如果您要将策略类型从 disabled 改为 enforcing，就需要重新标"
-"记。"
+"如果您要在下次重启时重新标记整个系统则请选择此选项。重新标记需要一些时间，具体要看系统的大小。如果您要将策略类型从 disabled 改为 "
+"enforcing，就需要重新标记。"
 
 #: ../system-config-selinux.ui:903
 msgid "Relabel on next reboot."
@@ -872,8 +847,7 @@ msgstr "选择要生成策略文件的目录"
 
 #: ../polgengui.py:683
 #, python-format
-msgid ""
-"Type %s_t already defined in current policy.\n"
+msgid "Type %s_t already defined in current policy.\n"
 "Do you want to continue?"
 msgstr "当前策略中已经定义类型 %s_t。要继续吗？"
 
@@ -883,11 +857,9 @@ msgstr "验证名称"
 
 #: ../polgengui.py:687
 #, python-format
-msgid ""
-"Module %s already loaded in current policy.\n"
+msgid "Module %s already loaded in current policy.\n"
 "Do you want to continue?"
-msgstr ""
-"在当前策略中已载入 %s 模块。\n"
+msgstr "在当前策略中已载入 %s 模块。\n"
 "要继续吗？"
 
 #: ../polgengui.py:733
@@ -900,8 +872,7 @@ msgid "You must enter a executable"
 msgstr "您必须输入 executable"
 
 #: ../loginsPage.py:59
-msgid ""
-"Login\n"
+msgid "Login\n"
 "Name"
 msgstr "登录名"
 
@@ -951,9 +922,7 @@ msgid ""
 "Changing the policy type will cause a relabel of the entire file system on "
 "the next boot. Relabeling takes a long time depending on the size of the "
 "file system.  Do you wish to continue?"
-msgstr ""
-"更改策略类型将导致在下一次引导时重新标记整个文件系统。重新标记需要一定的时"
-"间，具体要看文件系统的大小。您要继续吗？"
+msgstr "更改策略类型将导致在下一次引导时重新标记整个文件系统。重新标记需要一定的时间，具体要看文件系统的大小。您要继续吗？"
 
 #: ../statusPage.py:151
 msgid ""
@@ -964,16 +933,13 @@ msgid ""
 "enforce SELinux policy.  Permissive mode does not require a reboot    Do you "
 "wish to continue?"
 msgstr ""
-"将 SELinux 改为禁用的状态要求重启方可生效。不推荐使用此选项。如果您以后决定重"
-"新启用 SELinux，则需要重新标记该系统。如果您要看是否因为 SELinux 造成您系统中"
-"的错误，您可以选择 permissive 模式，这个模式只记录出错信息，且不强制执行 "
-"SELinux 策略。Permissive 策略不要求重启。您要继续吗？"
+"将 SELinux 改为禁用的状态要求重启方可生效。不推荐使用此选项。如果您以后决定重新启用 SELinux，则需要重新标记该系统。如果您要看是否因为 "
+"SELinux 造成您系统中的错误，您可以选择 permissive 模式，这个模式只记录出错信息，且不强制执行 SELinux "
+"策略。Permissive 策略不要求重启。您要继续吗？"
 
 #: ../statusPage.py:156
 msgid ""
 "Changing to SELinux enabled will cause a relabel of the entire file system "
 "on the next boot. Relabeling takes a long time depending on the size of the "
 "file system.  Do you wish to continue?"
-msgstr ""
-"更改为启用 SELinux 将导致在下一次引导时重新标记整个文件系统。重新标记需要一定"
-"的时间，具体要看文件系统的大小。您要继续吗？"
+msgstr "更改为启用 SELinux 将导致在下一次引导时重新标记整个文件系统。重新标记需要一定的时间，具体要看文件系统的大小。您要继续吗？"
