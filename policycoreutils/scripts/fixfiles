@@ -356,7 +356,6 @@ while getopts "N:BC:FfR:l:v" i; do
     case "$i" in
 	B)
 		BOOTTIME=`/bin/who -b | awk '{print $3}'`
-		set_restore_mode BOOTTIME
 		;;
 	N)
 		BOOTTIME=$OPTARG
