@@ -55,22 +55,6 @@
     #define DISABLE_SYMVER 1
 #endif
 
-#ifndef DISABLE_SYMVER
-asm(".symver cil_build_policydb_pdb,        cil_build_policydb@LIBSEPOL_1.0");
-asm(".symver cil_build_policydb_create_pdb, cil_build_policydb@@LIBSEPOL_1.1");
-
-asm(".symver cil_compile_pdb,   cil_compile@LIBSEPOL_1.0");
-asm(".symver cil_compile_nopdb, cil_compile@@LIBSEPOL_1.1");
-
-asm(".symver cil_userprefixes_to_string_pdb,   cil_userprefixes_to_string@LIBSEPOL_1.0");
-asm(".symver cil_userprefixes_to_string_nopdb, cil_userprefixes_to_string@@LIBSEPOL_1.1");
-
-asm(".symver cil_selinuxusers_to_string_pdb,   cil_selinuxusers_to_string@LIBSEPOL_1.0");
-asm(".symver cil_selinuxusers_to_string_nopdb, cil_selinuxusers_to_string@@LIBSEPOL_1.1");
-
-asm(".symver cil_filecons_to_string_pdb,   cil_filecons_to_string@LIBSEPOL_1.0");
-asm(".symver cil_filecons_to_string_nopdb, cil_filecons_to_string@@LIBSEPOL_1.1");
-#endif
 
 int cil_sym_sizes[CIL_SYM_ARRAY_NUM][CIL_SYM_NUM] = {
 	{64, 64, 64, 1 << 13, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64},
@@ -552,6 +536,7 @@ exit:
 #ifdef DISABLE_SYMVER
 int cil_compile(struct cil_db *db)
 #else
+__attribute__ ((symver ("cil_compile@@LIBSEPOL_1.1")))
 int cil_compile_nopdb(struct cil_db *db)
 #endif
 {
@@ -598,11 +583,13 @@ exit:
 }
 
 #ifndef DISABLE_SYMVER
+__attribute__ ((symver ("cil_compile@LIBSEPOL_1.0")))
 int cil_compile_pdb(struct cil_db *db, __attribute__((unused)) sepol_policydb_t *sepol_db)
 {
 	return cil_compile_nopdb(db);
 }
 
+__attribute__ ((symver ("cil_build_policydb@LIBSEPOL_1.0")))
 int cil_build_policydb_pdb(cil_db_t *db, sepol_policydb_t *sepol_db)
 {
 	int rc;
@@ -622,6 +609,7 @@ exit:
 #ifdef DISABLE_SYMVER
 int cil_build_policydb(cil_db_t *db, sepol_policydb_t **sepol_db)
 #else
+__attribute__ ((symver ("cil_build_policydb@@LIBSEPOL_1.1")))
 int cil_build_policydb_create_pdb(cil_db_t *db, sepol_policydb_t **sepol_db)
 #endif
 {
@@ -1374,6 +1362,7 @@ const char * cil_node_to_string(struct cil_tree_node *node)
 #ifdef DISABLE_SYMVER
 int cil_userprefixes_to_string(struct cil_db *db, char **out, size_t *size)
 #else
+__attribute__ ((symver ("cil_userprefixes_to_string@@LIBSEPOL_1.1")))
 int cil_userprefixes_to_string_nopdb(struct cil_db *db, char **out, size_t *size)
 #endif
 {
@@ -1421,6 +1410,7 @@ exit:
 }
 
 #ifndef DISABLE_SYMVER
+__attribute__ ((symver ("cil_userprefixes_to_string@LIBSEPOL_1.0")))
 int cil_userprefixes_to_string_pdb(struct cil_db *db, __attribute__((unused)) sepol_policydb_t *sepol_db, char **out, size_t *size)
 {
 	return cil_userprefixes_to_string_nopdb(db, out, size);
@@ -1617,6 +1607,7 @@ static int __cil_level_to_string(struct cil_level *lvl, char *out)
 #ifdef DISABLE_SYMVER
 int cil_selinuxusers_to_string(struct cil_db *db, char **out, size_t *size)
 #else
+__attribute__ ((symver ("cil_selinuxusers_to_string@@LIBSEPOL_1.1")))
 int cil_selinuxusers_to_string_nopdb(struct cil_db *db, char **out, size_t *size)
 #endif
 {
@@ -1676,6 +1667,7 @@ int cil_selinuxusers_to_string_nopdb(struct cil_db *db, char **out, size_t *size
 }
 
 #ifndef DISABLE_SYMVER
+__attribute__ ((symver ("cil_selinuxusers_to_string@LIBSEPOL_1.0")))
 int cil_selinuxusers_to_string_pdb(struct cil_db *db, __attribute__((unused)) sepol_policydb_t *sepol_db, char **out, size_t *size)
 {
 	return cil_selinuxusers_to_string_nopdb(db, out, size);
@@ -1685,6 +1677,7 @@ int cil_selinuxusers_to_string_pdb(struct cil_db *db, __attribute__((unused)) se
 #ifdef DISABLE_SYMVER
 int cil_filecons_to_string(struct cil_db *db, char **out, size_t *size)
 #else
+__attribute__ ((symver ("cil_filecons_to_string@@LIBSEPOL_1.1")))
 int cil_filecons_to_string_nopdb(struct cil_db *db, char **out, size_t *size)
 #endif
 {
@@ -1805,6 +1798,7 @@ int cil_filecons_to_string_nopdb(struct cil_db *db, char **out, size_t *size)
 }
 
 #ifndef DISABLE_SYMVER
+__attribute__ ((symver ("cil_filecons_to_string@LIBSEPOL_1.0")))
 int cil_filecons_to_string_pdb(struct cil_db *db, __attribute__((unused)) sepol_policydb_t *sepol_db, char **out, size_t *size)
 {
 	return cil_filecons_to_string_nopdb(db, out, size);
