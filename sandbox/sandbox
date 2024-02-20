@@ -457,6 +457,16 @@ sandbox [-h] [-l level ] [-[X|M] [-H homedir] [-T tempdir]] [-I includefile ] [-
         selinux.chcon(self.__runuserdir, self.__filecon, recursive=True)
         selinux.setfscreatecon(None)
 
+    def __is_wayland_app(self):
+        binary = shutil.which(self.__paths[0])
+        if binary is None:
+            return "yes"
+        output = subprocess.run(['ldd', binary], capture_output=True)
+        for line in str(output.stdout, "utf-8").split('\n'):
+            if line.find("libwayland") != -1:
+                return "yes"
+        return "no"
+
     def __execute(self):
         try:
             cmds = [SEUNSHARE, "-Z", self.__execcon]
@@ -474,6 +484,9 @@ sandbox [-h] [-l level ] [-[X|M] [-H homedir] [-T tempdir]] [-I includefile ] [-
                         from gi.repository import Gtk
                         dpi = str(Gtk.Settings.get_default().props.gtk_xft_dpi / 1024)
 
+                    if os.environ.get('WAYLAND_DISPLAY') is not None:
+                        cmds += ["-W", os.environ["WAYLAND_DISPLAY"]]
+
                     xmodmapfile = self.__homedir + "/.xmodmap"
                     xd = open(xmodmapfile, "w")
                     subprocess.Popen(["/usr/bin/xmodmap", "-pke"], stdout=xd).wait()
@@ -481,7 +494,9 @@ sandbox [-h] [-l level ] [-[X|M] [-H homedir] [-T tempdir]] [-I includefile ] [-
 
                     self.__setup_sandboxrc(self.__options.wm)
 
-                    cmds += ["--", SANDBOXSH, self.__options.windowsize, dpi]
+                    WN = self.__is_wayland_app()
+
+                    cmds += ["--", SANDBOXSH, WN, self.__options.windowsize, dpi]
                 else:
                     cmds += ["--"] + self.__paths
                 return subprocess.Popen(cmds).wait()
