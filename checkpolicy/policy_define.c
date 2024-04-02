@@ -3182,6 +3182,7 @@ int define_role_allow(void)
 
 	while ((id = queue_remove(id_queue))) {
 		if (set_roles(&ra->roles, id)) {
+			role_allow_rule_destroy(ra);
 			free(ra);
 			return -1;
 		}
@@ -3189,6 +3190,7 @@ int define_role_allow(void)
 
 	while ((id = queue_remove(id_queue))) {
 		if (set_roles(&ra->new_roles, id)) {
+			role_allow_rule_destroy(ra);
 			free(ra);
 			return -1;
 		}
